@@ -8,7 +8,11 @@
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
 
-      gtag('config', 'G-H6Q756MVE8');
+      gtag('config', 'G-H6Q756MVE8', {
+          'page_type': 'locations_portal',
+          'content_group': 'inventory',
+          'layout_version': '1.1.2'
+      });
       gtag('config', 'GT-MRM436L7');
     </script>
 
@@ -66,6 +70,7 @@
             font-size: var(--divi-body);
             -webkit-tap-highlight-color: transparent;
             line-height: 1.6;
+            overflow-wrap: break-word;
         }
 
         h1, h2, h3, .font-display { font-family: 'Abril Fatface', cursive; }
@@ -109,10 +114,6 @@
         .nav-link:hover, .nav-link.active { color: var(--sk-nav-gold); }
         .header-scrolled .nav-link { color: #000000; }
         .header-scrolled .nav-link.active { color: var(--sk-nav-gold); }
-
-        #phone-link { transition: color 0.4s ease; }
-        .header-top #phone-link { color: #FFFFFF; }
-        .header-scrolled #phone-link { color: #000000; }
 
         /* Top Banner - Reduced Gap */
         .cta-banner {
@@ -213,7 +214,6 @@
         .town-title { font-family: "Abril Fatface", display; font-size: 32px; color: white; text-decoration: underline; margin-bottom: 2px; margin-top: 0; }
         .county-tag { font-family: Georgia, serif; font-size: 16px; font-weight: 600; opacity: 0.95; margin-bottom: 10px; display: block; color: white; }
         
-        /* Font Sync: Address and Description */
         .address-tag, .description-tag { 
             font-family: Georgia, serif; 
             font-size: 16px; 
@@ -233,7 +233,8 @@
             color: var(--sk-gold);
             margin-bottom: 20px;
             display: flex;
-            gap: 30px;
+            flex-wrap: wrap;
+            gap: 20px;
         }
 
         /* Right Sidebar */
@@ -349,6 +350,8 @@
             .nav-link { padding-top: 15px; padding-bottom: 15px; font-size: 15px; }
             .modal-row, .modal-row-bottom { grid-template-columns: 1fr; gap: 20px; }
             .cta-banner { padding-top: 140px; }
+            .banner-h1 { font-size: 32px; line-height: 40px; }
+            .banner-h2 { font-size: 24px; line-height: 30px; }
         }
     </style>
 </head>
@@ -380,25 +383,24 @@
                 <img src="https://skventuresigns.com/wp-content/uploads/2025/03/SK-Sign-White.png" alt="S&K Venture Signs" id="header-logo" />
             </div>
             <nav class="hidden lg:flex flex-grow items-center justify-center px-10">
-    <ul class="flex items-center gap-8 xl:gap-12">
-        <li><a href="https://werewolf3788.github.io/SKVentureSigns/" class="nav-link">Home</a></li>
-        <li><a href="https://werewolf3788.github.io/SKVentureSigns/Locations.html" class="nav-link active">Locations</a></li>
-        <li><a href="https://skventuresigns.com/services/" class="nav-link">Services</a></li>
-        <li><a href="https://werewolf3788.github.io/SKVentureSigns/Clients.html" class="nav-link">Clients</a></li>
-        <li><a href="https://skventuresigns.com/contact/" class="nav-link">Contact</a></li>
-    </ul>
-</nav>
+                <ul class="flex items-center gap-8 xl:gap-12">
+                    <li><a href="https://werewolf3788.github.io/SKVentureSigns/" class="nav-link">Home</a></li>
+                    <li><a href="https://werewolf3788.github.io/SKVentureSigns/Locations.html" class="nav-link active">Locations</a></li>
+                    <li><a href="https://skventuresigns.com/services/" class="nav-link">Services</a></li>
+                    <li><a href="https://werewolf3788.github.io/SKVentureSigns/Clients.html" class="nav-link">Clients</a></li>
+                    <li><a href="https://skventuresigns.com/contact/" class="nav-link">Contact</a></li>
+                </ul>
+            </nav>
             <div class="flex flex-wrap items-center justify-center gap-4 md:gap-8 py-4 lg:py-0">
                 <button onclick="downloadVCard()" class="bg-[#FFC627] text-[#3E0100] px-6 py-3 rounded-xl font-bold text-[12px] uppercase flex items-center gap-2 shadow-md hover:scale-105 transition-all">
                     <i data-lucide="user-plus" class="w-5 h-5"></i> Contact
                 </button>
-                <a href="tel:8449074450" id="phone-link" class="tracking-tighter text-xl md:text-3xl lg:text-4xl hover:scale-105 transition-transform text-white">844-907-4450</a>
             </div>
         </div>
         <div id="refresh-bar"></div>
     </header>
 
-    <!-- Top Ribbon Banner (Default Info) -->
+    <!-- Top Ribbon Banner -->
     <section class="cta-banner pt-[140px] md:pt-[180px] lg:pt-[220px] pb-12 text-center text-white px-6">
         <div class="max-w-[1400px] mx-auto space-y-4">
             <h1 class="banner-h1">Get Started with Digital Advertising</h1>
@@ -442,7 +444,7 @@
                 <div class="w-10 h-10 border-4 border-[#3E0100]/10 border-t-[#3E0100] rounded-full animate-spin"></div>
                 <div class="text-black font-bold uppercase tracking-[0.3em] text-[9px] opacity-60">Syncing Inventory...</div>
             </div>
-            <!-- Grid root with standardized gap for even spacing -->
+            <!-- Grid root -->
             <div id="grid-root" class="hidden flex flex-col items-center gap-[var(--divi-section)]"></div>
         </div>
     </main>
@@ -503,7 +505,6 @@
             const modal = document.getElementById('specs-modal');
             const root = document.getElementById('specs-content-root');
             
-            // EXACT Row Mapping from Column A-Z (0-25)
             root.innerHTML = `
                 <div class="modal-row border-b border-white/10 pb-6 mb-6">
                     <div class="modal-spec-item">
@@ -529,6 +530,10 @@
                     <div class="modal-spec-item"><span class="modal-spec-label">Ad Time</span><span class="modal-spec-value">${b.adTime || 'N/A'}</span></div>
                     <div class="modal-spec-item"><span class="modal-spec-label">Run-Time</span><span class="modal-spec-value">${b.runtime || 'N/A'}</span></div>
                 </div>
+                <div class="modal-row">
+                    <div class="modal-spec-item"><span class="modal-spec-label">Viewing Distance</span><span class="modal-spec-value">${b.viewingDistance || 'N/A'}</span></div>
+                    <div class="modal-spec-item"><span class="modal-spec-label">Times A Year</span><span class="modal-spec-value">${b.timesYear || 'N/A'}</span></div>
+                </div>
                 <div class="modal-row-bottom">
                     <div class="modal-spec-item"><span class="modal-spec-label">Creative Matrix</span><span class="modal-spec-value">${b.creativeMatrix || 'N/A'}</span></div>
                     <div class="modal-spec-item"><span class="modal-spec-label">File Type</span><span class="modal-spec-value">${b.fileType || 'N/A'}</span></div>
@@ -537,6 +542,7 @@
 
             img.style.display = 'none'; modal.style.display = 'block';
             overlay.style.display = 'flex'; document.body.style.overflow = 'hidden';
+            lucide.createIcons();
         }
 
         function closeAllModals() {
@@ -563,18 +569,39 @@
                 }
             }
             if (cell || row.length > 0) { row.push(cell.trim()); rows.push(row); }
+            
             const list = [];
-            // Mapping for Columns A-Z (Indices 0-25)
-            // D = Latitude (IL 38-42), E = Longitude (IL -88) based on image_1094fa.png values
+            // COLUMN MAPPING: A=0, B=1, C=2, D=3 (Long), E=4 (Lat), etc.
             for (let i = 1; i < rows.length; i++) {
                 const d = rows[i]; if (!d || d.length < 5) continue;
                 list.push({
-                    town: d[0], price: d[1], specials: d[2], 
-                    lat_col: d[3], long_col: d[4], 
-                    info: d[5], pdf: d[6], county: d[7], size: d[8], 
-                    address: d[9], id1: d[10], id2: d[11], lighted: d[12], matrix: d[13],
-                    creativeMatrix: d[14], sides: d[15], fileType: d[16], runtime: d[17], adTime: d[18], slots: d[19],
-                    cost1: d[20], cost2: d[21], cost4: d[22], img1: d[23], img2: d[24], traffic: d[25]
+                    town: d[0],             // A
+                    price: d[1],            // B
+                    timesYear: d[2],        // C
+                    long_col: d[3],         // D
+                    lat_col: d[4],          // E
+                    info: d[5],             // F
+                    pdf: d[6],              // G
+                    county: d[7],           // H
+                    size: d[8],             // I
+                    address: d[9],          // J
+                    id1: d[10],             // K
+                    id2: d[11],             // L
+                    lighted: d[12],         // M
+                    matrix: d[13],          // N
+                    creativeMatrix: d[14],  // O
+                    sides: d[15],           // P
+                    fileType: d[16],        // Q
+                    runtime: d[17],         // R
+                    adTime: d[18],          // S
+                    slots: d[19],           // T
+                    cost1: d[20],           // U
+                    cost2: d[21],           // V
+                    cost4: d[22],           // W
+                    img1: d[23],            // X
+                    img2: d[24],            // Y
+                    traffic: d[26],         // AA
+                    viewingDistance: d[27]  // AB
                 });
             }
             return list.sort((a, b) => a.town.localeCompare(b.town));
@@ -585,17 +612,31 @@
             const spinner = document.getElementById('loading-spinner');
             grid.innerHTML = '';
             billboards.forEach((item, index) => {
-                // Combine coordinates for the map
-                const lat = parseFloat(item.lat_col);
-                const long = parseFloat(item.long_col);
+                const rawLat = String(item.lat_col).trim();
+                const rawLong = String(item.long_col).trim();
+                let lat = parseFloat(rawLat);
+                let long = parseFloat(rawLong);
+
+                // S&K Coordinate Safety Sync: 
+                // In Illinois, Latitude is ~38-42 (Positive) and Longitude is ~-87 to -91 (Negative).
+                // If columns D and E are swapped in the sheet, we correct the mapping here for the map engine.
+                if (Math.abs(lat) > 50 && Math.abs(long) < 50) {
+                    // Coordinates appear swapped in source data; correcting order.
+                    [lat, long] = [long, lat];
+                }
+
+                // Robust Google Maps Embed URL using corrected variables
+                const mapEmbedUrl = (isNaN(lat) || isNaN(long)) 
+                    ? `https://maps.google.com/maps?q=${encodeURIComponent(item.address + ' ' + item.town + ' IL')}&t=k&z=16&output=embed`
+                    : `https://maps.google.com/maps?q=${lat},${long}&t=k&z=16&output=embed`;
 
                 const card = `
                 <div class="advertising-card-box">
                     <div class="card-top-row">
                         <div class="flex flex-col items-center">
                             <div class="horizontal-map-container">
-                                <iframe class="w-full h-full opacity-100" src="https://www.google.com/maps?q=${encodeURIComponent(lat)},${encodeURIComponent(long)}&z=16&t=k&output=embed" loading="lazy"></iframe>
-                                <a href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(lat)},${encodeURIComponent(long)}" target="_blank" class="absolute bottom-4 right-4 bg-white text-black p-3 rounded-full shadow-2xl hover:scale-110 transition-transform">
+                                <iframe class="w-full h-full opacity-100" src="${mapEmbedUrl}" loading="lazy"></iframe>
+                                <a href="https://www.google.com/maps/search/?api=1&query=${lat},${long}" target="_blank" class="absolute bottom-4 right-4 bg-white text-black p-3 rounded-full shadow-2xl hover:scale-110 transition-transform">
                                     <i data-lucide="navigation" class="w-6 h-6"></i>
                                 </a>
                             </div>
@@ -610,8 +651,9 @@
                             <span class="address-tag text-white">${item.address}</span>
                             
                             <div class="stats-tag">
-                                <span><strong class="opacity-50">Size:</strong> ${item.size}</span>
-                                <span><strong class="opacity-50">Traffic:</strong> ${item.traffic}</span>
+                                <span><strong class="opacity-50 uppercase text-[10px] tracking-widest">Size:</strong> ${item.size}</span>
+                                <span><strong class="opacity-50 uppercase text-[10px] tracking-widest">Traffic:</strong> ${item.traffic}</span>
+                                ${item.viewingDistance ? `<span><strong class="opacity-50 uppercase text-[10px] tracking-widest">Distance:</strong> ${item.viewingDistance}</span>` : ''}
                             </div>
 
                             <p class="description-tag text-white">${item.info}</p>
@@ -622,7 +664,7 @@
                                 <span class="text-4xl font-display text-[#2ecc71]">${item.price}</span>
                                 <div class="flex flex-col">
                                     <span class="text-[10px] font-bold opacity-100 uppercase text-white">Current Special</span>
-                                    <span class="text-sm font-semibold text-white">${item.specials}</span>
+                                    <span class="text-sm font-semibold text-white">${item.timesYear || 'Available'}</span>
                                 </div>
                             </div>
                             <button onclick="openSpecs(${index})" class="view-specs-btn">
@@ -630,9 +672,9 @@
                             </button>
                             ${(item.cost1 || item.cost2 || item.cost4) ? `
                             <div class="sidebar-rate-stack">
-                                ${item.cost1 ? `<div class="rate-row"><span class="label">1 Min rotation:</span><span class="price">${item.cost1}</span></div>` : ''}
-                                ${item.cost2 ? `<div class="rate-row"><span class="label">2 Min rotation:</span><span class="price">${item.cost2}</span></div>` : ''}
-                                ${item.cost4 ? `<div class="rate-row"><span class="label">4 Min rotation:</span><span class="price">${item.cost4}</span></div>` : ''}
+                                ${item.cost1 ? `<div class="rate-row"><span class="label">1 Min:</span><span class="price">${item.cost1}</span></div>` : ''}
+                                ${item.cost2 ? `<div class="rate-row"><span class="label">2 Min:</span><span class="price">${item.cost2}</span></div>` : ''}
+                                ${item.cost4 ? `<div class="rate-row"><span class="label">4 Min:</span><span class="price">${item.cost4}</span></div>` : ''}
                             </div>
                             ` : ''}
                             ${item.pdf ? `<a href="${item.pdf}" target="_blank" class="text-[10px] uppercase font-bold text-white/40 hover:text-[#FFC627] flex items-center gap-1.5 mt-2"><i data-lucide="file-text" class="w-3 h-3"></i> Tech PDF</a>` : ''}
@@ -651,11 +693,15 @@
                 const res = await fetch(`${CSV_URL}&t=${Date.now()}`);
                 const text = await res.text();
                 const newData = parseCSV(text);
-                if (JSON.stringify(newData) !== JSON.stringify(billboards)) { billboards = newData; renderGrid(); }
+                if (JSON.stringify(newData) !== JSON.stringify(billboards)) { 
+                    billboards = newData; 
+                    renderGrid(); 
+                }
             } catch (e) { console.warn("Sync failed."); }
         }
 
         function init() { fetchCSVData(); setInterval(() => fetchCSVData(true), 60000); }
+        
         function downloadVCard() {
             const vCardData = ["BEGIN:VCARD", "VERSION:3.0", "FN:Scott Robinson", "ORG:S&K Venture Signs", "TEL;TYPE=WORK,VOICE:18449074450", "EMAIL;TYPE=PREF,INTERNET:Scott.Robinson@skventuresigns.com", "END:VCARD"].join("\n");
             const blob = new Blob([vCardData], { type: 'text/vcard' });
@@ -666,8 +712,6 @@
             const header = document.getElementById('main-header');
             const logo = document.getElementById('header-logo');
             const banner = document.querySelector('.cta-banner');
-            
-            // Toggle header color based on banner height
             const bannerHeight = banner?.offsetHeight || 0;
             
             if (window.scrollY > (bannerHeight - 80)) { 
