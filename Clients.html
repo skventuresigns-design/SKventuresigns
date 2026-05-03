@@ -3,11 +3,36 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>S&K Venture Signs</title>
-    <!-- Importing Open Sans -->
+    <title>S&K Venture Signs | Clients</title>
+    
+    <!-- 
+        GOOGLE ANALYTICS (GA4) 
+        Measurement ID: G-H6Q756MVE8
+        Stream ID: 13238803097
+        Description: Tracks page views, section scrolls, and business card clicks.
+    -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-H6Q756MVE8"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-H6Q756MVE8');
+    </script>
+
+    <!-- 
+        EXTERNAL RESOURCES 
+        - Google Fonts: Loading 'Open Sans' for clean, modern readability.
+    -->
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
     <style>
-        /* CSS Reset and Variables */
+        /* ============================================================
+           GLOBAL STYLES & RESET
+           Description: Removes browser defaults and sets up the base 
+           look for the entire page.
+           ============================================================ 
+        */
         * {
             margin: 0;
             padding: 0;
@@ -15,6 +40,19 @@
             -webkit-font-smoothing: antialiased;
         }
 
+        /* FIX FOR "WHITE BOUNCE" EFFECT
+           Description: Matches the background to the header to prevent 
+           white space during upward scrolls.
+        */
+        html {
+            background-color: rgb(62, 1, 0); 
+            scroll-behavior: smooth;
+        }
+
+        /* KEVIN'S GLOBAL MOBILE SETTINGS & DESIGN TOKENS
+           Description: Strict implementation of user-defined layout scales.
+           Maps to: Text elements, padding, and layout containers.
+        */
         :root {
             --brand-maroon: rgb(62, 1, 0); 
             --brand-gold: #ffcc00; 
@@ -35,9 +73,15 @@
             color: #333;
             background-color: #f9f9f9;
             overflow-x: hidden;
+            overscroll-behavior-y: none; 
         }
 
-        /* --- STICKY HEADER --- */
+        /* ============================================================
+           SECTION: STICKY HEADER
+           Maps to: <header id="main-header">
+           Description: Fixed bar containing logo and sandwich menu.
+           ============================================================ 
+        */
         header {
             position: fixed;
             top: 0;
@@ -68,6 +112,9 @@
             display: block;
         }
 
+        /* NAVIGATION BAR (Desktop)
+           Maps to: <nav id="top-navigation">
+        */
         nav ul {
             display: flex;
             list-style: none;
@@ -84,21 +131,43 @@
             transition: color 0.3s ease;
         }
 
-        nav ul li a:hover {
+        nav ul li a:hover, nav ul li a.active {
             color: var(--brand-gold);
         }
 
-        /* --- OUR CUSTOMERS DYNAMIC GALLERY SECTION --- */
+        /* SANDWICH FEATURE (Hamburger Icon)
+           Maps to: <div class="menu-toggle">
+           Description: Only visible on mobile/tablets.
+        */
+        .menu-toggle {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            cursor: pointer;
+            z-index: 1001;
+        }
+
+        .menu-toggle span {
+            width: 25px;
+            height: 3px;
+            background-color: #fff;
+            border-radius: 2px;
+            transition: 0.3s;
+        }
+
+        /* ============================================================
+           SECTION: CUSTOMERS GALLERY
+           Maps to: <div class="customers-section">
+           Description: Main content area using --section-height for padding.
+           ============================================================ 
+        */
         .customers-section {
             position: relative;
-            margin-top: 100px; /* Offset for fixed header */
-            padding: 10px 0 54px 0;
-            background-color: rgb(255, 255, 255);
+            margin-top: 100px; 
+            padding: var(--section-height) 0;
             background-image: url(https://skventuresigns.com/wp-content/uploads/2024/12/skbackground.png);
             background-size: cover;
             background-position: center;
-            background-repeat: no-repeat;
-            background-attachment: scroll;
             color: #fff;
             text-align: center;
             min-height: 400px;
@@ -107,7 +176,7 @@
         .et_pb_row {
             max-width: 1080px;
             margin: 0 auto;
-            padding: 27px 0;
+            padding: var(--row-height) 0;
         }
 
         .et_pb_module_heading {
@@ -117,13 +186,10 @@
             color: #fff;
         }
 
-        .et_pb_text_inner p {
-            font-size: var(--body-text-size);
-            font-weight: 500;
-            margin-bottom: 40px;
-        }
-
-        /* Gallery Grid */
+        /* GALLERY GRID
+           Maps to: <div id="customer-grid">
+           Description: Responsive 4-column desktop, 2-column tablet, 1-column mobile.
+        */
         .gallery-grid {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
@@ -135,7 +201,7 @@
             background: rgba(0,0,0,0.4);
             border-radius: 4px;
             padding: 15px;
-            transition: transform 0.3s ease, background 0.3s ease;
+            transition: transform 0.3s ease;
             text-decoration: none;
             color: #fff;
             display: flex;
@@ -143,7 +209,6 @@
             align-items: center;
             justify-content: center;
             opacity: 0;
-            transform: translateY(20px);
             animation: fadeIn 0.5s forwards;
         }
 
@@ -151,40 +216,22 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-        .gallery-item:hover {
-            transform: translateY(-5px);
-            background: rgba(0,0,0,0.6);
-        }
-
         .gallery-item img {
             width: 100%;
-            height: auto;
             max-width: 200px;
-            border-radius: 2px;
             margin-bottom: 10px;
         }
 
-        .gallery-item h3, .gallery-item p {
-            font-size: 12px;
-            font-weight: 700;
-            text-transform: uppercase;
-            margin: 0;
-            line-height: 1.4;
-        }
-
-        .loading-indicator {
-            padding: 40px;
-            font-style: italic;
-            opacity: 0.7;
-        }
-
-        /* --- FOOTER STYLES --- */
+        /* ============================================================
+           SECTION: FOOTER
+           Maps to: <footer id="section-footer">
+           Description: Uses --section-height and --row-height.
+           ============================================================ 
+        */
         footer {
             background-color: var(--brand-maroon);
-            color: rgb(255, 255, 255);
-            padding: 40px 20px 20px 20px;
-            position: relative;
-            z-index: 1;
+            color: #fff;
+            padding: var(--section-height) 20px var(--row-height) 20px;
             text-align: center;
         }
 
@@ -195,62 +242,69 @@
             max-width: 1200px;
             margin: 0 auto;
             gap: 40px;
-            padding-bottom: 40px;
+            padding-bottom: var(--row-height);
         }
 
-        .footer-col {
-            flex: 1;
-            min-width: 280px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        .footer-label {
-            font-size: 14px;
-            font-weight: 500;
-            margin-bottom: 10px;
-            text-transform: uppercase;
-            opacity: 0.8;
-        }
-
-        .footer-heading {
-            font-size: 18px; /* Balanced for the footer layout */
-            font-weight: 700;
-            line-height: 1.4;
-        }
-
-        .footer-row-bottom {
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-            padding-top: 20px;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        .copyright-heading {
-            font-size: 14px;
-            font-weight: 500;
-            opacity: 0.7;
-        }
-
-        /* Mobile Adjustments */
+        /* ============================================================
+           RESPONSIVE MOBILE SETTINGS (Kevin's Specs)
+           Description: "Responsive, stacked, sandwich feature"
+           ============================================================ 
+        */
         @media (max-width: 992px) {
             header { height: 80px; }
-            .logo-container img { max-width: 200px; }
-            nav { display: none; }
-            .gallery-grid { grid-template-columns: repeat(2, 1fr); }
+            .logo-container img { max-width: 180px; }
             .customers-section { margin-top: 80px; }
-            .footer-row-top { gap: 30px; }
+
+            /* Toggle "Sandwich" Menu visibility */
+            .menu-toggle { display: flex; }
+
+            /* Mobile Navigation Styling (Stacked) */
+            nav {
+                position: fixed;
+                top: 0;
+                right: -100%;
+                width: 70%;
+                height: 100vh;
+                background-color: var(--brand-maroon);
+                transition: 0.4s ease;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                box-shadow: -10px 0 30px rgba(0,0,0,0.5);
+            }
+
+            nav.active { right: 0; }
+
+            nav ul {
+                flex-direction: column;
+                align-items: center;
+                gap: 40px;
+            }
+
+            nav ul li a { font-size: 18px; }
+
+            /* Sandwich animation to X */
+            .menu-toggle.active span:nth-child(1) { transform: rotate(45deg) translate(5px, 5px); }
+            .menu-toggle.active span:nth-child(2) { opacity: 0; }
+            .menu-toggle.active span:nth-child(3) { transform: rotate(-45deg) translate(6px, -7px); }
+
+            .gallery-grid { grid-template-columns: repeat(2, 1fr); }
         }
 
         @media (max-width: 480px) {
+            /* Full Stacked Layout */
             .gallery-grid { grid-template-columns: 1fr; }
-            .footer-heading { font-size: 16px; }
+            .footer-col { min-width: 100%; margin-bottom: 20px; }
         }
     </style>
 </head>
 <body>
 
+    <!-- 
+        HEADER SECTION 
+        Description: Contains Logo and the Sandwich Feature (Menu Toggle).
+    -->
     <header id="main-header">
         <div class="header-container">
             <div class="logo-container">
@@ -258,28 +312,33 @@
                     <img src="https://skventuresigns.com/wp-content/uploads/2025/03/SK-Sign-White.png" alt="S&K Sign White">
                 </a>
             </div>
-            <nav class="hidden lg:flex flex-grow items-center justify-center px-10">
-               /* ============================================================
-   NAVIGATION BAR
-   Description: Controls the colors and spacing of the nav.
-   ============================================================ */
-.nav-link {
-    color: white;
-}
-    <ul class="flex items-center gap-8 xl:gap-12">
-        <li><a href="https://werewolf3788.github.io/SKVentureSigns/" class="nav-link">Home</a></li>
-        <li><a href="https://werewolf3788.github.io/SKVentureSigns/Locations.html" class="nav-link">Locations</a></li>
-        <li><a href="https://skventuresigns.com/services/" class="nav-link">Services</a></li>
-        <li><a href="https://werewolf3788.github.io/SKVentureSigns/Clients.html" class="nav-link active">Clients</a></li>
-        <li><a href="https://skventuresigns.com/contact/" class="nav-link">Contact</a></li>
-    </ul>
-</nav>
+
+            <!-- THE SANDWICH FEATURE (Visible on Mobile) -->
+            <div class="menu-toggle" id="mobile-menu-btn">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+
+            <!-- NAVIGATION (Desktop: Inline, Mobile: Stacked/Sandwich) -->
+            <nav id="top-navigation">
+                <ul>
+                    <li><a href="https://werewolf3788.github.io/SKVentureSigns/">Home</a></li>
+                    <li><a href="https://werewolf3788.github.io/SKVentureSigns/Locations.html">Locations</a></li>
+                    <li><a href="https://skventuresigns.com/services/">Services</a></li>
+                    <li><a href="https://werewolf3788.github.io/SKVentureSigns/Clients.html" class="active">Clients</a></li>
+                    <li><a href="https://skventuresigns.com/contact/">Contact</a></li>
+                </ul>
+            </nav>
         </div>
     </header>
 
     <main id="home">
-        <!-- DYNAMIC GALLERY SECTION -->
-        <div class="customers-section">
+        <!-- 
+            CUSTOMERS GALLERY SECTION 
+            Description: Uses Section Height (50px) and Header Text Size (30px).
+        -->
+        <div class="customers-section" id="section-customers">
             <div class="et_pb_row">
                 <h1 class="et_pb_module_heading">Our Customers</h1>
                 <div class="et_pb_text_inner">
@@ -287,27 +346,28 @@
                 </div>
 
                 <div id="loading" class="loading-indicator">Loading business partners...</div>
+                
                 <div id="customer-grid" class="gallery-grid">
-                    <!-- Items will be injected here via JavaScript -->
+                    <!-- Dynamic Items Injected Here -->
                 </div>
             </div>
         </div>
     </main>
 
-    <!-- FOOTER SECTION -->
-    <footer>
+    <!-- 
+        FOOTER SECTION 
+        Description: Stacked columns on mobile, aligned via Row Height (30px).
+    -->
+    <footer id="section-footer">
         <div class="footer-row-top">
-            <!-- Call -->
             <div class="footer-col">
                 <div class="footer-label">Give Us a Call</div>
                 <h5 class="footer-heading">618-708-4450 or 844-907-4450</h5>
             </div>
-            <!-- Email -->
             <div class="footer-col">
                 <div class="footer-label">Send Us an Email</div>
                 <h5 class="footer-heading">Scott.Robinson@skventuresigns.com</h5>
             </div>
-            <!-- Visit -->
             <div class="footer-col">
                 <div class="footer-label">Visit Our Office</div>
                 <h5 class="footer-heading">607 W Clark Ave Effingham, IL 62401</h5>
@@ -315,13 +375,55 @@
         </div>
         
         <div class="footer-row-bottom">
-            <h5 class="copyright-heading">© 2025 S&K Venture Signs</h5>
+            <h5 class="copyright-heading">© 2026 S&K Venture Signs</h5>
         </div>
     </footer>
 
     <script>
         const CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vT9aXB9z9jcsaA0U-LsuV4nIHwIIw2huGB8zaalh7It4GQP_DWFFdQ4Utaw_ajkdhx5ydn87BcfS82d/pub?output=csv';
 
+        /**
+         * SANDWICH MENU LOGIC
+         * Description: Controls the opening/closing of the mobile navigation.
+         */
+        const menuBtn = document.getElementById('mobile-menu-btn');
+        const nav = document.getElementById('top-navigation');
+
+        menuBtn.addEventListener('click', () => {
+            menuBtn.classList.toggle('active');
+            nav.classList.toggle('active');
+        });
+
+        // Close menu when clicking a link
+        document.querySelectorAll('nav a').forEach(link => {
+            link.addEventListener('click', () => {
+                menuBtn.classList.remove('active');
+                nav.classList.remove('active');
+            });
+        });
+
+        /**
+         * Google Analytics: Track Section Views
+         */
+        const trackSectionView = () => {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        gtag('event', 'section_view', { 'section_id': entry.target.id });
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.5 });
+
+            document.querySelectorAll('main > div, footer').forEach(section => {
+                if (section.id) observer.observe(section);
+            });
+        };
+
+        /**
+         * DATA FETCHING (CSV)
+         * Description: Grabs business partners from Google Sheets and renders them.
+         */
         async function fetchCustomers() {
             const grid = document.getElementById('customer-grid');
             const loading = document.getElementById('loading');
@@ -336,7 +438,6 @@
                 });
 
                 const data = rows.slice(1);
-                
                 loading.style.display = 'none';
                 grid.innerHTML = ''; 
 
@@ -355,6 +456,14 @@
                     item.className = 'gallery-item';
                     item.style.animationDelay = `${index * 0.05}s`;
 
+                    item.addEventListener('click', function() {
+                        gtag('event', 'select_content', {
+                            'content_type': 'business_partner',
+                            'item_id': name,
+                            'destination': websiteUrl
+                        });
+                    });
+
                     item.innerHTML = `
                         <img src="${imageUrl}" alt="${name}" onerror="this.src='https://via.placeholder.com/400x320?text=Logo+Coming+Soon'">
                         <h3>${name}</h3>
@@ -364,12 +473,14 @@
                 });
 
             } catch (error) {
-                console.error('Error loading customers:', error);
-                loading.innerText = 'Unable to load customer list. Please try again later.';
-                loading.style.color = '#ff6b6b';
+                console.error('Error:', error);
+                loading.innerText = 'Unable to load customer list.';
             }
         }
 
+        /**
+         * Header Interaction
+         */
         window.addEventListener('scroll', function() {
             const header = document.getElementById('main-header');
             if (window.scrollY > 50) {
@@ -383,7 +494,10 @@
             }
         });
 
-        window.onload = fetchCustomers;
+        window.onload = function() {
+            fetchCustomers();
+            trackSectionView();
+        };
     </script>
 </body>
 </html>
