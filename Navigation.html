@@ -2,12 +2,13 @@
 <html lang="en">
 <head>
     <!-- 
-        PROJECT: S&K Venture Signs Global Header
+        PROJECT: S&K Venture Signs Global Header & Footer
         ADMIN: Kevin (Werewolf3788)
         CLIENT: Scott (S&K Venture Signs)
-        STANDARDS: Responsive, No-Minify, G-Tag Integrated, Mobile Sandwich Menu
-        TECHNICAL: Section Height 50/30 Standard, Boss Analytics G-H6Q756MVE8
-        UPDATE: Synchronized Active/Hover link colors to Brand Gold (#FFC627)
+        STANDARDS: Responsive, No-Minify, G-Tag Integrated
+        TECHNICAL: Locked Header (148px), Locked Footer (237px)
+        ANALYTICS: Boss Analytics G-H6Q756MVE8
+        UPDATE: Precision Footer Spacing Sync; 24px Label Gap; 89px Copyright Gap; Georgia Copyright Typography
     -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -19,16 +20,16 @@
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
       gtag('config', 'G-H6Q756MVE8', {
-        'page_type': 'header_navigation',
+        'page_type': 'global_framework_v5.4',
         'content_group': 'brand_assets',
-        'layout_version': '2.0'
+        'layout_version': '5.4'
       });
     </script>
 
     <!-- External Assets with Smart Cache Buster ?v=1.0 -->
     <script src="https://cdn.tailwindcss.com?v=1.0"></script>
     <script src="https://unpkg.com/lucide@latest?v=1.0"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Abril+Fatface&family=Poppins:wght@400;500;600;700&family=Open+Sans:wght@600&display=swap&v=1.0" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Abril+Fatface&family=Poppins:wght@400;500;600;700&family=Open+Sans:wght@600;700&display=swap&v=1.0" rel="stylesheet">
 
     <style>
         :root {
@@ -41,6 +42,16 @@
             --sk-gold: #FFC627;
             --sk-nav-gold: rgb(218, 164, 33);
             --sk-separator: #BBA28C;
+            
+            /* Precision Dimensions Locked */
+            --header-height: 148px;
+            --footer-height: 237px;
+            --menu-gap: 26px; 
+            --logo-to-home-gap: 808px;
+            
+            /* New Spacing Standards (Ref: Image Measurements) */
+            --footer-label-gap: 24px;   /* Image dfa71a.png */
+            --copyright-top-gap: 89px; /* Image dfa6a0.png */
         }
 
         /* Base Typography & Global Standards */
@@ -48,21 +59,24 @@
             font-family: 'Poppins', sans-serif;
             font-size: var(--divi-body);
             margin: 0;
-            padding-top: 100px; /* Spacer for fixed header */
+            padding-top: var(--header-height);
             overflow-wrap: break-word;
-            height: 200vh; /* Scroll space to test Maroon-to-White transition */
-            background-color: #f9f9f9;
+            background-color: #fcfcfc;
+            color: #333333;
         }
 
         h1, h2, h3 {
             font-size: var(--divi-header);
+            line-height: 1.2;
         }
 
-        /* Header Base Construction */
+        /* --- SECTION: HEADER CONSTRUCTION --- */
         header#main-header {
-            transition: all 0.4s ease;
+            transition: background-color 0.4s ease, color 0.4s ease, border-color 0.4s ease;
             border-bottom: 4px solid var(--sk-separator);
-            height: 100px; /* Aligned with padding-top */
+            height: var(--header-height) !important;
+            display: flex;
+            align-items: center;
         }
 
         /* Initial State (Maroon Theme) */
@@ -74,205 +88,231 @@
         /* Scrolled State (White Theme) */
         .header-scrolled {
             background-color: white;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
             color: #000000;
-            height: 80px !important;
+            border-bottom: 4px solid var(--sk-separator);
         }
 
-        /* Logo Branding Transitions */
+        /* Logo Branding */
         #header-logo {
-            width: 380px;
+            width: 420px;
             max-width: 100%;
             height: auto;
             transition: all 0.4s ease;
         }
-        
-        /* Mobile adjustment for logo width */
-        @media (max-width: 1024px) {
-            #header-logo {
-                width: 180px;
-            }
+
+        /* Navigation Container with Precision Spacing */
+        .header-inner-wrap {
+            width: 100%;
+            max-width: 1920px;
+            margin: 0 auto;
+            padding: 0 32px;
+            display: flex;
+            align-items: center;
         }
 
-        .header-scrolled #header-logo {
-            width: 200px;
+        .nav-container {
+            display: flex;
+            align-items: center;
+            gap: var(--menu-gap);
+            margin-left: var(--logo-to-home-gap);
         }
 
-        /* Desktop Navigation Styles */
         .nav-link {
             color: white;
             font-family: "Open Sans", sans-serif;
-            font-size: 17px;
-            font-weight: 600;
-            padding: 31px 0;
+            font-size: 18px;
+            font-weight: 700;
+            text-transform: uppercase;
             text-decoration: none;
-            transition: all 0.4s ease-in-out;
+            transition: all 0.3s ease;
+            letter-spacing: 1px;
             white-space: nowrap;
         }
         
-        /* Active Link and Hover State updated to Brand Gold */
         .nav-link:hover, .nav-link.active {
             color: var(--sk-gold);
         }
 
         .header-scrolled .nav-link {
-            color: #000000;
+            color: #222222;
         }
 
-        /* Scrolled Active Link State updated to Brand Gold */
         .header-scrolled .nav-link.active {
-            color: var(--sk-gold);
+            color: var(--sk-maroon);
         }
 
-        /* Mobile Menu (Sandwich) Overlay Styles */
-        #mobile-menu-overlay {
-            position: fixed;
-            top: 0;
-            right: -100%;
-            width: 85%;
-            max-width: 400px;
-            height: 100vh;
+        /* Header Phone Display Style */
+        .header-phone {
+            color: var(--sk-gold);
+            font-family: "Open Sans", sans-serif;
+            font-size: 18px;
+            font-weight: 800;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+        }
+
+        .header-phone:hover {
+            color: white;
+        }
+
+        .header-scrolled .header-phone {
+            color: var(--sk-maroon);
+        }
+
+        .header-scrolled .header-phone:hover {
+            color: var(--sk-nav-gold);
+        }
+
+        /* --- SECTION: FOOTER CONSTRUCTION (Locked 237px) --- */
+        footer#main-footer {
             background-color: var(--sk-maroon);
-            z-index: 1001;
-            transition: right 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            color: white;
+            height: var(--footer-height);
+            border-top: 5px solid var(--sk-gold);
             display: flex;
             flex-direction: column;
-            padding: 2.5rem 1.5rem;
-            box-shadow: -10px 0 30px rgba(0,0,0,0.5);
+            justify-content: center;
+            position: relative;
+            padding: 0 20px;
         }
-        #mobile-menu-overlay.active {
-            right: 0;
+
+        .footer-grid {
+            max-width: 1440px;
+            margin: 0 auto;
+            width: 100%;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            text-align: center;
+            gap: 0px; /* Use grid columns for equal distribution */
         }
-        .mobile-nav-link {
-            color: white;
-            font-size: 22px;
-            font-weight: 600;
-            padding: 1.25rem 0;
+
+        /* Footer Label: Georgia Precision Style */
+        .footer-label {
+            display: block;
+            color: rgb(255, 255, 255); 
+            font-family: Georgia, Georgia, "Times New Roman", serif;
+            font-size: 14px; 
+            font-weight: 500; 
+            height: 24.5px; 
+            line-height: 24.5px; 
+            margin: 0 0 var(--footer-label-gap) 0; /* Precise 24px Gap below label */
+            padding: 0; 
+            text-align: center; 
+            -webkit-font-smoothing: antialiased; 
+            vertical-align: baseline;
+            unicode-bidi: isolate;
+        }
+
+        /* Footer Value: Abril Fatface Precision Style Sync */
+        .footer-value {
+            display: block;
+            color: rgb(255, 255, 255); 
+            font-family: "Abril Fatface", display; 
+            font-size: 18px; 
+            font-weight: 500; 
+            line-height: 25.2px; 
+            height: auto; 
+            padding-bottom: 10px; 
+            text-align: center;
             text-decoration: none;
-            border-bottom: 1px solid rgba(255,255,255,0.1);
             transition: color 0.3s ease;
+            -webkit-font-smoothing: antialiased;
+            vertical-align: baseline;
+            unicode-bidi: isolate;
         }
 
-        /* Mobile Active/Hover State updated to Brand Gold */
-        .mobile-nav-link:active, .mobile-nav-link.active {
-            color: var(--sk-gold);
+        .footer-value:hover {
+            color: var(--sk-gold); 
         }
 
-        /* Inventory Progress Bar (Bottom of Header) */
-        #refresh-bar {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            height: 2px;
-            width: 0;
-            background-color: var(--sk-gold);
-            transition: width 0.3s ease;
-        }
-
-        /* Utility: Mobile Menu Icon Toggle */
-        #menu-toggle {
-            cursor: pointer;
-            transition: transform 0.3s ease;
-        }
-        #menu-toggle:active {
-            transform: scale(0.9);
-        }
-
-        /* Responsive Section Spacing (Kevin's Standard) */
-        .section-container {
-            min-height: 50vh;
-            padding: 30px;
+        /* Copyright Section: Precision Style Sync (Ref: image_dfa6a0.png & query) */
+        .copyright-bar {
+            width: 100%;
+            text-align: center;
+            margin-top: var(--copyright-top-gap); /* Precise 89px Gap from email */
+            display: block;
+            color: rgb(255, 255, 255); /* White as specified */
+            font-family: Georgia, Georgia, "Times New Roman", serif;
+            font-size: 18px; 
+            font-weight: 700; /* Bold */
+            height: 35.2px; 
+            line-height: 25.2px; 
+            padding-bottom: 10px;
+            -webkit-font-smoothing: antialiased;
+            vertical-align: baseline;
+            unicode-bidi: isolate;
         }
     </style>
 </head>
 <body>
 
-    <!-- Main Header Component -->
-    <header id="main-header" class="header-top fixed top-0 left-0 w-full z-[1000] flex flex-col items-center justify-center">
-        <div class="w-full max-w-[1920px] mx-auto flex items-center justify-between">
+    <!-- Main Header Component (Locked 148px) -->
+    <header id="main-header" class="header-top fixed top-0 left-0 w-full z-[1000]">
+        <div class="header-inner-wrap">
             
-            <!-- Branding: Pushed further right from the left edge -->
-            <div class="flex-shrink-0 pl-8 lg:pl-16">
+            <!-- Branding -->
+            <div class="flex-shrink-0">
                 <a href="https://werewolf3788.github.io/SKVentureSigns/">
                     <img src="https://skventuresigns.com/wp-content/uploads/2025/03/SK-Sign-White.png?v=1.0" alt="S&K Venture Signs" id="header-logo" />
                 </a>
             </div>
             
-            <!-- Desktop Navigation: Pushed toward the Save Contact button -->
-            <nav class="hidden lg:flex flex-grow items-center justify-end pr-12 xl:pr-24">
-                <ul class="flex items-center gap-8 xl:gap-14">
-                    <li><a href="https://werewolf3788.github.io/SKVentureSigns/" class="nav-link">Home</a></li>
-                    <li><a href="https://werewolf3788.github.io/SKVentureSigns/Locations.html" class="nav-link active">Locations</a></li>
-                    <li><a href="Services.html" class="nav-link">Services</a></li>
-                    <li><a href="https://werewolf3788.github.io/SKVentureSigns/Clients.html" class="nav-link">Clients</a></li>
-                    <li><a href="Contact.html" class="nav-link">Contact</a></li>
-                </ul>
+            <!-- Precision Navigation (808px Gap from Logo) -->
+            <nav class="nav-container">
+                <a href="index.html" class="nav-link">Home</a>
+                <a href="Locations.html" class="nav-link active">Locations</a>
+                <a href="Services.html" class="nav-link">Services</a>
+                <a href="Clients.html" class="nav-link">Clients</a>
+                <a href="Contact.html" class="nav-link">Contact</a>
+                
+                <!-- CTA Replacement Phone -->
+                <a href="tel:8449074450" class="header-phone">844-907-4450</a>
             </nav>
-            
-            <!-- Actions Section: Button and Mobile Toggle -->
-            <div class="flex items-center gap-4 pr-8 lg:pr-16">
-                <!-- Save Contact Button: Primary CTA -->
-                <button onclick="downloadVCard()" class="bg-[#FFC627] text-[#3E0100] px-5 lg:px-7 py-3.5 rounded-xl font-bold text-[11px] lg:text-[13px] uppercase flex items-center gap-2 shadow-md hover:scale-105 active:scale-95 transition-all">
-                    <i data-lucide="user-plus" class="w-4 h-4 lg:w-5 lg:h-5"></i> <span class="whitespace-nowrap">Save Contact</span>
-                </button>
-
-                <!-- Mobile Sandwich Icon: Visible on mobile/tablet -->
-                <div id="menu-toggle" class="lg:hidden p-2 ml-2">
-                    <i data-lucide="menu" id="toggle-icon" class="w-9 h-9 text-white transition-colors duration-300"></i>
-                </div>
-            </div>
         </div>
-
-        <!-- Scroll Progress/Inventory Indicator -->
-        <div id="refresh-bar"></div>
     </header>
 
-    <!-- Mobile Navigation Overlay (Sandwich Menu) -->
-    <div id="mobile-menu-overlay" class="lg:hidden">
-        <div class="flex justify-between items-center mb-10 border-b border-white/10 pb-6">
-            <h2 class="text-white text-xl font-bold uppercase tracking-widest font-sans">Navigation</h2>
-            <button onclick="toggleMobileMenu()" class="text-white p-2">
-                <i data-lucide="x" class="w-9 h-9"></i>
-            </button>
-        </div>
-        <nav class="flex flex-col">
-            <a href="https://werewolf3788.github.io/SKVentureSigns/" class="mobile-nav-link" onclick="toggleMobileMenu()">Home</a>
-            <a href="https://werewolf3788.github.io/SKVentureSigns/Locations.html" class="mobile-nav-link active" onclick="toggleMobileMenu()">Locations</a>
-            <a href="Services.html" class="mobile-nav-link" onclick="toggleMobileMenu()">Services</a>
-            <a href="https://werewolf3788.github.io/SKVentureSigns/Clients.html" class="mobile-nav-link" onclick="toggleMobileMenu()">Clients</a>
-            <a href="Contact.html" class="mobile-nav-link" onclick="toggleMobileMenu()">Contact</a>
-        </nav>
-        
-        <!-- Mobile Bottom Branding -->
-        <div class="mt-auto pt-8 border-t border-white/10">
-            <p class="text-white/60 text-[10px] uppercase font-bold tracking-[3px] mb-6">S&K Venture Signs</p>
-            <button onclick="downloadVCard()" class="w-full bg-[#FFC627] text-[#3E0100] py-5 rounded-2xl font-bold text-center text-sm shadow-xl">
-                SAVE DIGITAL CONTACT
-            </button>
-        </div>
-    </div>
-
-    <!-- Page Content Placeholder (To demonstrate scroll effect) -->
-    <main class="w-full">
-        <section class="section-container flex flex-col items-center justify-center text-center mt-20">
-            <h1 class="text-4xl font-bold text-[#3E0100] mb-4">Responsive Header Ready</h1>
-            <p class="text-lg text-gray-600 max-w-2xl px-6">
-                Narrow this window to see the mobile sandwich menu. Scroll down to see the header transition from Maroon to White.
-            </p>
-            <div class="mt-12 opacity-20">
-                <i data-lucide="arrow-down" class="w-12 h-12 animate-bounce"></i>
-            </div>
-        </section>
-        
-        <section class="section-container bg-white flex items-center justify-center">
-            <h2 class="text-3xl font-bold text-gray-300 uppercase tracking-widest">Scroll for White State</h2>
-        </section>
+    <!-- Main Content Area: Ready for Injection -->
+    <main class="w-full min-h-[80vh]">
+        <!-- [ADD PAGE CONTENT HERE] -->
     </main>
+
+    <!-- Global Footer (Locked 237px) -->
+    <footer id="main-footer">
+        <div class="footer-grid">
+            <!-- Call Section -->
+            <div class="footer-col">
+                <p class="footer-label">Give Us a Call</p>
+                <div class="flex flex-col">
+                    <a href="tel:6187084450" class="footer-value">618-708-4450 or 844-907-4450</a>
+                </div>
+            </div>
+
+            <!-- Email Section -->
+            <div class="footer-col">
+                <p class="footer-label">Send Us an Email</p>
+                <a href="mailto:Scott.Robinson@skventuresigns.com" class="footer-value">Scott.Robinson@skventuresigns.com</a>
+            </div>
+
+            <!-- Office Section -->
+            <div class="footer-col">
+                <p class="footer-label">Visit Our Office</p>
+                <a href="https://www.google.com/maps/search/?api=1&query=607+W+Clark+Ave+Effingham+IL+62401" target="_blank" class="footer-value">
+                    607 W Clark Ave  Effingham, IL  62401
+                </a>
+            </div>
+        </div>
+
+        <!-- Copyright Bar (Locked Georgia Style with 89px margin) -->
+        <h5 class="copyright-bar">
+            © 2025 S&K Venture Signs
+        </h5>
+    </footer>
 
     <script>
         /**
-         * SECTION: CONFIGURATION & ASSETS
-         * Using ?v=1.0 for Smart Cache Busting
+         * SECTION: ASSETS
          */
         const LOGO_BLACK = "https://skventuresigns.com/wp-content/uploads/2025/03/SK-Sign-Black.png?v=1.0";
         const LOGO_WHITE = "https://skventuresigns.com/wp-content/uploads/2025/03/SK-Sign-White.png?v=1.0";
@@ -282,105 +322,26 @@
          */
         document.addEventListener('DOMContentLoaded', () => {
             lucide.createIcons();
-            initMobileMenu();
-            
-            // Initialize progress bar width
-            updateProgressBar();
         });
 
         /**
          * SECTION: SCROLL LOGIC
-         * Handles the transition between Maroon (Top) and White (Scrolled) states.
+         * Handles background swap while maintaining 148px height.
          */
         window.addEventListener('scroll', () => {
             const header = document.getElementById('main-header');
             const logo = document.getElementById('header-logo');
-            const menuToggleIcon = document.querySelector('#toggle-icon');
             
-            // Trigger transition after scrolling 60px
-            if (window.scrollY > 60) { 
-                header.classList.replace('header-top', 'header-scrolled'); 
+            if (window.scrollY > 40) { 
+                header.classList.add('header-scrolled');
+                header.classList.remove('header-top');
                 logo.src = LOGO_BLACK; 
-                if(menuToggleIcon) {
-                    menuToggleIcon.classList.remove('text-white');
-                    menuToggleIcon.classList.add('text-black');
-                }
             } else { 
-                header.classList.replace('header-scrolled', 'header-top'); 
+                header.classList.add('header-top');
+                header.classList.remove('header-scrolled');
                 logo.src = LOGO_WHITE; 
-                if(menuToggleIcon) {
-                    menuToggleIcon.classList.remove('text-black');
-                    menuToggleIcon.classList.add('text-white');
-                }
             }
-            
-            updateProgressBar();
         });
-
-        /**
-         * SECTION: PROGRESS BAR
-         * Fills the gold bar based on page scroll percentage.
-         */
-        function updateProgressBar() {
-            const bar = document.getElementById('refresh-bar');
-            const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
-            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-            const scrolled = (winScroll / height) * 100;
-            if (bar) bar.style.width = scrolled + "%";
-        }
-
-        /**
-         * SECTION: MOBILE MENU INTERACTION
-         * Toggle logic for the sandwich menu.
-         */
-        function initMobileMenu() {
-            const toggle = document.getElementById('menu-toggle');
-            if(toggle) {
-                toggle.addEventListener('click', toggleMobileMenu);
-            }
-        }
-
-        function toggleMobileMenu() {
-            const overlay = document.getElementById('mobile-menu-overlay');
-            const body = document.body;
-            
-            overlay.classList.toggle('active');
-            
-            // Prevent scrolling when menu is open
-            if(overlay.classList.contains('active')) {
-                body.style.overflow = 'hidden';
-            } else {
-                body.style.overflow = '';
-            }
-        }
-
-        /**
-         * SECTION: VCARD GENERATION
-         * Handles the "Save Contact" functionality.
-         */
-        function downloadVCard() {
-            const vCardData = [
-                "BEGIN:VCARD", 
-                "VERSION:3.0", 
-                "FN:Scott Robinson", 
-                "ORG:S&K Venture Signs", 
-                "TEL;TYPE=WORK,VOICE:18449074450", 
-                "EMAIL;TYPE=PREF,INTERNET:Scott.Robinson@skventuresigns.com", 
-                "URL:https://skventuresigns.com",
-                "END:VCARD"
-            ].join("\n");
-            
-            const blob = new Blob([vCardData], { type: 'text/vcard' });
-            const url = window.URL.createObjectURL(blob);
-            const a = document.createElement('a'); 
-            a.style.display = 'none';
-            a.href = url; 
-            a.download = 'Scott_Robinson_SKVenture.vcf'; 
-            document.body.appendChild(a);
-            a.click();
-            window.URL.revokeObjectURL(url);
-            document.body.removeChild(a);
-        }
     </script>
 </body>
 </html>
