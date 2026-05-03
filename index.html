@@ -1,0 +1,730 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scott's Skventures | Exploration & Discovery</title>
+    
+    <!-- External Scripts & Fonts -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Abril+Fatface&family=Poppins:wght@400;500;600;700&family=Open+Sans:wght@400;500;600&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    
+    <style>
+        /* ============================================================
+            GLOBAL SETTINGS & BRAND VARIABLES 
+            Description: Core color palette and layout variables for S&K.
+            Maps to: Entire Document
+           ============================================================ */
+        :root {
+            /* Kevin's Admin Global Settings (Desktop) */
+            --header-size-desktop: 30px;
+            --body-size-desktop: 14px;
+            
+            /* Global Mobile Settings (Per Kevin's Admin Prefs) */
+            --mobile-header-size: 30px;
+            --mobile-body-size: 14px;
+            --mobile-section-height: 50vh;
+            --mobile-row-height: 30px;
+
+            /* S&K Brand Palette */
+            --sk-maroon: rgb(62, 1, 0);
+            --sk-gold: #FFC627;
+            --sk-nav-gold: rgb(218, 164, 33);
+            --sk-separator: #BBA28C;
+            
+            /* Specific Accents */
+            --sk-adv-blue: rgb(33, 158, 188);
+            --fair-yellow: rgb(255, 192, 0);
+            --btn-maroon: rgb(42, 0, 1);
+            --btn-blue: rgb(2, 52, 86);
+            --sk-section-blue: rgb(69, 123, 157);
+            --sk-button-text-blue: rgb(29, 53, 87);
+        }
+
+        /* Hiding Scrollbar while keeping functionality */
+        html, body {
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+        }
+        body::-webkit-scrollbar {
+            display: none;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            font-size: var(--body-size-desktop);
+            line-height: 1.6;
+            color: #333;
+            margin: 0;
+            padding-top: 100px; 
+            overflow-x: hidden;
+        }
+
+        /* ============================================================
+            TYPOGRAPHY & RESPONSIVE LAYOUT
+            Description: Handles global header sizes and mobile responsiveness.
+            Maps to: All Headlines and Section containers
+           ============================================================ */
+        h1, h2, h3, h4, h5 {
+            font-size: var(--header-size-desktop);
+            font-weight: 700;
+            line-height: 1.2;
+        }
+
+        @media (max-width: 1024px) {
+            body { font-size: var(--mobile-body-size) !important; }
+            h1, h2, h3, h4, h5 { font-size: var(--mobile-header-size) !important; }
+            .responsive-section {
+                min-height: var(--mobile-section-height) !important;
+                padding-top: var(--mobile-row-height) !important;
+                padding-bottom: var(--mobile-row-height) !important;
+            }
+        }
+
+        /* ============================================================
+            HERO SECTION STYLES
+            Description: Precise branding for the Hero header and card.
+            Maps to: Advertising Hero (Section 1)
+           ============================================================ */
+        .hero-title-specific {
+            background-color: rgba(0, 0, 0, 0);
+            border: none;
+            box-sizing: border-box;
+            color: rgb(255, 255, 255) !important;
+            display: block;
+            font-family: Georgia, Georgia, "Times New Roman", serif !important;
+            font-size: 54px !important;
+            font-weight: 500 !important;
+            line-height: 62.1px !important;
+            margin: 0 auto !important;
+            padding-bottom: 10px !important;
+            padding-top: 0px !important;
+            text-align: center;
+            width: 100%;
+            max-width: 510.297px;
+            -webkit-font-smoothing: antialiased;
+            unicode-bidi: isolate;
+        }
+
+        .advertising-hero {
+            position: relative;
+            min-height: 500px;
+            background-image: linear-gradient(rgba(0, 0, 0, 0.4) 0%, rgba(0, 0, 0, 0.4) 100%), 
+                              url('https://skventuresigns.com/wp-content/uploads/2025/03/Screenshot-2025-03-21-143543.png');
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            align-items: center;
+        }
+
+        .hero-card-subtitle {
+            color: rgb(33, 158, 188) !important;
+            display: block;
+            font-family: Poppins, Helvetica, Arial, Lucida, sans-serif !important;
+            font-size: 14px !important;
+            font-weight: 500 !important;
+            letter-spacing: 1px !important;
+            line-height: 19.6px !important;
+            padding-bottom: 10px !important;
+            text-align: center !important;
+            text-transform: uppercase !important;
+            width: 100%;
+            max-width: 450.297px;
+            margin: 0 auto !important;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .hero-card-title {
+            color: rgb(17, 17, 17) !important;
+            display: block;
+            font-family: "Abril Fatface", cursive !important;
+            font-size: 32px !important;
+            font-weight: 500 !important;
+            line-height: 41.6px !important;
+            padding-bottom: 10px !important;
+            text-align: center !important;
+            width: 100%;
+            max-width: 450.297px;
+            margin: 0 auto !important;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .hero-card-body-text {
+            color: rgba(0, 0, 0, 0.64) !important;
+            display: block;
+            font-family: Poppins, Helvetica, Arial, Lucida, sans-serif !important;
+            font-size: 16px !important;
+            font-weight: 500 !important;
+            line-height: 28px !important;
+            text-align: center !important;
+            width: 100%;
+            max-width: 450.297px;
+            margin: 0 auto !important;
+            overflow-wrap: break-word;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* ============================================================
+            FAIR INFO & ADVENTUROUS DIVIDER
+            Description: Marketing content for the Effingham County Fair.
+            Maps to: Fair Info (Section 2)
+           ============================================================ */
+        .adventurous-divider {
+            position: relative;
+            min-height: 600px;
+            background-image: url('https://skventuresigns.com/wp-content/uploads/2024/12/skbackground.png');
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            align-items: center;
+            padding: 4rem 0;
+            z-index: 1;
+        }
+
+        .fair-header-specific {
+            color: rgb(255, 192, 0) !important;
+            display: block;
+            font-family: "Abril Fatface", cursive !important;
+            font-size: 48px !important;
+            font-weight: 500 !important;
+            line-height: 67.2px !important;
+            padding-bottom: 10px !important;
+            text-align: center !important;
+            text-decoration: underline !important;
+            text-decoration-color: rgb(255, 192, 0) !important;
+            width: 100%;
+            max-width: 816.047px;
+            margin: 0 auto !important;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .fair-dates-specific {
+            color: rgb(255, 255, 255) !important;
+            display: block;
+            font-family: "Abril Fatface", cursive !important;
+            font-size: 45px !important;
+            font-weight: 500 !important;
+            line-height: 45px !important;
+            padding-bottom: 10px !important;
+            text-align: center !important;
+            width: 100%;
+            max-width: 816.047px;
+            margin: 0 auto !important;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .fair-subheader-specific {
+            color: rgb(255, 255, 255) !important;
+            display: block;
+            font-family: "Abril Fatface", cursive !important;
+            font-size: 20px !important;
+            font-weight: 500 !important;
+            line-height: 28px !important;
+            padding-bottom: 10px !important;
+            text-align: center !important;
+            width: 100%;
+            max-width: 816.047px;
+            margin: 0 auto !important;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .fair-location-text {
+            color: rgb(255, 192, 0) !important;
+            display: block;
+            font-family: "Abril Fatface", cursive !important;
+            font-size: 20px !important;
+            font-weight: 500 !important;
+            line-height: 28px !important;
+            padding-bottom: 10px !important;
+            text-align: center !important;
+            width: 100%;
+            max-width: 636.516px;
+            margin: 0 auto !important;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .fair-rental-tagline {
+            color: rgb(255, 255, 255) !important;
+            display: block;
+            font-family: Georgia, Georgia, "Times New Roman", serif !important;
+            font-size: 42px !important;
+            font-weight: 700 !important;
+            line-height: 58.8px !important;
+            padding-bottom: 10px !important;
+            text-align: center !important;
+            width: 100%;
+            max-width: 1727.09px;
+            margin: 0 auto !important;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .et_pb_divider_internal {
+            border-top: 6px groove #FFC000;
+            width: 100%;
+            max-width: 816px;
+            margin: 15px auto;
+        }
+
+        /* ============================================================
+            NAVIGATION & HEADER STYLES
+            Description: Handles fixed navigation logic and color changes.
+            Maps to: Sticky Main Header
+           ============================================================ */
+        header#main-header {
+            transition: all 0.4s ease;
+            border-bottom: 4px solid var(--sk-separator);
+        }
+        .header-top { background-color: var(--sk-maroon); color: #FFFFFF; }
+        .header-scrolled { background-color: white; box-shadow: 0 10px 30px rgba(0,0,0,0.3); color: #000000; }
+
+        #header-logo { width: 417px; max-width: 80%; height: auto; transition: all 0.4s ease; }
+        .header-scrolled #header-logo { width: 220px; }
+
+        .nav-link {
+            color: white;
+            font-family: "Open Sans", sans-serif;
+            font-size: 17px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        .nav-link.active { color: var(--sk-gold) !important; }
+        .header-scrolled .nav-link { color: #000000; }
+        .header-scrolled .nav-link.active { color: var(--sk-nav-gold) !important; }
+
+        /* ============================================================
+            SERVICES GRID & DYNAMIC CARDS
+            Description: Precise typography for the spreadsheet-fed cards.
+            Maps to: Dynamic Services Grid (Section 4)
+           ============================================================ */
+        .service-card {
+            background-color: #FFF;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+        .service-card:hover { transform: translateY(-8px); }
+        .service-card img { height: 220px; object-fit: contain; margin-bottom: 15px; }
+
+        .service-card-title {
+            color: rgb(0, 0, 0) !important;
+            display: block;
+            font-family: "Abril Fatface", cursive !important;
+            font-size: 18px !important;
+            font-weight: 500 !important;
+            line-height: 25.2px !important;
+            padding-bottom: 10px !important;
+            text-align: center !important;
+            width: 100%;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .service-card-desc {
+            color: rgb(0, 0, 0) !important;
+            display: block;
+            font-family: Georgia, Georgia, "Times New Roman", serif !important;
+            font-size: 15px !important;
+            font-weight: 500 !important;
+            line-height: 26.25px !important;
+            text-align: center !important;
+            width: 100%;
+            overflow-wrap: break-word;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .service-card-btn {
+            font-family: "Open Sans", Arial, sans-serif !important;
+            font-size: 15px !important;
+            font-weight: 500 !important;
+            line-height: 25.5px !important;
+            text-align: center !important;
+            padding: 4.5px 10.5px !important;
+            display: block;
+            border-radius: 20px;
+            transition: all 0.3s ease;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .card-style-white { background-color: #FFFFFF !important; }
+        .card-style-gold { background-color: var(--sk-nav-gold) !important; }
+        
+        .btn-style-maroon { background-color: var(--btn-maroon) !important; border: 3px solid var(--sk-nav-gold) !important; color: white; }
+        .btn-style-blue { background-color: var(--btn-blue) !important; border: 3px solid #FFFFFF !important; color: white; }
+
+        /* ============================================================
+            TAGLINE SECTION STYLES
+            Description: Precise branding for the horizontal tagline image.
+            Maps to: Tagline Bar (Section 3)
+           ============================================================ */
+        .tagline-img-specific {
+            display: inline;
+            font-family: "Open Sans", Arial, sans-serif !important;
+            font-size: 14px !important;
+            font-weight: 500 !important;
+            height: 95px !important;
+            line-height: 0px !important;
+            margin: 0px !important;
+            max-width: 100%;
+            width: 950px !important;
+            position: relative;
+            vertical-align: baseline;
+            -webkit-font-smoothing: antialiased;
+            overflow-x: clip;
+            overflow-y: clip;
+        }
+
+        /* ============================================================
+            BLUE CTA SECTION STYLES
+            Description: Precise design specs for the blue information/quote block.
+            Maps to: Unlock Your Potential Section (Section 5)
+           ============================================================ */
+        .cta-header-specific {
+            color: rgb(255, 255, 255) !important;
+            display: block;
+            font-family: "Abril Fatface", cursive !important;
+            font-size: 50px !important;
+            font-weight: 500 !important;
+            line-height: 60px !important;
+            padding-bottom: 10px !important;
+            text-align: center !important;
+            width: 100%;
+            max-width: 1727.09px;
+            margin: 0 auto !important;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .cta-body-specific {
+            color: rgb(255, 255, 255) !important;
+            display: inline-block;
+            font-family: Poppins, Helvetica, Arial, Lucida, sans-serif !important;
+            font-size: 18px !important;
+            font-weight: 500 !important;
+            line-height: 31.5px !important;
+            text-align: center !important;
+            width: auto;
+            max-width: 100%;
+            margin: 0 auto !important;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* ============================================================
+            S&K MAROON SIMPLIFIED FOOTER
+            Description: Contact grid and copyright styling.
+            Maps to: Bottom Footer Section
+           ============================================================ */
+        .sk-main-footer {
+            background-color: var(--sk-maroon);
+            color: white;
+            border-top: 5px solid var(--sk-gold);
+            padding: 4rem 0 2rem 0;
+        }
+
+        .footer-column-title {
+            font-family: Georgia, Georgia, "Times New Roman", serif !important;
+            font-size: 14px !important;
+            font-weight: 500 !important;
+            height: 24.5px;
+            line-height: 24.5px !important;
+            margin: 0px !important;
+            text-align: center !important;
+            width: 100%;
+            color: rgb(255, 255, 255) !important;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .footer-info-text {
+            color: rgb(255, 255, 255) !important;
+            font-family: "Abril Fatface", cursive !important;
+            font-size: 18px !important;
+            font-weight: 500 !important;
+            min-height: 35.2031px;
+            line-height: 25.2px !important;
+            margin: 0px !important;
+            padding-bottom: 10px !important;
+            text-align: center !important;
+            width: 100%;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .footer-copyright-specific {
+            color: rgb(255, 255, 255) !important;
+            font-family: Georgia, Georgia, "Times New Roman", serif !important;
+            font-size: 18px !important;
+            font-weight: 700 !important;
+            height: 35.2031px;
+            line-height: 25.2px !important;
+            margin: 0px auto !important;
+            padding-bottom: 10px !important;
+            text-align: center !important;
+            width: 100%;
+            max-width: 635.547px;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .footer-info-link {
+            color: white;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .footer-info-link:hover {
+            color: var(--sk-gold);
+        }
+
+        .footer-bottom-bar {
+            border-top: 1px solid rgba(255,255,255,0.1);
+            padding-top: 2rem;
+            margin-top: 3rem;
+            text-align: center;
+        }
+
+        .loading-pulse { animation: pulse 2s infinite; }
+        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: .5; } }
+    </style>
+</head>
+<body class="bg-gray-50">
+
+    <!-- Navigation Header -->
+    <header id="main-header" class="header-top fixed top-0 left-0 w-full z-[1000] flex flex-col items-center">
+        <div class="w-full max-w-[1800px] mx-auto flex items-center justify-between px-4 lg:pl-24 lg:pr-10 py-4">
+            <div class="flex-shrink-0">
+                <img src="https://skventuresigns.com/wp-content/uploads/2025/03/SK-Sign-White.png" alt="S&K Venture Signs" id="header-logo" />
+            </div>
+
+            <div class="hidden lg:flex items-center gap-10 xl:gap-16">
+                <nav>
+                    <ul class="flex items-center gap-8 xl:gap-12">
+                        <li><a href="https://skventuresigns.com/" class="nav-link active">Home</a></li>
+                        <li><a href="#" class="nav-link">Locations</a></li>
+                        <li><a href="https://skventuresigns.com/services/" class="nav-link">Services</a></li>
+                        <li><a href="https://skventuresigns.com/clients/" class="nav-link">Clients</a></li>
+                        <li><a href="https://skventuresigns.com/contact/" class="nav-link">Contact</a></li>
+                    </ul>
+                </nav>
+
+                <div class="flex items-center gap-8">
+                    <button onclick="downloadVCard()" class="bg-[#FFC627] text-[#3E0100] px-6 py-3 rounded-xl font-bold text-[12px] uppercase flex items-center gap-2 shadow-md hover:scale-105 transition-all">
+                        <i data-lucide="user-plus" class="w-5 h-5"></i> Save Contact
+                    </button>
+                </div>
+            </div>
+
+            <div class="flex items-center gap-4 lg:hidden">
+                <button id="menu-toggle" class="p-2 focus:outline-none text-inherit">
+                    <i data-lucide="menu" class="w-8 h-8"></i>
+                </button>
+            </div>
+        </div>
+
+        <div id="mobile-menu" class="absolute top-[100%] left-0 w-full bg-white text-black lg:hidden shadow-xl border-t border-gray-100 p-6 flex flex-col gap-6 opacity-0 invisible transition-all duration-300">
+            <a href="https://skventuresigns.com/" class="text-xl font-bold border-b pb-2">Home</a>
+            <a href="#" class="text-xl font-bold border-b pb-2">Locations</a>
+            <a href="https://skventuresigns.com/services/" class="text-xl font-bold border-b pb-2">Services</a>
+            <a href="https://skventuresigns.com/clients/" class="text-xl font-bold border-b pb-2">Clients</a>
+            <a href="https://skventuresigns.com/contact/" class="text-xl font-bold border-b pb-2">Contact</a>
+            <div class="pt-4 flex flex-col gap-4">
+                <button onclick="downloadVCard()" class="bg-[#FFC627] text-[#3E0100] w-full py-4 rounded-xl font-bold uppercase">Save Contact</button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="advertising-hero responsive-section">
+        <div class="max-w-[1400px] mx-auto w-full px-6 flex flex-col lg:flex-row items-center justify-between gap-10 py-10 lg:py-0">
+            <div class="lg:w-1/2 flex justify-center">
+                <h5 class="hero-title-specific">Transform Your Advertising with S&K Venture Signs</h5>
+            </div>
+            <div class="lg:w-auto w-full">
+                <div class="white-card bg-white p-8 lg:p-12 rounded-xl shadow-2xl max-w-[450px] mx-auto text-center">
+                    <h4 class="hero-card-subtitle">Innovative Solutions for Modern Advertising</h4>
+                    <h3 class="hero-card-title">Join the Digital Revolution</h3>
+                    <p class="hero-card-body-text">Discover how our digital advertising solutions can drive your business forward.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Fair Info Section -->
+    <section class="adventurous-divider responsive-section">
+        <div class="max-w-[1400px] mx-auto w-full px-6 lg:px-10">
+            <div class="flex flex-col lg:flex-row items-center gap-12 mb-16">
+                <div class="w-full lg:w-1/2">
+                    <img loading="lazy" src="https://i0.wp.com/skventuresigns.com/wp-content/uploads/2026/04/EFF-fair-locations.png?resize=716%2C495&amp;ssl=1" alt="Fairground locations" class="w-full h-auto rounded-lg shadow-2xl">
+                </div>
+                <div class="w-full lg:w-1/2 flex flex-col items-center text-center">
+                    <h5 class="fair-header-specific">2026 Effingham County Fair</h5>
+                    <h1 class="fair-dates-specific">August 1st to August 8th</h1>
+                    <div class="et_pb_divider_internal"></div>
+                    <h1 class="fair-subheader-specific">Explore our Locations below for the 2026 Effingham County Fair and Explore how we can support Your Advertising needs.</h1>
+                    <div class="space-y-4 mb-8">
+                        <h5 class="fair-location-text">Location 1 - RT 40  - Graphic Advertising between the Entrances of the Fair Grounds</h5>
+                        <h5 class="fair-location-text">Locations 2 & 3 - Inside the Fairgrounds above the Entrances to the Grandstands</h5>
+                        <h5 class="fair-location-text">Locations 4 & 5 - Inside the Fairgrounds in the infield on the track</h5>
+                    </div>
+                    <a class="bg-white border-2 border-black rounded-lg px-8 py-2 font-semibold hover:bg-[#3E0100] hover:text-[#FFC000] hover:border-[#FFC000] transition-all" href="https://skventuresigns.com/effinghamcountyfair/">Get Started</a>
+                </div>
+            </div>
+            <div class="w-full">
+                <h2 class="fair-rental-tagline">Rental Opportunities still available !!</h2>
+            </div>
+        </div>
+    </section>
+
+    <!-- Dynamic Services Grid Section -->
+    <section id="services-grid-container" class="pt-10 pb-10 bg-[rgb(62,1,0)] responsive-section">
+        <div class="max-w-[1400px] mx-auto px-6">
+            <div id="services-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                <div class="text-center py-10 w-full col-span-full">
+                    <p class="text-white loading-pulse">Loading S&K Services...</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Tagline Section -->
+    <section class="bg-[rgb(62,1,0)] pb-10 flex justify-center">
+        <div class="max-w-[1400px] w-full px-6 text-center">
+            <img src="https://i0.wp.com/skventuresigns.com/wp-content/uploads/2024/12/SK-tagline.png?resize=950%2C95&amp;ssl=1" 
+                 alt="Digital Sign Advertising, Rental, Sales and Repair" 
+                 title="Digital Sign Advertising, Rental, Sales and Repair"
+                 class="tagline-img-specific">
+        </div>
+    </section>
+
+    <!-- CTA Section 
+         Description: Blue background CTA section with precise font/spacing.
+         Maps to: Unlock Potential Block (Section 5). -->
+    <section id="blue-info-section" class="bg-[rgb(69,123,157)] pt-12 pb-16 responsive-section">
+        <div class="max-w-[1400px] mx-auto px-6 text-center">
+            <h2 class="cta-header-specific">Unlock Your Advertising Potential</h2>
+            <div class="mb-8">
+                <span class="cta-body-specific">
+                    Ready to elevate your brand’s visibility? Reach out to S&K Venture Signs today to explore tailored digital advertising solutions that meet your unique needs. Whether you’re looking for digital billboard advertising, sales, rentals, or maintenance, our team is here to help you succeed. Contact us now to start your journey towards impactful advertising!
+                </span>
+            </div>
+            <a class="bg-white text-[#1D3557] px-10 py-4 rounded-full font-bold shadow-lg hover:scale-105 transition-all inline-block" href="mailto:Scott.Robinson@skventuresigns.com">Request A Quote</a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="sk-main-footer">
+        <div class="w-full max-w-[1800px] mx-auto px-4 lg:pl-24 lg:pr-10">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-12 md:gap-24 items-start">
+                <div class="flex flex-col items-center md:items-start">
+                    <h3 class="footer-column-title">Give Us a Call</h3>
+                    <div class="mt-4 w-full flex flex-col items-center md:items-start">
+                        <div class="footer-info-text text-center md:text-left">
+                            <a href="tel:6187084450" class="footer-info-link">618-708-4450</a> or <a href="tel:8449074450" class="footer-info-link">844-907-4450</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex flex-col items-center">
+                    <h3 class="footer-column-title">Send Us an Email</h3>
+                    <div class="mt-4 w-full flex flex-col items-center">
+                        <a href="mailto:Scott.Robinson@skventuresigns.com" class="footer-info-text footer-info-link">Scott.Robinson@skventuresigns.com</a>
+                    </div>
+                </div>
+
+                <div class="flex flex-col items-center md:items-end">
+                    <h3 class="footer-column-title">Visit Our Office</h3>
+                    <div class="mt-4 w-full flex flex-col items-center md:items-end">
+                        <address class="footer-info-text not-italic text-center md:text-right">
+                            607 W Clark Ave Effingham, IL 62401
+                        </address>
+                    </div>
+                </div>
+            </div>
+
+            <div class="footer-bottom-bar">
+                <h5 class="footer-copyright-specific">© 2026 S&amp;K Venture Signs</h5>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        const LOGO_BLACK = "https://skventuresigns.com/wp-content/uploads/2025/03/SK-Sign-Black.png";
+        const LOGO_WHITE = "https://skventuresigns.com/wp-content/uploads/2025/03/SK-Sign-White.png";
+        const CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vT9HBnWuIELZ5IxaTxuCpNgs5ep7Tz4NpaU8__laH9a1DK52CreOSM8IqQxUK95CMyzsmTmkHoTgc1b/pub?output=csv";
+
+        lucide.createIcons();
+
+        const menuToggle = document.getElementById('menu-toggle');
+        const mobileMenu = document.getElementById('mobile-menu');
+        menuToggle.addEventListener('click', () => {
+            const isActive = mobileMenu.classList.contains('opacity-100');
+            if (isActive) {
+                mobileMenu.classList.add('opacity-0', 'invisible');
+                mobileMenu.classList.remove('opacity-100', 'visible');
+                menuToggle.innerHTML = '<i data-lucide="menu" class="w-8 h-8"></i>';
+            } else {
+                mobileMenu.classList.remove('opacity-0', 'invisible');
+                mobileMenu.classList.add('opacity-100', 'visible');
+                menuToggle.innerHTML = '<i data-lucide="x" class="w-8 h-8"></i>';
+            }
+            lucide.createIcons();
+        });
+
+        window.addEventListener('scroll', () => {
+            const header = document.getElementById('main-header');
+            const logo = document.getElementById('header-logo');
+            if (window.scrollY > 50) {
+                header.classList.replace('header-top', 'header-scrolled');
+                logo.src = LOGO_BLACK;
+            } else {
+                header.classList.replace('header-scrolled', 'header-top');
+                logo.src = LOGO_WHITE;
+            }
+        });
+
+        async function fetchServices() {
+            const grid = document.getElementById('services-grid');
+            try {
+                const response = await fetch(CSV_URL);
+                const csvText = await response.text();
+                const lines = csvText.split('\n');
+                const titles = lines[0].split(',');
+                const descs = lines[1].split(',');
+                const btnLabels = lines[2].split(',');
+                const btnLinks = lines[3].split(',');
+                const imgs = lines[4].split(',');
+
+                grid.innerHTML = '';
+                for(let i=1; i < titles.length; i++) {
+                    const isEven = i % 2 !== 0;
+                    const label = btnLabels[i]?.trim() || "Learn More";
+                    const link = btnLinks[i]?.trim() || "#";
+                    
+                    grid.innerHTML += `
+                        <div class="service-card ${isEven ? 'card-style-white' : 'card-style-gold'}">
+                            <img src="${imgs[i]?.trim()}" alt="${titles[i]}" onerror="this.src='https://via.placeholder.com/400x220?text=S%26K+Venture+Signs'">
+                            <div class="text-center mt-4 flex-grow">
+                                <h3 class="service-card-title">${titles[i]}</h3>
+                                <p class="service-card-desc mb-6">${descs[i]}</p>
+                            </div>
+                            <a href="${link}" class="service-card-btn ${isEven ? 'btn-style-maroon' : 'btn-style-blue'}">${label}</a>
+                        </div>
+                    `;
+                }
+            } catch (e) {
+                grid.innerHTML = '<p class="text-white col-span-full text-center">Unable to load services at this time.</p>';
+            }
+        }
+
+        function downloadVCard() {
+            const vCardData = ["BEGIN:VCARD", "VERSION:3.0", "FN:Scott Robinson", "ORG:S&K Venture Signs", "TEL:18449074450", "END:VCARD"].join("\n");
+            const blob = new Blob([vCardData], { type: 'text/vcard' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'Scott_Robinson.vcf';
+            a.click();
+        }
+
+        window.onload = fetchServices;
+    </script>
+</body>
+</html>
