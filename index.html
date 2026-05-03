@@ -5,6 +5,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Scott's Skventures | Exploration & Discovery</title>
     
+    <!-- 
+        GOOGLE ANALYTICS SETUP
+        Description: Tracks user engagement and click behaviors.
+        Stream ID: 13238803097
+        Measurement ID: G-H6Q756MVE8
+    -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-H6Q756MVE8"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-H6Q756MVE8');
+    </script>
+    
     <!-- External Scripts & Fonts -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
@@ -14,19 +28,9 @@
         /* ============================================================
             GLOBAL SETTINGS & BRAND VARIABLES 
             Description: Core color palette and layout variables for S&K.
-            Maps to: Entire Document
+            Maps to: Entire Document Structure
            ============================================================ */
         :root {
-            /* Kevin's Admin Global Settings (Desktop) */
-            --header-size-desktop: 30px;
-            --body-size-desktop: 14px;
-            
-            /* Global Mobile Settings (Per Kevin's Admin Prefs) */
-            --mobile-header-size: 30px;
-            --mobile-body-size: 14px;
-            --mobile-section-height: 50vh;
-            --mobile-row-height: 30px;
-
             /* S&K Brand Palette */
             --sk-maroon: rgb(62, 1, 0);
             --sk-gold: #FFC627;
@@ -40,6 +44,12 @@
             --btn-blue: rgb(2, 52, 86);
             --sk-section-blue: rgb(69, 123, 157);
             --sk-button-text-blue: rgb(29, 53, 87);
+
+            /* Kevin's Admin Global Mobile Standards */
+            --mobile-header-size: 30px;
+            --mobile-body-size: 14px;
+            --mobile-section-height: 50vh;
+            --mobile-row-height: 30px;
         }
 
         /* Hiding Scrollbar while keeping functionality */
@@ -53,7 +63,7 @@
 
         body {
             font-family: 'Poppins', sans-serif;
-            font-size: var(--body-size-desktop);
+            font-size: 14px;
             line-height: 1.6;
             color: #333;
             margin: 0;
@@ -63,11 +73,10 @@
 
         /* ============================================================
             TYPOGRAPHY & RESPONSIVE LAYOUT
-            Description: Handles global header sizes and mobile responsiveness.
+            Description: Handles global header sizes and mobile responsiveness (30px/14px).
             Maps to: All Headlines and Section containers
            ============================================================ */
         h1, h2, h3, h4, h5 {
-            font-size: var(--header-size-desktop);
             font-weight: 700;
             line-height: 1.2;
         }
@@ -75,17 +84,53 @@
         @media (max-width: 1024px) {
             body { font-size: var(--mobile-body-size) !important; }
             h1, h2, h3, h4, h5 { font-size: var(--mobile-header-size) !important; }
+            
+            /* Kevin's Rule: Fixed section height of 50 (vh) and rows of 30 (px) */
             .responsive-section {
                 min-height: var(--mobile-section-height) !important;
                 padding-top: var(--mobile-row-height) !important;
                 padding-bottom: var(--mobile-row-height) !important;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+            }
+            .mobile-row {
+                height: var(--mobile-row-height) !important;
+                display: flex;
+                align-items: center;
             }
         }
 
         /* ============================================================
+            NAVIGATION & HEADER STYLES
+            Description: Handles fixed navigation logic and the "sandwich" collapse.
+            Maps to: Sticky Main Header (Section 1)
+           ============================================================ */
+        header#main-header {
+            transition: all 0.4s ease;
+            border-bottom: 4px solid var(--sk-separator);
+        }
+        .header-top { background-color: var(--sk-maroon); color: #FFFFFF; }
+        .header-scrolled { background-color: white; box-shadow: 0 10px 30px rgba(0,0,0,0.3); color: #000000; }
+
+        #header-logo { width: 417px; max-width: 65%; height: auto; transition: all 0.4s ease; }
+        .header-scrolled #header-logo { width: 220px; }
+
+        .nav-link {
+            color: white;
+            font-family: "Open Sans", sans-serif;
+            font-size: 17px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        .nav-link.active { color: var(--sk-gold) !important; }
+        .header-scrolled .nav-link { color: #000000; }
+        .header-scrolled .nav-link.active { color: var(--sk-nav-gold) !important; }
+
+        /* ============================================================
             HERO SECTION STYLES
-            Description: Precise branding for the Hero header and card.
-            Maps to: Advertising Hero (Section 1)
+            Description: Precise branding for the Hero header and centered card.
+            Maps to: Advertising Hero (Section 2)
            ============================================================ */
         .hero-title-specific {
             background-color: rgba(0, 0, 0, 0);
@@ -167,8 +212,8 @@
 
         /* ============================================================
             FAIR INFO & ADVENTUROUS DIVIDER
-            Description: Marketing content for the Effingham County Fair.
-            Maps to: Fair Info (Section 2)
+            Description: Marketing content for the Effingham County Fair locations.
+            Maps to: Fair Info (Section 3)
            ============================================================ */
         .adventurous-divider {
             position: relative;
@@ -267,32 +312,6 @@
         }
 
         /* ============================================================
-            NAVIGATION & HEADER STYLES
-            Description: Handles fixed navigation logic and color changes.
-            Maps to: Sticky Main Header
-           ============================================================ */
-        header#main-header {
-            transition: all 0.4s ease;
-            border-bottom: 4px solid var(--sk-separator);
-        }
-        .header-top { background-color: var(--sk-maroon); color: #FFFFFF; }
-        .header-scrolled { background-color: white; box-shadow: 0 10px 30px rgba(0,0,0,0.3); color: #000000; }
-
-        #header-logo { width: 417px; max-width: 80%; height: auto; transition: all 0.4s ease; }
-        .header-scrolled #header-logo { width: 220px; }
-
-        .nav-link {
-            color: white;
-            font-family: "Open Sans", sans-serif;
-            font-size: 17px;
-            font-weight: 600;
-            transition: all 0.3s ease;
-        }
-        .nav-link.active { color: var(--sk-gold) !important; }
-        .header-scrolled .nav-link { color: #000000; }
-        .header-scrolled .nav-link.active { color: var(--sk-nav-gold) !important; }
-
-        /* ============================================================
             SERVICES GRID & DYNAMIC CARDS
             Description: Precise typography for the spreadsheet-fed cards.
             Maps to: Dynamic Services Grid (Section 4)
@@ -357,7 +376,7 @@
         /* ============================================================
             TAGLINE SECTION STYLES
             Description: Precise branding for the horizontal tagline image.
-            Maps to: Tagline Bar (Section 3)
+            Maps to: Tagline Bar (Section 5)
            ============================================================ */
         .tagline-img-specific {
             display: inline;
@@ -378,8 +397,8 @@
 
         /* ============================================================
             BLUE CTA SECTION STYLES
-            Description: Precise design specs for the blue information/quote block.
-            Maps to: Unlock Your Potential Section (Section 5)
+            Description: Design specs for the blue info/quote block.
+            Maps to: Unlock Your Potential Section (Section 6)
            ============================================================ */
         .cta-header-specific {
             color: rgb(255, 255, 255) !important;
@@ -413,7 +432,7 @@
         /* ============================================================
             S&K MAROON SIMPLIFIED FOOTER
             Description: Contact grid and copyright styling.
-            Maps to: Bottom Footer Section
+            Maps to: Bottom Footer Section (Section 7)
            ============================================================ */
         .sk-main-footer {
             background-color: var(--sk-maroon);
@@ -487,23 +506,29 @@
 </head>
 <body class="bg-gray-50">
 
-    <!-- Navigation Header -->
+    <!-- 
+        SECTION 1: NAVIGATION HEADER
+        Description: Mobile-responsive menu with auto-collapsing sandwich toggle.
+        Mappings: Sticky Main Header
+    -->
     <header id="main-header" class="header-top fixed top-0 left-0 w-full z-[1000] flex flex-col items-center">
         <div class="w-full max-w-[1800px] mx-auto flex items-center justify-between px-4 lg:pl-24 lg:pr-10 py-4">
             <div class="flex-shrink-0">
+                <!-- Navigation Logo: Remains visible adjacent to sandwich on mobile -->
                 <img src="https://skventuresigns.com/wp-content/uploads/2025/03/SK-Sign-White.png" alt="S&K Venture Signs" id="header-logo" />
             </div>
 
+            <!-- Desktop Nav Items (Hidden on Mobile) -->
             <div class="hidden lg:flex items-center gap-10 xl:gap-16">
                 <nav>
-    <ul class="flex items-center gap-8 xl:gap-12">
-        <li><a href="https://skventuresigns.com/" class="nav-link active">Home</a></li>
-        <li><a href="https://werewolf3788.github.io/SKVentureSigns/Locations.html" class="nav-link">Locations</a></li>
-        <li><a href="https://skventuresigns.com/services/" class="nav-link">Services</a></li>
-        <li><a href="https://werewolf3788.github.io/SKVentureSigns/Clients.html" class="nav-link">Clients</a></li>
-        <li><a href="https://skventuresigns.com/contact/" class="nav-link">Contact</a></li>
-    </ul>
-</nav>
+                    <ul class="flex items-center gap-8 xl:gap-12">
+                        <li><a href="https://werewolf3788.github.io/SKVentureSigns/" class="nav-link active">Home</a></li>
+                        <li><a href="https://werewolf3788.github.io/SKVentureSigns/Locations.html" class="nav-link">Locations</a></li>
+                        <li><a href="https://skventuresigns.com/services/" class="nav-link">Services</a></li>
+                        <li><a href="https://werewolf3788.github.io/SKVentureSigns/Clients.html" class="nav-link">Clients</a></li>
+                        <li><a href="https://skventuresigns.com/contact/" class="nav-link">Contact</a></li>
+                    </ul>
+                </nav>
 
                 <div class="flex items-center gap-8">
                     <button onclick="downloadVCard()" class="bg-[#FFC627] text-[#3E0100] px-6 py-3 rounded-xl font-bold text-[12px] uppercase flex items-center gap-2 shadow-md hover:scale-105 transition-all">
@@ -512,6 +537,7 @@
                 </div>
             </div>
 
+            <!-- Sandwich Toggle Icon (Visible on Mobile) -->
             <div class="flex items-center gap-4 lg:hidden">
                 <button id="menu-toggle" class="p-2 focus:outline-none text-inherit">
                     <i data-lucide="menu" class="w-8 h-8"></i>
@@ -519,11 +545,12 @@
             </div>
         </div>
 
+        <!-- Mobile Sandwich Dropdown Menu -->
         <div id="mobile-menu" class="absolute top-[100%] left-0 w-full bg-white text-black lg:hidden shadow-xl border-t border-gray-100 p-6 flex flex-col gap-6 opacity-0 invisible transition-all duration-300">
-            <a href="https://skventuresigns.com/" class="text-xl font-bold border-b pb-2">Home</a>
-            <a href="#" class="text-xl font-bold border-b pb-2">Locations</a>
+            <a href="https://werewolf3788.github.io/SKVentureSigns/" class="text-xl font-bold border-b pb-2">Home</a>
+            <a href="https://werewolf3788.github.io/SKVentureSigns/Locations.html" class="text-xl font-bold border-b pb-2">Locations</a>
             <a href="https://skventuresigns.com/services/" class="text-xl font-bold border-b pb-2">Services</a>
-            <a href="https://skventuresigns.com/clients/" class="text-xl font-bold border-b pb-2">Clients</a>
+            <a href="https://werewolf3788.github.io/SKVentureSigns/Clients.html" class="text-xl font-bold border-b pb-2">Clients</a>
             <a href="https://skventuresigns.com/contact/" class="text-xl font-bold border-b pb-2">Contact</a>
             <div class="pt-4 flex flex-col gap-4">
                 <button onclick="downloadVCard()" class="bg-[#FFC627] text-[#3E0100] w-full py-4 rounded-xl font-bold uppercase">Save Contact</button>
@@ -531,7 +558,11 @@
         </div>
     </header>
 
-    <!-- Hero Section -->
+    <!-- 
+        SECTION 2: HERO SPLASH
+        Description: Main branding entrance with dynamic background and card.
+        Mappings: Advertising Hero
+    -->
     <section class="advertising-hero responsive-section">
         <div class="max-w-[1400px] mx-auto w-full px-6 flex flex-col lg:flex-row items-center justify-between gap-10 py-10 lg:py-0">
             <div class="lg:w-1/2 flex justify-center">
@@ -547,7 +578,11 @@
         </div>
     </section>
 
-    <!-- Fair Info Section -->
+    <!-- 
+        SECTION 3: FAIR EVENTS & MAP
+        Description: Details for the 2026 Fair Locations.
+        Mappings: Fair Info (Adventurous Divider)
+    -->
     <section class="adventurous-divider responsive-section">
         <div class="max-w-[1400px] mx-auto w-full px-6 lg:px-10">
             <div class="flex flex-col lg:flex-row items-center gap-12 mb-16">
@@ -560,9 +595,9 @@
                     <div class="et_pb_divider_internal"></div>
                     <h1 class="fair-subheader-specific">Explore our Locations below for the 2026 Effingham County Fair and Explore how we can support Your Advertising needs.</h1>
                     <div class="space-y-4 mb-8">
-                        <h5 class="fair-location-text">Location 1 - RT 40  - Graphic Advertising between the Entrances of the Fair Grounds</h5>
-                        <h5 class="fair-location-text">Locations 2 & 3 - Inside the Fairgrounds above the Entrances to the Grandstands</h5>
-                        <h5 class="fair-location-text">Locations 4 & 5 - Inside the Fairgrounds in the infield on the track</h5>
+                        <h5 class="fair-location-text mobile-row">Location 1 - RT 40 Main Entrance</h5>
+                        <h5 class="fair-location-text mobile-row">Locations 2 & 3 - Grandstand Entrances</h5>
+                        <h5 class="fair-location-text mobile-row">Locations 4 & 5 - Infield Track positioning</h5>
                     </div>
                     <a class="bg-white border-2 border-black rounded-lg px-8 py-2 font-semibold hover:bg-[#3E0100] hover:text-[#FFC000] hover:border-[#FFC000] transition-all" href="https://skventuresigns.com/effinghamcountyfair/">Get Started</a>
                 </div>
@@ -573,7 +608,11 @@
         </div>
     </section>
 
-    <!-- Dynamic Services Grid Section -->
+    <!-- 
+        SECTION 4: SERVICE OFFERINGS
+        Description: Dynamic grid loading from Google Sheets.
+        Mappings: Dynamic Services Grid
+    -->
     <section id="services-grid-container" class="pt-10 pb-10 bg-[rgb(62,1,0)] responsive-section">
         <div class="max-w-[1400px] mx-auto px-6">
             <div id="services-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -584,7 +623,11 @@
         </div>
     </section>
 
-    <!-- Tagline Section -->
+    <!-- 
+        SECTION 5: BRAND TAGLINE
+        Description: Horizontal branding image.
+        Mappings: Tagline Bar
+    -->
     <section class="bg-[rgb(62,1,0)] pb-10 flex justify-center">
         <div class="max-w-[1400px] w-full px-6 text-center">
             <img src="https://i0.wp.com/skventuresigns.com/wp-content/uploads/2024/12/SK-tagline.png?resize=950%2C95&amp;ssl=1" 
@@ -594,9 +637,11 @@
         </div>
     </section>
 
-    <!-- CTA Section 
-         Description: Blue background CTA section with precise font/spacing.
-         Maps to: Unlock Potential Block (Section 5). -->
+    <!-- 
+        SECTION 6: CTA QUOTE
+        Description: Information and email contact invitation.
+        Mappings: Unlock Your Potential (Blue Section)
+    -->
     <section id="blue-info-section" class="bg-[rgb(69,123,157)] pt-12 pb-16 responsive-section">
         <div class="max-w-[1400px] mx-auto px-6 text-center">
             <h2 class="cta-header-specific">Unlock Your Advertising Potential</h2>
@@ -605,14 +650,21 @@
                     Ready to elevate your brand’s visibility? Reach out to S&K Venture Signs today to explore tailored digital advertising solutions that meet your unique needs. Whether you’re looking for digital billboard advertising, sales, rentals, or maintenance, our team is here to help you succeed. Contact us now to start your journey towards impactful advertising!
                 </span>
             </div>
+            <!-- Email: Wrapped in mailto: link -->
             <a class="bg-white text-[#1D3557] px-10 py-4 rounded-full font-bold shadow-lg hover:scale-105 transition-all inline-block" href="mailto:Scott.Robinson@skventuresigns.com">Request A Quote</a>
         </div>
     </section>
 
-    <!-- Footer -->
+    <!-- 
+        SECTION 7: MAIN FOOTER
+        Description: Standardized contact info and branding.
+        Mappings: Bottom Footer Section
+    -->
     <footer class="sk-main-footer">
         <div class="w-full max-w-[1800px] mx-auto px-4 lg:pl-24 lg:pr-10">
             <div class="grid grid-cols-1 md:grid-cols-3 gap-12 md:gap-24 items-start">
+                
+                <!-- Phone: Wrapped in tel: links -->
                 <div class="flex flex-col items-center md:items-start">
                     <h3 class="footer-column-title">Give Us a Call</h3>
                     <div class="mt-4 w-full flex flex-col items-center md:items-start">
@@ -622,6 +674,7 @@
                     </div>
                 </div>
 
+                <!-- Email: Wrapped in mailto: link -->
                 <div class="flex flex-col items-center">
                     <h3 class="footer-column-title">Send Us an Email</h3>
                     <div class="mt-4 w-full flex flex-col items-center">
@@ -629,11 +682,14 @@
                     </div>
                 </div>
 
+                <!-- Address: Google Maps Search API format -->
                 <div class="flex flex-col items-center md:items-end">
                     <h3 class="footer-column-title">Visit Our Office</h3>
                     <div class="mt-4 w-full flex flex-col items-center md:items-end">
                         <address class="footer-info-text not-italic text-center md:text-right">
-                            607 W Clark Ave Effingham, IL 62401
+                            <a href="https://www.google.com/maps/search/?api=1&query=607+W+Clark+Ave+Effingham%2C+IL+62401" target="_blank" class="footer-info-link">
+                                607 W Clark Ave Effingham, IL 62401
+                            </a>
                         </address>
                     </div>
                 </div>
@@ -645,6 +701,7 @@
         </div>
     </footer>
 
+    <!-- LOGIC LAYER -->
     <script>
         const LOGO_BLACK = "https://skventuresigns.com/wp-content/uploads/2025/03/SK-Sign-Black.png";
         const LOGO_WHITE = "https://skventuresigns.com/wp-content/uploads/2025/03/SK-Sign-White.png";
@@ -652,6 +709,7 @@
 
         lucide.createIcons();
 
+        /* Mobile Menu Controls: Toggles opacity and visibility for sandwich dropdown */
         const menuToggle = document.getElementById('menu-toggle');
         const mobileMenu = document.getElementById('mobile-menu');
         menuToggle.addEventListener('click', () => {
@@ -668,6 +726,7 @@
             lucide.createIcons();
         });
 
+        /* Header Interaction: Adjusts background and logo based on scroll position */
         window.addEventListener('scroll', () => {
             const header = document.getElementById('main-header');
             const logo = document.getElementById('header-logo');
@@ -680,6 +739,7 @@
             }
         });
 
+        /* Dynamic Content: Fetches services from Google Sheets CSV */
         async function fetchServices() {
             const grid = document.getElementById('services-grid');
             try {
@@ -710,10 +770,11 @@
                     `;
                 }
             } catch (e) {
-                grid.innerHTML = '<p class="text-white col-span-full text-center">Unable to load services at this time.</p>';
+                grid.innerHTML = '<p class="text-white col-span-full text-center">Service updates available soon.</p>';
             }
         }
 
+        /* Utility: Generates vCard file for contact saving */
         function downloadVCard() {
             const vCardData = ["BEGIN:VCARD", "VERSION:3.0", "FN:Scott Robinson", "ORG:S&K Venture Signs", "TEL:18449074450", "END:VCARD"].join("\n");
             const blob = new Blob([vCardData], { type: 'text/vcard' });
