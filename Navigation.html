@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- 
+        PROJECT: S&K Venture Signs Global Header
+        ADMIN: Kevin (Werewolf3788)
+        CLIENT: Scott (S&K Venture Signs)
+        STANDARDS: Responsive, No-Minify, G-Tag Integrated, Mobile Sandwich Menu
+        TECHNICAL: Section Height 50/30 Standard, Boss Analytics G-H6Q756MVE8
+        UPDATE: Synchronized Active/Hover link colors to Brand Gold (#FFC627)
+    -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- Google Analytics: Scott's Tracking (Boss) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-H6Q756MVE8"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-H6Q756MVE8', {
+        'page_type': 'header_navigation',
+        'content_group': 'brand_assets',
+        'layout_version': '2.0'
+      });
+    </script>
+
+    <!-- External Assets with Smart Cache Buster ?v=1.0 -->
+    <script src="https://cdn.tailwindcss.com?v=1.0"></script>
+    <script src="https://unpkg.com/lucide@latest?v=1.0"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Abril+Fatface&family=Poppins:wght@400;500;600;700&family=Open+Sans:wght@600&display=swap&v=1.0" rel="stylesheet">
+
+    <style>
+        :root {
+            /* Kevin's Admin Global Settings */
+            --divi-header: 30px;
+            --divi-body: 14px;
+            
+            /* S&K Brand Palette */
+            --sk-maroon: rgb(62, 1, 0);
+            --sk-gold: #FFC627;
+            --sk-nav-gold: rgb(218, 164, 33);
+            --sk-separator: #BBA28C;
+        }
+
+        /* Base Typography & Global Standards */
+        body {
+            font-family: 'Poppins', sans-serif;
+            font-size: var(--divi-body);
+            margin: 0;
+            padding-top: 100px; /* Spacer for fixed header */
+            overflow-wrap: break-word;
+            height: 200vh; /* Scroll space to test Maroon-to-White transition */
+            background-color: #f9f9f9;
+        }
+
+        h1, h2, h3 {
+            font-size: var(--divi-header);
+        }
+
+        /* Header Base Construction */
+        header#main-header {
+            transition: all 0.4s ease;
+            border-bottom: 4px solid var(--sk-separator);
+            height: 100px; /* Aligned with padding-top */
+        }
+
+        /* Initial State (Maroon Theme) */
+        .header-top {
+            background-color: var(--sk-maroon);
+            color: #FFFFFF;
+        }
+
+        /* Scrolled State (White Theme) */
+        .header-scrolled {
+            background-color: white;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            color: #000000;
+            height: 80px !important;
+        }
+
+        /* Logo Branding Transitions */
+        #header-logo {
+            width: 380px;
+            max-width: 100%;
+            height: auto;
+            transition: all 0.4s ease;
+        }
+        
+        /* Mobile adjustment for logo width */
+        @media (max-width: 1024px) {
+            #header-logo {
+                width: 180px;
+            }
+        }
+
+        .header-scrolled #header-logo {
+            width: 200px;
+        }
+
+        /* Desktop Navigation Styles */
+        .nav-link {
+            color: white;
+            font-family: "Open Sans", sans-serif;
+            font-size: 17px;
+            font-weight: 600;
+            padding: 31px 0;
+            text-decoration: none;
+            transition: all 0.4s ease-in-out;
+            white-space: nowrap;
+        }
+        
+        /* Active Link and Hover State updated to Brand Gold */
+        .nav-link:hover, .nav-link.active {
+            color: var(--sk-gold);
+        }
+
+        .header-scrolled .nav-link {
+            color: #000000;
+        }
+
+        /* Scrolled Active Link State updated to Brand Gold */
+        .header-scrolled .nav-link.active {
+            color: var(--sk-gold);
+        }
+
+        /* Mobile Menu (Sandwich) Overlay Styles */
+        #mobile-menu-overlay {
+            position: fixed;
+            top: 0;
+            right: -100%;
+            width: 85%;
+            max-width: 400px;
+            height: 100vh;
+            background-color: var(--sk-maroon);
+            z-index: 1001;
+            transition: right 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            flex-direction: column;
+            padding: 2.5rem 1.5rem;
+            box-shadow: -10px 0 30px rgba(0,0,0,0.5);
+        }
+        #mobile-menu-overlay.active {
+            right: 0;
+        }
+        .mobile-nav-link {
+            color: white;
+            font-size: 22px;
+            font-weight: 600;
+            padding: 1.25rem 0;
+            text-decoration: none;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            transition: color 0.3s ease;
+        }
+
+        /* Mobile Active/Hover State updated to Brand Gold */
+        .mobile-nav-link:active, .mobile-nav-link.active {
+            color: var(--sk-gold);
+        }
+
+        /* Inventory Progress Bar (Bottom of Header) */
+        #refresh-bar {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            height: 2px;
+            width: 0;
+            background-color: var(--sk-gold);
+            transition: width 0.3s ease;
+        }
+
+        /* Utility: Mobile Menu Icon Toggle */
+        #menu-toggle {
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+        #menu-toggle:active {
+            transform: scale(0.9);
+        }
+
+        /* Responsive Section Spacing (Kevin's Standard) */
+        .section-container {
+            min-height: 50vh;
+            padding: 30px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Main Header Component -->
+    <header id="main-header" class="header-top fixed top-0 left-0 w-full z-[1000] flex flex-col items-center justify-center">
+        <div class="w-full max-w-[1920px] mx-auto flex items-center justify-between">
+            
+            <!-- Branding: Pushed further right from the left edge -->
+            <div class="flex-shrink-0 pl-8 lg:pl-16">
+                <a href="https://werewolf3788.github.io/SKVentureSigns/">
+                    <img src="https://skventuresigns.com/wp-content/uploads/2025/03/SK-Sign-White.png?v=1.0" alt="S&K Venture Signs" id="header-logo" />
+                </a>
+            </div>
+            
+            <!-- Desktop Navigation: Pushed toward the Save Contact button -->
+            <nav class="hidden lg:flex flex-grow items-center justify-end pr-12 xl:pr-24">
+                <ul class="flex items-center gap-8 xl:gap-14">
+                    <li><a href="https://werewolf3788.github.io/SKVentureSigns/" class="nav-link">Home</a></li>
+                    <li><a href="https://werewolf3788.github.io/SKVentureSigns/Locations.html" class="nav-link active">Locations</a></li>
+                    <li><a href="Services.html" class="nav-link">Services</a></li>
+                    <li><a href="https://werewolf3788.github.io/SKVentureSigns/Clients.html" class="nav-link">Clients</a></li>
+                    <li><a href="Contact.html" class="nav-link">Contact</a></li>
+                </ul>
+            </nav>
+            
+            <!-- Actions Section: Button and Mobile Toggle -->
+            <div class="flex items-center gap-4 pr-8 lg:pr-16">
+                <!-- Save Contact Button: Primary CTA -->
+                <button onclick="downloadVCard()" class="bg-[#FFC627] text-[#3E0100] px-5 lg:px-7 py-3.5 rounded-xl font-bold text-[11px] lg:text-[13px] uppercase flex items-center gap-2 shadow-md hover:scale-105 active:scale-95 transition-all">
+                    <i data-lucide="user-plus" class="w-4 h-4 lg:w-5 lg:h-5"></i> <span class="whitespace-nowrap">Save Contact</span>
+                </button>
+
+                <!-- Mobile Sandwich Icon: Visible on mobile/tablet -->
+                <div id="menu-toggle" class="lg:hidden p-2 ml-2">
+                    <i data-lucide="menu" id="toggle-icon" class="w-9 h-9 text-white transition-colors duration-300"></i>
+                </div>
+            </div>
+        </div>
+
+        <!-- Scroll Progress/Inventory Indicator -->
+        <div id="refresh-bar"></div>
+    </header>
+
+    <!-- Mobile Navigation Overlay (Sandwich Menu) -->
+    <div id="mobile-menu-overlay" class="lg:hidden">
+        <div class="flex justify-between items-center mb-10 border-b border-white/10 pb-6">
+            <h2 class="text-white text-xl font-bold uppercase tracking-widest font-sans">Navigation</h2>
+            <button onclick="toggleMobileMenu()" class="text-white p-2">
+                <i data-lucide="x" class="w-9 h-9"></i>
+            </button>
+        </div>
+        <nav class="flex flex-col">
+            <a href="https://werewolf3788.github.io/SKVentureSigns/" class="mobile-nav-link" onclick="toggleMobileMenu()">Home</a>
+            <a href="https://werewolf3788.github.io/SKVentureSigns/Locations.html" class="mobile-nav-link active" onclick="toggleMobileMenu()">Locations</a>
+            <a href="Services.html" class="mobile-nav-link" onclick="toggleMobileMenu()">Services</a>
+            <a href="https://werewolf3788.github.io/SKVentureSigns/Clients.html" class="mobile-nav-link" onclick="toggleMobileMenu()">Clients</a>
+            <a href="Contact.html" class="mobile-nav-link" onclick="toggleMobileMenu()">Contact</a>
+        </nav>
+        
+        <!-- Mobile Bottom Branding -->
+        <div class="mt-auto pt-8 border-t border-white/10">
+            <p class="text-white/60 text-[10px] uppercase font-bold tracking-[3px] mb-6">S&K Venture Signs</p>
+            <button onclick="downloadVCard()" class="w-full bg-[#FFC627] text-[#3E0100] py-5 rounded-2xl font-bold text-center text-sm shadow-xl">
+                SAVE DIGITAL CONTACT
+            </button>
+        </div>
+    </div>
+
+    <!-- Page Content Placeholder (To demonstrate scroll effect) -->
+    <main class="w-full">
+        <section class="section-container flex flex-col items-center justify-center text-center mt-20">
+            <h1 class="text-4xl font-bold text-[#3E0100] mb-4">Responsive Header Ready</h1>
+            <p class="text-lg text-gray-600 max-w-2xl px-6">
+                Narrow this window to see the mobile sandwich menu. Scroll down to see the header transition from Maroon to White.
+            </p>
+            <div class="mt-12 opacity-20">
+                <i data-lucide="arrow-down" class="w-12 h-12 animate-bounce"></i>
+            </div>
+        </section>
+        
+        <section class="section-container bg-white flex items-center justify-center">
+            <h2 class="text-3xl font-bold text-gray-300 uppercase tracking-widest">Scroll for White State</h2>
+        </section>
+    </main>
+
+    <script>
+        /**
+         * SECTION: CONFIGURATION & ASSETS
+         * Using ?v=1.0 for Smart Cache Busting
+         */
+        const LOGO_BLACK = "https://skventuresigns.com/wp-content/uploads/2025/03/SK-Sign-Black.png?v=1.0";
+        const LOGO_WHITE = "https://skventuresigns.com/wp-content/uploads/2025/03/SK-Sign-White.png?v=1.0";
+
+        /**
+         * SECTION: INITIALIZATION
+         */
+        document.addEventListener('DOMContentLoaded', () => {
+            lucide.createIcons();
+            initMobileMenu();
+            
+            // Initialize progress bar width
+            updateProgressBar();
+        });
+
+        /**
+         * SECTION: SCROLL LOGIC
+         * Handles the transition between Maroon (Top) and White (Scrolled) states.
+         */
+        window.addEventListener('scroll', () => {
+            const header = document.getElementById('main-header');
+            const logo = document.getElementById('header-logo');
+            const menuToggleIcon = document.querySelector('#toggle-icon');
+            
+            // Trigger transition after scrolling 60px
+            if (window.scrollY > 60) { 
+                header.classList.replace('header-top', 'header-scrolled'); 
+                logo.src = LOGO_BLACK; 
+                if(menuToggleIcon) {
+                    menuToggleIcon.classList.remove('text-white');
+                    menuToggleIcon.classList.add('text-black');
+                }
+            } else { 
+                header.classList.replace('header-scrolled', 'header-top'); 
+                logo.src = LOGO_WHITE; 
+                if(menuToggleIcon) {
+                    menuToggleIcon.classList.remove('text-black');
+                    menuToggleIcon.classList.add('text-white');
+                }
+            }
+            
+            updateProgressBar();
+        });
+
+        /**
+         * SECTION: PROGRESS BAR
+         * Fills the gold bar based on page scroll percentage.
+         */
+        function updateProgressBar() {
+            const bar = document.getElementById('refresh-bar');
+            const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrolled = (winScroll / height) * 100;
+            if (bar) bar.style.width = scrolled + "%";
+        }
+
+        /**
+         * SECTION: MOBILE MENU INTERACTION
+         * Toggle logic for the sandwich menu.
+         */
+        function initMobileMenu() {
+            const toggle = document.getElementById('menu-toggle');
+            if(toggle) {
+                toggle.addEventListener('click', toggleMobileMenu);
+            }
+        }
+
+        function toggleMobileMenu() {
+            const overlay = document.getElementById('mobile-menu-overlay');
+            const body = document.body;
+            
+            overlay.classList.toggle('active');
+            
+            // Prevent scrolling when menu is open
+            if(overlay.classList.contains('active')) {
+                body.style.overflow = 'hidden';
+            } else {
+                body.style.overflow = '';
+            }
+        }
+
+        /**
+         * SECTION: VCARD GENERATION
+         * Handles the "Save Contact" functionality.
+         */
+        function downloadVCard() {
+            const vCardData = [
+                "BEGIN:VCARD", 
+                "VERSION:3.0", 
+                "FN:Scott Robinson", 
+                "ORG:S&K Venture Signs", 
+                "TEL;TYPE=WORK,VOICE:18449074450", 
+                "EMAIL;TYPE=PREF,INTERNET:Scott.Robinson@skventuresigns.com", 
+                "URL:https://skventuresigns.com",
+                "END:VCARD"
+            ].join("\n");
+            
+            const blob = new Blob([vCardData], { type: 'text/vcard' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a'); 
+            a.style.display = 'none';
+            a.href = url; 
+            a.download = 'Scott_Robinson_SKVenture.vcf'; 
+            document.body.appendChild(a);
+            a.click();
+            window.URL.revokeObjectURL(url);
+            document.body.removeChild(a);
+        }
+    </script>
+</body>
+</html>
