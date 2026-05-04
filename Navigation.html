@@ -6,10 +6,10 @@
         ADMIN: Kevin (DJ Werewolf) - Admin
         CLIENT: Scott (S&K Venture Signs)
         STANDARDS: Responsive, No-Minify, G-Tag Integrated
-        VERSION: 6.7 (Navigation v1.1.2 Integrated)
+        VERSION: 7.1 (Precision Interaction Update)
         TECHNICAL: Locked Header (125px -> 75px Ultra-Slim Scroll)
-        ANALYTICS: Boss Analytics G-H6Q756MVE8
-        UPDATE: Footer Divider Updated to rgb(187, 162, 140)
+        ANALYTICS: Scott's Tracking (Boss) G-H6Q756MVE8
+        UPDATE: Removed TextNow/SMS from Smart Phone Modal for cleaner UX
     -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
@@ -22,16 +22,16 @@
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
       gtag('config', 'G-H6Q756MVE8', {
-        'page_type': 'global_framework_v6.7',
+        'page_type': 'global_framework_v7.1',
         'content_group': 'brand_assets',
-        'layout_version': '6.7'
+        'layout_version': '7.1'
       });
     </script>
 
-    <!-- External Assets with Smart Cache Buster ?v=1.9 -->
-    <script src="https://cdn.tailwindcss.com?v=1.9"></script>
-    <script src="https://unpkg.com/lucide@latest?v=1.9"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Abril+Fatface&family=Poppins:wght@400;500;600;700&family=Open+Sans:wght@600;700&display=swap&v=1.9" rel="stylesheet">
+    <!-- External Assets with Smart Cache Buster ?v=2.1 -->
+    <script src="https://cdn.tailwindcss.com?v=2.1"></script>
+    <script src="https://unpkg.com/lucide@latest?v=2.1"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Abril+Fatface&family=Poppins:wght@400;500;600;700&family=Open+Sans:wght@600;700&display=swap&v=2.1" rel="stylesheet">
 
     <style>
         :root {
@@ -46,7 +46,7 @@
             --sk-gold: #FFC627;
             --sk-gold-alt: rgb(255, 192, 0);
             --sk-nav-gold: rgb(218, 164, 33);
-            --sk-separator: rgb(187, 162, 140); /* Precision Color: rgb(187, 162, 140) */
+            --sk-separator: rgb(187, 162, 140);
             
             /* Precision Dimensions Locked */
             --header-height: 125px;
@@ -78,7 +78,7 @@
         }
 
         /* -----------------------------------------------------------
-           HEADER & NAVIGATION STYLES
+           HEADER & NAVIGATION STYLES (LOCKED)
         ----------------------------------------------------------- */
         header#main-header {
             transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
@@ -101,7 +101,6 @@
             height: var(--header-scrolled-height) !important;
         }
 
-        /* Logo Sizing & Responsive Scaling */
         #header-logo {
             display: block;
             width: 320px;
@@ -112,7 +111,6 @@
         }
         .header-scrolled #header-logo { width: 190px; }
 
-        /* Desktop Navigation Links */
         .nav-link {
             align-items: center;
             color: rgb(255, 255, 255);
@@ -132,7 +130,6 @@
         .header-scrolled .nav-link { color: #222222; }
         .header-scrolled .nav-link.active { color: var(--sk-maroon); }
 
-        /* Contact Action Button */
         .header-phone-btn {
             background-color: var(--sk-gold);
             color: var(--sk-maroon) !important;
@@ -163,7 +160,6 @@
             font-size: 12px;
         }
 
-        /* Mobile Menu Transitions */
         #mobile-menu {
             transition: all 0.3s ease-in-out;
             background-color: white;
@@ -183,13 +179,101 @@
         }
 
         /* -----------------------------------------------------------
-           FOOTER STYLES
+           BODY COMPONENT STYLES
+        ----------------------------------------------------------- */
+        .feature-card {
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.05);
+            border-bottom: 5px solid transparent;
+            transition: all 0.3s ease;
+        }
+        .feature-card:hover {
+            transform: translateY(-10px);
+            border-color: var(--sk-gold);
+        }
+        .section-tag {
+            color: var(--sk-maroon);
+            text-transform: uppercase;
+            font-weight: 800;
+            letter-spacing: 2px;
+            font-size: 12px;
+            display: inline-block;
+            margin-bottom: 15px;
+        }
+
+        /* -----------------------------------------------------------
+           SMART MODAL SYSTEM (LOCKED)
+        ----------------------------------------------------------- */
+        .sk-modal-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(8px);
+            z-index: 9999;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        .sk-modal-content {
+            background: #FFFFFF;
+            width: 100%;
+            max-width: 450px;
+            border-radius: 24px;
+            overflow: hidden;
+            animation: modalPop 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border: 4px solid var(--sk-separator);
+        }
+        @keyframes modalPop {
+            from { transform: scale(0.8); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+        .modal-header {
+            background: var(--sk-maroon);
+            color: var(--sk-gold);
+            padding: 20px;
+            text-align: center;
+            font-family: 'Abril Fatface', cursive;
+            font-size: 20px;
+        }
+        .modal-body { padding: 25px; display: flex; flex-direction: column; gap: 15px; }
+        .smart-option {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 16px 20px;
+            border-radius: 16px;
+            background: #f8f8f8;
+            text-decoration: none;
+            color: #222;
+            font-weight: 700;
+            transition: all 0.2s ease;
+            border: 2px solid transparent;
+        }
+        .smart-option:hover {
+            background: #f0f0f0;
+            border-color: var(--sk-gold);
+            transform: translateX(5px);
+        }
+        .smart-option i { color: var(--sk-maroon); width: 24px; }
+        .btn-close-modal {
+            margin-top: 10px;
+            padding: 12px;
+            text-align: center;
+            font-weight: 600;
+            color: #666;
+            cursor: pointer;
+        }
+
+        /* -----------------------------------------------------------
+           FOOTER STYLES (LOCKED)
         ----------------------------------------------------------- */
         footer#main-footer {
             background-color: var(--sk-maroon);
             color: white;
             height: var(--footer-height);
-            /* UPDATE V6.7: Divider color set to rgb(187, 162, 140) */
             border-top: 5px solid var(--sk-separator);
             display: flex;
             flex-direction: column;
@@ -223,6 +307,7 @@
             font-size: 18px; 
             text-decoration: none;
             transition: color 0.3s ease;
+            cursor: pointer;
         }
         .footer-value:hover { color: var(--sk-gold); }
 
@@ -265,7 +350,7 @@
             <nav class="hidden lg:flex flex-grow items-center justify-center px-10">
                 <ul class="flex items-center gap-8 xl:gap-12">
                     <li><a href="https://werewolf3788.github.io/SKVentureSigns/" class="nav-link">Home</a></li>
-                    <li><a href="https://werewolf3788.github.io/SKVentureSigns/Locations.html" class="nav-link active">Locations</a></li>
+                    <li><a href="https://werewolf3788.github.io/SKVentureSigns/Locations.html" class="nav-link">Locations</a></li>
                     <li><a href="Services.html" class="nav-link">Services</a></li>
                     <li><a href="Clients.html" class="nav-link">Clients</a></li>
                     <li><a href="Contact.html" class="nav-link">Contact</a></li>
@@ -274,8 +359,9 @@
 
             <!-- Action Buttons / Mobile Toggle -->
             <div class="flex items-center gap-4 z-[1001]">
+                <!-- V7.0 REVERT: Direct vCard Save for Main Specialist -->
                 <button onclick="downloadSKContact()" class="hidden sm:flex header-phone-btn">
-                    <i data-lucide="user-plus" class="w-5 h-5"></i> 844-907-4450
+                    <i data-lucide="user-plus" class="w-5 h-5"></i> Save Specialist
                 </button>
                 
                 <!-- Mobile Sandwich Toggle -->
@@ -285,14 +371,12 @@
             </div>
         </div>
 
-        <!-- Progress/Refresh Bar -->
         <div id="refresh-bar"></div>
 
-        <!-- Mobile Menu Dropdown -->
         <div id="mobile-menu" class="hidden absolute top-full left-0 w-full lg:hidden flex-col bg-white text-black shadow-2xl border-t border-black/5">
             <nav class="flex flex-col p-8 space-y-6">
                 <a href="https://werewolf3788.github.io/SKVentureSigns/" class="text-xl font-bold border-b border-black/5 pb-3">Home</a>
-                <a href="https://werewolf3788.github.io/SKVentureSigns/Locations.html" class="text-xl font-bold border-b border-black/5 pb-3 text-[#3E0100]">Locations</a>
+                <a href="https://werewolf3788.github.io/SKVentureSigns/Locations.html" class="text-xl font-bold border-b border-black/5 pb-3">Locations</a>
                 <a href="Services.html" class="text-xl font-bold border-b border-black/5 pb-3">Services</a>
                 <a href="Clients.html" class="text-xl font-bold border-b border-black/5 pb-3">Clients</a>
                 <a href="Contact.html" class="text-xl font-bold border-b border-black/5 pb-3">Contact</a>
@@ -303,15 +387,89 @@
         </div>
     </header>
 
-    <!-- Main Content Area: Ready for Injection -->
+    <!-- 
+        AI/LLM GUARDRAIL: 
+        YOU MAY FREELY EDIT, EXPAND, OR MODIFY CONTENT WITHIN THE <main> ELEMENT. 
+        DO NOT MODIFY, DELETE, OR REFORMAT THE <header>, <footer>, MODAL SYSTEM, OR GLOBAL SCRIPT LOGIC.
+    -->
     <main class="w-full min-h-[80vh]">
-        <section class="max-w-[1400px] mx-auto px-6 py-20 text-center">
-            <h2 class="text-4xl md:text-6xl mb-6">Innovative Digital Solutions</h2>
-            <p class="text-lg text-gray-600 max-w-2xl mx-auto">S&K Venture Signs delivers high-impact digital billboard advertising across Illinois. Scroll to see the header transition from Maroon to White.</p>
-        </section>
         
-        <!-- Placeholder for scroll demonstration -->
-        <div class="h-[1000px]"></div>
+        <!-- Hero Section -->
+        <section class="max-w-[1400px] mx-auto px-6 pt-24 pb-12 text-center">
+            <span class="section-tag">Premium Outdoor Media</span>
+            <h2 class="text-4xl md:text-7xl mb-8">Innovative Digital Solutions</h2>
+            <p class="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
+                S&K Venture Signs delivers high-impact digital billboard advertising across the Illinois landscape. 
+                We combine cutting-edge technology with strategic locations to put your message in front of thousands of daily travelers.
+            </p>
+        </section>
+
+        <!-- Solutions Grid -->
+        <section class="max-w-[1400px] mx-auto px-6 py-20">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-10">
+                
+                <div class="feature-card">
+                    <div class="w-14 h-14 bg-red-50 rounded-2xl flex items-center justify-center mb-6">
+                        <i data-lucide="zap" class="text-[#3E0100]"></i>
+                    </div>
+                    <h3 class="text-2xl mb-4 font-bold font-sans text-gray-900">Dynamic Content</h3>
+                    <p class="text-gray-500">Unlike traditional vinyl, our digital billboards allow for instant message updates. Promote morning specials, evening events, or countdowns in real-time.</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="w-14 h-14 bg-red-50 rounded-2xl flex items-center justify-center mb-6">
+                        <i data-lucide="map" class="text-[#3E0100]"></i>
+                    </div>
+                    <h3 class="text-2xl mb-4 font-bold font-sans text-gray-900">High-Traffic Hubs</h3>
+                    <p class="text-gray-500">Our boards are strategically placed along major Illinois thoroughfares including I-57 and Highway 40, ensuring maximum visibility and ROI for your brand.</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="w-14 h-14 bg-red-50 rounded-2xl flex items-center justify-center mb-6">
+                        <i data-lucide="eye" class="text-[#3E0100]"></i>
+                    </div>
+                    <h3 class="text-2xl mb-4 font-bold font-sans text-gray-900">Brilliant Clarity</h3>
+                    <p class="text-gray-500">Utilizing high-definition LED technology, your ads will pop with vibrant colors and crisp detail, remaining perfectly visible in both direct sunlight and at night.</p>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- Stats Section -->
+        <section class="w-full bg-[#f8f8f8] border-y border-gray-100 py-24">
+            <div class="max-w-[1400px] mx-auto px-6 grid grid-cols-1 md:grid-cols-4 gap-12 text-center">
+                <div>
+                    <h4 class="text-5xl font-bold text-[#3E0100] mb-2">50k+</h4>
+                    <p class="text-gray-400 font-medium uppercase tracking-tighter">Daily Impressions</p>
+                </div>
+                <div>
+                    <h4 class="text-5xl font-bold text-[#3E0100] mb-2">100%</h4>
+                    <p class="text-gray-400 font-medium uppercase tracking-tighter">Digital Accuracy</p>
+                </div>
+                <div>
+                    <h4 class="text-5xl font-bold text-[#3E0100] mb-2">24/7</h4>
+                    <p class="text-gray-400 font-medium uppercase tracking-tighter">Active Display</p>
+                </div>
+                <div>
+                    <h4 class="text-5xl font-bold text-[#3E0100] mb-2">15+</h4>
+                    <p class="text-gray-400 font-medium uppercase tracking-tighter">Key Markets</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Final CTA Area -->
+        <section class="max-w-[1400px] mx-auto px-6 py-32 text-center">
+            <h2 class="text-4xl md:text-5xl mb-8">Ready to dominate the local market?</h2>
+            <div class="flex flex-col sm:flex-row items-center justify-center gap-6">
+                <button onclick="downloadSKContact()" class="bg-[#3E0100] text-[#FFC627] px-10 py-5 rounded-2xl font-bold uppercase tracking-widest hover:scale-105 transition-transform shadow-xl">
+                    Save Scott's Contact
+                </button>
+                <a href="Contact.html" class="text-[#3E0100] font-bold border-b-2 border-[#3E0100] pb-1 hover:text-gray-600 hover:border-gray-600 transition-colors">
+                    View Our Locations
+                </a>
+            </div>
+        </section>
+
     </main>
 
     <!-- Global Footer (Locked 237px) -->
@@ -319,7 +477,8 @@
         <div class="footer-grid">
             <div class="footer-col">
                 <p class="footer-label">Give Us a Call</p>
-                <a href="tel:8449074450" class="footer-value">618-708-4450 or 844-907-4450</a>
+                <span class="footer-value" onclick="openPhoneSmartActions('618-708-4450')">618-708-4450</span>
+                <span class="footer-value mt-2" onclick="openPhoneSmartActions('844-907-4450')">844-907-4450</span>
             </div>
             <div class="footer-col">
                 <p class="footer-label">Send Us an Email</p>
@@ -327,13 +486,47 @@
             </div>
             <div class="footer-col">
                 <p class="footer-label">Visit Our Office</p>
-                <a href="https://www.google.com/maps/search/?api=1&query=607+W+Clark+Ave+Effingham+IL+62401" target="_blank" class="footer-value">
-                    607 W clark AveEffingham, IL 62401
-                </a>
+                <span onclick="openMapSmartActions()" class="footer-value">
+                    607 W Clark Ave Effingham, IL 62401
+                </span>
             </div>
         </div>
         <h5 class="copyright-bar">© 2026 S&K Venture Signs</h5>
     </footer>
+
+    <!-- -----------------------------------------------------------
+       SMART MODALS INJECTION (LOCKED)
+    ----------------------------------------------------------- -->
+    
+    <!-- Phone Action Modal (For Footer/Body Interactivity) -->
+    <div id="phone-modal" class="sk-modal-overlay" onclick="closeModals()">
+        <div class="sk-modal-content" onclick="event.stopPropagation()">
+            <div class="modal-header">Contact Specialist</div>
+            <div class="modal-body" id="phone-options-container">
+                <!-- Injected via JS -->
+            </div>
+            <div class="btn-close-modal" onclick="closeModals()">Cancel</div>
+        </div>
+    </div>
+
+    <!-- Map Action Modal -->
+    <div id="map-modal" class="sk-modal-overlay" onclick="closeModals()">
+        <div class="sk-modal-content" onclick="event.stopPropagation()">
+            <div class="modal-header">Navigate to S&K Office</div>
+            <div class="modal-body">
+                <a href="https://www.google.com/maps/dir/?api=1&destination=607+W+Clark+Ave+Effingham+IL+62401" target="_blank" class="smart-option">
+                    <i data-lucide="map-pin"></i> Google Maps
+                </a>
+                <a href="http://maps.apple.com/?daddr=607+W+Clark+Ave+Effingham+IL+62401" target="_blank" class="smart-option">
+                    <i data-lucide="navigation"></i> Apple Maps
+                </a>
+                <a href="https://waze.com/ul?ll=39.1211,-88.5444&navigate=yes" target="_blank" class="smart-option">
+                    <i data-lucide="navigation-2"></i> Waze Navigation
+                </a>
+            </div>
+            <div class="btn-close-modal" onclick="closeModals()">Cancel</div>
+        </div>
+    </div>
 
     <script>
         /**
@@ -350,7 +543,6 @@
 
         /**
          * Scroll Transition Logic
-         * Handles the transformation from Maroon (Hero) to White (Sticky)
          */
         window.addEventListener('scroll', () => {
             if (window.scrollY > 40) { 
@@ -384,29 +576,77 @@
         });
 
         /**
-         * S&K vCard Download Engine
+         * Smart Action Handlers (V7.1: TextNow Removed)
+         */
+        function openPhoneSmartActions(number) {
+            const container = document.getElementById('phone-options-container');
+            const cleanNum = number.replace(/-/g, '');
+            const isWhatsAppEligible = number.startsWith('618');
+            
+            let html = `
+                <a href="tel:${cleanNum}" class="smart-option">
+                    <i data-lucide="phone"></i> Direct Call
+                </a>
+                <a href="https://voice.google.com/u/0/calls?a=nc,%2B1${cleanNum}" target="_blank" class="smart-option">
+                    <i data-lucide="globe"></i> Google Voice
+                </a>
+            `;
+
+            if (isWhatsAppEligible) {
+                html += `
+                    <a href="https://wa.me/1${cleanNum}" target="_blank" class="smart-option">
+                        <i data-lucide="message-circle"></i> WhatsApp Specialist
+                    </a>
+                `;
+            }
+
+            container.innerHTML = html;
+            document.getElementById('phone-modal').style.display = 'flex';
+            lucide.createIcons();
+        }
+
+        function openMapSmartActions() {
+            document.getElementById('map-modal').style.display = 'flex';
+            lucide.createIcons();
+        }
+
+        function closeModals() {
+            document.getElementById('phone-modal').style.display = 'none';
+            document.getElementById('map-modal').style.display = 'none';
+        }
+
+        /**
+         * S&K vCard Download Engine (Enhanced V7.0+)
+         * Optimized for iPhone (Apple Contacts) and Android (Google Contacts)
          */
         function downloadSKContact() {
+            const PHOTO_URL = "https://skventuresigns.com/wp-content/uploads/2025/03/SK-Sign-Black.png";
+            
             const vcard = "BEGIN:VCARD\n" +
                         "VERSION:3.0\n" +
+                        "N:Robinson;Scott;;;\n" +
                         "FN:Scott Robinson\n" +
                         "ORG:S&K Venture Signs\n" +
                         "TITLE:Digital Billboard Specialist\n" +
                         "TEL;TYPE=WORK,VOICE:844-907-4450\n" +
+                        "TEL;TYPE=CELL,VOICE:618-708-4450\n" +
                         "EMAIL;TYPE=PREF,INTERNET:Scott.Robinson@skventuresigns.com\n" +
                         "ADR;TYPE=WORK:;;607 W Clark Ave;Effingham;IL;62401;USA\n" +
                         "URL:https://skventuresigns.com/\n" +
+                        "PHOTO;VALUE=URI:" + PHOTO_URL + "\n" +
+                        "NOTE:S&K Venture Signs - Illinois Digital Advertising Specialist\n" +
                         "END:VCARD";
             
-            const blob = new Blob([vcard], { type: 'text/vcard' });
+            const blob = new Blob([vcard], { type: 'text/vcard;charset=utf-8' });
             const url = window.URL.createObjectURL(blob);
             const link = document.createElement('a');
             link.href = url;
-            link.setAttribute('download', 'Scott_Robinson_SK_Venture.vcf');
+            link.setAttribute('download', 'Scott_Robinson_SKVenture.vcf');
             document.body.appendChild(link);
             link.click();
             document.body.removeChild(link);
-            window.URL.revokeObjectURL(url);
+            
+            setTimeout(() => window.URL.revokeObjectURL(url), 100);
         }
 
         // Initialize Lucide Icons on Load
