@@ -2,15 +2,18 @@
 <!-- 
     PROJECT: S & K Ventures Billboard - Consolidated Divi Version
     ADMIN: Kevin (Werewolf3788)
-    VERSION: 4.2 (True Full-Stretch Engine - Zero Gap Alignment)
+    VERSION: 4.6 (Extra Bold Script Font Integration - Stroke Hack)
     STANDARDS: GitHack Compatible, Master Dev Protocol, No-Strip
-    TIMESTAMP: May 7, 2026 - 2:47 PM EDT (New York Time)
+    TIMESTAMP: May 7, 2026 - 3:58 PM EDT (New York Time)
     
     NO STRIPPING, NO COMPRESSING, DON'T CHANGE WHAT I DIDN'T SAY TO CHANGE.
 -->
 
+<!-- Font Imports -->
+<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap" rel="stylesheet">
+
 <!-- Framework Assets scoped for the Widget -->
-<script src="https://cdn.tailwindcss.com?v=4.2"></script>
+<script src="https://cdn.tailwindcss.com?v=4.4"></script>
 <script src="https://unpkg.com/lucide@latest"></script>
 
 <!-- Google Analytics: Boss Tracking + Watermark Tracking -->
@@ -20,7 +23,7 @@
     window.dataLayer = window.dataLayer || [];
     function gtag(){dataLayer.push(arguments);}
     gtag('js', new Date());
-    gtag('config', 'G-H6Q756MVE8', { 'page_type': 'billboard_widget_v4.2', 'layout_version': '4.2' });
+    gtag('config', 'G-H6Q756MVE8', { 'page_type': 'billboard_widget_v4.4', 'layout_version': '4.4' });
     gtag('config', 'G-L376P3NPY4');
 </script>
 
@@ -46,6 +49,12 @@
         <span>Back to Site</span>
     </a>
 
+    <!-- Interactive Full Screen Button (Fades in on tap/move) -->
+    <button id="fullscreen-toggle-btn" onclick="toggleFullScreen()">
+        <i data-lucide="maximize" class="w-5 h-5" id="fs-icon"></i>
+        <span>Full Screen</span>
+    </button>
+
     <div id="sk-billboard-display">
         
         <!-- Ad Stage: The Main Part (Edge-to-Edge Mapping) -->
@@ -56,7 +65,7 @@
         <!-- Full-Width Bottom Bar: Branding, Weather, & Time -->
         <div id="sk-bottom-bar">
             <div class="sk-logo-group">
-                <div class="sk-logo">S & K VENTURES</div>
+                <div class="sk-logo"><span class="sk-script">S&K</span> VENTURES</div>
             </div>
             
             <!-- Phone Number Centered -->
@@ -146,6 +155,32 @@
     }
     #ghost-back-btn.active { opacity: 1; visibility: visible; }
 
+    /* FULL SCREEN BUTTON */
+    #fullscreen-toggle-btn {
+        position: fixed !important;
+        top: 30px !important;
+        right: 30px !important;
+        z-index: 2000 !important;
+        background: rgba(0, 0, 0, 0.8) !important;
+        color: #FFC627 !important;
+        padding: 12px 24px !important;
+        border-radius: 50px !important;
+        border: 2px solid #FFC627 !important;
+        display: flex !important;
+        align-items: center !important;
+        gap: 10px !important;
+        text-decoration: none !important;
+        font-family: 'Poppins', sans-serif !important;
+        font-weight: 800 !important;
+        font-size: 14px !important;
+        text-transform: uppercase !important;
+        cursor: pointer !important;
+        opacity: 0;
+        visibility: hidden;
+        transition: opacity 0.5s ease, visibility 0.5s ease !important;
+    }
+    #fullscreen-toggle-btn.active { opacity: 1; visibility: visible; }
+
     /* LANDSCAPE LOCK */
     #landscape-lock {
         position: fixed !important;
@@ -176,7 +211,7 @@
         overflow: hidden !important;
     }
 
-    /* AD VIEWPORT - V4.2: FLUSH ALIGNMENT ENGINE */
+    /* AD VIEWPORT - V4.2/4.3/4.4: FLUSH ALIGNMENT ENGINE */
     #sk-ad-viewport {
         position: absolute !important;
         top: 0 !important; /* FLUSH TO TOP OF SCREEN */
@@ -199,7 +234,7 @@
 
     .sk-ad-slide.active { display: flex !important; }
 
-    /* V4.2: FULL STRETCH ENGINE - MAPPED TO HARDWARE EDGES */
+    /* V4.2/4.3: FULL STRETCH ENGINE - MAPPED TO HARDWARE EDGES */
     .sk-ad-slide img {
         width: 100% !important;
         height: 100% !important;
@@ -239,6 +274,20 @@
         letter-spacing: 5px !important;
         text-shadow: 2px 2px 4px rgba(0,0,0,0.5) !important;
         white-space: nowrap !important;
+        display: flex !important;
+        align-items: center !important;
+    }
+
+    /* BILLBOARD SCRIPT FONT OVERRIDE */
+    .sk-script {
+        font-family: 'Great Vibes', 'Brush Script MT', 'Monotype Corsiva', cursive !important;
+        font-size: 1.4em !important; /* Scaled up to match the elegant swoop proportions */
+        font-weight: 900 !important; /* Pushed to max weight */
+        -webkit-text-stroke: 1.5px #FAC429 !important; /* Forces the browser to artificially thicken the lettering */
+        letter-spacing: 2px !important; /* Script fonts need less tracking, adjusted for thickness */
+        text-transform: none !important;
+        margin-right: 15px !important;
+        padding-bottom: 5px !important;
     }
 
     /* Centered Phone Number */
@@ -329,12 +378,53 @@
     // Persistent State for Auto-Sync
     let currentImageUrls = [];
 
+    // UI IDLE AUTO-HIDE LOGIC
     window.handleInteraction = function() {
-        const btn = document.getElementById('ghost-back-btn');
-        if(!btn) return;
-        btn.classList.add('active');
+        const backBtn = document.getElementById('ghost-back-btn');
+        const fsBtn = document.getElementById('fullscreen-toggle-btn');
+        if(backBtn) backBtn.classList.add('active');
+        if(fsBtn) fsBtn.classList.add('active');
+        
         clearTimeout(interactionTimer);
-        interactionTimer = setTimeout(() => { btn.classList.remove('active'); }, 3000);
+        interactionTimer = setTimeout(() => { 
+            if(backBtn) backBtn.classList.remove('active'); 
+            if(fsBtn) fsBtn.classList.remove('active'); 
+        }, 3000);
+    }
+
+    // FULL SCREEN API CONTROLLER
+    window.toggleFullScreen = function() {
+        const root = document.documentElement;
+        if (!document.fullscreenElement && !document.mozFullScreenElement &&
+            !document.webkitFullscreenElement && !document.msFullscreenElement) {
+            if (root.requestFullscreen) { root.requestFullscreen(); }
+            else if (root.msRequestFullscreen) { root.msRequestFullscreen(); }
+            else if (root.mozRequestFullScreen) { root.mozRequestFullScreen(); }
+            else if (root.webkitRequestFullscreen) { root.webkitRequestFullscreen(Element.ALLOW_KEYBOARD_INPUT); }
+        } else {
+            if (document.exitFullscreen) { document.exitFullscreen(); }
+            else if (document.msExitFullscreen) { document.msExitFullscreen(); }
+            else if (document.mozCancelFullScreen) { document.mozCancelFullScreen(); }
+            else if (document.webkitExitFullscreen) { document.webkitExitFullscreen(); }
+        }
+    };
+
+    // Listen for Full Screen state changes to update the button icon/text dynamically
+    ['fullscreenchange', 'webkitfullscreenchange', 'mozfullscreenchange', 'MSFullscreenChange'].forEach(
+        evt => document.addEventListener(evt, updateFsIcon)
+    );
+
+    function updateFsIcon() {
+        const fsIcon = document.getElementById('fs-icon');
+        const fsText = document.querySelector('#fullscreen-toggle-btn span');
+        if (document.fullscreenElement || document.webkitFullscreenElement || document.mozFullScreenElement || document.msFullscreenElement) {
+            if(fsIcon) fsIcon.setAttribute('data-lucide', 'minimize');
+            if(fsText) fsText.innerText = "Exit Full Screen";
+        } else {
+            if(fsIcon) fsIcon.setAttribute('data-lucide', 'maximize');
+            if(fsText) fsText.innerText = "Full Screen";
+        }
+        if (typeof lucide !== 'undefined') lucide.createIcons();
     }
 
     function syncTimeTheme() {
@@ -351,7 +441,7 @@
         if(lastWeatherData) updateWeatherUI(lastWeatherData);
     }
 
-    /* V4.2 SMART SYNC ENGINE with CACHE BUSTER */
+    /* V4.2/4.3/4.4 SMART SYNC ENGINE with CACHE BUSTER */
     async function fetchAdImages(isAutoSync = false) {
         try {
             const res = await fetch(`${CSV_URL}&t=${Date.now()}`);
