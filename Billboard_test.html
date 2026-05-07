@@ -4,7 +4,7 @@
     ADMIN: Kevin (Werewolf3788)
     VERSION: 4.2 (True Full-Stretch Engine - Zero Gap Alignment)
     STANDARDS: GitHack Compatible, Master Dev Protocol, No-Strip
-    TIMESTAMP: May 7, 2026 - 12:35 AM EDT (New York Time)
+    TIMESTAMP: May 7, 2026 - 2:47 PM EDT (New York Time)
     
     NO STRIPPING, NO COMPRESSING, DON'T CHANGE WHAT I DIDN'T SAY TO CHANGE.
 -->
@@ -57,13 +57,14 @@
         <div id="sk-bottom-bar">
             <div class="sk-logo-group">
                 <div class="sk-logo">S & K VENTURES</div>
-                <div class="sk-bottom-phone">844-907-4450</div>
             </div>
+            
+            <!-- Phone Number Centered -->
+            <div class="sk-bottom-phone">844-907-4450</div>
             
             <div class="sk-info-stack">
                 <div class="sk-weather">
                     <div id="sk-temp-val">--°</div>
-                    <div id="sk-realfeel-val">REALFEEL --°</div>
                 </div>
                 <div id="sk-time-val">00:00</div>
             </div>
@@ -77,9 +78,9 @@
 <style>
     /* THEME VARIABLES */
     #sk-billboard-root-container {
-        --bb-bottom-bg: rgba(255, 255, 255, 1);
-        --bb-text: #111111;
-        --bb-border: rgba(0, 0, 0, 0.1);
+        --bb-bottom-bg: #3E0100; /* Scott's Maroon Color */
+        --bb-text: #ffffff; /* Adjusted for contrast on maroon */
+        --bb-border: rgba(255, 255, 255, 0.2);
         --bar-height: 110px;
         
         all: initial !important;
@@ -97,7 +98,7 @@
     }
 
     #sk-billboard-root-container.dark-mode {
-        --bb-bottom-bg: rgba(15, 15, 15, 0.98);
+        --bb-bottom-bg: #3E0100; /* Maintained Maroon for dark mode as requested */
         --bb-text: #ffffff;
         --bb-border: rgba(255, 255, 255, 0.1);
     }
@@ -224,7 +225,7 @@
         justify-content: space-between !important;
         align-items: center !important;
         padding: 0 60px !important;
-        border-top: 5px solid #FAC429 !important; 
+        /* Removed yellow divider bar */
         z-index: 10 !important;
         transition: all 0.4s ease !important;
     }
@@ -240,12 +241,17 @@
         white-space: nowrap !important;
     }
 
+    /* Centered Phone Number */
     .sk-bottom-phone {
+        position: absolute !important;
+        left: 50% !important;
+        transform: translateX(-50%) !important;
         color: var(--bb-text) !important;
         font-weight: 900 !important;
         font-size: clamp(24px, 5vw, 55px) !important; 
         letter-spacing: 5px !important; 
         white-space: nowrap !important;
+        z-index: 15 !important;
     }
 
     .sk-info-stack {
@@ -255,11 +261,24 @@
         color: var(--bb-text) !important;
     }
 
-    #sk-temp-val { font-size: clamp(30px, 6vw, 65px) !important; font-weight: 900 !important; }
+    /* Centered Weather Group */
+    .sk-weather {
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
+        justify-content: center !important;
+    }
+
+    #sk-temp-val { 
+        font-size: clamp(40px, 7vw, 85px) !important; /* Made larger */
+        font-weight: 900 !important; 
+        line-height: 1 !important;
+    }
 
     #sk-time-val {
-        font-size: clamp(24px, 4vw, 48px) !important;
-        font-weight: 700 !important;
+        font-size: clamp(40px, 7vw, 85px) !important; /* Matched temperature size */
+        font-weight: 900 !important; /* Matched temperature weight */
+        line-height: 1 !important; /* Matched temperature line height */
         font-family: 'Courier New', monospace !important;
         border-left: 4px solid var(--bb-border) !important;
         padding-left: 40px !important;
@@ -290,6 +309,9 @@
         .sk-info-stack { gap: 10px !important; }
         #sk-time-val { padding-left: 15px !important; }
         .kf-signature { bottom: 100px; font-size: 16px; left: 15px; }
+        
+        /* Adjust absolute phone positioning slightly for narrow landscape views if necessary */
+        .sk-bottom-phone { font-size: clamp(18px, 4vw, 30px) !important; }
     }
 </style>
 
@@ -391,10 +413,8 @@
     function updateWeatherUI(weather) {
         if(!weather) return;
         const tempDisplay = document.getElementById('sk-temp-val');
-        const feelDisplay = document.getElementById('sk-realfeel-val');
-        if(tempDisplay && feelDisplay) {
+        if(tempDisplay) {
             tempDisplay.innerText = `${weather.temp}°`;
-            feelDisplay.innerText = `REALFEEL ${weather.realfeel}°`;
             let tempColor = "#ffffff";
             const t = weather.temp;
             if (t <= 32) tempColor = "#00f2ff"; 
