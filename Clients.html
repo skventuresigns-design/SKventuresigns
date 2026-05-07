@@ -1,222 +1,364 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <!-- 
+        PROJECT: S&K Venture Signs Global Framework - CLIENTS TAB
+        ADMIN: Kevin (Werewolf3788)
+        CLIENT: Scott (S&K Venture Signs)
+        STANDARDS: Responsive, No-Minify, G-Tag Integrated, GitHack Compatible
+        VERSION: 9.7.3 (Client Name Underline Logic)
+        TECHNICAL: Locked Header (125px -> 75px), Dynamic Modals, Auto-Night Mode, Precision Integration
+        TIMESTAMP: May 6, 2026 - 10:12 PM EDT (New York Time)
+        Nesting Code: Header/Footer Primary Wrapper Integrated
+        
+        NO STRIPPING, NO COMPRESSING, DON'T CHANGE WHAT I DIDN'T SAY TO CHANGE.
+    -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>S&K Venture Signs | Clients</title>
     
-    <!-- 
-        GOOGLE ANALYTICS (GA4) 
-        Measurement ID: G-H6Q756MVE8
-        Stream ID: 13238803097
-        Description: Tracks page views, section scrolls, and business partner clicks.
-    -->
+    <!-- PWA Manifest & Service Worker -->
+    <link rel="manifest" href="./manifest.json">
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('./sw.js').catch(err => console.log('SW failed', err));
+            });
+        }
+    </script>
+
+    <!-- Google Analytics: Boss Tracking + Watermark Tracking -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-H6Q756MVE8"></script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-L376P3NPY4"></script>
     <script>
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
 
-      gtag('config', 'G-H6Q756MVE8');
+      gtag('config', 'G-H6Q756MVE8', {
+          'page_type': 'clients_portal_v9.7.2',
+          'content_group': 'business_partners',
+          'layout_version': '9.7.2'
+      });
+      gtag('config', 'G-L376P3NPY4');
     </script>
 
-    <!-- 
-        EXTERNAL RESOURCES 
-        Description: Loading 'Open Sans' for global readability and 'Abril Fatface' for styled headings.
-    -->
-    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600;700;800&family=Abril+Fatface&display=swap" rel="stylesheet">
-    
+    <!-- External Assets with Smart Cache Buster -->
+    <script src="https://cdn.tailwindcss.com?v=9.7.2"></script>
+    <script src="https://unpkg.com/lucide@latest?v=9.7.2"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Abril+Fatface&family=Poppins:wght@400;500;600;700&family=Open+Sans:wght@300;400;500;600;700;800&display=swap&v=9.7.2" rel="stylesheet">
+
     <style>
-        /* ============================================================
-           GLOBAL STYLES & RESET
-           Description: Removes browser defaults and sets up the base 
-           look for the entire page.
-           ============================================================ 
-        */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            -webkit-font-smoothing: antialiased;
+        :root {
+            /* Kevin's Admin Global Settings */
+            --divi-section: 50px;
+            --divi-row: 30px;
+            --divi-body: 14px; 
+            --divi-header: 30px;
+            
+            /* S&K Brand Palette */
+            --sk-maroon: rgb(62, 1, 0);
+            --sk-gold: #FFC627;
+            --sk-gold-alt: rgb(255, 192, 0);
+            --sk-nav-gold: rgb(218, 164, 33);
+            --sk-btn-blue: rgb(2, 48, 71);
+            --sk-scott-blue: rgb(69, 123, 157);
+            --sk-separator: rgb(187, 162, 140);
+            --elevation-blue: #457B9D;
+            --sk-charcoal: rgb(17, 17, 17);
+            --sk-pricing-green: #2ecc71;
+
+            /* Theme & Logic Colors */
+            --bg-primary: #000000; 
+            --text-primary: #FFFFFF; 
+            --card-bg: #ffffff;
+
+            /* Global Brightness Variables (Nesting Sync) */
+            --header-bg-scrolled: white;
+            --nav-text-scrolled: #222222;
+            --mobile-menu-bg: white;
+            --mobile-menu-text: black;
+
+            /* Precision Dimensions Locked */
+            --header-height: 125px;
+            --header-scrolled-height: 75px; 
+            --container-width: 80%;
+            --footer-height: 237px;
+            --ultra-wide-max: 2496px;
         }
 
-        /* FIX FOR "WHITE BOUNCE" EFFECT
-           Description: Matches the background to the header to prevent 
-           white space during upward scrolls on mobile devices.
-        */
-        html {
-            background-color: rgb(62, 1, 0); 
+        /* -----------------------------------------------------------
+            GLOBAL TYPOGRAPHY & RESET
+        ----------------------------------------------------------- */
+        html, body {
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+            overflow-x: hidden;
+            font-family: 'Poppins', sans-serif;
+            font-size: var(--divi-body);
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            -webkit-tap-highlight-color: transparent;
+            line-height: 1.6;
+            margin: 0;
+            /* Layout Fix: Removed top padding to pull background under header */
+            padding-top: 0;
+            transition: background-color 0.3s, color 0.3s;
+            overflow-wrap: break-word;
             scroll-behavior: smooth;
         }
 
-        /* KEVIN'S GLOBAL MOBILE SETTINGS & DESIGN TOKENS
-           Description: Strict implementation of user-defined layout scales.
-           Dimensions: Sections = 50px, Rows = 30px
-           Typography: Body = 14px, Header = 30px
-        */
-        :root {
-            --brand-maroon: rgb(62, 1, 0); 
-            --brand-gold: #ffcc00; 
-            --header-font: "Open Sans", Arial, sans-serif;
-            
-            /* Global Mobile Standard Dimensions */
-            --body-text-size: 14px; 
-            --header-text-size: 30px; 
-            --section-height: 50px;
-            --row-height: 30px;
+        ::-webkit-scrollbar { display: none; }
 
-            /* Footer Specific Typography Tokens */
-            --footer-label-font: Georgia, "Times New Roman", serif;
-            --footer-heading-font: "Abril Fatface", cursive;
+        h1, h2, h3, .font-display { 
+            font-family: 'Abril Fatface', cursive; 
         }
 
-        /* BODY STYLES
-           Maps to: <body>
-           Description: Sets the base font size to 14px per Global Standards.
-        */
-        body {
-            font-family: var(--header-font);
-            font-size: var(--body-text-size);
-            font-weight: 500;
-            line-height: 1.6;
-            color: #333;
-            background-color: #f9f9f9;
-            overflow-x: hidden;
-            overscroll-behavior-y: none; 
+        .main-container {
+            width: var(--container-width);
+            max-width: var(--ultra-wide-max);
+            margin-left: auto;
+            margin-right: auto;
         }
 
-        /* ============================================================
-           SECTION: STICKY HEADER
-           Maps to: <header id="main-header">
-           Description: Fixed bar containing logo and sandwich menu toggle.
-           ============================================================ 
-        */
-        header {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            z-index: 1000;
-            background-color: var(--brand-maroon);
-            height: 100px; 
-            display: flex;
-            align-items: center;
-            border-bottom: 2px solid rgba(255, 255, 255, 0.1);
-            transition: all 0.3s ease;
+        /* -----------------------------------------------------------
+            HEADER & NAVIGATION (Nesting Logic)
+        ----------------------------------------------------------- */
+        header#main-header {
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            border-bottom: 4px solid var(--sk-separator);
+            height: var(--header-height);
+            background-color: var(--sk-maroon);
         }
 
-        .header-container {
-            width: 100%;
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 0 40px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+        .header-scrolled { 
+            background-color: var(--header-bg-scrolled) !important; 
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1); 
+            height: var(--header-scrolled-height) !important;
         }
 
-        .logo-container img {
-            max-width: 280px;
-            height: auto;
+        #header-logo {
             display: block;
+            width: 320px;
+            height: auto;
+            aspect-ratio: 4163 / 1391;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            -webkit-font-smoothing: antialiased;
         }
+        .header-scrolled #header-logo { width: 190px; }
 
-        /* NAVIGATION BAR (Desktop)
-           Maps to: <nav id="top-navigation">
-           Description: Inline list of navigation links hidden on mobile.
-        */
-        nav ul {
-            display: flex;
-            list-style: none;
-            gap: 25px;
-        }
-
-        nav ul li a {
-            color: #fff;
-            text-decoration: none;
-            font-size: 13px;
+        .nav-link {
+            font-family: "Open Sans", Arial, sans-serif;
+            font-size: 16px; 
             font-weight: 700;
             text-transform: uppercase;
             letter-spacing: 1px;
-            transition: color 0.3s ease;
+            color: #FFFFFF;
+            transition: all 0.4s ease-in-out;
+            text-decoration: none;
+            white-space: nowrap;
+            padding: 15px 0;
+        }
+        .nav-link:hover, .nav-link.active { color: var(--sk-gold) !important; }
+        .header-scrolled .nav-link { color: var(--nav-text-scrolled); }
+        .header-scrolled .nav-link.active { color: var(--sk-gold) !important; }
+        .header-scrolled #menu-toggle { color: var(--nav-text-scrolled); }
+
+        #mobile-menu {
+            background-color: var(--mobile-menu-bg);
+            color: var(--mobile-menu-text);
+            transition: background 0.3s, color 0.3s;
+            z-index: 999;
         }
 
-        nav ul li a:hover, nav ul li a.active {
-            color: var(--brand-gold);
-        }
+        #refresh-bar { position: absolute; bottom: 0; left: 0; height: 2px; width: 0; background-color: var(--sk-gold); transition: width 0.3s ease; z-index: 1001; }
 
-        /* SANDWICH FEATURE (Hamburger Icon)
-           Maps to: <div class="menu-toggle">
-           Description: Mandatory mobile navigation feature.
-        */
-        .menu-toggle {
-            display: none;
-            flex-direction: column;
-            gap: 5px;
-            cursor: pointer;
+        /* -----------------------------------------------------------
+            BRANDING (KF SIGNATURE WATERMARK)
+        ----------------------------------------------------------- */
+        .kf-signature {
+            position: fixed;
+            bottom: 10px;
+            left: 10px;
+            display: flex;
+            align-items: center;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 900;
+            font-size: 24px;
+            z-index: 9999;
+            pointer-events: none;
+            opacity: 0.7;
+        }
+        .kf-k { color: #FF4500; transform: scaleX(-1); z-index: 2; }
+        .kf-f { color: #000000; margin-left: -0.22em; z-index: 1; }
+        .dark-mode .kf-f { color: #ffffff; }
+
+        /* THEME SETTINGS UI (HIDABLE) */
+        .theme-toggle-wrapper {
+            position: fixed;
+            top: 140px;
+            right: 20px;
             z-index: 1001;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 10px;
+        }
+        .theme-toggle-panel {
+            background: var(--card-bg);
+            padding: 15px;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            border: 2px solid var(--sk-gold);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transform-origin: right top;
+        }
+        .theme-toggle-panel.hidden-settings {
+            transform: scale(0) translateX(50px);
+            opacity: 0;
+            pointer-events: none;
+        }
+        .settings-toggle-btn {
+            background: var(--sk-maroon);
+            color: var(--sk-gold);
+            width: 45px;
+            height: 45px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
+        }
+        .settings-toggle-btn:hover { transform: rotate(45deg) scale(1.1); }
+
+        /* -----------------------------------------------------------
+            SMART MODAL SYSTEM & IMAGE LIGHTBOX
+        ----------------------------------------------------------- */
+        .sk-modal-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(8px);
+            z-index: 9999;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        .sk-modal-content {
+            background: var(--card-bg);
+            width: 100%;
+            max-width: 450px;
+            border-radius: 24px;
+            border: 4px solid var(--sk-separator);
+            overflow: hidden;
+            transition: background 0.3s;
+        }
+        .smart-option {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 16px 20px;
+            background: rgba(0,0,0,0.03);
+            border-radius: 16px;
+            margin-bottom: 10px;
+            cursor: pointer;
+            transition: 0.2s;
+            text-decoration: none;
+            color: var(--text-primary);
+            font-weight: 700;
+        }
+        .smart-option:hover { 
+            background: var(--sk-gold); 
+            color: var(--sk-maroon) !important; 
+            transform: translateX(5px); 
+        }
+        .dark-mode .smart-option {
+            background: rgba(255, 255, 255, 0.05);
+        }
+        .modal-cancel-text {
+            color: var(--text-primary);
+            opacity: 0.5;
+            font-weight: 700;
+            cursor: pointer;
         }
 
-        .menu-toggle span {
-            width: 25px;
-            height: 3px;
-            background-color: #fff;
-            border-radius: 2px;
-            transition: 0.3s;
+        /* Lightbox Specifics (Interactive Zoom/Pan updates) */
+        #lightbox-overlay { 
+            position: fixed; 
+            top: 0; 
+            left: 0; 
+            width: 100%; 
+            height: 100%; 
+            background: rgba(0,0,0,0.95); 
+            z-index: 10000; 
+            display: none; 
+            justify-content: center; 
+            align-items: center; 
+        }
+        #lightbox-image { 
+            max-width: 80vw; 
+            max-height: 80vh; 
+            object-fit: contain; 
+            border: 4px solid var(--sk-gold);
+            border-radius: 8px;
+            cursor: zoom-in;
+            user-select: none; 
+            -webkit-user-drag: none; 
+            transform-origin: center center;
+            will-change: transform;
+            transition: opacity 0.2s ease-in-out;
         }
 
         /* ============================================================
-           SECTION: CUSTOMERS GALLERY
-           Maps to: <div class="customers-section">
-           Description: Main content area adhering to 50px section height rule.
-           ============================================================ 
-        */
+            SECTION: CUSTOMERS GALLERY
+        ============================================================ */
         .customers-section {
             position: relative;
-            margin-top: 100px; 
-            padding: var(--section-height) 0;
+            margin-top: 0px; 
+            /* Layout Fix: Offset by Header Height + Divi Section to remove gap */
+            padding-top: calc(var(--header-height) + var(--divi-section));
+            padding-bottom: var(--divi-section);
             background-image: url(https://skventuresigns.com/wp-content/uploads/2024/12/skbackground.png);
             background-size: cover;
-            background-position: center;
+            background-position: center top;
+            background-attachment: fixed;
             color: #fff;
             text-align: center;
-            min-height: 400px;
+            min-height: calc(100vh - var(--footer-height));
         }
 
-        /* ROW STYLING
-           Maps to: <div class="et_pb_row">
-           Description: Adheres to 30px row height rule for vertical spacing.
-        */
         .et_pb_row {
-            max-width: 1080px;
+            max-width: 1400px; 
+            width: var(--container-width);
             margin: 0 auto;
-            padding: var(--row-height) 0;
+            padding: var(--divi-row) 0;
         }
 
-        /* MODULE HEADINGS
-           Maps to: <h1 class="et_pb_module_heading">
-           Description: Strictly set to 30px Header Text size per Global Standards.
-        */
         .et_pb_module_heading {
-            font-size: var(--header-text-size);
-            font-weight: 700;
+            font-family: "Abril Fatface", display;
+            font-size: 65px;
+            font-weight: 500;
+            line-height: 91px;
             margin-bottom: 10px;
-            color: #fff;
+            padding-bottom: 10px;
+            color: rgb(255, 255, 255);
+            text-shadow: 0 4px 15px rgba(0,0,0,0.8);
+            text-decoration-line: underline;
+            text-decoration-color: rgb(255, 255, 255);
+            text-decoration-style: solid;
         }
 
-        /* BODY TEXT
-           Maps to: <div class="et_pb_text_inner">
-           Description: Strictly set to 14px Body Text size per Global Standards.
-        */
         .et_pb_text_inner p {
-            font-size: var(--body-text-size);
-            margin-bottom: 20px;
+            font-family: "Open Sans", Arial, sans-serif;
+            font-size: 25px;
+            font-weight: 500;
+            line-height: 23.8px;
+            margin-bottom: 40px;
         }
 
-        /* GALLERY GRID
-           Maps to: <div id="customer-grid">
-           Description: Responsive grid for displaying business partner logos.
-        */
         .gallery-grid {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
@@ -224,12 +366,12 @@
             padding: 0 20px;
         }
 
+        /* Modified Gallery Item to be a DIV, containing child interactions */
         .gallery-item {
             background: rgba(0,0,0,0.4);
             border-radius: 4px;
             padding: 15px;
             transition: transform 0.3s ease;
-            text-decoration: none;
             color: #fff;
             display: flex;
             flex-direction: column;
@@ -237,11 +379,13 @@
             justify-content: center;
             opacity: 0;
             animation: fadeIn 0.5s forwards;
+            border: 1px solid rgba(255,255,255,0.05);
         }
 
         .gallery-item:hover {
             transform: scale(1.05);
             background: rgba(0,0,0,0.6);
+            border-color: var(--sk-gold);
         }
 
         @keyframes fadeIn {
@@ -252,11 +396,44 @@
             width: 100%;
             max-width: 200px;
             margin-bottom: 10px;
+            cursor: zoom-in;
+            transition: opacity 0.3s;
+        }
+        
+        .gallery-item img:hover {
+            opacity: 0.8;
         }
 
         .gallery-item h3 {
             font-size: 16px;
             font-weight: 600;
+            font-family: "Open Sans", sans-serif;
+            margin-top: 10px;
+        }
+
+        /* Specific link styling for the text */
+        .client-link {
+            color: #fff;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        /* Add underline automatically only if a valid URL exists */
+        .client-link[href] {
+            text-decoration: underline;
+            text-underline-offset: 4px;
+            text-decoration-color: rgba(255, 255, 255, 0.4);
+            cursor: pointer;
+        }
+
+        .client-link:hover, .client-link[href]:hover {
+            color: var(--sk-gold);
+            text-decoration-color: var(--sk-gold);
+        }
+        
+        /* Remove pointer cursor if it's just plain text */
+        .client-link:not([href]) {
+            cursor: default;
         }
 
         .loading-indicator {
@@ -264,197 +441,170 @@
             font-style: italic;
         }
 
-        /* ============================================================
-           SECTION: FOOTER
-           Maps to: <footer id="section-footer">
-           Description: Adheres to 50px section height and 30px row height standards.
-           ============================================================ 
-        */
-        footer {
-            background-color: var(--brand-maroon);
-            color: #fff;
-            padding: var(--section-height) 20px var(--row-height) 20px;
-            text-align: center;
+        /* -----------------------------------------------------------
+            FOOTER (Nesting Logic)
+        ----------------------------------------------------------- */
+        footer#main-footer {
+            background-color: var(--sk-maroon);
+            color: white;
+            border-top: 5px solid var(--sk-separator);
+            padding: 80px 0;
         }
-
-        /* FOOTER ROW
-           Maps to: <div class="footer-row-top">
-           Description: Container for contact columns.
-        */
-        .footer-row-top {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            max-width: 1200px;
-            margin: 0 auto;
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
             gap: 40px;
-            padding-bottom: var(--row-height);
-        }
-
-        .footer-col {
-            flex: 1;
-            min-width: 250px;
-        }
-
-        /* FOOTER LABELS
-           Maps to: <p class="footer-label">
-           Description: Georgia font, 14px size, centered white text.
-        */
-        .footer-label {
-            font-family: var(--footer-label-font);
-            font-size: 14px;
-            font-weight: 500;
-            color: #ffffff;
-            line-height: 24.5px;
             text-align: center;
-            margin: 0;
-            display: block;
         }
-
-        /* FOOTER INTERACTIVE HEADINGS
-           Maps to: <h5 class="footer-heading">
-           Description: Abril Fatface, 18px, containing mandatory interactive link protocols.
-        */
-        .footer-heading {
-            font-family: var(--footer-heading-font);
+        .footer-col {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            box-sizing: border-box;
+        }
+        .footer-label { 
+            display: block;
+            color: rgb(255, 255, 255);
+            font-family: Georgia, serif;
+            font-size: 14px;
+            height: 24.5px;
+            line-height: 24.5px;
+            margin: 0px;
+            width: 100%;
+        }
+        .footer-value { 
+            display: block;
+            color: rgb(255, 255, 255);
+            font-family: "Abril Fatface", display;
             font-size: 18px;
             font-weight: 500;
-            color: #ffffff;
             line-height: 25.2px;
-            text-align: center;
-            padding-bottom: 10px;
-            margin-top: 5px;
-            display: block;
-        }
-
-        /* FOOTER LINKS
-           Maps to: <a> tags within the footer headings.
-        */
-        .footer-heading a {
-            color: #ffffff;
+            margin: 0px;
+            padding: 0px 0px 10px 0px;
+            width: 100%;
+            cursor: pointer;
+            transition: 0.3s;
             text-decoration: none;
-            transition: color 0.3s ease;
+        }
+        .footer-value:hover { color: var(--sk-gold); }
+        .footer-or { 
+            display: block; 
+            font-family: 'Poppins', sans-serif; 
+            font-size: 10px; 
+            font-weight: 800; 
+            text-transform: uppercase; 
+            color: var(--sk-gold); 
+            opacity: 0.5; 
+            margin: 4px 0 10px 0; 
+            letter-spacing: 2px; 
         }
 
-        .footer-heading a:hover {
-            color: var(--brand-gold);
-        }
+        @media (max-width: 1024px) {
+            :root { --header-height: 100px; --container-width: 90%; }
+            #header-logo { width: 220px; }
+            .header-scrolled #header-logo { width: 170px; }
+            .footer-grid { grid-template-columns: 1fr; gap: 60px; }
+            .theme-toggle-wrapper { top: auto; bottom: 80px; }
+            .nav-link { padding-top: 15px; padding-bottom: 15px; font-size: 15px; }
 
-        .footer-row-bottom {
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-            padding-top: var(--row-height);
-        }
-
-        .copyright-heading {
-            font-size: 12px;
-            opacity: 0.7;
-        }
-
-        /* ============================================================
-           RESPONSIVE MOBILE SETTINGS (Sandwich Mode)
-           Description: Implements sandwich feature and stacked layout protocols.
-           ============================================================ 
-        */
-        @media (max-width: 992px) {
-            header { height: 80px; }
-            .logo-container img { max-width: 180px; }
-            .customers-section { margin-top: 80px; }
-
-            /* Toggle Sandwich Visibility */
-            .menu-toggle { display: flex; }
-
-            /* Mobile Stacked Navigation Side Panel */
-            nav {
-                position: fixed;
-                top: 0;
-                right: -100%;
-                width: 70%;
-                height: 100vh;
-                background-color: var(--brand-maroon);
-                transition: 0.4s ease;
-                display: flex;
-                flex-direction: column;
-                justify-content: center;
-                align-items: center;
-                box-shadow: -10px 0 30px rgba(0,0,0,0.5);
-            }
-
-            nav.active { right: 0; }
-
-            nav ul {
-                flex-direction: column;
-                align-items: center;
-                gap: 40px;
-            }
-
-            nav ul li a { font-size: 18px; }
-
-            /* Sandwich animation to "X" state */
-            .menu-toggle.active span:nth-child(1) { transform: rotate(45deg) translate(5px, 5px); }
-            .menu-toggle.active span:nth-child(2) { opacity: 0; }
-            .menu-toggle.active span:nth-child(3) { transform: rotate(-45deg) translate(6px, -7px); }
-
-            /* Grid Stacking for Tablets */
             .gallery-grid { grid-template-columns: repeat(2, 1fr); }
+            .et_pb_module_heading { font-size: 40px; line-height: 1.2; }
         }
 
         @media (max-width: 480px) {
-            /* Full Vertical Stacking for small mobile devices */
             .gallery-grid { grid-template-columns: 1fr; }
-            .footer-col { min-width: 100%; margin-bottom: 20px; }
-            
-            /* Adjacency check for logo and sandwich */
-            .header-container { padding: 0 20px; }
+            .et_pb_text_inner p { font-size: 18px; line-height: 1.4; }
         }
     </style>
 </head>
-<body>
+<body class="light-mode">
 
-    <!-- 
-        HEADER SECTION 
-        Description: Sticky header containing the branding logo and the mandatory sandwich menu toggle for mobile.
-    -->
-    <header id="main-header">
-        <div class="header-container">
-            <div class="logo-container">
-                <a href="https://skventuresigns.com/">
-                    <img src="https://skventuresigns.com/wp-content/uploads/2025/03/SK-Sign-White.png" alt="S&K Sign White">
+    <!-- Global Image Lightbox w/ Navigation Arrows -->
+    <div id="lightbox-overlay" onclick="closeLightbox()">
+        
+        <!-- Previous Button -->
+        <button id="lightbox-prev" onclick="navigateLightbox(event, -1)" class="absolute left-2 sm:left-8 top-1/2 -translate-y-1/2 text-white hover:text-[#FFC627] z-50 bg-black/60 p-3 rounded-full transition-transform hover:scale-110 focus:outline-none">
+            <i data-lucide="chevron-left" class="w-8 h-8 sm:w-10 sm:h-10"></i>
+        </button>
+
+        <!-- Main Image -->
+        <img id="lightbox-image" src="" alt="Enlarged Client Logo" onclick="event.stopPropagation()">
+        
+        <!-- Next Button -->
+        <button id="lightbox-next" onclick="navigateLightbox(event, 1)" class="absolute right-2 sm:right-8 top-1/2 -translate-y-1/2 text-white hover:text-[#FFC627] z-50 bg-black/60 p-3 rounded-full transition-transform hover:scale-110 focus:outline-none">
+            <i data-lucide="chevron-right" class="w-8 h-8 sm:w-10 sm:h-10"></i>
+        </button>
+
+        <!-- Close Button -->
+        <button class="absolute top-8 right-8 text-white hover:text-[#FFC627] z-50 bg-black/60 p-3 rounded-full transition-transform hover:scale-110 focus:outline-none" onclick="closeLightbox()">
+            <i data-lucide="x" class="w-6 h-6 sm:w-8 sm:h-8"></i>
+        </button>
+    </div>
+
+    <!-- KF Signature Watermark -->
+    <div class="kf-signature">
+        <span class="kf-k">K</span>
+        <span class="kf-f">F</span>
+    </div>
+
+    <!-- Theme & Persistence Panel -->
+    <div class="theme-toggle-wrapper">
+        <div class="settings-toggle-btn shadow-xl" onclick="toggleSettingsPanel()">
+            <i data-lucide="settings"></i>
+        </div>
+        <div class="theme-toggle-panel hidden-settings" id="settings-panel">
+            <p class="font-bold text-xs mb-2 uppercase text-gray-500">System Preferences</p>
+            <div class="flex flex-col gap-2">
+                <button onclick="setTheme('auto')" class="text-[10px] border p-2 rounded font-bold hover:bg-gray-50 dark:hover:bg-zinc-800">Match System</button>
+                <div class="grid grid-cols-2 gap-2">
+                    <button onclick="setTheme('light')" class="text-[10px] bg-gray-100 p-1 rounded">Bright</button>
+                    <button onclick="setTheme('dark')" class="text-[10px] bg-zinc-800 text-white p-1 rounded">Dark</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MAIN HEADER (NESTED FRAMEWORK) -->
+    <header id="main-header" class="fixed top-0 left-0 w-full z-[1000] flex flex-col justify-center">
+        <div class="main-container flex items-center justify-between h-full px-4 lg:px-0">
+            <div class="flex-shrink-0 z-[1001]">
+                <a href="./index.html" target="_blank">
+                    <img src="https://skventuresigns.com/wp-content/uploads/2025/03/SK-Sign-White.png?v=9.7.2" alt="S&K" id="header-logo" />
                 </a>
             </div>
 
-            <!-- THE SANDWICH FEATURE (Collapses menu on mobile) -->
-            <div class="menu-toggle" id="mobile-menu-btn">
-                <span></span>
-                <span></span>
-                <span></span>
-            </div>
-
-            <!-- NAVIGATION (Desktop: Horizontal, Mobile: Stacked Panel) -->
-            <nav id="top-navigation">
-                <ul>
-                    <li><a href="https://werewolf3788.github.io/SKVentureSigns/">Home</a></li>
-                    <li><a href="https://werewolf3788.github.io/SKVentureSigns/Locations.html">Locations</a></li>
-                    <li><a href="https://skventuresigns.com/services/">Services</a></li>
-                    <li><a href="https://werewolf3788.github.io/SKVentureSigns/Clients.html" class="active">Clients</a></li>
-                    <li><a href="https://skventuresigns.com/contact/">Contact</a></li>
+            <nav class="hidden lg:flex flex-grow items-center justify-center px-10">
+                <ul id="desktop-nav-root" class="flex items-center gap-8 xl:gap-12">
+                    <!-- Dynamic Navigation -->
                 </ul>
             </nav>
+
+            <div class="flex items-center gap-4 z-[1001]">
+                <button onclick="downloadSKContact()" class="hidden sm:flex bg-[#FFC627] text-[#3E0100] px-6 py-3 rounded-xl font-extrabold uppercase text-xs shadow-lg hover:scale-105 transition-all">
+                    <i data-lucide="user-plus" class="w-4 h-4 mr-2"></i> 844-907-4450
+                </button>
+                <button id="menu-toggle" class="lg:hidden text-white">
+                    <i data-lucide="menu" class="w-9 h-9"></i>
+                </button>
+            </div>
         </div>
+        <div id="refresh-bar"></div>
+        
+        <!-- Mobile Dropdown -->
+        <div id="mobile-menu" class="hidden absolute top-full left-0 w-full shadow-2xl flex-col p-8 gap-6 border-t border-black/5"></div>
     </header>
 
+    <!-- PRESERVED CLIENTS MAIN CONTENT -->
     <main id="home">
         <!-- 
             CUSTOMERS GALLERY SECTION 
-            Description: High-level section adhering to the 50px height padding standard.
         -->
         <div class="customers-section" id="section-customers">
-            <!-- Content Row with 30px padding -->
+            <!-- Content Row -->
             <div class="et_pb_row">
-                <!-- Standard 30px Header Text -->
                 <h1 class="et_pb_module_heading">Our Customers</h1>
                 <div class="et_pb_text_inner">
-                    <!-- Standard 14px Body Text -->
-                    <p>We are very grateful to the Businesses who trust us with promoting their Business!!</p>
+                    <p>We are very grateful to the Businesses who trust us with promoting their Business !!</p>
                 </div>
 
                 <!-- DYNAMIC CLIENT INJECTION AREA -->
@@ -466,74 +616,535 @@
         </div>
     </main>
 
-    <!-- 
-        FOOTER SECTION 
-        Description: Contact information footer utilizing mandatory link protocols (tel, mailto, Maps API).
-    -->
-    <footer id="section-footer">
-        <!-- Top Footer Row with 30px vertical padding -->
-        <div class="footer-row-top">
-            <!-- COLUMN: CALL (Wrapped in tel: links for mobile dialer) -->
+    <!-- FOOTER (NESTED FRAMEWORK) -->
+    <footer id="main-footer">
+        <div class="main-container footer-grid">
             <div class="footer-col">
-                <p class="footer-label">Give Us a Call</p>
-                <h5 class="footer-heading">
-                    <a href="tel:6187084450">618-708-4450</a> or <a href="tel:8449074450">844-907-4450</a>
-                </h5>
+                <p class="footer-label">Give us a call</p>
+                <div id="footer-phone-list"></div>
             </div>
-            <!-- COLUMN: EMAIL (Wrapped in mailto: links with pre-filled recipient) -->
             <div class="footer-col">
-                <p class="footer-label">Send Us an Email</p>
-                <h5 class="footer-heading">
-                    <a href="mailto:Scott.Robinson@skventuresigns.com">Scott.Robinson@skventuresigns.com</a>
-                </h5>
+                <p class="footer-label">Send us an Email</p>
+                <div id="footer-email-list"></div>
             </div>
-            <!-- COLUMN: ADDRESS (Using Google Maps Search API protocol) -->
             <div class="footer-col">
-                <p class="footer-label">Visit Our Office</p>
-                <h5 class="footer-heading">
-                    <a href="https://www.google.com/maps/search/?api=1&query=607+W+Clark+Ave+Effingham+IL+62401" target="_blank">
-                        607 W Clark Ave Effingham, IL 62401
-                    </a>
-                </h5>
+                <p class="footer-label">Visit our office</p>
+                <div id="footer-address-container"></div>
             </div>
         </div>
-        
-        <!-- Bottom Row for Copyright -->
-        <div class="footer-row-bottom">
-            <h5 class="copyright-heading">© 2026 S&K Venture Signs</h5>
+        <div class="main-container mt-20 pt-10 border-t border-white/10 text-center">
+            <h5 class="font-bold opacity-50 text-sm tracking-widest uppercase">© 2026 S&K VENTURE SIGNS </h5>
         </div>
     </footer>
 
+    <!-- MODALS -->
+    <div id="phone-modal" class="sk-modal-overlay" onclick="closeModals()">
+        <div class="sk-modal-content" onclick="event.stopPropagation()">
+            <div class="bg-[#3E0100] p-8 text-[#FFC627] text-center font-serif text-2xl">Contact Specialist</div>
+            <div class="p-8" id="phone-options-container"></div>
+            <div class="p-6 text-center text-sm font-bold modal-cancel-text" onclick="closeModals()">CANCEL</div>
+        </div>
+    </div>
+
+    <div id="email-modal" class="sk-modal-overlay" onclick="closeModals()">
+        <div class="sk-modal-content" onclick="event.stopPropagation()">
+            <div class="bg-[#3E0100] p-8 text-[#FFC627] text-center font-serif text-2xl">Send Message</div>
+            <div class="p-8" id="email-options-container"></div>
+            <div class="p-6 text-center text-sm font-bold modal-cancel-text" onclick="closeModals()">CANCEL</div>
+        </div>
+    </div>
+
+    <div id="map-modal" class="sk-modal-overlay" onclick="closeModals()">
+        <div class="sk-modal-content" onclick="event.stopPropagation()">
+            <div class="bg-[#3E0100] p-8 text-[#FFC627] text-center font-serif text-2xl">Start Navigation</div>
+            <div class="p-8">
+                <a id="link-gmaps" target="_blank" class="smart-option"><i data-lucide="map"></i> Google Maps</a>
+                <a id="link-amaps" target="_blank" class="smart-option"><i data-lucide="navigation"></i> Apple Maps</a>
+                <a id="link-waze" target="_blank" class="smart-option"><i data-lucide="navigation-2"></i> Waze Navigation</a>
+            </div>
+            <div class="p-6 text-center text-sm font-bold modal-cancel-text" onclick="closeModals()">CANCEL</div>
+        </div>
+    </div>
+
     <script>
         /**
-         * DATA FEED CONFIGURATION
-         * Source: Public CSV from Google Sheets business registry.
+         * S&K SMART SYNC ENGINE v9.7.2
          */
-        const CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vT9aXB9z9jcsaA0U-LsuV4nIHwIIw2huGB8zaalh7It4GQP_DWFFdQ4Utaw_ajkdhx5ydn87BcfS82d/pub?output=csv';
+        const SITE_DATA_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTZY38nsz_aJDO3cdtAwv4w359jK1aMt1rhBwZ3LAGarLyddtbBowFZv6mjlpnR1eGdNCpFhat8FuKp/pub?output=csv";
+        
+        // Original Customer Data URL
+        const CLIENTS_CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vT9aXB9z9jcsaA0U-LsuV4nIHwIIw2huGB8zaalh7It4GQP_DWFFdQ4Utaw_ajkdhx5ydn87BcfS82d/pub?output=csv';
 
-        /**
-         * SANDWICH MENU INTERACTION
-         * Description: Controls side navigation visibility and the animated toggle button.
-         */
-        const menuBtn = document.getElementById('mobile-menu-btn');
-        const nav = document.getElementById('top-navigation');
+        let siteData = { 
+            nav: [], 
+            phones: ["618-708-4450", "844-907-4450"], 
+            email: "Scott.Robinson@skventuresigns.com", 
+            addressStreet: "607 W Clark Ave", 
+            addressCity: "Effingham IL 62401" 
+        };
 
-        menuBtn.addEventListener('click', () => {
-            menuBtn.classList.toggle('active');
-            nav.classList.toggle('active');
-        });
+        // Current state variable to prevent unnecessary redraws
+        let currentClientsData = [];
 
-        document.querySelectorAll('nav a').forEach(link => {
-            link.addEventListener('click', () => {
-                menuBtn.classList.remove('active');
-                nav.classList.remove('active');
+        // Global state for Lightbox Navigation Array
+        let lightboxGallery = [];
+        let currentLightboxIndex = 0;
+
+        /* =========================================================
+           FRAMEWORK SYSTEM LOGIC
+        ========================================================= */
+        function parseCSVRow(text) {
+            const result = [];
+            let current = '';
+            let inQuotes = false;
+            for (let i = 0; i < text.length; i++) {
+                const char = text[i];
+                if (char === '"') { inQuotes = !inQuotes; }
+                else if (char === ',' && !inQuotes) { result.push(current.trim()); current = ''; }
+                else { current += char; }
+            }
+            result.push(current.trim());
+            return result.map(v => v.replace(/^"|"$/g, ''));
+        }
+
+        async function loadSheetData() {
+            try {
+                const response = await fetch(SITE_DATA_CSV_URL);
+                const text = await response.text();
+                const lines = text.split(/\r?\n/);
+                
+                let tempNav = [];
+                let tempPhones = [];
+
+                lines.forEach((line, idx) => {
+                    if (!line.trim()) return; 
+                    const row = parseCSVRow(line);
+                    const rowNum = idx + 1;
+
+                    if (row[2]?.trim().toLowerCase() === 'header') {
+                        tempNav.push({ label: row[0], url: row[1] });
+                    }
+
+                    if (rowNum === 7) tempPhones[0] = row[0];
+                    if (rowNum === 8) tempPhones[1] = row[0];
+                    if (rowNum === 9) siteData.email = row[0];
+                    if (rowNum === 10) {
+                        siteData.addressStreet = row[0];
+                        siteData.addressCity = row[1];
+                    }
+                });
+
+                if (tempNav.length > 0) siteData.nav = tempNav;
+                if (tempPhones.length > 0) siteData.phones = tempPhones.filter(p => p);
+
+                renderDynamicContent();
+            } catch (err) {
+                renderDynamicContent();
+            }
+        }
+
+        function renderDynamicContent() {
+            const dNav = document.getElementById('desktop-nav-root');
+            const mNav = document.getElementById('mobile-menu');
+            const fPhone = document.getElementById('footer-phone-list');
+            const fEmail = document.getElementById('footer-email-list');
+            const fAddr = document.getElementById('footer-address-container');
+
+            dNav.innerHTML = ''; mNav.innerHTML = ''; fPhone.innerHTML = ''; fEmail.innerHTML = '';
+
+            siteData.nav.forEach(n => {
+                const isActive = n.label.toLowerCase() === 'clients';
+                const desktopClass = isActive ? 'nav-link active' : 'nav-link';
+                const mobileClass = isActive 
+                    ? 'text-2xl font-bold border-b border-black/10 dark:border-white/10 pb-3 text-[#FFC627]'
+                    : 'text-2xl font-bold border-b border-black/10 dark:border-white/10 pb-3';
+
+                dNav.innerHTML += `<li><a href="${n.url}" target="_blank" class="${desktopClass}">${n.label}</a></li>`;
+                mNav.innerHTML += `<a href="${n.url}" target="_blank" class="${mobileClass}">${n.label}</a>`;
             });
-        });
 
-        /**
-         * ANALYTICS: TRACK SECTION VISIBILITY
-         * Description: Uses IntersectionObserver to trigger GA4 events when users reach specific sections.
-         */
+            if (siteData.phones.length > 0) {
+                let phoneHTML = `<span class="footer-value" onclick="openPhoneSmartActions('${siteData.phones[0]}')">${siteData.phones[0]}</span>`;
+                if (siteData.phones[1]) {
+                    phoneHTML += `<span class="footer-or">Or</span>`;
+                    phoneHTML += `<span class="footer-value" onclick="openPhoneSmartActions('${siteData.phones[1]}')">${siteData.phones[1]}</span>`;
+                }
+                fPhone.innerHTML = phoneHTML;
+            }
+
+            fEmail.innerHTML = `<span class="footer-value" onclick="openEmailSmartActions('${siteData.email}')">${siteData.email}</span>`;
+
+            if (siteData.addressStreet) {
+                const fullDisplay = `${siteData.addressStreet}<br>${siteData.addressCity}`;
+                fAddr.innerHTML = `<span class="footer-value" onclick="openMapSmartActions()">${fullDisplay}</span>`;
+            }
+
+            if (typeof lucide !== 'undefined') lucide.createIcons();
+        }
+
+        function toggleSettingsPanel() {
+            const panel = document.getElementById('settings-panel');
+            panel.classList.toggle('hidden-settings');
+        }
+
+        function downloadSKContact() {
+            const PHOTO_URL = "https://skventuresigns.com/wp-content/uploads/2025/03/SK-Sign-Black.png";
+            const vcard = "BEGIN:VCARD\n" +
+                        "VERSION:3.0\n" +
+                        "FN:Scott Robinson\n" +
+                        "ORG:S&K Venture Signs\n" +
+                        "TEL;TYPE=WORK,VOICE:" + (siteData.phones[1] || "844-907-4450") + "\n" +
+                        "TEL;TYPE=CELL,VOICE:" + (siteData.phones[0] || "618-708-4450") + "\n" +
+                        "EMAIL;TYPE=PREF,INTERNET:" + siteData.email + "\n" +
+                        "ADR;TYPE=WORK:;;" + siteData.addressStreet + ";" + siteData.addressCity.split(' ')[0] + ";IL;" + siteData.addressCity.split(' ').pop() + ";USA\n" +
+                        "URL:https://skventuresigns.com/\n" +
+                        "PHOTO;VALUE=URI:" + PHOTO_URL + "\n" +
+                        "END:VCARD";
+            
+            const blob = new Blob([vcard], { type: 'text/vcard;charset=utf-8' });
+            const url = window.URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.setAttribute('download', 'Scott_Robinson_SKVenture.vcf');
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            setTimeout(() => window.URL.revokeObjectURL(url), 100);
+        }
+
+        function setTheme(mode) {
+            const body = document.body;
+            const root = document.documentElement;
+            let targetMode = mode;
+
+            if (mode === 'auto') {
+                const hour = new Date().getHours();
+                const isNightTime = (hour < 6 || hour >= 19);
+                const isSystemDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+                targetMode = (isNightTime || isSystemDark) ? 'dark' : 'light';
+            }
+            
+            if (targetMode === 'dark') {
+                root.style.setProperty('--bg-primary', '#121212');
+                root.style.setProperty('--text-primary', '#e0e0e0');
+                root.style.setProperty('--card-bg', '#1e1e1e');
+                root.style.setProperty('--header-bg-scrolled', '#1e1e1e');
+                root.style.setProperty('--nav-text-scrolled', '#ffffff');
+                root.style.setProperty('--mobile-menu-bg', '#1e1e1e');
+                root.style.setProperty('--mobile-menu-text', '#ffffff');
+                body.classList.add('dark-mode');
+            } else {
+                root.style.setProperty('--bg-primary', '#000000'); 
+                root.style.setProperty('--text-primary', '#FFFFFF'); 
+                root.style.setProperty('--card-bg', '#ffffff');
+                root.style.setProperty('--header-bg-scrolled', 'white');
+                root.style.setProperty('--nav-text-scrolled', '#222222');
+                root.style.setProperty('--mobile-menu-bg', 'white');
+                root.style.setProperty('--mobile-menu-text', 'black');
+                body.classList.remove('dark-mode');
+            }
+            
+            const header = document.getElementById('main-header');
+            const logo = document.getElementById('header-logo');
+            if (header.classList.contains('header-scrolled')) {
+                logo.src = (targetMode === 'dark') ? "https://skventuresigns.com/wp-content/uploads/2025/03/SK-Sign-White.png" : "https://skventuresigns.com/wp-content/uploads/2025/03/SK-Sign-Black.png";
+            }
+
+            document.cookie = `theme=${mode};max-age=31536000;path=/`;
+        }
+
+        function openPhoneSmartActions(num) {
+            const clean = num.replace(/\D/g, '');
+            const container = document.getElementById('phone-options-container');
+            const isMac = navigator.platform.toUpperCase().indexOf('MAC') >= 0;
+            
+            let html = '';
+            
+            if (isMac) {
+                html += `<a href="tel:${clean}" target="_blank" class="smart-option"><i data-lucide="monitor"></i> FaceTime / iPhone</a>`;
+            } else {
+                html += `<a href="tel:${clean}" target="_blank" class="smart-option"><i data-lucide="phone"></i> Direct Call</a>`;
+            }
+
+            html += `<a href="https://voice.google.com/u/0/calls?a=nc,%2B1${clean}" target="_blank" class="smart-option"><i data-lucide="globe"></i> Google Voice</a>`;
+            
+            if (num.includes('618')) {
+                html += `<a href="https://wa.me/1${clean}" target="_blank" class="smart-option"><i data-lucide="message-circle"></i> WhatsApp Specialist</a>`;
+            }
+
+            container.innerHTML = html;
+            document.getElementById('phone-modal').style.display = 'flex';
+            lucide.createIcons();
+        }
+
+        function openEmailSmartActions(email) {
+            const container = document.getElementById('email-options-container');
+            container.innerHTML = `
+                <a href="mailto:${email}" target="_blank" class="smart-option"><i data-lucide="mail"></i> Default Client</a>
+                <a href="https://mail.google.com/mail/?view=cm&fs=1&to=${email}" target="_blank" class="smart-option"><i data-lucide="send"></i> Gmail Web</a>
+                <div onclick="navigator.clipboard.writeText('${email}');" class="smart-option"><i data-lucide="copy"></i> Copy Address</div>
+            `;
+            document.getElementById('email-modal').style.display = 'flex';
+            lucide.createIcons();
+        }
+
+        function openMapSmartActions() {
+            const addrStr = `${siteData.addressStreet} ${siteData.addressCity}`;
+            const addr = encodeURIComponent(addrStr);
+            document.getElementById('link-gmaps').href = `https://www.google.com/maps/dir/?api=1&destination=${addr}`;
+            document.getElementById('link-amaps').href = `http://maps.apple.com/?daddr=${addr}`;
+            document.getElementById('link-waze').href = `https://waze.com/ul?q=${addr}&navigate=yes`;
+            document.getElementById('map-modal').style.display = 'flex';
+            lucide.createIcons();
+        }
+
+        function closeModals() {
+            document.querySelectorAll('.sk-modal-overlay').forEach(m => m.style.display = 'none');
+        }
+
+        /* =========================================================
+           LIGHTBOX ZOOM & PAN ENGINE WITH NAVIGATION
+        ========================================================= */
+        let lbScale = 1;
+        let lbTranslateX = 0;
+        let lbTranslateY = 0;
+        let lbIsDragging = false;
+        let lbStartX, lbStartY;
+        let lbInitialPinchDist = 0;
+
+        function openLightbox(index) {
+            if (index < 0 || index >= lightboxGallery.length) return;
+            currentLightboxIndex = index;
+            const src = lightboxGallery[index];
+
+            const overlay = document.getElementById('lightbox-overlay');
+            const img = document.getElementById('lightbox-image');
+            img.style.opacity = 0; // Quick fade effect
+
+            setTimeout(() => {
+                img.src = src;
+                
+                // Reset transforms for fresh open/change
+                lbScale = 1;
+                lbTranslateX = 0;
+                lbTranslateY = 0;
+                img.style.transform = `translate(0px, 0px) scale(1)`;
+                img.style.cursor = 'zoom-in';
+                
+                img.style.display = 'block';
+                img.style.opacity = 1;
+            }, 50);
+
+            overlay.style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+            if (typeof lucide !== 'undefined') lucide.createIcons();
+        }
+
+        function navigateLightbox(e, direction) {
+            if (e) e.stopPropagation();
+            if (lightboxGallery.length === 0) return;
+            
+            let newIndex = currentLightboxIndex + direction;
+            // Seamless wrap-around logic
+            if (newIndex < 0) newIndex = lightboxGallery.length - 1;
+            if (newIndex >= lightboxGallery.length) newIndex = 0;
+            
+            openLightbox(newIndex);
+        }
+
+        function closeLightbox() {
+            const overlay = document.getElementById('lightbox-overlay');
+            if (overlay) {
+                overlay.style.display = 'none';
+                document.body.style.overflow = 'auto';
+            }
+        }
+
+        function initLightboxInteractions() {
+            const lbOverlay = document.getElementById('lightbox-overlay');
+            const lbImg = document.getElementById('lightbox-image');
+
+            if (!lbOverlay || !lbImg) return;
+
+            // Keyboard Navigation (Arrow Keys + Escape)
+            document.addEventListener('keydown', (e) => {
+                if (lbOverlay.style.display === 'flex') {
+                    if (e.key === 'ArrowLeft') navigateLightbox(null, -1);
+                    if (e.key === 'ArrowRight') navigateLightbox(null, 1);
+                    if (e.key === 'Escape') closeLightbox();
+                }
+            });
+
+            // Desktop Mouse Wheel Zoom
+            lbOverlay.addEventListener('wheel', (e) => {
+                if (lbOverlay.style.display !== 'flex') return;
+                e.preventDefault();
+                lbScale += e.deltaY * -0.005;
+                lbScale = Math.min(Math.max(0.5, lbScale), 5); // Limit zoom 0.5x to 5x
+                lbImg.style.transform = `translate(${lbTranslateX}px, ${lbTranslateY}px) scale(${lbScale})`;
+                lbImg.style.cursor = lbScale > 1 ? 'grab' : 'zoom-in';
+            }, { passive: false });
+
+            // Mobile Touch Support for Pinch Zoom & Panning
+            lbOverlay.addEventListener('touchstart', (e) => {
+                if (lbOverlay.style.display !== 'flex') return;
+                if (e.touches.length === 2) {
+                    lbInitialPinchDist = Math.hypot(
+                        e.touches[0].pageX - e.touches[1].pageX,
+                        e.touches[0].pageY - e.touches[1].pageY
+                    );
+                } else if (e.touches.length === 1 && lbScale > 1) {
+                    lbIsDragging = true;
+                    lbStartX = e.touches[0].pageX - lbTranslateX;
+                    lbStartY = e.touches[0].pageY - lbTranslateY;
+                }
+            }, { passive: false });
+
+            lbOverlay.addEventListener('touchmove', (e) => {
+                if (lbOverlay.style.display !== 'flex') return;
+                
+                // Allow default touch actions if not zoomed in (let native UI handle it)
+                if(lbScale > 1 || e.touches.length === 2) e.preventDefault(); 
+                
+                if (e.touches.length === 2) {
+                    const dist = Math.hypot(
+                        e.touches[0].pageX - e.touches[1].pageX,
+                        e.touches[0].pageY - e.touches[1].pageY
+                    );
+                    const delta = dist / lbInitialPinchDist;
+                    let currentScale = lbScale * delta;
+                    currentScale = Math.min(Math.max(0.5, currentScale), 5);
+                    lbImg.style.transform = `translate(${lbTranslateX}px, ${lbTranslateY}px) scale(${currentScale})`;
+                } else if (e.touches.length === 1 && lbIsDragging && lbScale > 1) {
+                    lbTranslateX = e.touches[0].pageX - lbStartX;
+                    lbTranslateY = e.touches[0].pageY - lbStartY;
+                    lbImg.style.transform = `translate(${lbTranslateX}px, ${lbTranslateY}px) scale(${lbScale})`;
+                }
+            }, { passive: false });
+
+            lbOverlay.addEventListener('touchend', (e) => {
+                if (e.touches.length < 2) {
+                    // Lock in the new scale after pinch ends
+                    const transformStr = lbImg.style.transform;
+                    const match = transformStr.match(/scale\(([^)]+)\)/);
+                    if (match) lbScale = parseFloat(match[1]);
+                }
+                if (e.touches.length === 0) {
+                    lbIsDragging = false;
+                }
+            });
+
+            // Desktop Mouse Drag Support for Panning
+            lbImg.addEventListener('mousedown', (e) => {
+                if (lbScale > 1) {
+                    lbIsDragging = true;
+                    lbStartX = e.pageX - lbTranslateX;
+                    lbStartY = e.pageY - lbTranslateY;
+                    lbImg.style.cursor = 'grabbing';
+                    e.preventDefault(); // prevent ghost image drag
+                }
+            });
+            window.addEventListener('mousemove', (e) => {
+                if (lbIsDragging && lbScale > 1) {
+                    lbTranslateX = e.pageX - lbStartX;
+                    lbTranslateY = e.pageY - lbStartY;
+                    lbImg.style.transform = `translate(${lbTranslateX}px, ${lbTranslateY}px) scale(${lbScale})`;
+                }
+            });
+            window.addEventListener('mouseup', () => {
+                lbIsDragging = false;
+                if (lbScale > 1) lbImg.style.cursor = 'grab';
+            });
+        }
+
+        /* =========================================================
+           CLIENT GALLERY AUTO-SYNC ENGINE
+        ========================================================= */
+        async function fetchCustomers(isAutoRefresh = false) {
+            const grid = document.getElementById('customer-grid');
+            const loading = document.getElementById('loading');
+            const bar = document.getElementById('refresh-bar');
+
+            // Trigger visual progress bar during background sync
+            if (isAutoRefresh && bar) { 
+                bar.style.width = '100%'; 
+                setTimeout(() => { bar.style.width = '0'; }, 1000); 
+            }
+
+            try {
+                // Cache buster guarantees fresh sheet data
+                const response = await fetch(`${CLIENTS_CSV_URL}&t=${Date.now()}`);
+                if (!response.ok) throw new Error('Network failure during data fetch');
+                
+                const csvText = await response.text();
+                const rows = csvText.split('\n').map(row => {
+                    return row.split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/).map(cell => cell.replace(/^"|"$/g, '').trim());
+                });
+
+                const data = rows.slice(1).filter(row => row.length >= 2 && row[0]); // Ensure valid rows only
+
+                // Smart Check: Only redraw the DOM if the data actually changed
+                if (JSON.stringify(data) !== JSON.stringify(currentClientsData)) {
+                    currentClientsData = data; // Update state
+                    lightboxGallery = []; // Reset Gallery Index Array
+
+                    // Precision Scroll Lock: Save scroll position & pin grid height
+                    const savedScrollY = window.scrollY;
+                    const currentGridHeight = grid.offsetHeight;
+                    if(isAutoRefresh) grid.style.minHeight = `${currentGridHeight}px`;
+
+                    loading.style.display = 'none';
+                    grid.innerHTML = ''; 
+
+                    currentClientsData.forEach((row, index) => {
+                        const name = row[0];
+                        const websiteUrl = row[1] || '#';
+                        const imageUrl = row[2];
+
+                        lightboxGallery.push(imageUrl); // Register image to Lightbox system
+
+                        // Convert item to a div wrapper instead of an entire link
+                        const item = document.createElement('div');
+                        item.className = 'gallery-item';
+                        item.style.animationDelay = `${index * 0.05}s`;
+
+                        const linkAttributes = (websiteUrl !== '#' && websiteUrl !== '') ? `href="${websiteUrl}" target="_blank"` : '';
+
+                        item.innerHTML = `
+                            <img src="${imageUrl}" alt="${name}" onclick="openLightbox(${index})" onerror="this.src='https://via.placeholder.com/400x320?text=Logo+Coming+Soon'">
+                            <h3><a ${linkAttributes} id="client-link-${index}" class="client-link">${name}</a></h3>
+                        `;
+
+                        grid.appendChild(item);
+
+                        // Re-attach interaction tracking specifically to the text link
+                        const textLink = item.querySelector(`#client-link-${index}`);
+                        if (textLink && websiteUrl !== '#' && websiteUrl !== '') {
+                            textLink.addEventListener('click', function() {
+                                gtag('event', 'select_content', {
+                                    'content_type': 'business_partner',
+                                    'item_id': name,
+                                    'destination': websiteUrl
+                                });
+                            });
+                        }
+                    });
+
+                    // Restore Scroll Position seamlessly after rendering loop completes
+                    if(isAutoRefresh) {
+                        setTimeout(() => {
+                            grid.style.minHeight = '';
+                            window.scrollTo({top: savedScrollY, behavior: 'instant'});
+                        }, 10);
+                    }
+                }
+
+            } catch (error) {
+                console.error('Data loading error:', error);
+                if (!isAutoRefresh) loading.innerText = 'Unable to load partner list. Please refresh.';
+            }
+        }
+
         const trackSectionView = () => {
             const observer = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
@@ -549,88 +1160,51 @@
             });
         };
 
-        /**
-         * DYNAMIC DATA PIPELINE (CSV PARSING)
-         * Description: Fetches customer data from remote CSV and renders partner cards.
-         */
-        async function fetchCustomers() {
-            const grid = document.getElementById('customer-grid');
-            const loading = document.getElementById('loading');
-
-            try {
-                const response = await fetch(CSV_URL);
-                if (!response.ok) throw new Error('Network failure during data fetch');
-                
-                const csvText = await response.text();
-                // Handle complex CSV data including commas inside quotes
-                const rows = csvText.split('\n').map(row => {
-                    return row.split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/).map(cell => cell.replace(/^"|"$/g, '').trim());
-                });
-
-                const data = rows.slice(1);
-                loading.style.display = 'none';
-                grid.innerHTML = ''; 
-
-                data.forEach((row, index) => {
-                    if (row.length < 2 || !row[0]) return; 
-
-                    const name = row[0];
-                    const websiteUrl = row[1] || '#';
-                    const imageUrl = row[2];
-
-                    const item = document.createElement('a');
-                    item.href = websiteUrl;
-                    if (websiteUrl !== '#' && websiteUrl !== '') {
-                        item.target = '_blank';
-                    }
-                    item.className = 'gallery-item';
-                    item.style.animationDelay = `${index * 0.05}s`;
-
-                    // Interaction tracking for business partner clicks
-                    item.addEventListener('click', function() {
-                        gtag('event', 'select_content', {
-                            'content_type': 'business_partner',
-                            'item_id': name,
-                            'destination': websiteUrl
-                        });
-                    });
-
-                    item.innerHTML = `
-                        <img src="${imageUrl}" alt="${name}" onerror="this.src='https://via.placeholder.com/400x320?text=Logo+Coming+Soon'">
-                        <h3>${name}</h3>
-                    `;
-
-                    grid.appendChild(item);
-                });
-
-            } catch (error) {
-                console.error('Data loading error:', error);
-                loading.innerText = 'Unable to load partner list. Please refresh.';
-            }
-        }
-
-        /**
-         * STICKY HEADER SCROLL EFFECT
-         * Description: Visual transition (shrink and shadow) for the main header on scroll.
-         */
-        window.addEventListener('scroll', function() {
+        /* =========================================================
+           EVENT LISTENERS & INITIALIZATION
+        ========================================================= */
+        window.addEventListener('scroll', () => {
             const header = document.getElementById('main-header');
+            const logo = document.getElementById('header-logo');
+            const isDark = document.body.classList.contains('dark-mode');
+
             if (window.scrollY > 50) {
-                header.style.height = '80px';
-                header.style.backgroundColor = 'rgba(62, 1, 0, 0.98)';
-                header.style.boxShadow = '0 10px 30px rgba(0,0,0,0.3)';
+                header.classList.add('header-scrolled');
+                logo.src = isDark ? "https://skventuresigns.com/wp-content/uploads/2025/03/SK-Sign-White.png" : "https://skventuresigns.com/wp-content/uploads/2025/03/SK-Sign-Black.png";
             } else {
-                header.style.height = '100px';
-                header.style.backgroundColor = 'rgb(62, 1, 0)';
-                header.style.boxShadow = 'none';
+                header.classList.remove('header-scrolled');
+                logo.src = "https://skventuresigns.com/wp-content/uploads/2025/03/SK-Sign-White.png";
             }
         });
 
-        // Initialize Global Mobile standard behaviors on load
-        window.onload = function() {
+        document.getElementById('menu-toggle').addEventListener('click', () => {
+            const m = document.getElementById('mobile-menu');
+            m.classList.toggle('hidden'); m.classList.toggle('flex');
+        });
+
+        window.onload = () => {
+            loadSheetData();
             fetchCustomers();
+            setInterval(() => fetchCustomers(true), 60000); // 60-Second Auto-Sync Engine
             trackSectionView();
+            initLightboxInteractions(); // Engage new Zoom Engine
+            
+            const cookies = document.cookie.split('; ').reduce((acc, curr) => {
+                const [k, v] = curr.split('='); acc[k] = v; return acc;
+            }, {});
+            
+            setTheme(cookies['theme'] || 'auto');
+            if (typeof lucide !== 'undefined') lucide.createIcons();
         };
+
+        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
+            const cookies = document.cookie.split('; ').reduce((acc, curr) => {
+                const [k, v] = curr.split('='); acc[k] = v; return acc;
+            }, {});
+            if (!cookies['theme'] || cookies['theme'] === 'auto') {
+                setTheme('auto');
+            }
+        });
     </script>
 </body>
 </html>
