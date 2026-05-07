@@ -6,9 +6,10 @@
         ADMIN: Kevin (DJ Werewolf) - Admin
         CLIENT: Scott (S&K Venture Signs)
         STANDARDS: Responsive, No-Minify, G-Tag Integrated, GitHack Compatible
-        VERSION: 9.1 (Modal Contrast Fix + Footer Symmetry + Row-Specific Sync)
-        TECHNICAL: Precision Integration, Auto-Night Mode, High-Contrast Outlines, Dual-Column Mapping (A: Street, B: City/State/Zip)
-        TIMESTAMP: May 6, 2026 - 8:15 PM EDT (New York Time)
+        VERSION: 9.5 (Default "Match System" Logic + OS/Time Hybrid Sync + v9.4 Integrity)
+        TECHNICAL: Precision Integration, Auto-Night Mode, Dual-Column Mapping
+        TIMESTAMP: May 6, 2026 - 8:55 PM EDT (New York Time)
+        Nesting Code: Header/Footer Primary Wrapper
         
         NO STRIPPING, NO COMPRESSING, DON'T CHANGE WHAT I DIDN'T SAY TO CHANGE.
     -->
@@ -33,14 +34,14 @@
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
-      gtag('config', 'G-H6Q756MVE8', { 'page_type': 'global_framework_v9.1' });
+      gtag('config', 'G-H6Q756MVE8', { 'page_type': 'global_framework_v9.5' });
       gtag('config', 'G-L376P3NPY4');
     </script>
 
     <!-- External Assets with Smart Cache Buster -->
-    <script src="https://cdn.tailwindcss.com?v=9.1"></script>
-    <script src="https://unpkg.com/lucide@latest?v=9.1"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Abril+Fatface&family=Poppins:wght@400;500;600;700&family=Open+Sans:wght@600;700&display=swap&v=9.1" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com?v=9.5"></script>
+    <script src="https://unpkg.com/lucide@latest?v=9.5"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Abril+Fatface&family=Poppins:wght@400;500;600;700&family=Open+Sans:wght@600;700&display=swap&v=9.5" rel="stylesheet">
 
     <style>
         :root {
@@ -61,8 +62,12 @@
             --bg-primary: #fcfcfc;
             --text-primary: #333333;
             --card-bg: #ffffff;
-            --outline-color: #000000;
-            --outline-width: 1px;
+
+            /* Global Brightness Variables (Nesting Sync) */
+            --header-bg-scrolled: white;
+            --nav-text-scrolled: #222222;
+            --mobile-menu-bg: white;
+            --mobile-menu-text: black;
 
             /* Precision Dimensions Locked */
             --header-height: 125px;
@@ -93,14 +98,6 @@
             line-height: 1.2;
         }
 
-        .high-contrast-text {
-            text-shadow: 
-                calc(var(--outline-width) * -1) calc(var(--outline-width) * -1) 0 var(--outline-color),
-                var(--outline-width) calc(var(--outline-width) * -1) 0 var(--outline-color),
-                calc(var(--outline-width) * -1) var(--outline-width) 0 var(--outline-color),
-                var(--outline-width) var(--outline-width) 0 var(--outline-color);
-        }
-
         .main-container {
             width: var(--container-width);
             max-width: var(--ultra-wide-max);
@@ -109,7 +106,7 @@
         }
 
         /* -----------------------------------------------------------
-            HEADER & NAVIGATION
+            HEADER & NAVIGATION (Nesting Logic)
         ----------------------------------------------------------- */
         header#main-header {
             transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
@@ -119,7 +116,7 @@
         }
 
         .header-scrolled { 
-            background-color: white !important; 
+            background-color: var(--header-bg-scrolled) !important; 
             box-shadow: 0 10px 30px rgba(0,0,0,0.1); 
             height: var(--header-scrolled-height) !important;
         }
@@ -144,8 +141,15 @@
             text-decoration: none;
         }
         .nav-link:hover, .nav-link.active { color: var(--sk-gold); }
-        .header-scrolled .nav-link { color: #222222; }
+        .header-scrolled .nav-link { color: var(--nav-text-scrolled); }
         .header-scrolled .nav-link.active { color: var(--sk-maroon); }
+        .header-scrolled #menu-toggle { color: var(--nav-text-scrolled); }
+
+        #mobile-menu {
+            background-color: var(--mobile-menu-bg);
+            color: var(--mobile-menu-text);
+            transition: background 0.3s, color 0.3s;
+        }
 
         /* -----------------------------------------------------------
             BRANDING (KF SIGNATURE WATERMARK)
@@ -165,6 +169,7 @@
         }
         .kf-k { color: #FF4500; transform: scaleX(-1); z-index: 2; }
         .kf-f { color: #000000; margin-left: -0.22em; z-index: 1; }
+        .dark-mode .kf-f { color: #ffffff; }
 
         /* THEME SETTINGS UI (HIDABLE) */
         .theme-toggle-wrapper {
@@ -207,7 +212,7 @@
         .settings-toggle-btn:hover { transform: rotate(45deg) scale(1.1); }
 
         /* -----------------------------------------------------------
-            SMART MODAL SYSTEM (CONTRAST SYNC v9.1)
+            SMART MODAL SYSTEM
         ----------------------------------------------------------- */
         .sk-modal-overlay {
             display: none;
@@ -240,7 +245,7 @@
             cursor: pointer;
             transition: 0.2s;
             text-decoration: none;
-            color: var(--text-primary); /* Dynamic text color for contrast */
+            color: var(--text-primary);
             font-weight: 700;
         }
         .smart-option:hover { 
@@ -259,7 +264,7 @@
         }
 
         /* -----------------------------------------------------------
-            HIGH-PRECISION FOOTER SYMMETRY ENGINE
+            FOOTER (Nesting Logic)
         ----------------------------------------------------------- */
         footer#main-footer {
             background-color: var(--sk-maroon);
@@ -281,26 +286,16 @@
         }
         .footer-label { 
             display: block;
-            box-sizing: border-box;
             color: rgb(255, 255, 255);
-            font-family: Georgia, Georgia, "Times New Roman", serif;
+            font-family: Georgia, serif;
             font-size: 14px;
-            font-weight: 500;
             height: 24.5px;
             line-height: 24.5px;
             margin: 0px;
-            padding: 0px;
-            text-align: center;
             width: 100%;
-            -webkit-font-smoothing: antialiased;
-            unicode-bidi: isolate;
-            vertical-align: baseline;
-            overflow-wrap: break-word;
-            background-color: rgba(0, 0, 0, 0);
         }
         .footer-value { 
             display: block;
-            box-sizing: border-box;
             color: rgb(255, 255, 255);
             font-family: "Abril Fatface", display;
             font-size: 18px;
@@ -308,15 +303,10 @@
             line-height: 25.2px;
             margin: 0px;
             padding: 0px 0px 10px 0px;
-            text-align: center;
             width: 100%;
             cursor: pointer;
             transition: 0.3s;
             text-decoration: none;
-            -webkit-font-smoothing: antialiased;
-            unicode-bidi: isolate;
-            vertical-align: baseline;
-            background-color: rgba(0, 0, 0, 0);
         }
         .footer-value:hover { color: var(--sk-gold); }
         .footer-or { 
@@ -348,7 +338,7 @@
         <span class="kf-f">F</span>
     </div>
 
-    <!-- Hidable Theme & Persistence Panel -->
+    <!-- Theme & Persistence Panel -->
     <div class="theme-toggle-wrapper">
         <div class="settings-toggle-btn shadow-xl" onclick="toggleSettingsPanel()">
             <i data-lucide="settings"></i>
@@ -356,22 +346,21 @@
         <div class="theme-toggle-panel hidden-settings" id="settings-panel">
             <p class="font-bold text-xs mb-2 uppercase text-gray-500">System Preferences</p>
             <div class="flex flex-col gap-2">
-                <button onclick="setTheme('light')" class="text-[10px] bg-gray-100 p-1 rounded">Bright</button>
-                <button onclick="setTheme('dark')" class="text-[10px] bg-gray-800 text-white p-1 rounded">Dark</button>
-                <button onclick="setTheme('auto')" class="text-[10px] border p-1 rounded">Match System</button>
-                <hr class="my-1">
-                <input type="color" id="outline-color-picker" onchange="updateOutlineColor(this.value)" value="#000000" class="w-full h-6 rounded cursor-pointer">
-                <label class="text-[9px]">Outline Color</label>
+                <button onclick="setTheme('auto')" class="text-[10px] border p-2 rounded font-bold hover:bg-gray-50 dark:hover:bg-zinc-800">Match System</button>
+                <div class="grid grid-cols-2 gap-2">
+                    <button onclick="setTheme('light')" class="text-[10px] bg-gray-100 p-1 rounded">Bright</button>
+                    <button onclick="setTheme('dark')" class="text-[10px] bg-zinc-800 text-white p-1 rounded">Dark</button>
+                </div>
             </div>
         </div>
     </div>
 
-    <!-- MAIN HEADER -->
+    <!-- MAIN HEADER (NESTED) -->
     <header id="main-header" class="fixed top-0 left-0 w-full z-[1000] flex flex-col justify-center">
         <div class="main-container flex items-center justify-between h-full px-4 lg:px-0">
             <div class="flex-shrink-0 z-[1001]">
                 <a href="./index.html">
-                    <img src="https://skventuresigns.com/wp-content/uploads/2025/03/SK-Sign-White.png?v=9.1" alt="S&K" id="header-logo" />
+                    <img src="https://skventuresigns.com/wp-content/uploads/2025/03/SK-Sign-White.png?v=9.5" alt="S&K" id="header-logo" />
                 </a>
             </div>
 
@@ -392,16 +381,15 @@
         </div>
         
         <!-- Mobile Dropdown -->
-        <div id="mobile-menu" class="hidden absolute top-full left-0 w-full bg-white shadow-2xl flex-col p-8 gap-6 text-black border-t border-black/5"></div>
+        <div id="mobile-menu" class="hidden absolute top-full left-0 w-full shadow-2xl flex-col p-8 gap-6 border-t border-black/5"></div>
     </header>
 
     <main class="w-full min-h-[80vh]">
-        
         <!-- Hero Section -->
         <section class="main-container py-24 text-center">
-            <span class="text-[#3E0100] uppercase font-black tracking-[0.2em] text-xs mb-4 block">Premium Outdoor Media</span>
-            <h1 class="text-4xl md:text-7xl mb-8 high-contrast-text">Digital Billboard Solutions</h1>
-            <p class="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
+            <span class="text-[#3E0100] dark:text-[#FFC627] uppercase font-black tracking-[0.2em] text-xs mb-4 block">Premium Outdoor Media</span>
+            <h1 class="text-4xl md:text-7xl mb-8">Digital Billboard Solutions</h1>
+            <p class="text-xl opacity-70 max-w-3xl mx-auto leading-relaxed">
                 Dominating the Illinois landscape with high-impact advertising strategically located to reach thousands of daily travelers.
             </p>
         </section>
@@ -409,10 +397,10 @@
         <!-- Feature Grid -->
         <section class="main-container py-12 grid grid-cols-1 md:grid-cols-2 gap-10">
             <a href="./Locations.html" class="group bg-white dark:bg-zinc-900 p-10 rounded-3xl shadow-xl border-b-8 border-transparent hover:border-[#FFC627] transition-all">
-                <div class="relative w-full pb-[56.25%] overflow-hidden rounded-2xl mb-8 bg-gray-50">
-                    <img src="https://skventuresigns.com/wp-content/uploads/2025/03/SK-Sign-Black.png" alt="Map" class="absolute inset-0 w-full h-full object-contain p-12 opacity-10">
+                <div class="relative w-full pb-[56.25%] overflow-hidden rounded-2xl mb-8 bg-gray-50 dark:bg-zinc-800">
+                    <img src="https://skventuresigns.com/wp-content/uploads/2025/03/SK-Sign-Black.png" alt="Map" class="absolute inset-0 w-full h-full object-contain p-12 opacity-10 dark:invert">
                     <div class="absolute inset-0 flex items-center justify-center">
-                        <i data-lucide="map-pin" class="w-20 h-20 text-[#3E0100]"></i>
+                        <i data-lucide="map-pin" class="w-20 h-20 text-[#3E0100] dark:text-[#FFC627]"></i>
                     </div>
                 </div>
                 <h3 class="text-3xl font-bold mb-4">View Network Locations</h3>
@@ -424,7 +412,7 @@
                     <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3106.845892582845!2d-88.5444!3d39.1211!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x88739190c1f55555%3A0x0!2zMjnCsDA3JzE2LjAiTiA4OMKwMzInNDAuMCJX!5e0!3m2!1sen!2sus!4v1700000000000" class="absolute inset-0 w-full h-full" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
                 </div>
                 <h3 class="text-3xl font-bold mb-2">Corporate HQ</h3>
-                <div id="hero-address-display" class="opacity-60 text-lg mb-6 cursor-pointer hover:text-black transition-colors" onclick="openMapSmartActions()">
+                <div id="hero-address-display" class="opacity-60 text-lg mb-6 cursor-pointer hover:text-[#3E0100] dark:hover:text-[#FFC627] transition-colors" onclick="openMapSmartActions()">
                     <!-- Mapping from Sheet -->
                 </div>
                 <button onclick="openMapSmartActions()" class="w-full bg-[#3E0100] text-[#FFC627] py-5 rounded-2xl font-black uppercase text-sm tracking-widest shadow-xl">Get Directions</button>
@@ -432,26 +420,20 @@
         </section>
     </main>
 
-    <!-- FOOTER -->
+    <!-- FOOTER (NESTED) -->
     <footer id="main-footer">
         <div class="main-container footer-grid">
             <div class="footer-col">
                 <p class="footer-label">Give us a call</p>
-                <div id="footer-phone-list">
-                    <!-- Rows 7/8 -->
-                </div>
+                <div id="footer-phone-list"></div>
             </div>
             <div class="footer-col">
                 <p class="footer-label">Send us an Email</p>
-                <div id="footer-email-list">
-                    <!-- Row 9 -->
-                </div>
+                <div id="footer-email-list"></div>
             </div>
             <div class="footer-col">
                 <p class="footer-label">Visit our office</p>
-                <div id="footer-address-container">
-                    <!-- Row 10 (A+B) -->
-                </div>
+                <div id="footer-address-container"></div>
             </div>
         </div>
         <div class="main-container mt-20 pt-10 border-t border-white/10 text-center">
@@ -459,11 +441,7 @@
         </div>
     </footer>
 
-    <!-- ACTION MODALS (Contrast Fixed) -->
-    <div id="lightbox-overlay" onclick="this.style.display='none'" class="fixed inset-0 bg-black/95 z-[10000] hidden items-center justify-center p-10">
-        <img id="lightbox-img" src="" class="max-w-full max-h-full object-contain rounded-xl">
-    </div>
-
+    <!-- MODALS -->
     <div id="phone-modal" class="sk-modal-overlay" onclick="closeModals()">
         <div class="sk-modal-content" onclick="event.stopPropagation()">
             <div class="bg-[#3E0100] p-8 text-[#FFC627] text-center font-serif text-2xl">Contact Specialist</div>
@@ -494,8 +472,8 @@
 
     <script>
         /**
-         * S&K SMART SYNC ENGINE v9.1
-         * Modal Logic: Single number display + Theme-Aware Contrast
+         * S&K SMART SYNC ENGINE v9.5
+         * Logic: Hybrid System Match (OS Preference + Admin Night Hour Protocol)
          */
         const CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTZY38nsz_aJDO3cdtAwv4w359jK1aMt1rhBwZ3LAGarLyddtbBowFZv6mjlpnR1eGdNCpFhat8FuKp/pub?output=csv";
         
@@ -553,7 +531,6 @@
 
                 renderDynamicContent();
             } catch (err) {
-                console.warn("Sync delay - protocol fallbacks used.");
                 renderDynamicContent();
             }
         }
@@ -570,7 +547,7 @@
 
             siteData.nav.forEach(n => {
                 dNav.innerHTML += `<li><a href="${n.url}" class="nav-link">${n.label}</a></li>`;
-                mNav.innerHTML += `<a href="${n.url}" class="text-2xl font-bold border-b border-black/5 pb-3">${n.label}</a>`;
+                mNav.innerHTML += `<a href="${n.url}" class="text-2xl font-bold border-b border-white/10 pb-3">${n.label}</a>`;
             });
 
             if (siteData.phones.length > 0) {
@@ -602,17 +579,14 @@
             const PHOTO_URL = "https://skventuresigns.com/wp-content/uploads/2025/03/SK-Sign-Black.png";
             const vcard = "BEGIN:VCARD\n" +
                         "VERSION:3.0\n" +
-                        "N:Robinson;Scott;;;\n" +
                         "FN:Scott Robinson\n" +
                         "ORG:S&K Venture Signs\n" +
-                        "TITLE:Digital Billboard Specialist\n" +
                         "TEL;TYPE=WORK,VOICE:" + (siteData.phones[1] || "844-907-4450") + "\n" +
                         "TEL;TYPE=CELL,VOICE:" + (siteData.phones[0] || "618-708-4450") + "\n" +
                         "EMAIL;TYPE=PREF,INTERNET:" + siteData.email + "\n" +
                         "ADR;TYPE=WORK:;;" + siteData.addressStreet + ";" + siteData.addressCity.split(' ')[0] + ";IL;" + siteData.addressCity.split(' ').pop() + ";USA\n" +
                         "URL:https://skventuresigns.com/\n" +
                         "PHOTO;VALUE=URI:" + PHOTO_URL + "\n" +
-                        "NOTE:S&K Venture Signs - Illinois Digital Advertising Specialist\n" +
                         "END:VCARD";
             
             const blob = new Blob([vcard], { type: 'text/vcard;charset=utf-8' });
@@ -628,42 +602,65 @@
 
         function setTheme(mode) {
             const body = document.body;
-            const hour = new Date().getHours();
-            if (mode === 'auto') mode = (hour < 6 || hour >= 19) ? 'dark' : 'light';
-            if (mode === 'dark') {
-                document.documentElement.style.setProperty('--bg-primary', '#121212');
-                document.documentElement.style.setProperty('--text-primary', '#e0e0e0');
-                document.documentElement.style.setProperty('--card-bg', '#1e1e1e');
+            const root = document.documentElement;
+            let targetMode = mode;
+
+            // Hybrid "Match System" Logic
+            if (mode === 'auto') {
+                const hour = new Date().getHours();
+                const isNightTime = (hour < 6 || hour >= 19);
+                const isSystemDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+                targetMode = (isNightTime || isSystemDark) ? 'dark' : 'light';
+            }
+            
+            if (targetMode === 'dark') {
+                root.style.setProperty('--bg-primary', '#121212');
+                root.style.setProperty('--text-primary', '#e0e0e0');
+                root.style.setProperty('--card-bg', '#1e1e1e');
+                root.style.setProperty('--header-bg-scrolled', '#1e1e1e');
+                root.style.setProperty('--nav-text-scrolled', '#ffffff');
+                root.style.setProperty('--mobile-menu-bg', '#1e1e1e');
+                root.style.setProperty('--mobile-menu-text', '#ffffff');
                 body.classList.add('dark-mode');
             } else {
-                document.documentElement.style.setProperty('--bg-primary', '#fcfcfc');
-                document.documentElement.style.setProperty('--text-primary', '#333333');
-                document.documentElement.style.setProperty('--card-bg', '#ffffff');
+                root.style.setProperty('--bg-primary', '#fcfcfc');
+                root.style.setProperty('--text-primary', '#333333');
+                root.style.setProperty('--card-bg', '#ffffff');
+                root.style.setProperty('--header-bg-scrolled', 'white');
+                root.style.setProperty('--nav-text-scrolled', '#222222');
+                root.style.setProperty('--mobile-menu-bg', 'white');
+                root.style.setProperty('--mobile-menu-text', 'black');
                 body.classList.remove('dark-mode');
             }
-            document.cookie = `theme=${mode};max-age=31536000;path=/`;
-        }
+            
+            const header = document.getElementById('main-header');
+            const logo = document.getElementById('header-logo');
+            if (header.classList.contains('header-scrolled')) {
+                logo.src = (targetMode === 'dark') ? "https://skventuresigns.com/wp-content/uploads/2025/03/SK-Sign-White.png" : "https://skventuresigns.com/wp-content/uploads/2025/03/SK-Sign-Black.png";
+            }
 
-        function updateOutlineColor(color) {
-            const root = document.documentElement;
-            root.style.setProperty('--outline-color', color);
-            const elements = document.querySelectorAll('.high-contrast-text');
-            elements.forEach(el => {
-                el.style.fontWeight = (color === 'transparent' || !color) ? 'normal' : 'bold';
-            });
-            document.cookie = `outline-color=${color};max-age=31536000;path=/`;
+            document.cookie = `theme=${mode};max-age=31536000;path=/`;
         }
 
         function openPhoneSmartActions(num) {
             const clean = num.replace(/\D/g, '');
             const container = document.getElementById('phone-options-container');
-            let html = `
-                <a href="tel:${clean}" class="smart-option"><i data-lucide="phone"></i> Direct Call</a>
-                <a href="https://voice.google.com/u/0/calls?a=nc,%2B1${clean}" target="_blank" class="smart-option"><i data-lucide="globe"></i> Google Voice</a>
-            `;
+            const isMac = navigator.platform.toUpperCase().indexOf('MAC') >= 0;
+            
+            let html = '';
+            
+            if (isMac) {
+                html += `<a href="tel:${clean}" class="smart-option"><i data-lucide="monitor"></i> FaceTime / iPhone</a>`;
+            } else {
+                html += `<a href="tel:${clean}" class="smart-option"><i data-lucide="phone"></i> Direct Call</a>`;
+            }
+
+            html += `<a href="https://voice.google.com/u/0/calls?a=nc,%2B1${clean}" target="_blank" class="smart-option"><i data-lucide="globe"></i> Google Voice</a>`;
+            
             if (num.includes('618')) {
                 html += `<a href="https://wa.me/1${clean}" target="_blank" class="smart-option"><i data-lucide="message-circle"></i> WhatsApp Specialist</a>`;
             }
+
             container.innerHTML = html;
             document.getElementById('phone-modal').style.display = 'flex';
             lucide.createIcons();
@@ -674,7 +671,7 @@
             container.innerHTML = `
                 <a href="mailto:${email}" class="smart-option"><i data-lucide="mail"></i> Default Client</a>
                 <a href="https://mail.google.com/mail/?view=cm&fs=1&to=${email}" target="_blank" class="smart-option"><i data-lucide="send"></i> Gmail Web</a>
-                <div onclick="navigator.clipboard.writeText('${email}'); alert('Email Address Copied');" class="smart-option"><i data-lucide="copy"></i> Copy Address</div>
+                <div onclick="navigator.clipboard.writeText('${email}');" class="smart-option"><i data-lucide="copy"></i> Copy Address</div>
             `;
             document.getElementById('email-modal').style.display = 'flex';
             lucide.createIcons();
@@ -697,9 +694,11 @@
         window.addEventListener('scroll', () => {
             const header = document.getElementById('main-header');
             const logo = document.getElementById('header-logo');
+            const isDark = document.body.classList.contains('dark-mode');
+
             if (window.scrollY > 50) {
                 header.classList.add('header-scrolled');
-                logo.src = "https://skventuresigns.com/wp-content/uploads/2025/03/SK-Sign-Black.png";
+                logo.src = isDark ? "https://skventuresigns.com/wp-content/uploads/2025/03/SK-Sign-White.png" : "https://skventuresigns.com/wp-content/uploads/2025/03/SK-Sign-Black.png";
             } else {
                 header.classList.remove('header-scrolled');
                 logo.src = "https://skventuresigns.com/wp-content/uploads/2025/03/SK-Sign-White.png";
@@ -716,10 +715,21 @@
             const cookies = document.cookie.split('; ').reduce((acc, curr) => {
                 const [k, v] = curr.split('='); acc[k] = v; return acc;
             }, {});
-            if (cookies['outline-color']) updateOutlineColor(cookies['outline-color']);
+            
+            // Version 9.5: Always default to 'auto' (Match System) if no choice is saved
             setTheme(cookies['theme'] || 'auto');
             lucide.createIcons();
         };
+
+        // Listener for system-level theme changes while the user is in "Auto" mode
+        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
+            const cookies = document.cookie.split('; ').reduce((acc, curr) => {
+                const [k, v] = curr.split('='); acc[k] = v; return acc;
+            }, {});
+            if (!cookies['theme'] || cookies['theme'] === 'auto') {
+                setTheme('auto');
+            }
+        });
     </script>
 </body>
 </html>
