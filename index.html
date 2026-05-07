@@ -6,14 +6,18 @@
         ADMIN: Kevin (DJ Werewolf) - Admin
         CLIENT: Scott (S&K Venture Signs)
         STANDARDS: Responsive, No-Minify, G-Tag Integrated, GitHack Compatible
-        VERSION: 9.4 (Action Logic Fix + Precision Typography + Service Banner Integration)
+        VERSION: 9.9 (Transparent Default Outline Logic)
         TECHNICAL: Precision Integration, Auto-Night Mode, High-Contrast Outlines, Dual-Column Mapping (A: Street, B: City/State/Zip)
-        TIMESTAMP: May 6, 2026 - 11:55 PM EDT (New York Time)
+        TIMESTAMP: May 6, 2026 - 8:36 PM EDT (New York Time)
         
         NO STRIPPING, NO COMPRESSING, DON'T CHANGE WHAT I DIDN'T SAY TO CHANGE.
-        FIX: Restored Header Button to downloadSKContact() logic while maintaining phone number display.
-        FIX: Updated Hero and Fair Section typography to exact user-defined specs (Georgia/Abril Fatface).
-        FIX: Service Card Contrast Logic - Advertising/Sales (Yellow) vs Rental/Maintenance (Black).
+        FIX: Defaulted Outline Color to "transparent" (No color) as per admin request.
+        FIX: Outline only renders when a color is explicitly selected or loaded from cookies.
+        FIX: Applied High-Contrast Outline Color logic globally to all letters/elements.
+        FIX: Maintained Advertising/Sales card title logic (Black in Light Mode / Yellow in Dark Mode).
+        FIX: Yellow et_pb_divider preserved between Fair Dates and Fair Description.
+        FIX: openMapSmartActions strictly locked to Row A10/B10 for Google, Apple, and Waze.
+        FIX: Header Button linked to downloadSKContact() logic with phone number display.
     -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
@@ -31,19 +35,19 @@
 
     <!-- Google Analytics: Boss Tracking + Watermark Tracking -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-H6Q756MVE8"></script>
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-L376P3NPY4"></script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-L376P3YPY4"></script>
     <script>
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
-      gtag('config', 'G-H6Q756MVE8', { 'page_type': 'global_framework_v9.4_home' });
-      gtag('config', 'G-L376P3NPY4');
+      gtag('config', 'G-H6Q756MVE8', { 'page_type': 'global_framework_v9.9_home' });
+      gtag('config', 'G-L376P3YPY4');
     </script>
 
     <!-- External Assets with Smart Cache Buster -->
-    <script src="https://cdn.tailwindcss.com?v=9.4"></script>
-    <script src="https://unpkg.com/lucide@latest?v=9.4"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Abril+Fatface&family=Poppins:wght@400;500;600;700&family=Open+Sans:wght@600;700&display=swap&v=9.4" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com?v=9.9"></script>
+    <script src="https://unpkg.com/lucide@latest?v=9.9"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Abril+Fatface&family=Poppins:wght@400;500;600;700&family=Open+Sans:wght@600;700&display=swap&v=9.9" rel="stylesheet">
 
     <style>
         :root {
@@ -65,7 +69,9 @@
             --bg-primary: #fcfcfc;
             --text-primary: #333333;
             --card-bg: #ffffff;
-            --outline-color: #000000;
+            
+            /* Default Outline: Transparent (No color) */
+            --outline-color: transparent;
             --outline-width: 1.5px;
 
             /* Precision Dimensions Locked */
@@ -91,19 +97,19 @@
             transition: background-color 0.3s, color 0.3s;
         }
 
-        h1, h2, h3, h4, h5 { 
-            font-family: 'Abril Fatface', cursive; 
-            font-size: var(--divi-header); 
-            line-height: 1.2;
-        }
-
-        /* Precision Contrast Outlines */
-        .high-contrast-text {
+        /* GLOBAL PRECISION OUTLINE LOGIC */
+        * {
             text-shadow: 
                 calc(var(--outline-width) * -1) calc(var(--outline-width) * -1) 0 var(--outline-color),
                 var(--outline-width) calc(var(--outline-width) * -1) 0 var(--outline-color),
                 calc(var(--outline-width) * -1) var(--outline-width) 0 var(--outline-color),
                 var(--outline-width) var(--outline-width) 0 var(--outline-color);
+        }
+
+        h1, h2, h3, h4, h5 { 
+            font-family: 'Abril Fatface', cursive; 
+            font-size: var(--divi-header); 
+            line-height: 1.2;
         }
 
         .main-container {
@@ -209,6 +215,18 @@
             color: #FFC000 !important;
         }
 
+        /* Divider Component Styles */
+        .et_pb_divider_internal {
+            border-top: 3px solid #FFC627;
+            width: 100%;
+            display: block;
+            margin: 0 auto;
+        }
+        .et_pb_divider {
+            padding: 15px 0;
+            width: 100%;
+        }
+
         .get-started-btn {
             background-color: #FFFFFF;
             color: #000000;
@@ -240,7 +258,7 @@
             position: relative; 
             min-height: 625px; 
             background-image: linear-gradient(rgba(0, 0, 0, 0.5) 0%, rgba(0, 0, 0, 0.5) 100%), 
-                              url('https://skventuresigns.com/wp-content/uploads/2025/03/Screenshot-2025-03-21-143543.png?v=9.4');
+                              url('https://skventuresigns.com/wp-content/uploads/2025/03/Screenshot-2025-03-21-143543.png?v=9.9');
             background-size: cover; 
             background-position: center;
             display: flex; 
@@ -251,7 +269,7 @@
         .adventurous-divider {
             position: relative; 
             min-height: 600px;
-            background-image: url('https://skventuresigns.com/wp-content/uploads/2024/12/skbackground.png?v=9.4');
+            background-image: url('https://skventuresigns.com/wp-content/uploads/2024/12/skbackground.png?v=9.9');
             background-size: cover; 
             background-position: center;
             display: flex; 
@@ -271,6 +289,15 @@
         }
         .service-card:hover { transform: translateY(-8px); }
         .service-card img { height: 220px; object-fit: contain; margin-bottom: 15px; cursor: zoom-in; }
+
+        /* Dynamic Contrast Logic for Advertising/Sales Titles */
+        .dynamic-ad-title { 
+            color: #000000 !important; 
+            transition: color 0.3s ease;
+        }
+        .dark-mode .dynamic-ad-title { 
+            color: #FFC627 !important; 
+        }
 
         /* -----------------------------------------------------------
             BRANDING & THEME UI
@@ -428,8 +455,11 @@
                 <button onclick="setTheme('dark')" class="text-[10px] bg-gray-800 text-white p-1 rounded">Dark</button>
                 <button onclick="setTheme('auto')" class="text-[10px] border p-1 rounded">Match System</button>
                 <hr class="my-1">
-                <input type="color" id="outline-color-picker" onchange="updateOutlineColor(this.value)" value="#000000" class="w-full h-6 rounded cursor-pointer">
-                <label class="text-[9px]">Outline Color</label>
+                <div class="flex flex-col gap-1">
+                    <input type="color" id="outline-color-picker" onchange="updateOutlineColor(this.value)" value="#000000" class="w-full h-6 rounded cursor-pointer">
+                    <button onclick="updateOutlineColor('transparent')" class="text-[8px] bg-red-100 text-red-800 rounded p-1 uppercase font-bold">No Outline</button>
+                    <label class="text-[9px]">Outline Color</label>
+                </div>
             </div>
         </div>
     </div>
@@ -439,7 +469,7 @@
         <div class="main-container flex items-center justify-between h-full px-4 lg:px-0">
             <div class="flex-shrink-0 z-[1001]">
                 <a href="./index.html">
-                    <img src="https://skventuresigns.com/wp-content/uploads/2025/03/SK-Sign-White.png?v=9.4" alt="S&K" id="header-logo" />
+                    <img src="https://skventuresigns.com/wp-content/uploads/2025/03/SK-Sign-White.png?v=9.9" alt="S&K" id="header-logo" />
                 </a>
             </div>
 
@@ -450,7 +480,6 @@
             </nav>
 
             <div class="flex items-center gap-4 z-[1001]">
-                <!-- FIX: Header Button logic STRICTLY restored to downloadSKContact() -->
                 <button onclick="downloadSKContact()" class="hidden sm:flex bg-[#FFC627] text-[#3E0100] px-6 py-3 rounded-xl font-extrabold uppercase text-xs shadow-lg hover:scale-105 transition-all">
                     <i data-lucide="user-plus" class="w-4 h-4 mr-2"></i> 844-907-4450
                 </button>
@@ -467,7 +496,7 @@
         <section class="advertising-hero">
             <div class="main-container flex flex-col lg:flex-row items-center justify-between gap-10">
                 <div class="lg:w-1/2 flex justify-center">
-                    <h5 class="hero-title-precision high-contrast-text">Transform Your Advertising with S&K Venture Signs</h5>
+                    <h5 class="hero-title-precision">Transform Your Advertising with S&K Venture Signs</h5>
                 </div>
                 <div class="lg:w-auto w-full">
                     <div class="bg-[var(--card-bg)] p-10 rounded-3xl shadow-2xl max-w-[450px] mx-auto text-center border-t-8 border-[#219EBC] transition-colors">
@@ -484,21 +513,27 @@
             <div class="main-container">
                 <div class="flex flex-col lg:flex-row items-center gap-12 mb-16">
                     <div class="w-full lg:w-1/2">
-                        <img src="https://i0.wp.com/skventuresigns.com/wp-content/uploads/2026/04/EFF-fair-locations.png?v=9.4" class="w-full h-auto rounded-3xl shadow-2xl lightbox-trigger cursor-zoom-in">
+                        <img src="https://i0.wp.com/skventuresigns.com/wp-content/uploads/2026/04/EFF-fair-locations.png?v=9.9" class="w-full h-auto rounded-3xl shadow-2xl lightbox-trigger cursor-zoom-in">
                     </div>
                     <div class="w-full lg:w-1/2 text-center text-white">
-                        <h5 class="fair-heading-precision high-contrast-text">2026 Effingham County Fair</h5>
-                        <h1 class="fair-date-precision high-contrast-text">August 1st to August 8th</h1>
-                        <p class="fair-desc-precision mb-8 high-contrast-text">Explore our Locations below for the 2026 Effingham County Fair and Explore how we can support Your Advertising needs.</p>
+                        <h5 class="fair-heading-precision">2026 Effingham County Fair</h5>
+                        <h1 class="fair-date-precision">August 1st to August 8th</h1>
+                        
+                        <!-- Yellow Divider Integration -->
+                        <div class="et_pb_module et_pb_divider et_pb_divider_0 et_pb_divider_position_ et_pb_space">
+                            <div class="et_pb_divider_internal"></div>
+                        </div>
+
+                        <p class="fair-desc-precision mb-8">Explore our Locations below for the 2026 Effingham County Fair and Explore how we can support Your Advertising needs.</p>
                         <div class="space-y-6 mb-10 fair-location-precision">
-                            <p class="high-contrast-text">Location 1 - RT 40 - Graphic Advertising between the Entrances of the Fair Grounds</p>
-                            <p class="high-contrast-text">Locations 2 & 3 - Inside the Fairgrounds above the Entrances to the Grandstands</p>
-                            <p class="high-contrast-text">Locations 4 & 5 - Inside the Fairgrounds in the infield on the track</p>
+                            <p>Location 1 - RT 40 - Graphic Advertising between the Entrances of the Fair Grounds</p>
+                            <p>Locations 2 & 3 - Inside the Fairgrounds above the Entrances to the Grandstands</p>
+                            <p>Locations 4 & 5 - Inside the Fairgrounds in the infield on the track</p>
                         </div>
                         <a href="https://skventuresigns.com/effinghamcountyfair/" class="get-started-btn shadow-xl">Get Started</a>
                     </div>
                 </div>
-                <h2 class="rental-heading-precision high-contrast-text">Rental Opportunities still available !!</h2>
+                <h2 class="rental-heading-precision">Rental Opportunities still available !!</h2>
             </div>
         </section>
 
@@ -507,8 +542,8 @@
             <div class="main-container">
                 <!-- Banners above Cards -->
                 <div class="flex flex-col items-center gap-6 mb-12">
-                    <img src="https://i0.wp.com/skventuresigns.com/wp-content/uploads/2025/01/Topline.png?v=9.4" alt="Engage Your Audience Like Never Before With Our State-of-the Art Digital Sign Solutions" class="w-full max-w-[1080px] h-auto">
-                    <img src="https://i0.wp.com/skventuresigns.com/wp-content/uploads/2025/03/Customize.png?v=9.4" alt="Customize Digital Advertising" class="w-full max-w-[1080px] h-auto">
+                    <img src="https://i0.wp.com/skventuresigns.com/wp-content/uploads/2025/01/Topline.png?v=9.9" alt="Engage Your Audience Like Never Before With Our State-of-the Art Digital Sign Solutions" class="w-full max-w-[1080px] h-auto">
+                    <img src="https://i0.wp.com/skventuresigns.com/wp-content/uploads/2025/03/Customize.png?v=9.9" alt="Customize Digital Advertising" class="w-full max-w-[1080px] h-auto">
                 </div>
 
                 <div id="services-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
@@ -522,15 +557,15 @@
         <!-- TAGLINE -->
         <section class="bg-[#3E0100] pb-20 flex justify-center">
             <div class="main-container flex justify-center">
-                <img src="https://i0.wp.com/skventuresigns.com/wp-content/uploads/2024/12/SK-tagline.png?v=9.4" class="w-full max-w-[950px] lightbox-trigger cursor-zoom-in">
+                <img src="https://i0.wp.com/skventuresigns.com/wp-content/uploads/2024/12/SK-tagline.png?v=9.9" class="w-full max-w-[950px] lightbox-trigger cursor-zoom-in">
             </div>
         </section>
 
         <!-- CTA -->
         <section class="py-24" style="background-color:rgb(69,123,157);">
             <div class="main-container text-center text-white">
-                <h2 class="text-5xl md:text-7xl mb-8 high-contrast-text">Unlock Your Advertising Potential</h2>
-                <p class="text-xl md:text-2xl mb-12 max-w-4xl mx-auto leading-relaxed high-contrast-text">
+                <h2 class="text-5xl md:text-7xl mb-8">Unlock Your Advertising Potential</h2>
+                <p class="text-xl md:text-2xl mb-12 max-w-4xl mx-auto leading-relaxed">
                     Ready to elevate your brand’s visibility? Reach out to S&K Venture Signs today for tailored digital solutions that meet your unique needs.
                 </p>
                 <a href="mailto:Scott.Robinson@skventuresigns.com" class="bg-white text-blue-900 px-16 py-5 rounded-full font-black uppercase tracking-widest shadow-2xl inline-block hover:scale-105 transition-all">Request A Quote</a>
@@ -594,7 +629,7 @@
 
     <script>
         /**
-         * S&K UNIVERSAL ENGINE v9.4
+         * S&K UNIVERSAL ENGINE v9.9
          */
         const SYNC_CSV = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTZY38nsz_aJDO3cdtAwv4w359jK1aMt1rhBwZ3LAGarLyddtbBowFZv6mjlpnR1eGdNCpFhat8FuKp/pub?output=csv";
         const SERVICES_CSV = "https://docs.google.com/spreadsheets/d/e/2PACX-1vT9HBnWuIELZ5IxaTxuCpNgs5ep7Tz4NpaU8__laH9a1DK52CreOSM8IqQxUK95CMyzsmTmkHoTgc1b/pub?output=csv";
@@ -628,7 +663,10 @@
                     if (rowNum === 7) siteData.phones[0] = row[0];
                     if (rowNum === 8) siteData.phones[1] = row[0];
                     if (rowNum === 9) siteData.email = row[0];
-                    if (rowNum === 10) { siteData.addressStreet = row[0]; siteData.addressCity = row[1]; }
+                    if (rowNum === 10) {
+                        siteData.addressStreet = row[0]; // A10
+                        siteData.addressCity = row[1];   // B10
+                    }
                 });
                 siteData.nav = tempNav;
                 renderDynamicFramework();
@@ -678,14 +716,14 @@
                     
                     let customTitleColor = 'text-[var(--text-primary)]'; 
                     if (titleLower.includes('advertising') || titleLower.includes('sales')) {
-                        customTitleColor = 'text-[#FFC627]';
+                        customTitleColor = 'dynamic-ad-title';
                     } else if (titleLower.includes('rental') || titleLower.includes('leasing') || titleLower.includes('maintenance') || titleLower.includes('repair')) {
                         customTitleColor = 'text-black'; 
                     }
 
                     grid.innerHTML += `
                         <div class="service-card ${isEven ? 'bg-[var(--card-bg)]' : 'bg-[#DAA421]'}">
-                            <img src="${imgs[i]?.trim()}?v=9.4" class="lightbox-trigger" onerror="this.src='https://via.placeholder.com/400x220?text=S%26K+Venture+Signs'">
+                            <img src="${imgs[i]?.trim()}?v=9.9" class="lightbox-trigger" onerror="this.src='https://via.placeholder.com/400x220?text=S%26K+Venture+Signs'">
                             <div class="text-center mt-4 flex-grow">
                                 <h3 class="text-2xl mb-2 ${customTitleColor}" style="font-family:'Abril Fatface', cursive;">${titleText}</h3>
                                 <p class="text-sm mb-6 ${isEven ? 'text-[var(--text-primary)] opacity-70' : 'text-[#3E0100]'} font-medium">${descs[i]}</p>
@@ -759,9 +797,10 @@
         }
 
         function openMapSmartActions() {
-            const addr = encodeURIComponent(`${siteData.addressStreet} ${siteData.addressCity}`);
+            const addrStr = `${siteData.addressStreet} ${siteData.addressCity}`;
+            const addr = encodeURIComponent(addrStr);
             document.getElementById('link-gmaps').href = `https://www.google.com/maps/dir/?api=1&destination=${addr}`;
-            document.getElementById('link-amaps').href = `http://maps.apple.com/?daddr=${addr}`;
+            document.getElementById('link-amaps').href = `http://maps.apple.com/?daddr=${addr}&dirflg=d`;
             document.getElementById('link-waze').href = `https://waze.com/ul?q=${addr}&navigate=yes`;
             document.getElementById('map-modal').style.display = 'flex';
             lucide.createIcons();
@@ -819,7 +858,12 @@
             const cookies = document.cookie.split('; ').reduce((acc, curr) => {
                 const [k, v] = curr.split('='); acc[k] = v; return acc;
             }, {});
-            if (cookies['outline-color']) updateOutlineColor(cookies['outline-color']);
+            if (cookies['outline-color']) {
+                updateOutlineColor(cookies['outline-color']);
+            } else {
+                // Default to no color (transparent) if no cookie exists
+                updateOutlineColor('transparent');
+            }
             setTheme(cookies['theme'] || 'auto');
             lucide.createIcons();
         };
