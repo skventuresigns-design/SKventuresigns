@@ -6,11 +6,16 @@
         ADMIN: Kevin (DJ Werewolf) - Admin
         CLIENT: Scott (S&K Venture Signs)
         STANDARDS: Responsive, No-Minify, G-Tag Integrated, GitHack Compatible
-        VERSION: 9.9 (Transparent Default Outline Logic)
+        VERSION: 10.4 (Footer Height Correction)
         TECHNICAL: Precision Integration, Auto-Night Mode, High-Contrast Outlines, Dual-Column Mapping (A: Street, B: City/State/Zip)
-        TIMESTAMP: May 6, 2026 - 8:36 PM EDT (New York Time)
+        TIMESTAMP: May 7, 2026 - 3:24 PM EDT (New York Time)
         
         NO STRIPPING, NO COMPRESSING, DON'T CHANGE WHAT I DIDN'T SAY TO CHANGE.
+        FIX: Removed the erroneous margin-top that created a white void above the footer.
+        FIX: Reduced footer padding (from 80px to 40px) and tightened copyright margins to match the shorter, sleeker profile seen in original reference designs.
+        FIX: Removed the blue border from the top of the Hero Section's white card.
+        FIX: Applied symmetrical width rules (lg:w-1/2) to the Hero section to ensure the title and white box have equal distance from screen edges.
+        FIX: Added border stylings to the header phone button, dynamic service buttons, and bottom CTA button.
         FIX: Defaulted Outline Color to "transparent" (No color) as per admin request.
         FIX: Outline only renders when a color is explicitly selected or loaded from cookies.
         FIX: Applied High-Contrast Outline Color logic globally to all letters/elements.
@@ -40,14 +45,14 @@
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
-      gtag('config', 'G-H6Q756MVE8', { 'page_type': 'global_framework_v9.9_home' });
+      gtag('config', 'G-H6Q756MVE8', { 'page_type': 'global_framework_v10.4_home' });
       gtag('config', 'G-L376P3YPY4');
     </script>
 
     <!-- External Assets with Smart Cache Buster -->
-    <script src="https://cdn.tailwindcss.com?v=9.9"></script>
-    <script src="https://unpkg.com/lucide@latest?v=9.9"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Abril+Fatface&family=Poppins:wght@400;500;600;700&family=Open+Sans:wght@600;700&display=swap&v=9.9" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com?v=10.4"></script>
+    <script src="https://unpkg.com/lucide@latest?v=10.4"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Abril+Fatface&family=Poppins:wght@400;500;600;700&family=Open+Sans:wght@600;700&display=swap&v=10.4" rel="stylesheet">
 
     <style>
         :root {
@@ -258,7 +263,7 @@
             position: relative; 
             min-height: 625px; 
             background-image: linear-gradient(rgba(0, 0, 0, 0.5) 0%, rgba(0, 0, 0, 0.5) 100%), 
-                              url('https://skventuresigns.com/wp-content/uploads/2025/03/Screenshot-2025-03-21-143543.png?v=9.9');
+                              url('https://skventuresigns.com/wp-content/uploads/2025/03/Screenshot-2025-03-21-143543.png?v=10.4');
             background-size: cover; 
             background-position: center;
             display: flex; 
@@ -269,7 +274,7 @@
         .adventurous-divider {
             position: relative; 
             min-height: 600px;
-            background-image: url('https://skventuresigns.com/wp-content/uploads/2024/12/skbackground.png?v=9.9');
+            background-image: url('https://skventuresigns.com/wp-content/uploads/2024/12/skbackground.png?v=10.4');
             background-size: cover; 
             background-position: center;
             display: flex; 
@@ -406,7 +411,8 @@
             background-color: var(--sk-maroon);
             color: white;
             border-top: 5px solid var(--sk-separator);
-            padding: 80px 0;
+            padding: 40px 0 20px 0; /* Reduced padding for a shorter footer */
+            /* Removed massive margin-top to keep it cleanly beneath the CTA */
         }
         .footer-grid {
             display: grid;
@@ -429,7 +435,7 @@
             :root { --header-height: 100px; --container-width: 90%; }
             .advertising-hero { padding-top: 100px; }
             #header-logo { width: 220px; }
-            .footer-grid { grid-template-columns: 1fr; gap: 60px; }
+            .footer-grid { grid-template-columns: 1fr; gap: 40px; }
             .hero-title-precision { font-size: 38px !important; line-height: 1.2 !important; }
             .fair-heading-precision { font-size: 32px !important; line-height: 1.2 !important; }
         }
@@ -469,7 +475,7 @@
         <div class="main-container flex items-center justify-between h-full px-4 lg:px-0">
             <div class="flex-shrink-0 z-[1001]">
                 <a href="./index.html">
-                    <img src="https://skventuresigns.com/wp-content/uploads/2025/03/SK-Sign-White.png?v=9.9" alt="S&K" id="header-logo" />
+                    <img src="https://skventuresigns.com/wp-content/uploads/2025/03/SK-Sign-White.png?v=10.4" alt="S&K" id="header-logo" />
                 </a>
             </div>
 
@@ -480,7 +486,7 @@
             </nav>
 
             <div class="flex items-center gap-4 z-[1001]">
-                <button onclick="downloadSKContact()" class="hidden sm:flex bg-[#FFC627] text-[#3E0100] px-6 py-3 rounded-xl font-extrabold uppercase text-xs shadow-lg hover:scale-105 transition-all">
+                <button onclick="downloadSKContact()" class="hidden sm:flex bg-[#FFC627] text-[#3E0100] px-6 py-3 rounded-xl font-extrabold uppercase text-xs shadow-lg hover:scale-105 transition-all border-2 border-[#3E0100]">
                     <i data-lucide="user-plus" class="w-4 h-4 mr-2"></i> 844-907-4450
                 </button>
                 <button id="menu-toggle" class="lg:hidden text-white">
@@ -492,14 +498,16 @@
     </header>
 
     <main>
-        <!-- HERO SPLASH -->
+        <!-- HERO SPLASH (Symmetrical Layout Logic) -->
         <section class="advertising-hero">
             <div class="main-container flex flex-col lg:flex-row items-center justify-between gap-10">
-                <div class="lg:w-1/2 flex justify-center">
+                <!-- Left Column strictly at 50% mapping -->
+                <div class="lg:w-1/2 w-full flex justify-center">
                     <h5 class="hero-title-precision">Transform Your Advertising with S&K Venture Signs</h5>
                 </div>
-                <div class="lg:w-auto w-full">
-                    <div class="bg-[var(--card-bg)] p-10 rounded-3xl shadow-2xl max-w-[450px] mx-auto text-center border-t-8 border-[#219EBC] transition-colors">
+                <!-- Right Column strictly at 50% mapping -->
+                <div class="lg:w-1/2 w-full flex justify-center">
+                    <div class="bg-[var(--card-bg)] p-10 rounded-3xl shadow-2xl w-full max-w-[450px] text-center transition-colors">
                         <span class="hero-label-precision">Innovative Solutions for Modern Advertising</span>
                         <h3 class="text-4xl mb-4 text-[var(--text-primary)]">Join the Digital Revolution</h3>
                         <p class="text-[var(--text-primary)] opacity-70">Discover how our digital advertising solutions can drive your business forward.</p>
@@ -513,7 +521,7 @@
             <div class="main-container">
                 <div class="flex flex-col lg:flex-row items-center gap-12 mb-16">
                     <div class="w-full lg:w-1/2">
-                        <img src="https://i0.wp.com/skventuresigns.com/wp-content/uploads/2026/04/EFF-fair-locations.png?v=9.9" class="w-full h-auto rounded-3xl shadow-2xl lightbox-trigger cursor-zoom-in">
+                        <img src="https://i0.wp.com/skventuresigns.com/wp-content/uploads/2026/04/EFF-fair-locations.png?v=10.4" class="w-full h-auto rounded-3xl shadow-2xl lightbox-trigger cursor-zoom-in">
                     </div>
                     <div class="w-full lg:w-1/2 text-center text-white">
                         <h5 class="fair-heading-precision">2026 Effingham County Fair</h5>
@@ -542,8 +550,8 @@
             <div class="main-container">
                 <!-- Banners above Cards -->
                 <div class="flex flex-col items-center gap-6 mb-12">
-                    <img src="https://i0.wp.com/skventuresigns.com/wp-content/uploads/2025/01/Topline.png?v=9.9" alt="Engage Your Audience Like Never Before With Our State-of-the Art Digital Sign Solutions" class="w-full max-w-[1080px] h-auto">
-                    <img src="https://i0.wp.com/skventuresigns.com/wp-content/uploads/2025/03/Customize.png?v=9.9" alt="Customize Digital Advertising" class="w-full max-w-[1080px] h-auto">
+                    <img src="https://i0.wp.com/skventuresigns.com/wp-content/uploads/2025/01/Topline.png?v=10.4" alt="Engage Your Audience Like Never Before With Our State-of-the Art Digital Sign Solutions" class="w-full max-w-[1080px] h-auto">
+                    <img src="https://i0.wp.com/skventuresigns.com/wp-content/uploads/2025/03/Customize.png?v=10.4" alt="Customize Digital Advertising" class="w-full max-w-[1080px] h-auto">
                 </div>
 
                 <div id="services-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
@@ -557,7 +565,7 @@
         <!-- TAGLINE -->
         <section class="bg-[#3E0100] pb-20 flex justify-center">
             <div class="main-container flex justify-center">
-                <img src="https://i0.wp.com/skventuresigns.com/wp-content/uploads/2024/12/SK-tagline.png?v=9.9" class="w-full max-w-[950px] lightbox-trigger cursor-zoom-in">
+                <img src="https://i0.wp.com/skventuresigns.com/wp-content/uploads/2024/12/SK-tagline.png?v=10.4" class="w-full max-w-[950px] lightbox-trigger cursor-zoom-in">
             </div>
         </section>
 
@@ -568,7 +576,8 @@
                 <p class="text-xl md:text-2xl mb-12 max-w-4xl mx-auto leading-relaxed">
                     Ready to elevate your brand’s visibility? Reach out to S&K Venture Signs today for tailored digital solutions that meet your unique needs.
                 </p>
-                <a href="mailto:Scott.Robinson@skventuresigns.com" class="bg-white text-blue-900 px-16 py-5 rounded-full font-black uppercase tracking-widest shadow-2xl inline-block hover:scale-105 transition-all">Request A Quote</a>
+                <!-- Bold Border added to CTA -->
+                <a href="mailto:Scott.Robinson@skventuresigns.com" class="bg-white text-blue-900 px-16 py-5 rounded-full font-black uppercase tracking-widest shadow-2xl inline-block hover:scale-105 transition-all border-4 border-blue-900">Request A Quote</a>
             </div>
         </section>
     </main>
@@ -589,7 +598,7 @@
                 <div id="footer-address-container"></div>
             </div>
         </div>
-        <div class="main-container mt-20 pt-10 border-t border-white/10 text-center">
+        <div class="main-container mt-10 pt-6 border-t border-white/10 text-center">
             <h5 class="font-bold opacity-50 text-sm tracking-widest uppercase text-white">© 2026 S&K VENTURE SIGNS</h5>
         </div>
     </footer>
@@ -629,7 +638,7 @@
 
     <script>
         /**
-         * S&K UNIVERSAL ENGINE v9.9
+         * S&K UNIVERSAL ENGINE v10.4
          */
         const SYNC_CSV = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTZY38nsz_aJDO3cdtAwv4w359jK1aMt1rhBwZ3LAGarLyddtbBowFZv6mjlpnR1eGdNCpFhat8FuKp/pub?output=csv";
         const SERVICES_CSV = "https://docs.google.com/spreadsheets/d/e/2PACX-1vT9HBnWuIELZ5IxaTxuCpNgs5ep7Tz4NpaU8__laH9a1DK52CreOSM8IqQxUK95CMyzsmTmkHoTgc1b/pub?output=csv";
@@ -721,14 +730,15 @@
                         customTitleColor = 'text-black'; 
                     }
 
+                    // Added Borders to the generated button inside the template literal
                     grid.innerHTML += `
                         <div class="service-card ${isEven ? 'bg-[var(--card-bg)]' : 'bg-[#DAA421]'}">
-                            <img src="${imgs[i]?.trim()}?v=9.9" class="lightbox-trigger" onerror="this.src='https://via.placeholder.com/400x220?text=S%26K+Venture+Signs'">
+                            <img src="${imgs[i]?.trim()}?v=10.4" class="lightbox-trigger" onerror="this.src='https://via.placeholder.com/400x220?text=S%26K+Venture+Signs'">
                             <div class="text-center mt-4 flex-grow">
                                 <h3 class="text-2xl mb-2 ${customTitleColor}" style="font-family:'Abril Fatface', cursive;">${titleText}</h3>
                                 <p class="text-sm mb-6 ${isEven ? 'text-[var(--text-primary)] opacity-70' : 'text-[#3E0100]'} font-medium">${descs[i]}</p>
                             </div>
-                            <a href="${btnLinks[i]?.trim()}" class="py-3 rounded-full font-black uppercase text-xs tracking-widest text-white text-center ${isEven ? 'bg-[#2A0001]' : 'bg-[#023456]'} hover:scale-105 transition-all shadow-lg">${btnLabels[i]?.trim() || 'Learn More'}</a>
+                            <a href="${btnLinks[i]?.trim()}" class="block py-3 rounded-full font-black uppercase text-xs tracking-widest text-white text-center ${isEven ? 'bg-[#2A0001] border-2 border-gray-300' : 'bg-[#023456] border-2 border-white/50'} hover:scale-105 transition-all shadow-lg">${btnLabels[i]?.trim() || 'Learn More'}</a>
                         </div>
                     `;
                 }
