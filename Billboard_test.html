@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<!-- 
+    PROJECT: S & K Ventures Billboard - Consolidated Divi Version
+    ADMIN: Kevin (Werewolf3788)
+    VERSION: 2.4 (True Solar-Based Auto-Night Engine)
+    TIMESTAMP: May 7, 2026 - 12:05 AM EDT (New York Time)
+    
+    NO STRIPPING, NO COMPRESSING, DON'T CHANGE WHAT I DIDN'T SAY TO CHANGE.
+-->
+
+<!-- Framework Assets scoped for the Widget -->
+<script src="https://cdn.tailwindcss.com?v=2.4"></script>
+<script src="https://unpkg.com/lucide@latest"></script>
+
+<div id="sk-billboard-root-container" class="light-mode">
+    <div id="sk-billboard-display">
+        
+        <!-- Ad Stage: Full Width Images (Moved to top) -->
+        <div id="sk-ad-viewport">
+            <!-- Images injected via JavaScript & CSV -->
+        </div>
+
+        <!-- Bottom Bar: Branding, Weather, & Time -->
+        <div id="sk-bottom-bar">
+            <div class="sk-logo-group">
+                <div class="sk-logo">S & K VENTURES</div>
+                <div class="sk-bottom-phone">844-907-4450</div>
+            </div>
+            
+            <div class="sk-info-stack">
+                <div class="sk-weather">
+                    <div id="sk-temp-val">--°</div>
+                    <div id="sk-realfeel-val">REALFEEL --°</div>
+                </div>
+                <div id="sk-time-val">00:00</div>
+            </div>
+        </div>
+
+        <!-- LED Texture Overlay & Edge Vignette -->
+        <div class="sk-led-overlay"></div>
+    </div>
+</div>
+
+<style>
+    /* THEME VARIABLES (Dynamic Bright/Dark Switching) */
+    #sk-billboard-root-container {
+        --bb-bottom-bg: #ffffff;
+        --bb-text: #111111;
+        --bb-border: rgba(0, 0, 0, 0.2);
+        
+        all: initial !important;
+        display: block !important;
+        width: 100% !important;
+        margin: 0 auto !important;
+        padding: 0 !important;
+        background: transparent !important;
+        font-family: 'Arial Black', Gadget, sans-serif !important;
+        box-sizing: border-box !important;
+        position: relative !important;
+        z-index: 1 !important;
+    }
+
+    #sk-billboard-root-container.dark-mode {
+        --bb-bottom-bg: rgba(0, 0, 0, 0.85);
+        --bb-text: #ffffff;
+        --bb-border: rgba(255, 255, 255, 0.2);
+    }
+
+    #sk-billboard-display {
+        position: relative !important;
+        width: 100% !important;
+        min-height: 450px !important;
+        background: #000 !important;
+        border: 4px solid #1a1a1a !important;
+        display: flex !important;
+        flex-direction: column !important;
+        overflow: hidden !important;
+        box-shadow: 0 20px 60px rgba(0,0,0,0.8) !important;
+    }
+
+    /* AD VIEWPORT (Takes up the top space) */
+    #sk-ad-viewport {
+        flex: 1 !important;
+        width: 100% !important;
+        position: relative !important;
+        background: #000 !important;
+    }
+
+    .sk-ad-slide {
+        position: absolute !important;
+        inset: 0 !important;
+        display: none !important;
+        justify-content: center !important;
+        align-items: center !important;
+    }
+
+    .sk-ad-slide.active {
+        display: flex !important;
+    }
+
+    /* Dynamic Brightness Control & White Bleed Protection */
+    .sk-ad-slide img {
+        width: 100% !important;
+        height: 100% !important;
+        object-fit: fill !important; /* Highway standard: fill the frame */
+        /* Daytime setting: Slightly cuts harsh whites */
+        filter: saturate(1.1) contrast(1.05) brightness(0.95) !important;
+        transition: filter 0.8s ease !important;
+    }
+
+    /* Nighttime setting: Dims screen significantly to prevent blinding drivers */
+    .dark-mode .sk-ad-slide img {
+        filter: saturate(1.1) contrast(1.05) brightness(0.75) !important;
+    }
+
+    /* BOTTOM BAR AREA (Styled with Theme Vars) */
+    #sk-bottom-bar {
+        flex: 0 0 80px !important;
+        background: var(--bb-bottom-bg) !important;
+        display: flex !important;
+        justify-content: space-between !important;
+        align-items: center !important;
+        padding: 0 30px !important;
+        border-top: 2px solid rgba(250, 196, 41, 0.5) !important;
+        z-index: 10 !important;
+        transition: background 0.4s ease !important;
+    }
+
+    .sk-logo-group {
+        display: flex !important;
+        align-items: baseline !important;
+        gap: 15px !important;
+    }
+
+    .sk-logo {
+        color: #FAC429 !important;
+        font-weight: 900 !important;
+        font-size: clamp(20px, 3vw, 36px) !important;
+        letter-spacing: 3px !important;
+        text-shadow: 1px 1px 3px rgba(0,0,0,0.8) !important; 
+    }
+
+    .sk-bottom-phone {
+        color: var(--bb-text) !important;
+        font-weight: 900 !important;
+        font-size: clamp(20px, 3vw, 36px) !important; 
+        letter-spacing: 3px !important; 
+        transition: color 0.4s ease !important;
+    }
+
+    .sk-info-stack {
+        display: flex !important;
+        align-items: center !important;
+        gap: 25px !important;
+        color: var(--bb-text) !important;
+        transition: color 0.4s ease !important;
+    }
+
+    .sk-weather {
+        text-align: right !important;
+        line-height: 0.9 !important;
+    }
+
+    #sk-temp-val {
+        font-size: clamp(22px, 3.5vw, 44px) !important;
+        font-weight: 900 !important;
+        transition: color 0.5s ease, text-shadow 0.5s ease !important;
+    }
+
+    #sk-realfeel-val {
+        font-size: 11px !important;
+        text-transform: uppercase !important;
+        color: inherit !important;
+        opacity: 0.6 !important;
+        font-family: sans-serif !important;
+        margin-top: 4px !important;
+        font-weight: bold !important;
+    }
+
+    #sk-time-val {
+        font-size: clamp(18px, 2.5vw, 32px) !important;
+        font-weight: 700 !important;
+        font-family: 'Courier New', monospace !important;
+        border-left: 2px solid var(--bb-border) !important;
+        padding-left: 25px !important;
+        transition: border-color 0.4s ease !important;
+    }
+
+    /* LED HARDWARE EFFECT & VIGNETTE FRAME */
+    .sk-led-overlay {
+        position: absolute !important;
+        inset: 0 !important;
+        /* LED Dots */
+        background-image: radial-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 1px) !important;
+        background-size: 3px 3px !important;
+        /* Heavy inset shadow provides a physical frame to stop white images from bleeding */
+        box-shadow: inset 0 0 50px rgba(0,0,0,0.6) !important;
+        pointer-events: none !important;
+        z-index: 100 !important;
+        transition: box-shadow 0.8s ease !important;
+    }
+
+    .dark-mode .sk-led-overlay {
+        box-shadow: inset 0 0 80px rgba(0,0,0,0.85) !important;
+    }
+
+    /* MOBILE TWEAKS */
+    @media (max-width: 768px) {
+        #sk-bottom-bar { padding: 0 15px !important; height: 65px !important; }
+        .sk-logo-group { flex-direction: column !important; align-items: flex-start !important; gap: 0 !important; }
+        .sk-logo { font-size: 16px !important; letter-spacing: 1px !important; }
+        .sk-bottom-phone { font-size: 16px !important; letter-spacing: 1px !important; } 
+        .sk-info-stack { gap: 10px !important; }
+        #sk-time-val { padding-left: 10px !important; font-size: 16px !important; }
+        #sk-temp-val { font-size: 20px !important; }
+        #sk-billboard-display { min-height: 300px !important; }
+    }
+</style>
+
+<script>
+(function() {
+    const CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vT9aXB9z9jcsaA0U-LsuV4nIHwIIw2huGB8zaalh7It4GQP_DWFFdQ4Utaw_ajkdhx5ydn87BcfS82d/pub?output=csv";
+    const displayInterval = 12000; 
+    let currentAdIndex = 0;
+    let adSlideElements = [];
+    let lastWeatherData = null; 
+
+    // Global variables for Localization & Solar Data
+    let targetTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone; 
+    let isNightTimeSolar = null; // Stored from Open-Meteo API
+
+    // Base fallback array in case CSV fails to load
+    let adImages = [
+        "https://i0.wp.com/skventuresigns.com/wp-content/uploads/2025/06/xplozive-entertainment.jpg?fit=640%2C320&ssl=1"
+    ];
+
+    /* --- V2.4: STRICT SOLAR-DRIVEN THEME ENGINE --- */
+    function syncTimeTheme() {
+        const root = document.getElementById('sk-billboard-root-container');
+        if (!root) return;
+        
+        let isNightTime = false;
+
+        // Use precise solar positioning from Open-Meteo if available
+        if (isNightTimeSolar !== null) {
+            isNightTime = isNightTimeSolar;
+        } else {
+            // Fallback safety logic if API is blocked
+            const hour = new Date().getHours();
+            isNightTime = (hour < 6 || hour >= 19);
+        }
+        
+        if (isNightTime) {
+            if (!root.classList.contains('dark-mode')) {
+                root.classList.add('dark-mode');
+                root.classList.remove('light-mode');
+                if(lastWeatherData) updateWeatherUI(lastWeatherData);
+            }
+        } else {
+            if (!root.classList.contains('light-mode')) {
+                root.classList.add('light-mode');
+                root.classList.remove('dark-mode');
+                if(lastWeatherData) updateWeatherUI(lastWeatherData);
+            }
+        }
+    }
+
+    /* --- CSV PARSING ENGINE --- */
+    function parseCSVRow(text) {
+        const result = [];
+        let current = '';
+        let inQuotes = false;
+        for (let i = 0; i < text.length; i++) {
+            const char = text[i];
+            if (char === '"') { inQuotes = !inQuotes; }
+            else if (char === ',' && !inQuotes) { result.push(current.trim()); current = ''; }
+            else { current += char; }
+        }
+        result.push(current.trim());
+        return result.map(v => v.replace(/^"|"$/g, ''));
+    }
+
+    async function fetchAdImages() {
+        try {
+            const res = await fetch(`${CSV_URL}&t=${Date.now()}`);
+            const text = await res.text();
+            const lines = text.split(/\r?\n/);
+            
+            let loadedUrls = [];
+            lines.forEach((line, idx) => {
+                if (idx === 0) return; 
+                if (!line.trim()) return; 
+                
+                const row = parseCSVRow(line);
+                const imgUrl = row[2]; // Column C 
+                
+                if (imgUrl && imgUrl.startsWith('http')) {
+                    loadedUrls.push(imgUrl);
+                }
+            });
+
+            if (loadedUrls.length > 0) {
+                adImages = loadedUrls;
+            }
+        } catch (e) {
+            console.warn("Billboard Widget: CSV Sync Failed. Using fallback images.");
+        }
+    }
+
+    /* --- WEATHER, DYNAMIC TIMEZONE, & SOLAR GEOLOCATION ENGINE --- */
+    async function fetchWeather(lat, lon) {
+        try {
+            // V2.4: Added 'is_day' parameter to fetch astronomical daylight status
+            const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,apparent_temperature,is_day&temperature_unit=fahrenheit&timezone=auto`;
+            const res = await fetch(url);
+            const data = await res.json();
+            
+            if (data.timezone) targetTimeZone = data.timezone;
+            
+            // 0 = Night, 1 = Day. Calculates exact sunrise/sunset for these physical coordinates.
+            if (data.current.is_day !== undefined) {
+                isNightTimeSolar = (data.current.is_day === 0);
+            }
+
+            const weatherData = {
+                temp: Math.round(data.current.temperature_2m),
+                realfeel: Math.round(data.current.apparent_temperature)
+            };
+            lastWeatherData = weatherData; 
+            return weatherData;
+        } catch(e) {
+            console.warn("Weather/Solar fetch failed.");
+            return null;
+        }
+    }
+
+    function updateWeatherUI(weather) {
+        if(!weather) return;
+        const tempDisplay = document.getElementById('sk-temp-val');
+        const feelDisplay = document.getElementById('sk-realfeel-val');
+        
+        if(tempDisplay && feelDisplay) {
+            tempDisplay.innerText = `${weather.temp}°`;
+            feelDisplay.innerText = `REALFEEL ${weather.realfeel}°`;
+            
+            // Color mapping logic
+            let tempColor = "#ffffff";
+            const t = weather.temp;
+            if (t <= 32) tempColor = "#00f2ff"; 
+            else if (t <= 50) tempColor = "#0ea5e9"; 
+            else if (t <= 75) tempColor = "#FAC429"; 
+            else if (t <= 90) tempColor = "#f97316"; 
+            else tempColor = "#ef4444"; 
+            
+            tempDisplay.style.color = tempColor;
+            tempDisplay.style.textShadow = `1px 1px 2px rgba(0,0,0,0.8), 0 0 15px ${tempColor}66`;
+        }
+    }
+
+    function initWeather() {
+        if ("geolocation" in navigator) {
+            navigator.geolocation.getCurrentPosition(
+                async (position) => {
+                    const weather = await fetchWeather(position.coords.latitude, position.coords.longitude);
+                    updateWeatherUI(weather);
+                    syncTimeTheme(); // Force theme sync immediately after solar data loads
+                },
+                async (error) => {
+                    const weather = await fetchWeather(39.1243, -88.5525); // Fallback: Effingham, IL
+                    updateWeatherUI(weather);
+                    syncTimeTheme(); 
+                },
+                { timeout: 5000 }
+            );
+        } else {
+            fetchWeather(39.1243, -88.5525).then(weather => {
+                updateWeatherUI(weather);
+                syncTimeTheme();
+            });
+        }
+    }
+
+    /* --- BILLBOARD LOGIC --- */
+    function rotateAds() {
+        if(adSlideElements.length === 0) return;
+        adSlideElements[currentAdIndex].classList.remove('active');
+        currentAdIndex = (currentAdIndex + 1) % adSlideElements.length;
+        adSlideElements[currentAdIndex].classList.add('active');
+    }
+
+    function updateLocalTime() {
+        const timeEl = document.getElementById('sk-time-val');
+        if(!timeEl) return;
+        const now = new Date();
+        
+        try {
+            timeEl.innerText = now.toLocaleTimeString('en-US', {
+                timeZone: targetTimeZone, 
+                hour: '2-digit', 
+                minute:'2-digit', 
+                hour12: true
+            });
+        } catch (e) {
+            timeEl.innerText = now.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit', hour12: true});
+        }
+    }
+
+    async function startBillboard() {
+        // Run safety fallback theme before solar data loads
+        syncTimeTheme();
+
+        // Load Ad Data
+        await fetchAdImages();
+
+        const viewport = document.getElementById('sk-ad-viewport');
+        if(!viewport) return;
+
+        adImages.forEach((url, idx) => {
+            const slide = document.createElement('div');
+            slide.className = `sk-ad-slide ${idx === 0 ? 'active' : ''}`;
+            const image = document.createElement('img');
+            image.src = url;
+            slide.appendChild(image);
+            viewport.appendChild(slide);
+            adSlideElements.push(slide);
+        });
+
+        // Fire Up Hardware & Timers
+        initWeather(); // Fetches weather AND solar data
+        setTimeout(() => {
+            updateLocalTime();
+            setInterval(updateLocalTime, 1000);
+        }, 500);
+        
+        // Background Loops
+        setInterval(rotateAds, displayInterval);
+        setInterval(initWeather, 600000); // 10 min solar/weather refresh
+    }
+
+    if (document.readyState === "complete" || document.readyState === "interactive") {
+        startBillboard();
+    } else {
+        document.addEventListener("DOMContentLoaded", startBillboard);
+    }
+})();
+</script>
