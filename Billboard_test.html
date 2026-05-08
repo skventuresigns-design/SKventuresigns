@@ -2,9 +2,9 @@
 <!-- 
     PROJECT: S & K Ventures Billboard - Consolidated Divi Version
     ADMIN: Kevin (Werewolf3788)
-    VERSION: 4.18 (Asset Integration - Scaled Brand Image to Edge)
+    VERSION: 4.20 (Asset Integration - Lowered Brand Image + Hourly Swapping)
     STANDARDS: GitHack Compatible, Master Dev Protocol, No-Strip
-    TIMESTAMP: May 7, 2026 - 8:01 PM EDT (New York Time)
+    TIMESTAMP: May 7, 2026 - 8:13 PM EDT (New York Time)
     
     NO STRIPPING, NO COMPRESSING, DON'T CHANGE WHAT I DIDN'T SAY TO CHANGE.
 -->
@@ -13,7 +13,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Satisfy&family=Pinyon+Script&family=Rouge+Script&family=Alex+Brush&display=swap" rel="stylesheet">
 
 <!-- Framework Assets scoped for the Widget -->
-<script src="https://cdn.tailwindcss.com?v=4.18"></script>
+<script src="https://cdn.tailwindcss.com?v=4.20"></script>
 <script src="https://unpkg.com/lucide@latest"></script>
 
 <!-- Google Analytics: Boss Tracking + Watermark Tracking -->
@@ -23,7 +23,7 @@
     window.dataLayer = window.dataLayer || [];
     function gtag(){dataLayer.push(arguments);}
     gtag('js', new Date());
-    gtag('config', 'G-H6Q756MVE8', { 'page_type': 'billboard_widget_v4.18', 'layout_version': '4.18' });
+    gtag('config', 'G-H6Q756MVE8', { 'page_type': 'billboard_widget_v4.20', 'layout_version': '4.20' });
     gtag('config', 'G-L376P3NPY4');
 </script>
 
@@ -64,9 +64,10 @@
 
         <!-- Full-Width Bottom Bar: Branding, Weather, & Time -->
         <div id="sk-bottom-bar">
-            <div class="sk-logo-group">
+            <!-- Brand Logo Group (Dynamically positioned via JS) -->
+            <div class="sk-logo-group pos-left">
                 <div class="sk-logo">
-                    <!-- Brand Image Integration v4.18 -->
+                    <!-- Brand Image Integration v4.20 -->
                     <img src="https://raw.githack.com/Werewolf3788/SKVentureSigns/main/images/S%26K%20Name.png" 
                          alt="S&K Venture Signs" 
                          class="sk-brand-img"
@@ -75,8 +76,8 @@
                 </div>
             </div>
             
-            <!-- Phone Number Centered -->
-            <div class="sk-bottom-phone">844-907-4450</div>
+            <!-- Phone Number (Dynamically positioned via JS) -->
+            <div class="sk-bottom-phone pos-center">844-907-4450</div>
             
             <div class="sk-info-stack">
                 <div class="sk-weather">
@@ -284,11 +285,40 @@
         transition: all 0.4s ease !important;
     }
 
+    /* Base Setup for Swap Elements */
     .sk-logo-group { 
         display: flex !important; 
         align-items: center !important; 
         gap: 20px !important; 
-        height: 100% !important; /* Force to take full bar height */
+        height: 100% !important; 
+        z-index: 15 !important;
+        transition: all 0.8s ease-in-out !important; /* Smooth sliding transition */
+    }
+
+    .sk-bottom-phone {
+        color: var(--bb-text) !important;
+        font-weight: 900 !important;
+        font-size: clamp(24px, 5cqw, 55px) !important; 
+        letter-spacing: 5px !important; 
+        white-space: nowrap !important;
+        z-index: 15 !important;
+        -webkit-text-stroke: 1.5px black !important;
+        display: flex !important;
+        align-items: center !important;
+        transition: all 0.8s ease-in-out !important; /* Smooth sliding transition */
+    }
+
+    /* Dynamic Position Classes injected via JS Hourly */
+    .pos-center {
+        position: absolute !important;
+        left: 50% !important;
+        transform: translateX(-50%) !important;
+    }
+
+    .pos-left {
+        position: relative !important;
+        left: 0 !important;
+        transform: none !important;
     }
 
     .sk-logo {
@@ -297,12 +327,13 @@
         white-space: nowrap !important;
         display: flex !important;
         align-items: center !important;
-        height: 100% !important; /* Force to take full bar height */
+        height: 100% !important;
+        justify-content: center !important;
     }
 
-    /* BRAND IMAGE STYLING v4.18 - Height fit to footer & scaled to bypass image padding */
+    /* BRAND IMAGE STYLING v4.20 - Lowered 4px via translateY */
     .sk-brand-img {
-        height: 100% !important; /* Stretch exactly to top and bottom bounds */
+        height: 100% !important;
         max-height: 100% !important;
         width: auto !important;
         object-fit: contain !important;
@@ -310,8 +341,8 @@
         filter: drop-shadow(2px 2px 4px rgba(0,0,0,0.5)) !important;
         margin: 0 !important;
         padding: 0 !important;
-        transform: scale(1.8) !important; /* Forces the internal letters to the edge by zooming in 180% */
-        transform-origin: left center !important; /* Anchors it cleanly to the left padding line */
+        transform: scale(1.8) translateY(4px) !important; /* Forces letters to edge, translateY shifts it down */
+        transform-origin: center center !important; 
     }
 
     /* Fallback Font Styling if image fails */
@@ -321,25 +352,12 @@
         font-size: clamp(20px, 4cqw, 45px) !important;
     }
 
-    /* Phone Number & Time Clamps */
-    .sk-bottom-phone {
-        position: absolute !important;
-        left: 50% !important;
-        transform: translateX(-50%) !important;
-        color: var(--bb-text) !important;
-        font-weight: 900 !important;
-        font-size: clamp(24px, 5cqw, 55px) !important; 
-        letter-spacing: 5px !important; 
-        white-space: nowrap !important;
-        z-index: 15 !important;
-        -webkit-text-stroke: 1.5px black !important;
-    }
-
     .sk-info-stack {
         display: flex !important;
         align-items: center !important;
         gap: 40px !important;
         color: var(--bb-text) !important;
+        z-index: 15 !important;
     }
 
     .sk-weather { display: flex !important; flex-direction: column !important; align-items: center !important; justify-content: center !important; }
@@ -402,6 +420,7 @@
     let isNightTimeSolar = null; 
     let interactionTimer;
     let currentImageUrls = [];
+    let currentHourTracker = null; // Used to track when the hour changes
 
     window.handleInteraction = function() {
         const backBtn = document.getElementById('ghost-back-btn');
@@ -533,13 +552,47 @@
         adSlideElements[currentAdIndex].classList.add('active');
     }
 
+    function updateHourlySwap(hr) {
+        const logoGroup = document.querySelector('.sk-logo-group');
+        const phoneDiv = document.querySelector('.sk-bottom-phone');
+        if (!logoGroup || !phoneDiv) return;
+
+        if (hr % 2 === 0) {
+            // Even Hour (e.g. 2:00, 4:00) -> Image Center, Phone Left
+            logoGroup.classList.add('pos-center');
+            logoGroup.classList.remove('pos-left');
+            phoneDiv.classList.add('pos-left');
+            phoneDiv.classList.remove('pos-center');
+        } else {
+            // Odd Hour (e.g. 3:00, 5:00) -> Phone Center, Image Left
+            phoneDiv.classList.add('pos-center');
+            phoneDiv.classList.remove('pos-left');
+            logoGroup.classList.add('pos-left');
+            logoGroup.classList.remove('pos-center');
+        }
+    }
+
     function updateLocalTime() {
         const timeEl = document.getElementById('sk-time-val');
         if(!timeEl) return;
+        
+        let currentHr = new Date().getHours();
+
         try {
-            timeEl.innerText = new Date().toLocaleTimeString('en-US', { timeZone: targetTimeZone, hour: '2-digit', minute:'2-digit', hour12: true });
+            const timeString = new Date().toLocaleTimeString('en-US', { timeZone: targetTimeZone, hour: '2-digit', minute:'2-digit', hour12: true });
+            timeEl.innerText = timeString;
+            
+            // Derive accurately adjusted hour based on targetTimeZone
+            const tzDate = new Date(new Date().toLocaleString('en-US', { timeZone: targetTimeZone }));
+            currentHr = tzDate.getHours();
         } catch (e) {
             timeEl.innerText = new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit', hour12: true});
+        }
+
+        // Trigger hourly position swap
+        if (currentHourTracker !== currentHr) {
+            currentHourTracker = currentHr;
+            updateHourlySwap(currentHr);
         }
     }
 
@@ -547,6 +600,7 @@
         if (typeof lucide !== 'undefined') lucide.createIcons();
         syncTimeTheme();
         await fetchAdImages();
+        
         if ("geolocation" in navigator) {
             navigator.geolocation.getCurrentPosition(
                 async (p) => { updateWeatherUI(await fetchWeather(p.coords.latitude, p.coords.longitude)); syncTimeTheme(); },
@@ -556,7 +610,10 @@
         } else {
             fetchWeather(39.1243, -88.5525).then(w => { updateWeatherUI(w); syncTimeTheme(); });
         }
-        setTimeout(() => { updateLocalTime(); setInterval(updateLocalTime, 1000); }, 500);
+        
+        updateLocalTime(); // Run immediately so things get placed properly before interval fires
+        
+        setTimeout(() => { setInterval(updateLocalTime, 1000); }, 500);
         setInterval(rotateAds, displayInterval);
         setInterval(syncTimeTheme, 300000); 
         setInterval(() => fetchAdImages(true), 60000);
