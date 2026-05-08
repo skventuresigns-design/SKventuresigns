@@ -1,0 +1,413 @@
+:root {
+    /* Kevin's Admin Global Settings */
+    --divi-header: 30px;
+    --divi-body: 14px;
+    --divi-section: 50px;
+    --divi-row: 30px;
+
+    /* S&K Brand Palette */
+    --sk-maroon: rgb(62, 1, 0);
+    --sk-gold: #FFC627;
+    --sk-gold-alt: rgb(255, 192, 0);
+    --sk-nav-gold: rgb(218, 164, 33);
+    --sk-separator: rgb(187, 162, 140);
+    --sk-adv-blue: rgb(33, 158, 188);
+    
+    /* Theme & Logic Colors */
+    --bg-primary: #fcfcfc;
+    --text-primary: #333333;
+    --card-bg: #ffffff;
+    
+    /* Default Outline: Transparent (No color) */
+    --outline-color: transparent;
+    --outline-width: 1.5px;
+
+    /* Precision Dimensions Locked */
+    --header-height: 125px;
+    --header-scrolled-height: 75px; 
+    --container-width: 80%;
+    --ultra-wide-max: 1800px;
+}
+
+/* -----------------------------------------------------------
+    GLOBAL TYPOGRAPHY & RESET
+----------------------------------------------------------- */
+html, body {
+    overflow-x: hidden;
+    font-family: 'Poppins', sans-serif;
+    font-size: var(--divi-body);
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+    -webkit-tap-highlight-color: transparent;
+    line-height: 1.6;
+    margin: 0;
+    padding-top: 0;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+/* GLOBAL PRECISION OUTLINE LOGIC */
+* {
+    text-shadow: 
+        calc(var(--outline-width) * -1) calc(var(--outline-width) * -1) 0 var(--outline-color),
+        var(--outline-width) calc(var(--outline-width) * -1) 0 var(--outline-color),
+        calc(var(--outline-width) * -1) var(--outline-width) 0 var(--outline-color),
+        var(--outline-width) var(--outline-width) 0 var(--outline-color);
+}
+
+h1, h2, h3, h4, h5 { 
+    font-family: 'Abril Fatface', cursive; 
+    font-size: var(--divi-header); 
+    line-height: 1.2;
+}
+
+.main-container {
+    width: var(--container-width);
+    max-width: var(--ultra-wide-max);
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* -----------------------------------------------------------
+    HEADER & NAVIGATION
+----------------------------------------------------------- */
+header#main-header {
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    border-bottom: 4px solid var(--sk-separator);
+    height: var(--header-height);
+    background-color: var(--sk-maroon);
+}
+
+.header-scrolled { 
+    background-color: var(--card-bg) !important; 
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2); 
+    height: var(--header-scrolled-height) !important;
+}
+
+#header-logo {
+    display: block;
+    width: 320px;
+    height: auto;
+    aspect-ratio: 4163 / 1391;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.header-scrolled #header-logo { width: 190px; }
+
+.nav-link {
+    font-family: "Open Sans", Arial, sans-serif;
+    font-size: 16px; 
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: #FFFFFF;
+    transition: all 0.4s ease-in-out;
+    text-decoration: none;
+}
+.nav-link:hover, .nav-link.active { color: var(--sk-gold) !important; }
+.header-scrolled .nav-link { color: var(--text-primary); }
+.header-scrolled .nav-link.active { color: var(--sk-gold) !important; }
+
+/* V10.9/10.10 Smart Tab Indicators for Nav Links */
+.nav-link.already-open:hover { 
+    color: #FF4500 !important; /* Glows Jet Orange to indicate it will switch tabs */
+}
+
+/* -----------------------------------------------------------
+    PAGE CONTENT SPECIFIC (Typography Overrides)
+----------------------------------------------------------- */
+.hero-title-precision {
+    font-family: Georgia, "Times New Roman", serif !important;
+    font-size: 54px !important;
+    font-weight: 500 !important;
+    line-height: 62.1px !important;
+    color: #FFFFFF !important;
+    text-align: center;
+}
+
+.hero-label-precision {
+    font-family: Poppins, Helvetica, Arial, sans-serif !important;
+    font-size: 14px !important;
+    font-weight: 500 !important;
+    letter-spacing: 1px !important;
+    line-height: 19.6px !important;
+    text-transform: uppercase !important;
+    color: rgb(33, 158, 188) !important;
+    display: block;
+    margin-bottom: 10px;
+}
+
+.fair-heading-precision {
+    font-family: "Abril Fatface", cursive !important;
+    font-size: 48px !important;
+    font-weight: 500 !important;
+    line-height: 67.2px !important;
+    color: #FFC000 !important;
+    text-decoration: underline !important;
+}
+
+.fair-date-precision {
+    font-family: "Abril Fatface", cursive !important;
+    font-size: 45px !important;
+    font-weight: 500 !important;
+    line-height: 45px !important;
+    color: #FFFFFF !important;
+}
+
+.fair-desc-precision {
+    font-family: "Abril Fatface", cursive !important;
+    font-size: 20px !important;
+    font-weight: 500 !important;
+    line-height: 28px !important;
+    color: #FFFFFF !important;
+}
+
+.fair-location-precision {
+    font-family: "Abril Fatface", cursive !important;
+    font-size: 20px !important;
+    font-weight: 500 !important;
+    line-height: 28px !important;
+    color: #FFC000 !important;
+}
+
+/* Divider Component Styles */
+.et_pb_divider_internal {
+    border-top: 3px solid #FFC627;
+    width: 100%;
+    display: block;
+    margin: 0 auto;
+}
+.et_pb_divider {
+    padding: 15px 0;
+    width: 100%;
+}
+
+.get-started-btn {
+    background-color: #FFFFFF;
+    color: #000000;
+    border: 2px solid #000000;
+    border-radius: 9px;
+    font-family: "Open Sans", Arial, sans-serif;
+    font-size: 20px;
+    font-weight: 500;
+    width: 149px;
+    height: 45px;
+    padding: 0;
+    margin: 0 auto;
+    transition: all 0.3s ease;
+    display: inline-block;
+    text-decoration: none;
+}
+.get-started-btn:hover {
+    background-color: var(--sk-maroon) !important;
+    color: var(--sk-gold) !important;
+}
+
+.rental-heading-precision {
+    font-family: Georgia, "Times New Roman", serif !important;
+    font-size: 42px !important;
+    font-weight: 700 !important;
+    line-height: 58.8px !important;
+    color: #FFFFFF !important;
+    text-align: center;
+}
+
+.advertising-hero {
+    position: relative; 
+    min-height: 625px; 
+    background-image: linear-gradient(rgba(0, 0, 0, 0.5) 0%, rgba(0, 0, 0, 0.5) 100%), 
+                      url('[https://skventuresigns.com/wp-content/uploads/2025/03/Screenshot-2025-03-21-143543.png?v=10.7](https://skventuresigns.com/wp-content/uploads/2025/03/Screenshot-2025-03-21-143543.png?v=10.7)');
+    background-size: cover; 
+    background-position: center;
+    display: flex; 
+    align-items: center;
+    padding-top: var(--header-height);
+}
+
+.adventurous-divider {
+    position: relative; 
+    min-height: 600px;
+    background-image: url('[https://skventuresigns.com/wp-content/uploads/2024/12/skbackground.png?v=10.7](https://skventuresigns.com/wp-content/uploads/2024/12/skbackground.png?v=10.7)');
+    background-size: cover; 
+    background-position: center;
+    display: flex; 
+    align-items: center; 
+    padding: 4rem 0;
+}
+
+.service-card { 
+    box-shadow: 0 4px 20px rgba(0,0,0,0.1); 
+    transition: transform 0.3s ease; 
+    padding: 25px; 
+    height: 100%; 
+    display: flex; 
+    flex-direction: column; 
+    border-radius: 24px;
+    border: 1px solid rgba(0,0,0,0.05);
+}
+.service-card:hover { transform: translateY(-8px); }
+.service-card img { height: 220px; object-fit: contain; margin-bottom: 15px; cursor: zoom-in; }
+
+/* Dynamic Contrast Logic for Advertising/Sales Titles */
+.dynamic-ad-title { 
+    color: #000000 !important; 
+    transition: color 0.3s ease;
+}
+.dark-mode .dynamic-ad-title { 
+    color: #FFC627 !important; 
+}
+
+/* -----------------------------------------------------------
+    V10.10 SMART TAB STYLING FOR BUTTONS
+----------------------------------------------------------- */
+.smart-tab-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.smart-tab-btn.already-open:hover {
+    background: linear-gradient(180deg, #FF6A33 0%, #FF4500 100%) !important;
+    color: #fff !important;
+    border-color: #FF4500 !important;
+    box-shadow: 0 4px 15px rgba(255, 69, 0, 0.4) !important;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.3) !important;
+}
+.smart-tab-btn.already-open:hover .btn-text {
+    display: none;
+}
+.smart-tab-btn.already-open:hover::after {
+    content: "SWITCH TO TAB";
+}
+
+/* -----------------------------------------------------------
+    BRANDING & THEME UI
+----------------------------------------------------------- */
+.kf-signature {
+    position: fixed;
+    bottom: 10px;
+    left: 10px;
+    display: flex;
+    align-items: center;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 900;
+    font-size: 24px;
+    z-index: 9999;
+    pointer-events: none;
+    opacity: 0.7;
+}
+.kf-k { color: #FF4500; transform: scaleX(-1); z-index: 2; }
+.kf-f { color: #000000; margin-left: -0.22em; z-index: 1; }
+.dark-mode .kf-f { color: #FFFFFF; }
+
+.theme-toggle-wrapper {
+    position: fixed;
+    top: 140px;
+    right: 20px;
+    z-index: 1001;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 10px;
+}
+.theme-toggle-panel {
+    background: var(--card-bg);
+    padding: 15px;
+    border-radius: 15px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    border: 2px solid var(--sk-gold);
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    transform-origin: right top;
+}
+.theme-toggle-panel.hidden-settings {
+    transform: scale(0) translateX(50px);
+    opacity: 0;
+    pointer-events: none;
+}
+.settings-toggle-btn {
+    background: var(--sk-maroon);
+    color: var(--sk-gold);
+    width: 45px;
+    height: 45px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    transition: all 0.3s ease;
+}
+
+/* -----------------------------------------------------------
+    MODAL SYSTEM
+----------------------------------------------------------- */
+.sk-modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.85);
+    backdrop-filter: blur(8px);
+    z-index: 9999;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+.sk-modal-content {
+    background: var(--card-bg);
+    width: 100%;
+    max-width: 450px;
+    border-radius: 24px;
+    border: 4px solid var(--sk-separator);
+    overflow: hidden;
+}
+.smart-option {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 16px 20px;
+    background: rgba(128,128,128,0.1);
+    border-radius: 16px;
+    margin-bottom: 10px;
+    cursor: pointer;
+    transition: 0.2s;
+    text-decoration: none;
+    color: var(--text-primary);
+    font-weight: 700;
+}
+.smart-option:hover { 
+    background: var(--sk-gold); 
+    color: var(--sk-maroon) !important; 
+    transform: translateX(5px); 
+}
+
+/* -----------------------------------------------------------
+    FOOTER SYMMETRY
+----------------------------------------------------------- */
+footer#main-footer {
+    background-color: var(--sk-maroon);
+    color: white;
+    border-top: 5px solid var(--sk-separator);
+    padding: 60px 0 30px 0; /* Slightly increased top padding to bring the footer down a little bit more */
+}
+.footer-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 40px;
+    text-align: center;
+}
+.footer-col { display: flex; flex-direction: column; align-items: center; }
+.footer-label { 
+    font-family: Georgia, serif; font-size: 14px; font-weight: 500; 
+    margin-bottom: 15px; color: white; opacity: 0.8;
+}
+.footer-value { 
+    font-family: "Abril Fatface", display; font-size: 18px; 
+    cursor: pointer; transition: 0.3s; margin-bottom: 5px; color: #FFFFFF;
+}
+.footer-value:hover { color: var(--sk-gold); }
+
+@media (max-width: 1023px) {
+    :root { --header-height: 100px; --container-width: 90%; }
+    .advertising-hero { padding-top: 100px; }
+    #header-logo { width: 220px; }
+    .footer-grid { grid-template-columns: 1fr; gap: 40px; }
+    .hero-title-precision { font-size: 38px !important; line-height: 1.2 !important; }
+    .fair-heading-precision { font-size: 32px !important; line-height: 1.2 !important; }
+}
