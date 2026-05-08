@@ -6,11 +6,13 @@
         ADMIN: Kevin (DJ Werewolf) - Admin
         CLIENT: Scott (S&K Venture Signs)
         STANDARDS: Responsive, No-Minify, G-Tag Integrated, GitHack Compatible
-        VERSION: 10.9 (Smart Tab Management Integration)
+        VERSION: 10.11 (Precise Button Sizing)
         TECHNICAL: Precision Integration, Auto-Night Mode, High-Contrast Outlines, Dual-Column Mapping (A: Street, B: City/State/Zip)
-        TIMESTAMP: May 7, 2026 - 9:07 PM EDT (New York Time)
+        TIMESTAMP: May 7, 2026 - 9:12 PM EDT (New York Time)
         
         NO STRIPPING, NO COMPRESSING, DON'T CHANGE WHAT I DIDN'T SAY TO CHANGE.
+        FIX: Adjusted "Get Started" button to precise dimensions (149px width, 45px height) as requested via image data.
+        FIX: Upgraded Smart Tab Management to use window.open().focus() to aggressively force the browser to switch view to the open tab.
         FIX: Integrated Session-Aware Smart Tab Management to prevent duplicate browser tabs.
         FIX: Added Jet Orange hover state and "SWITCH TO TAB" text swap for opened Service Card links.
         FIX: Added Jet Orange hover state for opened Header Navigation links (text swap omitted on nav to preserve layout width).
@@ -54,14 +56,14 @@
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
-      gtag('config', 'G-H6Q756MVE8', { 'page_type': 'global_framework_v10.9_home' });
+      gtag('config', 'G-H6Q756MVE8', { 'page_type': 'global_framework_v10.11_home' });
       gtag('config', 'G-L376P3YPY4');
     </script>
 
     <!-- External Assets with Smart Cache Buster -->
-    <script src="https://cdn.tailwindcss.com?v=10.9"></script>
-    <script src="https://unpkg.com/lucide@latest?v=10.9"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Abril+Fatface&family=Poppins:wght@400;500;600;700&family=Open+Sans:wght@600;700&display=swap&v=10.9" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com?v=10.11"></script>
+    <script src="https://unpkg.com/lucide@latest?v=10.11"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Abril+Fatface&family=Poppins:wght@400;500;600;700&family=Open+Sans:wght@600;700&display=swap&v=10.11" rel="stylesheet">
 
     <style>
         :root {
@@ -172,7 +174,7 @@
         .header-scrolled .nav-link { color: var(--text-primary); }
         .header-scrolled .nav-link.active { color: var(--sk-gold) !important; }
 
-        /* V10.9 Smart Tab Indicators for Nav Links */
+        /* V10.9/10.10 Smart Tab Indicators for Nav Links */
         .nav-link.already-open:hover { 
             color: #FF4500 !important; /* Glows Jet Orange to indicate it will switch tabs */
         }
@@ -254,7 +256,10 @@
             font-family: "Open Sans", Arial, sans-serif;
             font-size: 20px;
             font-weight: 500;
-            padding: 12px 30px;
+            width: 149px;
+            height: 45px;
+            padding: 0;
+            margin: 0 auto;
             transition: all 0.3s ease;
             display: inline-block;
             text-decoration: none;
@@ -319,7 +324,7 @@
         }
 
         /* -----------------------------------------------------------
-            V10.9 SMART TAB STYLING FOR BUTTONS
+            V10.10 SMART TAB STYLING FOR BUTTONS
         ----------------------------------------------------------- */
         .smart-tab-btn {
             display: flex;
@@ -573,8 +578,8 @@
                             <p>Locations 2 & 3 - Inside the Fairgrounds above the Entrances to the Grandstands</p>
                             <p>Locations 4 & 5 - Inside the Fairgrounds in the infield on the track</p>
                         </div>
-                        <!-- Added Smart Tab Logic to Get Started Button -->
-                        <a href="https://skventuresigns.com/effinghamcountyfair/" target="tab_sk_fair" class="get-started-btn shadow-xl smart-tab-btn" onclick="markAsOpen(this, 'tab_sk_fair')">
+                        <!-- V10.10: Aggressive Tab Focus applied here -->
+                        <a href="https://skventuresigns.com/effinghamcountyfair/" target="tab_sk_fair" class="get-started-btn shadow-xl smart-tab-btn" onclick="smartTabClick(event, this, 'tab_sk_fair', this.href)">
                             <span class="btn-text">Get Started</span>
                         </a>
                     </div>
@@ -676,7 +681,7 @@
 
     <script>
         /**
-         * S&K UNIVERSAL ENGINE v10.9
+         * S&K UNIVERSAL ENGINE v10.10
          */
         const SYNC_CSV = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTZY38nsz_aJDO3cdtAwv4w359jK1aMt1rhBwZ3LAGarLyddtbBowFZv6mjlpnR1eGdNCpFhat8FuKp/pub?output=csv";
         const SERVICES_CSV = "https://docs.google.com/spreadsheets/d/e/2PACX-1vT9HBnWuIELZ5IxaTxuCpNgs5ep7Tz4NpaU8__laH9a1DK52CreOSM8IqQxUK95CMyzsmTmkHoTgc1b/pub?output=csv";
@@ -684,11 +689,23 @@
         let siteData = { nav: [], phones: [], email: "", addressStreet: "", addressCity: "" };
 
         /**
-         * V10.9: Registers that the link was opened in this browsing session.
+         * V10.10: AGGRESSIVE TAB FOCUS
+         * This script intercepts the click, saves the state, and explicitly 
+         * instructs the browser to open and pull focus to the named tab.
          */
-        window.markAsOpen = function(element, targetName) {
+        window.smartTabClick = function(event, element, targetName, url) {
+            event.preventDefault(); // Stop standard link behavior
             sessionStorage.setItem(targetName, 'true');
             element.classList.add('already-open');
+            
+            // Explicitly force browser to select the existing named tab
+            let tabWindow = window.open(url, targetName);
+            if (tabWindow) {
+                tabWindow.focus();
+            } else {
+                // Failsafe in case aggressive popup blockers intercept the focus attempt
+                window.location.href = url;
+            }
         };
 
         function parseCSVRow(text) {
@@ -739,14 +756,13 @@
             siteData.nav.forEach(n => {
                 const isActive = n.label.toLowerCase() === 'home' ? 'active' : '';
                 
-                // V10.9: Generate a unique target name derived from the link's name to prevent duplicate tabs
+                // V10.10: Aggressive Tab Focus integration for header navigation
                 const uniqueTarget = `tab_sk_${n.label.replace(/[^a-zA-Z0-9]/g, '_')}`;
-                // Check if this link was already clicked in the current session
                 const isOpen = sessionStorage.getItem(uniqueTarget) === 'true';
                 const openClass = isOpen ? 'already-open' : '';
 
-                dNav.innerHTML += `<li><a href="${n.url}" target="${uniqueTarget}" class="nav-link ${isActive} ${openClass}" onclick="markAsOpen(this, '${uniqueTarget}')">${n.label}</a></li>`;
-                mNav.innerHTML += `<a href="${n.url}" target="${uniqueTarget}" class="text-2xl font-bold border-b border-black/5 pb-3 ${isActive ? 'text-[var(--sk-gold)]' : ''}" onclick="markAsOpen(this, '${uniqueTarget}')">${n.label}</a>`;
+                dNav.innerHTML += `<li><a href="${n.url}" target="${uniqueTarget}" class="nav-link ${isActive} ${openClass}" onclick="smartTabClick(event, this, '${uniqueTarget}', '${n.url}')">${n.label}</a></li>`;
+                mNav.innerHTML += `<a href="${n.url}" target="${uniqueTarget}" class="text-2xl font-bold border-b border-black/5 pb-3 ${isActive ? 'text-[var(--sk-gold)]' : ''}" onclick="smartTabClick(event, this, '${uniqueTarget}', '${n.url}')">${n.label}</a>`;
             });
 
             fPhone.className = "flex flex-wrap items-center justify-center gap-3";
@@ -792,20 +808,19 @@
                         customBtnBorder = isEven ? 'border-4 border-[#FFC627]' : 'border-4 border-white'; // Fallback mapping
                     }
 
-                    // V10.9: Smart Tab Logic for Service Buttons
+                    // V10.10: Aggressive Tab Focus integration for dynamic services
                     const uniqueTarget = `tab_sk_svc_${titleText.replace(/[^a-zA-Z0-9]/g, '_')}`;
                     const isOpen = sessionStorage.getItem(uniqueTarget) === 'true';
                     const openClass = isOpen ? 'already-open' : '';
 
-                    // Added Borders and Smart Tab configuration to the generated button inside the template literal
                     grid.innerHTML += `
                         <div class="service-card ${isEven ? 'bg-[var(--card-bg)]' : 'bg-[#DAA421]'}">
-                            <img src="${imgs[i]?.trim()}?v=10.9" class="lightbox-trigger" onerror="this.src='https://via.placeholder.com/400x220?text=S%26K+Venture+Signs'">
+                            <img src="${imgs[i]?.trim()}?v=10.10" class="lightbox-trigger" onerror="this.src='https://via.placeholder.com/400x220?text=S%26K+Venture+Signs'">
                             <div class="text-center mt-4 flex-grow">
                                 <h3 class="text-2xl mb-2 ${customTitleColor}" style="font-family:'Abril Fatface', cursive;">${titleText}</h3>
                                 <p class="text-sm mb-6 ${isEven ? 'text-[var(--text-primary)] opacity-70' : 'text-[#3E0100]'} font-medium">${descs[i]}</p>
                             </div>
-                            <a href="${btnLinks[i]?.trim()}" target="${uniqueTarget}" class="block py-3 rounded-full font-black uppercase text-xs tracking-widest text-white text-center ${isEven ? 'bg-[#2A0001]' : 'bg-[#023456]'} ${customBtnBorder} hover:scale-105 transition-all shadow-lg smart-tab-btn ${openClass}" onclick="markAsOpen(this, '${uniqueTarget}')">
+                            <a href="${btnLinks[i]?.trim()}" target="${uniqueTarget}" class="block py-3 rounded-full font-black uppercase text-xs tracking-widest text-white text-center ${isEven ? 'bg-[#2A0001]' : 'bg-[#023456]'} ${customBtnBorder} hover:scale-105 transition-all shadow-lg smart-tab-btn ${openClass}" onclick="smartTabClick(event, this, '${uniqueTarget}', '${btnLinks[i]?.trim()}')">
                                 <span class="btn-text">${btnLabels[i]?.trim() || 'Learn More'}</span>
                             </a>
                         </div>
