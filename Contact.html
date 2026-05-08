@@ -6,12 +6,18 @@
         ADMIN: Kevin (Werewolf3788)
         CLIENT: Scott (S&K Venture Signs)
         STANDARDS: Responsive, No-Minify, G-Tag Integrated, GitHack Compatible
-        VERSION: 9.6.6 (Contact Tab Gap Removal Update)
+        VERSION: 10.18 (Map Position Adjustment)
         TECHNICAL: Locked Header (125px -> 75px), Dynamic Modals, Auto-Night Mode, Precision Integration
-        TIMESTAMP: May 6, 2026 - 9:48 PM EDT (New York Time)
+        TIMESTAMP: May 7, 2026 - 9:53 PM EDT (New York Time)
         Nesting Code: Header/Footer Primary Wrapper Integrated
         
         NO STRIPPING, NO COMPRESSING, DON'T CHANGE WHAT I DIDN'T SAY TO CHANGE.
+        FIX: Shifted the map slightly up and to the left on desktop using CSS transform.
+        FIX: Applied Inter-Tab Communication (ITC) with Cross-Tab State Sync to ALL links utilizing Named Window Targeting.
+        FIX: Ported footer CSS and layout exactly from standard (60px top padding, flexbox phone formatting, single-line address).
+        FIX: Updated navigation logic to actively highlight the "Contact" tab.
+        FIX: Removed KF Signature Watermark while preserving both G-Tags for tracking.
+        FIX: Removed Google Voice option from the phone modal logic to match global standards.
     -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
@@ -36,17 +42,17 @@
       gtag('js', new Date());
 
       gtag('config', 'G-H6Q756MVE8', {
-          'page_type': 'contact_portal_v9.6.6',
+          'page_type': 'contact_portal_v10.18',
           'content_group': 'client_leads',
-          'layout_version': '9.6.6'
+          'layout_version': '10.18'
       });
       gtag('config', 'G-L376P3NPY4');
     </script>
 
     <!-- External Assets with Smart Cache Buster -->
-    <script src="https://cdn.tailwindcss.com?v=9.6.6"></script>
-    <script src="https://unpkg.com/lucide@latest?v=9.6.6"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Abril+Fatface&family=Poppins:wght@400;500;600;700&family=Open+Sans:wght@500;600;700&display=swap&v=9.6.6" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com?v=10.17"></script>
+    <script src="https://unpkg.com/lucide@latest?v=10.17"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Abril+Fatface&family=Poppins:wght@400;500;600;700&family=Open+Sans:wght@500;600;700&display=swap&v=10.17" rel="stylesheet">
 
     <style>
         :root {
@@ -177,6 +183,11 @@
         .header-scrolled .nav-link.active { color: var(--sk-gold) !important; }
         .header-scrolled #menu-toggle { color: var(--nav-text-scrolled); }
 
+        /* V10.17 Smart Tab Indicators for Nav Links */
+        .nav-link.already-open:hover { 
+            color: #FF4500 !important; /* Glows Jet Orange to indicate it will switch tabs */
+        }
+
         #mobile-menu {
             background-color: var(--mobile-menu-bg);
             color: var(--mobile-menu-text);
@@ -185,26 +196,6 @@
         }
 
         #refresh-bar { position: absolute; bottom: 0; left: 0; height: 2px; width: 0; background-color: var(--sk-gold); transition: width 0.3s ease; z-index: 1001; }
-
-        /* -----------------------------------------------------------
-            BRANDING (KF SIGNATURE WATERMARK)
-        ----------------------------------------------------------- */
-        .kf-signature {
-            position: fixed;
-            bottom: 10px;
-            left: 10px;
-            display: flex;
-            align-items: center;
-            font-family: 'Poppins', sans-serif;
-            font-weight: 900;
-            font-size: 24px;
-            z-index: 9999;
-            pointer-events: none;
-            opacity: 0.7;
-        }
-        .kf-k { color: #FF4500; transform: scaleX(-1); z-index: 2; }
-        .kf-f { color: #000000; margin-left: -0.22em; z-index: 1; }
-        .dark-mode .kf-f { color: #ffffff; }
 
         /* THEME SETTINGS UI (HIDABLE) */
         .theme-toggle-wrapper {
@@ -247,7 +238,32 @@
         .settings-toggle-btn:hover { transform: rotate(45deg) scale(1.1); }
 
         /* -----------------------------------------------------------
-            SMART MODAL SYSTEM
+            V10.17 SMART TAB STYLING FOR BUTTONS & LINKS
+        ----------------------------------------------------------- */
+        .smart-tab-btn {
+            transition: all 0.3s ease;
+        }
+        .smart-tab-btn.already-open:hover {
+            background: linear-gradient(180deg, #FF6A33 0%, #FF4500 100%) !important;
+            color: #fff !important;
+            border-color: #FF4500 !important;
+            box-shadow: 0 4px 15px rgba(255, 69, 0, 0.4) !important;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.3) !important;
+        }
+        .smart-tab-btn.already-open:hover .btn-text {
+            display: none;
+        }
+        .smart-tab-btn.already-open:hover::after {
+            content: "SWITCH TO TAB";
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            height: 100%;
+        }
+
+        /* -----------------------------------------------------------
+            SMART MODAL SYSTEM 
         ----------------------------------------------------------- */
         .sk-modal-overlay {
             display: none;
@@ -415,6 +431,7 @@
             overflow: hidden;
             display: flex;
             background: #222;
+            transform: translate(-20px, -20px); /* Shifts the map slightly up and to the left */
         }
 
         #contact-scott-form {
@@ -510,13 +527,13 @@
         #form-status { display: none; margin-top: 15px; padding: 15px; text-align: center; font-weight: 700; border-radius: 4px; width: 100%; max-width: 306px; }
 
         /* -----------------------------------------------------------
-            FOOTER (Nesting Logic)
+            FOOTER SYMMETRY (Exact 1:1 match with index.html & locations)
         ----------------------------------------------------------- */
         footer#main-footer {
             background-color: var(--sk-maroon);
             color: white;
             border-top: 5px solid var(--sk-separator);
-            padding: 80px 0;
+            padding: 60px 0 30px 0;
         }
         .footer-grid {
             display: grid;
@@ -524,54 +541,22 @@
             gap: 40px;
             text-align: center;
         }
-        .footer-col {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            box-sizing: border-box;
-        }
+        .footer-col { display: flex; flex-direction: column; align-items: center; }
         .footer-label { 
-            display: block;
-            color: rgb(255, 255, 255);
-            font-family: Georgia, serif;
-            font-size: 14px;
-            height: 24.5px;
-            line-height: 24.5px;
-            margin: 0px;
-            width: 100%;
+            font-family: Georgia, serif; font-size: 14px; font-weight: 500; 
+            margin-bottom: 15px; color: white; opacity: 0.8;
         }
         .footer-value { 
-            display: block;
-            color: rgb(255, 255, 255);
-            font-family: "Abril Fatface", display;
-            font-size: 18px;
-            font-weight: 500;
-            line-height: 25.2px;
-            margin: 0px;
-            padding: 0px 0px 10px 0px;
-            width: 100%;
-            cursor: pointer;
-            transition: 0.3s;
-            text-decoration: none;
+            font-family: "Abril Fatface", display; font-size: 18px; 
+            cursor: pointer; transition: 0.3s; margin-bottom: 5px; color: #FFFFFF;
         }
         .footer-value:hover { color: var(--sk-gold); }
-        .footer-or { 
-            display: block; 
-            font-family: 'Poppins', sans-serif; 
-            font-size: 10px; 
-            font-weight: 800; 
-            text-transform: uppercase; 
-            color: var(--sk-gold); 
-            opacity: 0.5; 
-            margin: 4px 0 10px 0; 
-            letter-spacing: 2px; 
-        }
 
         @media (max-width: 1024px) {
             :root { --header-height: 100px; --container-width: 90%; }
             #header-logo { width: 220px; }
             .header-scrolled #header-logo { width: 170px; }
-            .footer-grid { grid-template-columns: 1fr; gap: 60px; }
+            .footer-grid { grid-template-columns: 1fr; gap: 40px; }
             .theme-toggle-wrapper { top: auto; bottom: 80px; }
             .nav-link { padding-top: 15px; padding-bottom: 15px; font-size: 15px; }
 
@@ -583,7 +568,7 @@
             .form-field-group { align-items: center; }
             .field-label { text-align: center; }
             .input-text-single, .input-text-msg { text-align: center; max-width: 100%; }
-            .map-right-box { height: 400px; width: 100%; }
+            .map-right-box { height: 400px; width: 100%; transform: none; }
             .scott-sub-heading { width: 95% !important; font-size: 24px; line-height: 32px; }
             .scott-body-text { width: 95% !important; font-size: 16px; line-height: 24px; }
         }
@@ -591,13 +576,7 @@
 </head>
 <body class="light-mode">
 
-    <!-- KF Signature Watermark -->
-    <div class="kf-signature">
-        <span class="kf-k">K</span>
-        <span class="kf-f">F</span>
-    </div>
-
-    <!-- Theme & Persistence Panel -->
+    <!-- Theme Settings UI -->
     <div class="theme-toggle-wrapper">
         <div class="settings-toggle-btn shadow-xl" onclick="toggleSettingsPanel()">
             <i data-lucide="settings"></i>
@@ -610,6 +589,12 @@
                     <button onclick="setTheme('light')" class="text-[10px] bg-gray-100 p-1 rounded">Bright</button>
                     <button onclick="setTheme('dark')" class="text-[10px] bg-zinc-800 text-white p-1 rounded">Dark</button>
                 </div>
+                <hr class="my-1">
+                <div class="flex flex-col gap-1">
+                    <input type="color" id="outline-color-picker" onchange="updateOutlineColor(this.value)" value="#000000" class="w-full h-6 rounded cursor-pointer">
+                    <button onclick="updateOutlineColor('transparent')" class="text-[8px] bg-red-100 text-red-800 rounded p-1 uppercase font-bold">No Outline</button>
+                    <label class="text-[9px]">Outline Color</label>
+                </div>
             </div>
         </div>
     </div>
@@ -618,8 +603,8 @@
     <header id="main-header" class="fixed top-0 left-0 w-full z-[1000] flex flex-col justify-center">
         <div class="main-container flex items-center justify-between h-full px-4 lg:px-0">
             <div class="flex-shrink-0 z-[1001]">
-                <a href="./index.html" target="_blank">
-                    <img src="https://skventuresigns.com/wp-content/uploads/2025/03/SK-Sign-White.png?v=9.6.6" alt="S&K" id="header-logo" />
+                <a href="./index.html" target="tab_sk_Home" class="smart-tab-btn" onclick="smartTabClick(event, this, 'tab_sk_Home', this.href)">
+                    <img src="https://skventuresigns.com/wp-content/uploads/2025/03/SK-Sign-White.png?v=10.17" alt="S&K" id="header-logo" />
                 </a>
             </div>
 
@@ -730,7 +715,7 @@
 
     </main>
 
-    <!-- FOOTER (NESTED FRAMEWORK) -->
+    <!-- FOOTER (V10.17 MATCHED) -->
     <footer id="main-footer">
         <div class="main-container footer-grid">
             <div class="footer-col">
@@ -746,8 +731,8 @@
                 <div id="footer-address-container"></div>
             </div>
         </div>
-        <div class="main-container mt-20 pt-10 border-t border-white/10 text-center">
-            <h5 class="font-bold opacity-50 text-sm tracking-widest uppercase">© 2026 S&K VENTURE SIGNS </h5>
+        <div class="main-container mt-10 pt-6 border-t border-white/10 text-center">
+            <h5 class="font-bold opacity-50 text-sm tracking-widest uppercase text-white">© 2026 S&K VENTURE SIGNS</h5>
         </div>
     </footer>
 
@@ -782,7 +767,8 @@
 
     <script>
         /**
-         * S&K SMART SYNC ENGINE v9.6.6
+         * S&K SMART SYNC ENGINE v10.17
+         * Update: Global Inter-Tab Communication (ITC) & Footer Parity.
          */
         const SITE_DATA_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTZY38nsz_aJDO3cdtAwv4w359jK1aMt1rhBwZ3LAGarLyddtbBowFZv6mjlpnR1eGdNCpFhat8FuKp/pub?output=csv";
         
@@ -792,6 +778,26 @@
             email: "Scott.Robinson@skventuresigns.com", 
             addressStreet: "607 W Clark Ave", 
             addressCity: "Effingham IL 62401" 
+        };
+
+        /* =========================================================
+           V10.17 CROSS-TAB AWARENESS & AGGRESSIVE FOCUS
+        ========================================================= */
+        window.smartTabClick = function(event, element, targetName, url) {
+            if(event) event.preventDefault(); // Stop standard link behavior
+            
+            // Set global cross-tab memory so all pages know this is open
+            localStorage.setItem(targetName, 'true');
+            if(element && element.classList) element.classList.add('already-open');
+            
+            // Explicitly force browser to select the existing named tab
+            let tabWindow = window.open(url, targetName);
+            if (tabWindow) {
+                tabWindow.focus();
+            } else {
+                // Failsafe in case aggressive popup blockers intercept the focus attempt
+                window.location.href = url;
+            }
         };
 
         /* =========================================================
@@ -854,33 +860,57 @@
             const fEmail = document.getElementById('footer-email-list');
             const fAddr = document.getElementById('footer-address-container');
 
-            dNav.innerHTML = ''; mNav.innerHTML = ''; fPhone.innerHTML = ''; fEmail.innerHTML = '';
+            dNav.innerHTML = ''; mNav.innerHTML = ''; fPhone.innerHTML = ''; fEmail.innerHTML = ''; fAddr.innerHTML = '';
 
             siteData.nav.forEach(n => {
                 // Dynamically mark "Contact" as active for this page
                 const isActive = n.label.toLowerCase() === 'contact';
-                const desktopClass = isActive ? 'nav-link active' : 'nav-link';
-                const mobileClass = isActive 
-                    ? 'text-2xl font-bold border-b border-black/10 dark:border-white/10 pb-3 text-[#FFC627]'
-                    : 'text-2xl font-bold border-b border-black/10 dark:border-white/10 pb-3';
+                
+                // V10.17: Generate a unique target name derived from the link's name to prevent duplicate tabs
+                const uniqueTarget = `tab_sk_${n.label.replace(/[^a-zA-Z0-9]/g, '_')}`;
 
-                dNav.innerHTML += `<li><a href="${n.url}" target="_blank" class="${desktopClass}">${n.label}</a></li>`;
-                mNav.innerHTML += `<a href="${n.url}" target="_blank" class="${mobileClass}">${n.label}</a>`;
+                if (isActive) {
+                    // Self-Name the Window so other tabs can find it dynamically
+                    window.name = uniqueTarget;
+                    // Inform the browser's global memory that this page is alive
+                    localStorage.setItem(uniqueTarget, 'true');
+                    // Clean up the memory if the user explicitly closes the tab
+                    window.addEventListener('beforeunload', () => {
+                        localStorage.removeItem(uniqueTarget);
+                    });
+                }
+
+                // Check cross-tab global memory to see if this specific link is open somewhere
+                const isOpen = localStorage.getItem(uniqueTarget) === 'true';
+                // Only apply the 'already-open' state if it is open somewhere AND it is not the current page
+                const openClass = isOpen && !isActive ? 'already-open' : '';
+                const desktopActive = isActive ? 'active' : '';
+
+                dNav.innerHTML += `<li><a href="${n.url}" target="${uniqueTarget}" class="nav-link ${desktopActive} ${openClass}" onclick="smartTabClick(event, this, '${uniqueTarget}', '${n.url}')">${n.label}</a></li>`;
+                
+                const mobileClass = isActive 
+                    ? `text-2xl font-bold border-b border-black/10 dark:border-white/10 pb-3 text-[var(--sk-gold)]`
+                    : `text-2xl font-bold border-b border-black/10 dark:border-white/10 pb-3`;
+
+                mNav.innerHTML += `<a href="${n.url}" target="${uniqueTarget}" class="${mobileClass} ${openClass}" onclick="smartTabClick(event, this, '${uniqueTarget}', '${n.url}')">${n.label}</a>`;
             });
 
+            // V10.17 Footer Matching Logic
+            fPhone.className = "flex flex-wrap items-center justify-center gap-3";
+            let phoneHTML = '';
             if (siteData.phones.length > 0) {
-                let phoneHTML = `<span class="footer-value" onclick="openPhoneSmartActions('${siteData.phones[0]}')">${siteData.phones[0]}</span>`;
+                phoneHTML = `<span class="footer-value !mb-0" onclick="openPhoneSmartActions('${siteData.phones[0]}')">${siteData.phones[0]}</span>`;
                 if (siteData.phones[1]) {
-                    phoneHTML += `<span class="footer-or">Or</span>`;
-                    phoneHTML += `<span class="footer-value" onclick="openPhoneSmartActions('${siteData.phones[1]}')">${siteData.phones[1]}</span>`;
+                    phoneHTML += `<span class="text-white opacity-70 text-sm font-bold uppercase">or</span><span class="footer-value !mb-0" onclick="openPhoneSmartActions('${siteData.phones[1]}')">${siteData.phones[1]}</span>`;
                 }
-                fPhone.innerHTML = phoneHTML;
             }
+            fPhone.innerHTML = phoneHTML;
 
             fEmail.innerHTML = `<span class="footer-value" onclick="openEmailSmartActions('${siteData.email}')">${siteData.email}</span>`;
 
+            // Single line address format
             if (siteData.addressStreet) {
-                const fullDisplay = `${siteData.addressStreet}<br>${siteData.addressCity}`;
+                const fullDisplay = `${siteData.addressStreet}, ${siteData.addressCity}`;
                 fAddr.innerHTML = `<span class="footer-value" onclick="openMapSmartActions()">${fullDisplay}</span>`;
             }
 
@@ -960,6 +990,11 @@
             document.cookie = `theme=${mode};max-age=31536000;path=/`;
         }
 
+        function updateOutlineColor(color) {
+            document.documentElement.style.setProperty('--outline-color', color);
+            document.cookie = `outline-color=${color};max-age=31536000;path=/`;
+        }
+
         function openPhoneSmartActions(num) {
             const clean = num.replace(/\D/g, '');
             const container = document.getElementById('phone-options-container');
@@ -967,16 +1002,15 @@
             
             let html = '';
             
+            // V10.17: Smart Tab applied to modal options
             if (isMac) {
-                html += `<a href="tel:${clean}" target="_blank" class="smart-option"><i data-lucide="monitor"></i> FaceTime / iPhone</a>`;
+                html += `<a href="tel:${clean}" target="tab_sk_tel" class="smart-option" onclick="smartTabClick(event, this, 'tab_sk_tel', this.href)"><i data-lucide="monitor"></i> FaceTime / iPhone</a>`;
             } else {
-                html += `<a href="tel:${clean}" target="_blank" class="smart-option"><i data-lucide="phone"></i> Direct Call</a>`;
+                html += `<a href="tel:${clean}" target="tab_sk_tel" class="smart-option" onclick="smartTabClick(event, this, 'tab_sk_tel', this.href)"><i data-lucide="phone"></i> Direct Call</a>`;
             }
 
-            html += `<a href="https://voice.google.com/u/0/calls?a=nc,%2B1${clean}" target="_blank" class="smart-option"><i data-lucide="globe"></i> Google Voice</a>`;
-            
             if (num.includes('618')) {
-                html += `<a href="https://wa.me/1${clean}" target="_blank" class="smart-option"><i data-lucide="message-circle"></i> WhatsApp Specialist</a>`;
+                html += `<a href="https://wa.me/1${clean}" target="tab_sk_wa" class="smart-option" onclick="smartTabClick(event, this, 'tab_sk_wa', this.href)"><i data-lucide="message-circle"></i> WhatsApp Specialist</a>`;
             }
 
             container.innerHTML = html;
@@ -986,10 +1020,15 @@
 
         function openEmailSmartActions(email) {
             const container = document.getElementById('email-options-container');
+            
+            const defUrl = `mailto:${email}`;
+            const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=${email}`;
+            
+            // V10.17: Smart Tab applied to modal options
             container.innerHTML = `
-                <a href="mailto:${email}" target="_blank" class="smart-option"><i data-lucide="mail"></i> Default Client</a>
-                <a href="https://mail.google.com/mail/?view=cm&fs=1&to=${email}" target="_blank" class="smart-option"><i data-lucide="send"></i> Gmail Web</a>
-                <div onclick="navigator.clipboard.writeText('${email}');" class="smart-option"><i data-lucide="copy"></i> Copy Address</div>
+                <a href="${defUrl}" target="tab_sk_mail_def" class="smart-option" onclick="smartTabClick(event, this, 'tab_sk_mail_def', this.href)"><i data-lucide="mail"></i> Default Client</a>
+                <a href="${gmailUrl}" target="tab_sk_mail_gmail" class="smart-option" onclick="smartTabClick(event, this, 'tab_sk_mail_gmail', this.href)"><i data-lucide="send"></i> Gmail Web</a>
+                <div onclick="navigator.clipboard.writeText('${email}'); alert('Email Copied');" class="smart-option"><i data-lucide="copy"></i> Copy Address</div>
             `;
             document.getElementById('email-modal').style.display = 'flex';
             lucide.createIcons();
@@ -998,9 +1037,21 @@
         function openMapSmartActions() {
             const addrStr = `${siteData.addressStreet} ${siteData.addressCity}`;
             const addr = encodeURIComponent(addrStr);
-            document.getElementById('link-gmaps').href = `https://www.google.com/maps/dir/?api=1&destination=${addr}`;
-            document.getElementById('link-amaps').href = `http://maps.apple.com/?daddr=${addr}`;
-            document.getElementById('link-waze').href = `https://waze.com/ul?q=${addr}&navigate=yes`;
+            
+            const gmapsUrl = `https://www.google.com/maps/dir/?api=1&destination=${addr}`;
+            const amapsUrl = `http://maps.apple.com/?daddr=${addr}`;
+            const wazeUrl = `https://waze.com/ul?q=${addr}&navigate=yes`;
+            
+            // V10.17: Smart Tab applied to modal options
+            document.getElementById('link-gmaps').href = gmapsUrl;
+            document.getElementById('link-gmaps').setAttribute('onclick', `smartTabClick(event, this, 'tab_sk_gmaps', '${gmapsUrl}')`);
+            
+            document.getElementById('link-amaps').href = amapsUrl;
+            document.getElementById('link-amaps').setAttribute('onclick', `smartTabClick(event, this, 'tab_sk_amaps', '${amapsUrl}')`);
+            
+            document.getElementById('link-waze').href = wazeUrl;
+            document.getElementById('link-waze').setAttribute('onclick', `smartTabClick(event, this, 'tab_sk_waze', '${wazeUrl}')`);
+            
             document.getElementById('map-modal').style.display = 'flex';
             lucide.createIcons();
         }
@@ -1072,6 +1123,12 @@
                 const [k, v] = curr.split('='); acc[k] = v; return acc;
             }, {});
             
+            if (cookies['outline-color']) {
+                updateOutlineColor(cookies['outline-color']);
+            } else {
+                updateOutlineColor('transparent');
+            }
+
             setTheme(cookies['theme'] || 'auto');
             if (typeof lucide !== 'undefined') lucide.createIcons();
         };
