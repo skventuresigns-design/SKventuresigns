@@ -2,21 +2,21 @@
 <html lang="en">
 <head>
     <!-- 
-        PROJECT: S&K Venture Signs Global Framework - SERVICES TAB
-        ADMIN: Kevin (Werewolf3788)
+        PROJECT: S&K Venture Signs Global Framework
+        ADMIN: Kevin (DJ Werewolf) - Admin
         CLIENT: Scott (S&K Venture Signs)
         STANDARDS: Responsive, No-Minify, G-Tag Integrated, GitHack Compatible
-        VERSION: 10.15 (Absolute Same Tab Enforcement)
-        TECHNICAL: Locked Header (125px -> 75px), Dynamic Modals, Auto-Night Mode, Precision Integration
+        VERSION: 10.14 (Strict Same-Tab Navigation)
+        TECHNICAL: Precision Integration, Auto-Night Mode, High-Contrast Outlines, Dual-Column Mapping
         TIMESTAMP: May 13, 2026
         
         NO STRIPPING, NO COMPRESSING, DON'T CHANGE WHAT I DIDN'T SAY TO CHANGE.
-        FIX: Completely stripped all target="_blank" and target="${uniqueTarget}" attributes from HTML and JS.
-        FIX: Locked smartTabClick to use window.location.href for absolute same-tab navigation.
+        FIX: Completely stripped cross-tab switching logic.
+        FIX: All links now strictly force same-tab loading via window.location.href.
     -->
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>S&K Venture Signs | Services</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>S&K Venture Signs | Digital Billboard Portal</title>
     
     <!-- PWA Manifest & Service Worker -->
     <link rel="manifest" href="./manifest.json">
@@ -30,74 +30,56 @@
 
     <!-- Google Analytics: Boss Tracking + Watermark Tracking -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-H6Q756MVE8"></script>
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-L376P3NPY4"></script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-L376P3YPY4"></script>
     <script>
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
-
-      // Advanced GA4 Intent Tracking Configuration
-      gtag('config', 'G-H6Q756MVE8', {
-          'page_title': 'S&K Venture Signs | Services',
-          'page_path': '/services',
-          'page_type': 'services_portal_v10.15',
-          'content_group': 'company_services',
-          'layout_version': '10.15'
-      });
-      gtag('config', 'G-L376P3NPY4');
+      gtag('config', 'G-H6Q756MVE8', { 'page_type': 'global_framework_v10.14_home' });
+      gtag('config', 'G-L376P3YPY4');
     </script>
 
     <!-- External Assets with Smart Cache Buster -->
-    <script src="https://cdn.tailwindcss.com?v=10.15"></script>
-    <script src="https://unpkg.com/lucide@latest?v=10.15"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Abril+Fatface&family=Poppins:wght@400;500;600;700&family=Open+Sans:wght@300;400;500;600;700;800&display=swap&v=10.15" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com?v=10.14"></script>
+    <script src="https://unpkg.com/lucide@latest?v=10.14"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Abril+Fatface&family=Poppins:wght@400;500;600;700&family=Open+Sans:wght@600;700&display=swap&v=10.14" rel="stylesheet">
 
     <style>
         :root {
             /* Kevin's Admin Global Settings */
+            --divi-header: 30px;
+            --divi-body: 14px;
             --divi-section: 50px;
             --divi-row: 30px;
-            --divi-body: 14px; 
-            --divi-header: 30px;
-            
+
             /* S&K Brand Palette */
             --sk-maroon: rgb(62, 1, 0);
             --sk-gold: #FFC627;
             --sk-gold-alt: rgb(255, 192, 0);
             --sk-nav-gold: rgb(218, 164, 33);
-            --sk-btn-blue: rgb(2, 48, 71);
-            --sk-scott-blue: rgb(69, 123, 157);
             --sk-separator: rgb(187, 162, 140);
-            --elevation-blue: #457B9D;
-            --sk-charcoal: rgb(17, 17, 17);
-            --sk-pricing-green: #2ecc71;
-
+            --sk-adv-blue: rgb(33, 158, 188);
+            
             /* Theme & Logic Colors */
-            --bg-primary: #000000; 
-            --text-primary: #FFFFFF; 
+            --bg-primary: #fcfcfc;
+            --text-primary: #333333;
             --card-bg: #ffffff;
             
             /* Default Outline: Transparent (No color) */
             --outline-color: transparent;
             --outline-width: 1.5px;
 
-            /* Global Brightness Variables (Nesting Sync) */
-            --header-bg-scrolled: white;
-            --nav-text-scrolled: #222222;
-            --mobile-menu-bg: white;
-            --mobile-menu-text: black;
-
             /* Precision Dimensions Locked */
             --header-height: 125px;
             --header-scrolled-height: 75px; 
             --container-width: 80%;
-            --footer-height: 237px;
-            --ultra-wide-max: 2496px;
+            --ultra-wide-max: 1800px;
         }
 
+        /* -----------------------------------------------------------
+            GLOBAL TYPOGRAPHY & RESET
+        ----------------------------------------------------------- */
         html, body {
-            scrollbar-width: none;
-            -ms-overflow-style: none;
             overflow-x: hidden;
             font-family: 'Poppins', sans-serif;
             font-size: var(--divi-body);
@@ -108,11 +90,7 @@
             margin: 0;
             padding-top: 0;
             transition: background-color 0.3s, color 0.3s;
-            overflow-wrap: break-word;
-            scroll-behavior: smooth;
         }
-
-        ::-webkit-scrollbar { display: none; }
 
         /* GLOBAL PRECISION OUTLINE LOGIC */
         * {
@@ -123,8 +101,10 @@
                 var(--outline-width) var(--outline-width) 0 var(--outline-color);
         }
 
-        h1, h2, h3, .font-display { 
+        h1, h2, h3, h4, h5 { 
             font-family: 'Abril Fatface', cursive; 
+            font-size: var(--divi-header); 
+            line-height: 1.2;
         }
 
         .main-container {
@@ -134,6 +114,9 @@
             margin-right: auto;
         }
 
+        /* -----------------------------------------------------------
+            HEADER & NAVIGATION
+        ----------------------------------------------------------- */
         header#main-header {
             transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             border-bottom: 4px solid var(--sk-separator);
@@ -142,8 +125,8 @@
         }
 
         .header-scrolled { 
-            background-color: var(--header-bg-scrolled) !important; 
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1); 
+            background-color: var(--card-bg) !important; 
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2); 
             height: var(--header-scrolled-height) !important;
         }
 
@@ -153,7 +136,6 @@
             height: auto;
             aspect-ratio: 4163 / 1391;
             transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            -webkit-font-smoothing: antialiased;
         }
         .header-scrolled #header-logo { width: 190px; }
 
@@ -166,27 +148,185 @@
             color: #FFFFFF;
             transition: all 0.4s ease-in-out;
             text-decoration: none;
-            white-space: nowrap;
-            padding: 15px 0;
         }
         .nav-link:hover, .nav-link.active { color: var(--sk-gold) !important; }
-        .header-scrolled .nav-link { color: var(--nav-text-scrolled); }
+        .header-scrolled .nav-link { color: var(--text-primary); }
         .header-scrolled .nav-link.active { color: var(--sk-gold) !important; }
-        .header-scrolled #menu-toggle { color: var(--nav-text-scrolled); }
 
+        /* V10.13 Smart Tab Indicators for Nav Links */
         .nav-link.already-open:hover { 
-            color: #FF4500 !important; 
+            color: #FF4500 !important; /* Glows Jet Orange to indicate it will switch tabs */
         }
 
-        #mobile-menu {
-            background-color: var(--mobile-menu-bg);
-            color: var(--mobile-menu-text);
-            transition: background 0.3s, color 0.3s;
-            z-index: 999;
+        /* -----------------------------------------------------------
+            PAGE CONTENT SPECIFIC (Typography Overrides)
+        ----------------------------------------------------------- */
+        .hero-title-precision {
+            font-family: Georgia, "Times New Roman", serif !important;
+            font-size: 54px !important;
+            font-weight: 500 !important;
+            line-height: 62.1px !important;
+            color: #FFFFFF !important;
+            text-align: center;
         }
 
-        #refresh-bar { position: absolute; bottom: 0; left: 0; height: 2px; width: 0; background-color: var(--sk-gold); transition: width 0.3s ease; z-index: 1001; }
+        .hero-label-precision {
+            font-family: Poppins, Helvetica, Arial, sans-serif !important;
+            font-size: 14px !important;
+            font-weight: 500 !important;
+            letter-spacing: 1px !important;
+            line-height: 19.6px !important;
+            text-transform: uppercase !important;
+            color: rgb(33, 158, 188) !important;
+            display: block;
+            margin-bottom: 10px;
+        }
 
+        .fair-heading-precision {
+            font-family: "Abril Fatface", cursive !important;
+            font-size: 48px !important;
+            font-weight: 500 !important;
+            line-height: 67.2px !important;
+            color: #FFC000 !important;
+            text-decoration: underline !important;
+        }
+
+        .fair-date-precision {
+            font-family: "Abril Fatface", cursive !important;
+            font-size: 45px !important;
+            font-weight: 500 !important;
+            line-height: 45px !important;
+            color: #FFFFFF !important;
+        }
+
+        .fair-desc-precision {
+            font-family: "Abril Fatface", cursive !important;
+            font-size: 20px !important;
+            font-weight: 500 !important;
+            line-height: 28px !important;
+            color: #FFFFFF !important;
+        }
+
+        .fair-location-precision {
+            font-family: "Abril Fatface", cursive !important;
+            font-size: 20px !important;
+            font-weight: 500 !important;
+            line-height: 28px !important;
+            color: #FFC000 !important;
+        }
+
+        /* Divider Component Styles */
+        .et_pb_divider_internal {
+            border-top: 3px solid #FFC627;
+            width: 100%;
+            display: block;
+            margin: 0 auto;
+        }
+        .et_pb_divider {
+            padding: 15px 0;
+            width: 100%;
+        }
+
+        .get-started-btn {
+            background-color: #FFFFFF;
+            color: #000000;
+            border: 2px solid #000000;
+            border-radius: 9px;
+            font-family: "Open Sans", Arial, sans-serif;
+            font-size: 20px;
+            font-weight: 500;
+            width: 149px;
+            height: 45px;
+            padding: 0;
+            margin: 0 auto;
+            transition: all 0.3s ease;
+            display: inline-block;
+            text-decoration: none;
+        }
+        .get-started-btn:hover {
+            background-color: var(--sk-maroon) !important;
+            color: var(--sk-gold) !important;
+        }
+
+        .rental-heading-precision {
+            font-family: Georgia, "Times New Roman", serif !important;
+            font-size: 42px !important;
+            font-weight: 700 !important;
+            line-height: 58.8px !important;
+            color: #FFFFFF !important;
+            text-align: center;
+        }
+
+        .advertising-hero {
+            position: relative; 
+            min-height: 625px; 
+            background-image: linear-gradient(rgba(0, 0, 0, 0.5) 0%, rgba(0, 0, 0, 0.5) 100%), 
+                              url('https://raw.githubusercontent.com/Werewolf3788/SKVentureSigns/5964982228b88201a817521985ebd15199b77eb4/images/Marbel%20in%20city.png');
+            background-size: cover; 
+            background-position: center;
+            display: flex; 
+            align-items: center;
+            padding-top: var(--header-height);
+        }
+
+        .adventurous-divider {
+            position: relative; 
+            min-height: 600px;
+            background-image: url('https://raw.githack.com/Werewolf3788/SKVentureSigns/bcd39125f3e66cfe95baab52771628778e15654f/images/skbackground.png');
+            background-size: cover; 
+            background-position: center;
+            display: flex; 
+            align-items: center; 
+            padding: 4rem 0;
+        }
+
+        .service-card { 
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1); 
+            transition: transform 0.3s ease; 
+            padding: 25px; 
+            height: 100%; 
+            display: flex; 
+            flex-direction: column; 
+            border-radius: 24px;
+            border: 1px solid rgba(0,0,0,0.05);
+        }
+        .service-card:hover { transform: translateY(-8px); }
+        .service-card img { height: 220px; object-fit: contain; margin-bottom: 15px; cursor: zoom-in; }
+
+        /* Dynamic Contrast Logic for Advertising/Sales Titles */
+        .dynamic-ad-title { 
+            color: #000000 !important; 
+            transition: color 0.3s ease;
+        }
+        .dark-mode .dynamic-ad-title { 
+            color: #FFC627 !important; 
+        }
+
+        /* -----------------------------------------------------------
+            V10.13 SMART TAB STYLING FOR BUTTONS
+        ----------------------------------------------------------- */
+        .smart-tab-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .smart-tab-btn.already-open:hover {
+            background: linear-gradient(180deg, #FF6A33 0%, #FF4500 100%) !important;
+            color: #fff !important;
+            border-color: #FF4500 !important;
+            box-shadow: 0 4px 15px rgba(255, 69, 0, 0.4) !important;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.3) !important;
+        }
+        .smart-tab-btn.already-open:hover .btn-text {
+            display: none;
+        }
+        .smart-tab-btn.already-open:hover::after {
+            content: "SWITCH TO TAB";
+        }
+
+        /* -----------------------------------------------------------
+            BRANDING & THEME UI
+        ----------------------------------------------------------- */
         .theme-toggle-wrapper {
             position: fixed;
             top: 140px;
@@ -224,8 +364,10 @@
             box-shadow: 0 4px 10px rgba(0,0,0,0.2);
             transition: all 0.3s ease;
         }
-        .settings-toggle-btn:hover { transform: rotate(45deg) scale(1.1); }
 
+        /* -----------------------------------------------------------
+            MODAL SYSTEM
+        ----------------------------------------------------------- */
         .sk-modal-overlay {
             display: none;
             position: fixed;
@@ -244,14 +386,13 @@
             border-radius: 24px;
             border: 4px solid var(--sk-separator);
             overflow: hidden;
-            transition: background 0.3s;
         }
         .smart-option {
             display: flex;
             align-items: center;
             gap: 15px;
             padding: 16px 20px;
-            background: rgba(0,0,0,0.03);
+            background: rgba(128,128,128,0.1);
             border-radius: 16px;
             margin-bottom: 10px;
             cursor: pointer;
@@ -265,337 +406,10 @@
             color: var(--sk-maroon) !important; 
             transform: translateX(5px); 
         }
-        .dark-mode .smart-option {
-            background: rgba(255, 255, 255, 0.05);
-        }
-        .modal-cancel-text {
-            color: var(--text-primary);
-            opacity: 0.5;
-            font-weight: 700;
-            cursor: pointer;
-        }
 
-        .services-global-wrapper {
-            position: relative;
-            background-image: url(https://raw.githubusercontent.com/Werewolf3788/SKVentureSigns/bcd39125f3e66cfe95baab52771628778e15654f/images/skbackground.png);
-            background-size: cover;
-            background-position: center top;
-            background-attachment: fixed;
-            min-height: calc(100vh - var(--footer-height));
-        }
-
-        .services-hero-banner {
-            width: 100%;
-            padding-top: calc(var(--header-height) + 60px);
-            padding-bottom: 60px;
-            background-color: var(--sk-maroon);
-            background-image: url(https://raw.githubusercontent.com/Werewolf3788/SKVentureSigns/bcd39125f3e66cfe95baab52771628778e15654f/images/skbackground.png);
-            background-size: cover;
-            background-position: center top;
-            background-attachment: fixed;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .services-hero-title {
-            font-family: "Abril Fatface", display;
-            font-size: 50px; 
-            font-weight: 500;
-            height: 70px;
-            line-height: 60px;
-            margin: 0 auto;
-            padding-bottom: 10px;
-            color: rgb(255, 255, 255);
-            text-align: center;
-            width: 100%;
-            max-width: 1080px;
-            -webkit-font-smoothing: antialiased;
-            text-shadow: 0 4px 15px rgba(0,0,0,0.8);
-        }
-
-        .services-content-wrapper {
-            background-color: var(--sk-maroon);
-            padding-top: 80px;
-            padding-bottom: 55px; 
-            transition: background-color 0.3s ease;
-            color: #fff;
-            text-align: center;
-        }
-
-        .innovative-heading {
-            font-family: "Abril Fatface", display;
-            color: var(--sk-gold);
-            width: 100%;
-            max-width: 721px; 
-            height: auto;
-            min-height: 39px; 
-            line-height: 39px;
-            font-size: 32px; 
-            margin: 0 auto 20px auto;
-            text-align: center;
-            text-shadow: 0 2px 10px rgba(0,0,0,0.5);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            white-space: nowrap;
-        }
-
-        .innovative-desc {
-            font-family: "Open Sans", Arial, sans-serif;
-            font-size: 20px;
-            font-weight: 500;
-            line-height: 33px; 
-            color: #FFFFFF;
-            width: 100%;
-            max-width: 1497px; 
-            margin: 0 auto 60px auto;
-            text-align: center;
-        }
-
-        .innovative-image-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 30px;
-            max-width: 1400px;
-            margin: 0 auto 0 auto; 
-            padding: 0 20px;
-        }
-        
-        .innovative-image-card {
-            width: 100%;
-            display: flex;
-            flex-direction: column;
-            border: 3px solid var(--sk-gold);
-            border-radius: 4px;
-            overflow: hidden;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-            background-color: #111;
-            transition: transform 0.3s ease;
-        }
-
-        .innovative-image-card:hover {
-            transform: translateY(-5px);
-        }
-
-        .innovative-image-wrap {
-            width: 100%;
-            aspect-ratio: 4/3;
-            overflow: hidden;
-            background-color: #000;
-        }
-
-        .innovative-image-wrap img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: transform 0.4s ease;
-        }
-
-        .innovative-image-card:hover .innovative-image-wrap img {
-            transform: scale(1.05);
-        }
-
-        .innovative-card-content {
-            padding: 20px;
-            text-align: left;
-            flex-grow: 1;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .innovative-card-title {
-            font-family: "Open Sans", Arial, sans-serif;
-            font-size: 22px;
-            font-weight: 700;
-            color: var(--sk-gold);
-            margin-bottom: 10px;
-            line-height: 1.3;
-        }
-
-        .innovative-card-desc {
-            font-family: 'Poppins', sans-serif;
-            font-size: 15px;
-            color: #fff;
-            line-height: 1.6;
-        }
-
-        .services-features-wrapper {
-            background-color: #ffffff;
-            padding: 80px 0;
-            transition: background-color 0.3s ease, color 0.3s ease;
-        }
-
-        .dark-mode .services-features-wrapper {
-            background-color: #1a1a1a;
-        }
-
-        .features-layout-grid {
-            display: grid;
-            grid-template-columns: 1fr 2fr;
-            gap: 50px;
-            align-items: center;
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 20px;
-        }
-
-        .services-features-wrapper .services-sub-heading {
-            font-family: "Abril Fatface", display;
-            font-size: 38px;
-            font-weight: 700;
-            line-height: 1.2;
-            color: #000000;
-            text-align: center;
-            margin: 0;
-        }
-
-        .dark-mode .services-features-wrapper .services-sub-heading {
-            color: #ffffff;
-        }
-
-        .services-features-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 30px;
-        }
-
-        .services-features-wrapper .feature-card {
-            background: transparent;
-            padding: 10px;
-            transition: transform 0.3s ease;
-            display: flex;
-            flex-direction: row;
-            align-items: flex-start;
-            gap: 15px;
-            border: none;
-        }
-
-        .services-features-wrapper .feature-card:hover {
-            transform: translateY(-5px);
-        }
-
-        .services-features-wrapper .feature-icon-wrap {
-            color: rgb(2, 48, 71);
-            margin-bottom: 0;
-            flex-shrink: 0;
-        }
-
-        .dark-mode .services-features-wrapper .feature-icon-wrap {
-            color: var(--sk-gold);
-        }
-
-        .feature-text-content {
-            display: flex;
-            flex-direction: column;
-            text-align: left;
-        }
-
-        .services-features-wrapper .feature-title {
-            font-family: "Abril Fatface", display;
-            font-size: 18px;
-            font-weight: 500;
-            line-height: 25.2px;
-            margin-bottom: 4px;
-            color: #000000;
-        }
-
-        .dark-mode .services-features-wrapper .feature-title {
-            color: #ffffff;
-        }
-
-        .services-features-wrapper .feature-desc {
-            font-family: "Poppins", Helvetica, Arial, Lucida, sans-serif;
-            font-size: 16px;
-            font-weight: 500;
-            line-height: 28px;
-            color: rgba(0, 0, 0, 0.64);
-        }
-
-        .dark-mode .services-features-wrapper .feature-desc {
-            color: rgba(255, 255, 255, 0.8);
-        }
-
-        .services-cta-section {
-            margin-top: 0;
-            padding: 70px 20px;
-            background-color: rgb(33, 158, 188); 
-            border: none;
-            text-align: center;
-            transition: background-color 0.3s ease;
-        }
-
-        .dark-mode .services-cta-section {
-            background-color: rgb(0, 0, 255); 
-        }
-
-        .cta-title {
-            font-family: "Abril Fatface", display;
-            font-size: 50px;
-            line-height: 60px;
-            padding-bottom: 10px;
-            margin-bottom: 0;
-            color: #fff;
-            text-shadow: 0 2px 10px rgba(0,0,0,0.1);
-        }
-
-        .cta-desc {
-            font-family: "Poppins", Helvetica, Arial, Lucida, sans-serif;
-            font-size: 18px;
-            font-weight: 500;
-            max-width: 950px;
-            margin: 0 auto;
-            padding-bottom: 18px;
-            line-height: 31.5px;
-            color: #fff;
-        }
-
-        .cta-button {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            background-color: #ffffff;
-            color: rgb(2, 48, 71);
-            font-family: "Open Sans", sans-serif;
-            font-size: 16px;
-            font-weight: 700;
-            text-transform: none; 
-            padding: 12px 30px;
-            border-radius: 50px;
-            text-decoration: none;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.15);
-            border: none;
-            cursor: pointer;
-        }
-
-        .cta-button:hover {
-            background-color: var(--sk-gold);
-            color: var(--sk-maroon);
-            transform: scale(1.05);
-        }
-
-        .smart-tab-btn {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.3s ease;
-        }
-        .smart-tab-btn.already-open:hover {
-            background: linear-gradient(180deg, #FF6A33 0%, #FF4500 100%) !important;
-            color: #fff !important;
-            border-color: #FF4500 !important;
-            box-shadow: 0 4px 15px rgba(255, 69, 0, 0.4) !important;
-            text-shadow: 1px 1px 2px rgba(0,0,0,0.3) !important;
-        }
-        .smart-tab-btn.already-open:hover .btn-text {
-            display: none;
-        }
-        .smart-tab-btn.already-open:hover::after {
-            content: "SWITCH TO TAB";
-        }
-
+        /* -----------------------------------------------------------
+            FOOTER SYMMETRY
+        ----------------------------------------------------------- */
         footer#main-footer {
             background-color: var(--sk-maroon);
             color: white;
@@ -619,26 +433,13 @@
         }
         .footer-value:hover { color: var(--sk-gold); }
 
-        @media (max-width: 1024px) {
+        @media (max-width: 1023px) {
             :root { --header-height: 100px; --container-width: 90%; }
+            .advertising-hero { padding-top: 100px; }
             #header-logo { width: 220px; }
-            .header-scrolled #header-logo { width: 170px; }
             .footer-grid { grid-template-columns: 1fr; gap: 40px; }
-            .theme-toggle-wrapper { top: auto; bottom: 80px; }
-            .nav-link { padding-top: 15px; padding-bottom: 15px; font-size: 15px; }
-
-            .innovative-heading { font-size: 24px; white-space: normal; height: auto; line-height: 1.4; }
-            .innovative-desc { font-size: 16px; line-height: 1.6; height: auto; }
-            .innovative-image-grid { grid-template-columns: 1fr; max-width: 600px; }
-            .services-hero-title { font-size: 40px; height: auto; line-height: 1.2; }
-            
-            .features-layout-grid { grid-template-columns: 1fr; text-align: center; }
-            .services-features-wrapper .services-sub-heading { margin-bottom: 30px; }
-            .cta-title { font-size: 40px; line-height: 1.2; }
-        }
-
-        @media (max-width: 768px) {
-            .services-features-grid { grid-template-columns: 1fr; }
+            .hero-title-precision { font-size: 38px !important; line-height: 1.2 !important; }
+            .fair-heading-precision { font-size: 32px !important; line-height: 1.2 !important; }
         }
     </style>
 </head>
@@ -665,24 +466,24 @@
         </div>
     </div>
 
-    <!-- MAIN HEADER (NESTED FRAMEWORK) -->
+    <!-- MAIN HEADER -->
     <header id="main-header" class="fixed top-0 left-0 w-full z-[1000] flex flex-col justify-center">
         <div class="main-container flex items-center justify-between h-full px-4 lg:px-0">
             <div class="flex-shrink-0 z-[1001]">
-                <!-- FIX: Completely removed target attribute to force same tab -->
+                <!-- Same Tab Setup for Logo -->
                 <a href="./index.html" class="smart-tab-btn" onclick="smartTabClick(event, this, 'tab_sk_Home', this.href)">
-                    <img src="https://raw.githubusercontent.com/Werewolf3788/SKVentureSigns/a19e4b81ccba61d2b1359a357e91972d6a3d33e8/images/S%26K%20Sign%20White.png" alt="S&K" id="header-logo" />
+                    <img src="https://raw.githubusercontent.com/Werewolf3788/SKVentureSigns/43ce7372c309633c13f3570093eb8af2bfb3de6b/images/S%26K%20Sign%20White.png" alt="S&K" id="header-logo" />
                 </a>
             </div>
 
             <nav class="hidden lg:flex flex-grow items-center justify-center px-10">
                 <ul id="desktop-nav-root" class="flex items-center gap-8 xl:gap-12">
-                    <!-- Dynamic Navigation injected via JS -->
+                    <!-- Synced via Sheet -->
                 </ul>
             </nav>
 
             <div class="flex items-center gap-4 z-[1001]">
-                <button onclick="downloadSKContact()" class="hidden sm:flex bg-[#FFC627] text-[#3E0100] px-6 py-3 rounded-xl font-extrabold uppercase text-xs shadow-lg hover:scale-105 transition-all">
+                <button onclick="downloadSKContact()" class="hidden sm:flex bg-[#FFC627] text-[#3E0100] px-6 py-3 rounded-xl font-extrabold uppercase text-xs shadow-lg hover:scale-105 transition-all border-2 border-[#3E0100]">
                     <i data-lucide="user-plus" class="w-4 h-4 mr-2"></i> 844-907-4450
                 </button>
                 <button id="menu-toggle" class="lg:hidden text-white">
@@ -690,157 +491,100 @@
                 </button>
             </div>
         </div>
-        <div id="refresh-bar"></div>
-        
-        <!-- Mobile Dropdown -->
-        <div id="mobile-menu" class="hidden absolute top-full left-0 w-full shadow-2xl flex-col p-8 gap-6 border-t border-black/5"></div>
+        <div id="mobile-menu" class="hidden absolute top-full left-0 w-full bg-[var(--card-bg)] shadow-2xl flex-col p-8 gap-6 text-[var(--text-primary)] border-t border-black/5 transition-colors"></div>
     </header>
 
-    <!-- NEW SERVICES CONTENT WRAPPER -->
-    <main class="services-global-wrapper" id="services-main">
-        
-        <!-- Banner Strip for Title -->
-        <div class="services-hero-banner">
-            <div class="main-container">
-                <h1 class="services-hero-title" id="services-main-heading">Our Comprehensive Services</h1>
-            </div>
-        </div>
-
-        <!-- Main Content Area (Maroon Background) -->
-        <div class="services-content-wrapper">
-            <div class="main-container">
-                
-                <!-- Innovative Solutions Section -->
-                <h2 class="innovative-heading">Innovative Solutions For Every Business</h2>
-                <p class="innovative-desc">
-                    We provide businesses with the tools to engage their audience and boost brand recognition. Let us tailor a solution that suits your unique needs, elevating your advertising strategy every step of the way.
-                </p>
-
-                <!-- 3-Column Image/Text Grid -->
-                <div class="innovative-image-grid">
-                    
-                    <!-- Card 1 -->
-                    <div class="innovative-image-card">
-                        <div class="innovative-image-wrap">
-                            <img src="https://raw.githubusercontent.com/Werewolf3788/SKVentureSigns/b3ae21594b6a28420e4eb4937ff2f237b7889df0/images/signs.PNG" alt="Digital Sign Rental">
-                        </div>
-                        <div class="innovative-card-content">
-                            <h3 class="innovative-card-title">Digital Sign Rental</h3>
-                            <p class="innovative-card-desc">We offer flexible rental options for high-quality digital displays, ensuring businesses can reach their target audience effectively without long-term commitments.</p>
-                        </div>
+    <main>
+        <!-- HERO SPLASH (Symmetrical Layout Logic) -->
+        <section class="advertising-hero">
+            <div class="main-container flex flex-col lg:flex-row items-center justify-between gap-10">
+                <!-- Left Column strictly at 50% mapping -->
+                <div class="lg:w-1/2 w-full flex justify-center">
+                    <h5 class="hero-title-precision">Transform Your Advertising with S&K Venture Signs</h5>
+                </div>
+                <!-- Right Column strictly at 50% mapping -->
+                <div class="lg:w-1/2 w-full flex justify-center">
+                    <div class="bg-[var(--card-bg)] p-10 rounded-3xl shadow-2xl w-full max-w-[450px] text-center transition-colors">
+                        <span class="hero-label-precision">Innovative Solutions for Modern Advertising</span>
+                        <h3 class="text-4xl mb-4 text-[var(--text-primary)]">Join the Digital Revolution</h3>
+                        <p class="text-[var(--text-primary)] opacity-70">Discover how our digital advertising solutions can drive your business forward.</p>
                     </div>
-                    
-                    <!-- Card 2 -->
-                    <div class="innovative-image-card">
-                        <div class="innovative-image-wrap">
-                            <img src="https://raw.githubusercontent.com/Werewolf3788/SKVentureSigns/b3ae21594b6a28420e4eb4937ff2f237b7889df0/images/signs1.PNG" alt="Sign Maintenance & Repair">
-                        </div>
-                        <div class="innovative-card-content">
-                            <h3 class="innovative-card-title">Sign Maintenance & Repair</h3>
-                            <p class="innovative-card-desc">Our comprehensive maintenance and repair services ensure that your digital signage remains in optimal working condition, minimizing downtime and maximizing visibility.</p>
-                        </div>
-                    </div>
-                    
-                    <!-- Card 3 -->
-                    <div class="innovative-image-card">
-                        <div class="innovative-image-wrap">
-                            <img src="https://raw.githubusercontent.com/Werewolf3788/SKVentureSigns/b3ae21594b6a28420e4eb4937ff2f237b7889df0/images/signs2.PNG" alt="Sign Installation">
-                        </div>
-                        <div class="innovative-card-content">
-                            <h3 class="innovative-card-title">Sign Installation</h3>
-                            <p class="innovative-card-desc">Our expert installation team ensures precise setup and optimal placement of your digital signs, providing hassle-free solutions that enhance your advertising impact.</p>
-                        </div>
-                    </div>
-
                 </div>
             </div>
-        </div>
+        </section>
 
-        <!-- NEW: Features Section (White Background & Matched Layout) -->
-        <div class="services-features-wrapper">
+        <!-- FAIR DIVIDER -->
+        <section class="adventurous-divider">
             <div class="main-container">
-                <div class="features-layout-grid">
-                    
-                    <!-- Left Column: Title -->
-                    <div class="features-title-col">
-                        <h2 class="services-sub-heading" id="services-sub-heading">Key Features of Our<br>Solutions</h2>
+                <div class="flex flex-col lg:flex-row items-center gap-12 mb-16">
+                    <div class="w-full lg:w-1/2">
+                        <img src="https://i0.wp.com/skventuresigns.com/wp-content/uploads/2026/04/EFF-fair-locations.png?v=10.7" class="w-full h-auto rounded-3xl shadow-2xl lightbox-trigger cursor-zoom-in">
                     </div>
-
-                    <!-- Right Column: 2x2 Grid -->
-                    <div class="services-features-grid">
+                    <div class="w-full lg:w-1/2 text-center text-white">
+                        <h5 class="fair-heading-precision">2026 Effingham County Fair</h5>
+                        <h1 class="fair-date-precision">August 1st to August 8th</h1>
                         
-                        <!-- Feature 1 -->
-                        <div class="feature-card">
-                            <div class="feature-icon-wrap">
-                                <i data-lucide="image" class="w-10 h-10"></i>
-                            </div>
-                            <div class="feature-text-content">
-                                <h3 class="feature-title">High-Resolution Displays</h3>
-                                <p class="feature-desc">Experience vibrant and clear visuals that capture attention instantly.</p>
-                            </div>
+                        <!-- Yellow Divider Integration -->
+                        <div class="et_pb_module et_pb_divider et_pb_divider_0 et_pb_divider_position_ et_pb_space">
+                            <div class="et_pb_divider_internal"></div>
                         </div>
 
-                        <!-- Feature 2 -->
-                        <div class="feature-card">
-                            <div class="feature-icon-wrap">
-                                <i data-lucide="cloud-upload" class="w-10 h-10"></i>
-                            </div>
-                            <div class="feature-text-content">
-                                <h3 class="feature-title">Remote Content Management</h3>
-                                <p class="feature-desc">Effortlessly update your billboard content from anywhere, anytime.</p>
-                            </div>
+                        <p class="fair-desc-precision mb-8">Explore our Locations below for the 2026 Effingham County Fair and Explore how we can support Your Advertising needs.</p>
+                        <div class="space-y-6 mb-10 fair-location-precision">
+                            <p>Location 1 - RT 40 - Graphic Advertising between the Entrances of the Fair Grounds</p>
+                            <p>Locations 2 & 3 - Inside the Fairgrounds above the Entrances to the Grandstands</p>
+                            <p>Locations 4 & 5 - Inside the Fairgrounds in the infield on the track</p>
                         </div>
+                        <!-- Same Tab Setup for Get Started Button -->
+                        <a href="https://werewolf3788.github.io/SKVentureSigns/Effingham.html" class="get-started-btn shadow-xl smart-tab-btn" onclick="smartTabClick(event, this, 'tab_sk_efair', this.href)">
+                            <span class="btn-text">Get Started</span>
+                        </a>
+                    </div>
+                </div>
+                <h2 class="rental-heading-precision">Rental Opportunities still available !!</h2>
+            </div>
+        </section>
 
-                        <!-- Feature 3 -->
-                        <div class="feature-card">
-                            <div class="feature-icon-wrap">
-                                <i data-lucide="leaf" class="w-10 h-10"></i>
-                            </div>
-                            <div class="feature-text-content">
-                                <h3 class="feature-title">Energy-Efficient Technology</h3>
-                                <p class="feature-desc">Reduce costs with our eco-friendly and energy-saving digital solutions.</p>
-                            </div>
-                        </div>
+        <!-- DYNAMIC SERVICES -->
+        <section id="services-grid-container" class="py-20 bg-[#3E0100]">
+            <div class="main-container">
+                <!-- Banners above Cards -->
+                <div class="flex flex-col items-center gap-6 mb-12">
+                    <img src="https://i0.wp.com/skventuresigns.com/wp-content/uploads/2025/01/Topline.png?v=10.7" alt="Engage Your Audience Like Never Before With Our State-of-the Art Digital Sign Solutions" class="w-full max-w-[1080px] h-auto">
+                    <img src="https://i0.wp.com/skventuresigns.com/wp-content/uploads/2025/03/Customize.png?v=10.7" alt="Customize Digital Advertising" class="w-full max-w-[1080px] h-auto">
+                </div>
 
-                        <!-- Feature 4 -->
-                        <div class="feature-card">
-                            <div class="feature-icon-wrap">
-                                <i data-lucide="bookmark" class="w-10 h-10"></i>
-                            </div>
-                            <div class="feature-text-content">
-                                <h3 class="feature-title">Customizable Display Options</h3>
-                                <p class="feature-desc">Tailor your advertising displays to perfectly match your brand’s identity.</p>
-                            </div>
-                        </div>
-
+                <div id="services-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                    <div class="text-center py-10 w-full col-span-full">
+                        <p class="text-white animate-pulse">Loading S&K Services...</p>
                     </div>
                 </div>
             </div>
-        </div>
+        </section>
 
-        <!-- CTA Section -->
-        <div class="services-cta-section">
-            <div class="main-container">
-                <h2 class="cta-title">Keep Your Hard Earned Investment Working</h2>
-                <p class="cta-desc">
-                    Ready to repair what you worked so hard for? Reach out to S&K Ventures today to explore the options available to get Your signs working to their best ability. Contact us now to start revitalizing your Hard Earned Investment!
-                </p>
-                <!-- CTA Buttons properly trigger the Smart Action Modals like the footer -->
-                <div class="flex justify-center items-center gap-4 sm:gap-6 flex-wrap">
-                    <button onclick="gtag('event', 'generate_lead', {'method': 'phone', 'source': 'services_cta'}); openPhoneSmartActions('844-907-4450');" class="cta-button">
-                        <i data-lucide="phone" class="w-5 h-5"></i> Call 844-907-4450
-                    </button>
-                    <!-- V9.9.4: Now passing the exact subject line "Request A Quote" -->
-                    <button onclick="gtag('event', 'generate_lead', {'method': 'email', 'source': 'services_cta'}); openEmailSmartActions('Scott.Robinson@skventuresigns.com', 'Request A Quote');" class="cta-button">
-                        <i data-lucide="mail" class="w-5 h-5"></i> Email Us
-                    </button>
-                </div>
+        <!-- TAGLINE -->
+        <section class="bg-[#3E0100] pb-20 flex justify-center">
+            <div class="main-container flex justify-center">
+                <img src="https://i0.wp.com/skventuresigns.com/wp-content/uploads/2024/12/SK-tagline.png?v=10.7" class="w-full max-w-[950px] lightbox-trigger cursor-zoom-in">
             </div>
-        </div>
+        </section>
 
+        <!-- CTA -->
+        <section class="py-24" style="background-color:rgb(69,123,157);">
+            <div class="main-container text-center text-white">
+                <h2 class="text-5xl md:text-7xl mb-8">Unlock Your Advertising Potential</h2>
+                <p class="text-xl md:text-2xl mb-12 max-w-4xl mx-auto leading-relaxed">
+                    Ready to elevate your brand’s visibility? Reach out to S&K Venture Signs today for tailored digital solutions that meet your unique needs.
+                </p>
+                <!-- Same Tab Setup for Mail To -->
+                <a href="mailto:Scott.Robinson@skventuresigns.com" class="bg-white text-blue-900 px-16 py-5 rounded-full font-black uppercase tracking-widest shadow-2xl inline-block hover:scale-105 transition-all border-4 border-blue-900 smart-tab-btn" onclick="smartTabClick(event, this, 'tab_sk_mailto_quote', this.href)">
+                    <span class="btn-text">Request A Quote</span>
+                </a>
+            </div>
+        </section>
     </main>
 
-    <!-- FOOTER (V10.11 MATCHED) -->
+    <!-- FOOTER -->
     <footer id="main-footer">
         <div class="main-container footer-grid">
             <div class="footer-col">
@@ -862,6 +606,10 @@
     </footer>
 
     <!-- MODALS -->
+    <div id="lightbox-overlay" onclick="this.style.display='none'" class="fixed inset-0 bg-black/95 z-[10000] hidden items-center justify-center p-10">
+        <img id="lightbox-img" src="" class="max-w-full max-h-full object-contain rounded-xl border-4 border-white shadow-2xl">
+    </div>
+
     <div id="phone-modal" class="sk-modal-overlay" onclick="closeModals()">
         <div class="sk-modal-content" onclick="event.stopPropagation()">
             <div class="bg-[#3E0100] p-8 text-[#FFC627] text-center font-serif text-2xl">Contact Specialist</div>
@@ -882,7 +630,6 @@
         <div class="sk-modal-content" onclick="event.stopPropagation()">
             <div class="bg-[#3E0100] p-8 text-[#FFC627] text-center font-serif text-2xl">Start Navigation</div>
             <div class="p-8">
-                <!-- FIX: Target attributes stripped completely to force same tab on Maps -->
                 <a id="link-gmaps" class="smart-option"><i data-lucide="map"></i> Google Maps</a>
                 <a id="link-amaps" class="smart-option"><i data-lucide="navigation"></i> Apple Maps</a>
                 <a id="link-waze" class="smart-option"><i data-lucide="navigation-2"></i> Waze Navigation</a>
@@ -893,56 +640,36 @@
 
     <script>
         /**
-         * S&K SMART SYNC ENGINE v10.15
-         * FIX: Strict Same-Tab Navigation Enforced.
+         * S&K UNIVERSAL ENGINE v10.14 (Safe ITC / Global Sync / Same Tab Forced)
          */
-        const SITE_DATA_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTZY38nsz_aJDO3cdtAwv4w359jK1aMt1rhBwZ3LAGarLyddtbBowFZv6mjlpnR1eGdNCpFhat8FuKp/pub?output=csv";
-        
-        let siteData = { 
-            nav: [], 
-            phones: ["618-708-4450", "844-907-4450"], 
-            email: "Scott.Robinson@skventuresigns.com", 
-            addressStreet: "607 W Clark Ave", 
-            addressCity: "Effingham IL 62401" 
-        };
+        const SYNC_CSV = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTZY38nsz_aJDO3cdtAwv4w359jK1aMt1rhBwZ3LAGarLyddtbBowFZv6mjlpnR1eGdNCpFhat8FuKp/pub?output=csv";
+        const SERVICES_CSV = "https://docs.google.com/spreadsheets/d/e/2PACX-1vT9HBnWuIELZ5IxaTxuCpNgs5ep7Tz4NpaU8__laH9a1DK52CreOSM8IqQxUK95CMyzsmTmkHoTgc1b/pub?output=csv";
 
-        function safeSetStorage(key, val) { try { localStorage.setItem(key, val); } catch (e) {} }
-        function safeGetStorage(key) { try { return localStorage.getItem(key); } catch (e) { return null; } }
-        function safeRemoveStorage(key) { try { localStorage.removeItem(key); } catch (e) {} }
+        let siteData = { nav: [], phones: [], email: "", addressStreet: "", addressCity: "" };
 
-        /* =========================================================
-           V10.15 STRICT SAME TAB NAVIGATION
-           Checks if tab is open -> jumps to it. Otherwise, loads
-           in the exact same tab using window.location.href.
-        ========================================================= */
+        /**
+         * V10.14: SAFE STORAGE WRAPPERS (Retained for visual states, removed for tab jumping)
+         */
+        function safeSetStorage(key, val) {
+            try { localStorage.setItem(key, val); } catch (e) { console.warn('Storage blocked'); }
+        }
+        function safeGetStorage(key) {
+            try { return localStorage.getItem(key); } catch (e) { return null; }
+        }
+        function safeRemoveStorage(key) {
+            try { localStorage.removeItem(key); } catch (e) {}
+        }
+
+        /**
+         * V10.14: FIXED SAME-TAB NAVIGATION
+         * Completely stripped window.open() jumping logic to STRICTLY force links into the same active tab.
+         */
         window.smartTabClick = function(event, element, targetName, url) {
-            if (event) event.preventDefault(); // Stop standard link behavior
-            
-            // Set global cross-tab memory so all pages know this is open
-            safeSetStorage(targetName, 'true');
-            if (element && element.classList) element.classList.add('already-open');
-            
-            // Check if it's already open somewhere else
-            const isAlreadyOpen = safeGetStorage(targetName) === 'true';
-
-            if (isAlreadyOpen) {
-                // Try to focus existing tab
-                let tabWindow = window.open('', targetName);
-                if (tabWindow && !tabWindow.closed) {
-                    tabWindow.focus();
-                } else {
-                    // Fallback to strictly the same tab
-                    window.location.href = url;
-                }
-            } else {
-                // Not open anywhere else? STRICT SAME TAB NAVIGATION.
-                window.location.href = url;
-            }
+            if(event) event.preventDefault(); // Stop standard link behavior
+            // Strictly assign destination URL so it loads in the exact same tab the user is clicking from
+            window.location.href = url;
         };
 
-        /* =========================================================
-           FRAMEWORK SYSTEM LOGIC
-        ========================================================= */
         function parseCSVRow(text) {
             const result = [];
             let current = '';
@@ -959,38 +686,25 @@
 
         async function loadSheetData() {
             try {
-                const response = await fetch(SITE_DATA_CSV_URL);
+                const response = await fetch(SYNC_CSV);
                 const text = await response.text();
                 const lines = text.split(/\r?\n/);
-                
                 let tempNav = [];
-                let tempPhones = [];
-
                 lines.forEach((line, idx) => {
-                    if (!line.trim()) return; 
                     const row = parseCSVRow(line);
                     const rowNum = idx + 1;
-
-                    if (row[2]?.trim().toLowerCase() === 'header') {
-                        tempNav.push({ label: row[0], url: row[1] });
-                    }
-
-                    if (rowNum === 7) tempPhones[0] = row[0];
-                    if (rowNum === 8) tempPhones[1] = row[0];
+                    if (row[2]?.trim().toLowerCase() === 'header') tempNav.push({ label: row[0], url: row[1] });
+                    if (rowNum === 7) siteData.phones[0] = row[0];
+                    if (rowNum === 8) siteData.phones[1] = row[0];
                     if (rowNum === 9) siteData.email = row[0];
                     if (rowNum === 10) {
-                        siteData.addressStreet = row[0];
-                        siteData.addressCity = row[1];
+                        siteData.addressStreet = row[0]; // A10
+                        siteData.addressCity = row[1];   // B10
                     }
                 });
-
-                if (tempNav.length > 0) siteData.nav = tempNav;
-                if (tempPhones.length > 0) siteData.phones = tempPhones.filter(p => p);
-
+                siteData.nav = tempNav;
                 renderDynamicFramework();
-            } catch (err) {
-                renderDynamicFramework();
-            }
+            } catch (err) { console.warn("Framework Sync Fallback"); renderDynamicFramework(); }
         }
 
         function renderDynamicFramework() {
@@ -1000,128 +714,119 @@
             const fEmail = document.getElementById('footer-email-list');
             const fAddr = document.getElementById('footer-address-container');
 
-            dNav.innerHTML = ''; mNav.innerHTML = ''; fPhone.innerHTML = ''; fEmail.innerHTML = ''; fAddr.innerHTML = '';
-
+            dNav.innerHTML = ''; mNav.innerHTML = '';
+            
             siteData.nav.forEach(n => {
-                const isActive = n.label.toLowerCase() === 'services';
+                const isActive = n.label.toLowerCase() === 'home';
                 
-                // Generate a unique target name derived from the link's name to prevent duplicate tabs
+                // Generate unique target name derived from link name (kept for potential metrics / identifier)
                 const uniqueTarget = `tab_sk_${n.label.replace(/[^a-zA-Z0-9]/g, '_')}`;
 
-                if (isActive) {
-                    window.name = uniqueTarget;
-                    safeSetStorage(uniqueTarget, 'true');
-                    window.addEventListener('beforeunload', () => {
-                        safeRemoveStorage(uniqueTarget);
-                    });
-                }
-
-                // Check cross-tab global memory
-                const isOpen = safeGetStorage(uniqueTarget) === 'true';
-                const openClass = isOpen && !isActive ? 'already-open' : '';
+                // Since we force everything in the same tab, we stripped the "SWITCH TO TAB" storage check 
+                // to prevent button styling confusion
                 const desktopActive = isActive ? 'active' : '';
 
-                // FIX: Target attribute stripped from HTML injection
-                dNav.innerHTML += `<li><a href="${n.url}" class="nav-link ${desktopActive} ${openClass}" onclick="smartTabClick(event, this, '${uniqueTarget}', '${n.url}')">${n.label}</a></li>`;
+                // Target attribute removed from HTML string. Handled strictly by smartTabClick same-tab behavior.
+                dNav.innerHTML += `<li><a href="${n.url}" class="nav-link ${desktopActive}" onclick="smartTabClick(event, this, '${uniqueTarget}', '${n.url}')">${n.label}</a></li>`;
                 
-                const mobileClass = isActive 
-                    ? `text-2xl font-bold border-b border-black/10 dark:border-white/10 pb-3 text-[var(--sk-gold)]`
-                    : `text-2xl font-bold border-b border-black/10 dark:border-white/10 pb-3`;
+                const mobileClass = isActive
+                    ? `text-2xl font-bold border-b border-black/5 pb-3 text-[var(--sk-gold)]`
+                    : `text-2xl font-bold border-b border-black/5 pb-3`;
 
-                mNav.innerHTML += `<a href="${n.url}" class="${mobileClass} ${openClass}" onclick="smartTabClick(event, this, '${uniqueTarget}', '${n.url}')">${n.label}</a>`;
+                mNav.innerHTML += `<a href="${n.url}" class="${mobileClass}" onclick="smartTabClick(event, this, '${uniqueTarget}', '${n.url}')">${n.label}</a>`;
             });
 
-            // Footer Matching Logic
             fPhone.className = "flex flex-wrap items-center justify-center gap-3";
-            let phoneHTML = '';
-            if (siteData.phones.length > 0) {
-                phoneHTML = `<span class="footer-value !mb-0" onclick="openPhoneSmartActions('${siteData.phones[0]}')">${siteData.phones[0]}</span>`;
-                if (siteData.phones[1]) {
-                    phoneHTML += `<span class="text-white opacity-70 text-sm font-bold uppercase">or</span><span class="footer-value !mb-0" onclick="openPhoneSmartActions('${siteData.phones[1]}')">${siteData.phones[1]}</span>`;
-                }
-            }
+            let phoneHTML = `<span class="footer-value !mb-0" onclick="openPhoneSmartActions('${siteData.phones[0]}')">${siteData.phones[0]}</span>`;
+            if (siteData.phones[1]) phoneHTML += `<span class="text-white opacity-70 text-sm font-bold uppercase">or</span><span class="footer-value !mb-0" onclick="openPhoneSmartActions('${siteData.phones[1]}')">${siteData.phones[1]}</span>`;
             fPhone.innerHTML = phoneHTML;
 
             fEmail.innerHTML = `<span class="footer-value" onclick="openEmailSmartActions('${siteData.email}')">${siteData.email}</span>`;
+            
+            fAddr.innerHTML = `<span class="footer-value" onclick="openMapSmartActions()">${siteData.addressStreet}, ${siteData.addressCity}</span>`;
 
-            // Single line address format
-            if (siteData.addressStreet) {
-                const fullDisplay = `${siteData.addressStreet}, ${siteData.addressCity}`;
-                fAddr.innerHTML = `<span class="footer-value" onclick="openMapSmartActions()">${fullDisplay}</span>`;
-            }
+            lucide.createIcons();
+        }
 
-            if (typeof lucide !== 'undefined') lucide.createIcons();
+        async function fetchServices() {
+            const grid = document.getElementById('services-grid');
+            try {
+                const response = await fetch(SERVICES_CSV);
+                const csvText = await response.text();
+                const lines = csvText.split('\n');
+                const titles = lines[0].split(',');
+                const descs = lines[1].split(',');
+                const btnLabels = lines[2].split(',');
+                const btnLinks = lines[3].split(',');
+                const imgs = lines[4].split(',');
+                grid.innerHTML = '';
+                for(let i=1; i < titles.length; i++) {
+                    const isEven = i % 2 !== 0;
+                    const titleText = titles[i]?.trim();
+                    const titleLower = titleText.toLowerCase();
+                    
+                    let customTitleColor = 'text-[var(--text-primary)]'; 
+                    let customBtnBorder = ''; 
+
+                    if (titleLower.includes('advertising') || titleLower.includes('sales')) {
+                        customTitleColor = 'dynamic-ad-title';
+                        customBtnBorder = 'border-4 border-[#FFC627]'; 
+                    } else if (titleLower.includes('rental') || titleLower.includes('leasing') || titleLower.includes('maintenance') || titleLower.includes('repair')) {
+                        customTitleColor = 'text-black'; 
+                        customBtnBorder = 'border-4 border-white'; 
+                    } else {
+                        customBtnBorder = isEven ? 'border-4 border-[#FFC627]' : 'border-4 border-white';
+                    }
+
+                    const uniqueTarget = `tab_sk_svc_${titleText.replace(/[^a-zA-Z0-9]/g, '_')}`;
+
+                    // Stripped cross-tab check class injections to prevent confusing button states
+                    grid.innerHTML += `
+                        <div class="service-card ${isEven ? 'bg-[var(--card-bg)]' : 'bg-[#DAA421]'}">
+                            <img src="${imgs[i]?.trim()}?v=10.10" class="lightbox-trigger" onerror="this.src='https://via.placeholder.com/400x220?text=S%26K+Venture+Signs'">
+                            <div class="text-center mt-4 flex-grow">
+                                <h3 class="text-2xl mb-2 ${customTitleColor}" style="font-family:'Abril Fatface', cursive;">${titleText}</h3>
+                                <p class="text-sm mb-6 ${isEven ? 'text-[var(--text-primary)] opacity-70' : 'text-[#3E0100]'} font-medium">${descs[i]}</p>
+                            </div>
+                            <a href="${btnLinks[i]?.trim()}" class="block py-3 rounded-full font-black uppercase text-xs tracking-widest text-white text-center ${isEven ? 'bg-[#2A0001]' : 'bg-[#023456]'} ${customBtnBorder} hover:scale-105 transition-all shadow-lg smart-tab-btn" onclick="smartTabClick(event, this, '${uniqueTarget}', '${btnLinks[i]?.trim()}')">
+                                <span class="btn-text">${btnLabels[i]?.trim() || 'Learn More'}</span>
+                            </a>
+                        </div>
+                    `;
+                }
+                initLightbox();
+            } catch (e) { grid.innerHTML = '<p class="text-white col-span-full text-center">Service updates pending.</p>'; }
+        }
+
+        function initLightbox() {
+            const overlay = document.getElementById('lightbox-overlay');
+            const overlayImg = document.getElementById('lightbox-img');
+            document.querySelectorAll('.lightbox-trigger').forEach(img => {
+                img.onclick = () => { overlayImg.src = img.src; overlay.style.display = 'flex'; };
+            });
         }
 
         function toggleSettingsPanel() {
-            const panel = document.getElementById('settings-panel');
-            panel.classList.toggle('hidden-settings');
-        }
-
-        function downloadSKContact() {
-            const PHOTO_URL = "https://raw.githubusercontent.com/Werewolf3788/SKVentureSigns/a19e4b81ccba61d2b1359a357e91972d6a3d33e8/images/S%26K%20Sign%20Black.png";
-            const vcard = "BEGIN:VCARD\n" +
-                        "VERSION:3.0\n" +
-                        "FN:Scott Robinson\n" +
-                        "ORG:S&K Venture Signs\n" +
-                        "TEL;TYPE=WORK,VOICE:" + (siteData.phones[1] || "844-907-4450") + "\n" +
-                        "TEL;TYPE=CELL,VOICE:" + (siteData.phones[0] || "618-708-4450") + "\n" +
-                        "EMAIL;TYPE=PREF,INTERNET:" + siteData.email + "\n" +
-                        "ADR;TYPE=WORK:;;" + siteData.addressStreet + ";" + siteData.addressCity.split(' ')[0] + ";IL;" + siteData.addressCity.split(' ').pop() + ";USA\n" +
-                        "URL:https://skventuresigns.com/\n" +
-                        "PHOTO;VALUE=URI:" + PHOTO_URL + "\n" +
-                        "END:VCARD";
-            
-            const blob = new Blob([vcard], { type: 'text/vcard;charset=utf-8' });
-            const url = window.URL.createObjectURL(blob);
-            const link = document.createElement('a');
-            link.href = url;
-            link.setAttribute('download', 'Scott_Robinson_SKVenture.vcf');
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-            setTimeout(() => window.URL.revokeObjectURL(url), 100);
+            document.getElementById('settings-panel').classList.toggle('hidden-settings');
         }
 
         function setTheme(mode) {
             const body = document.body;
-            const root = document.documentElement;
-            let targetMode = mode;
-
-            if (mode === 'auto') {
-                const hour = new Date().getHours();
-                const isNightTime = (hour < 6 || hour >= 19);
-                const isSystemDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-                targetMode = (isNightTime || isSystemDark) ? 'dark' : 'light';
-            }
-            
-            if (targetMode === 'dark') {
-                root.style.setProperty('--bg-primary', '#121212');
-                root.style.setProperty('--text-primary', '#e0e0e0');
-                root.style.setProperty('--card-bg', '#1e1e1e');
-                root.style.setProperty('--header-bg-scrolled', '#1e1e1e');
-                root.style.setProperty('--nav-text-scrolled', '#ffffff');
-                root.style.setProperty('--mobile-menu-bg', '#1e1e1e');
-                root.style.setProperty('--mobile-menu-text', '#ffffff');
+            const hour = new Date().getHours();
+            if (mode === 'auto') mode = (hour < 6 || hour >= 19) ? 'dark' : 'light';
+            if (mode === 'dark') {
+                document.documentElement.style.setProperty('--bg-primary', '#121212');
+                document.documentElement.style.setProperty('--text-primary', '#e0e0e0');
+                document.documentElement.style.setProperty('--card-bg', '#1e1e1e');
                 body.classList.add('dark-mode');
             } else {
-                root.style.setProperty('--bg-primary', '#000000'); 
-                root.style.setProperty('--text-primary', '#FFFFFF'); 
-                root.style.setProperty('--card-bg', '#ffffff');
-                root.style.setProperty('--header-bg-scrolled', 'white');
-                root.style.setProperty('--nav-text-scrolled', '#222222');
-                root.style.setProperty('--mobile-menu-bg', 'white');
-                root.style.setProperty('--mobile-menu-text', 'black');
+                document.documentElement.style.setProperty('--bg-primary', '#fcfcfc');
+                document.documentElement.style.setProperty('--text-primary', '#333333');
+                document.documentElement.style.setProperty('--card-bg', '#ffffff');
                 body.classList.remove('dark-mode');
             }
-            
-            const header = document.getElementById('main-header');
-            const logo = document.getElementById('header-logo');
-            if (header.classList.contains('header-scrolled')) {
-                logo.src = (targetMode === 'dark') ? "https://raw.githubusercontent.com/Werewolf3788/SKVentureSigns/a19e4b81ccba61d2b1359a357e91972d6a3d33e8/images/S%26K%20Sign%20White.png" : "https://raw.githubusercontent.com/Werewolf3788/SKVentureSigns/a19e4b81ccba61d2b1359a357e91972d6a3d33e8/images/S%26K%20Sign%20Black.png";
-            }
-
             document.cookie = `theme=${mode};max-age=31536000;path=/`;
+            updateHeaderVisuals();
         }
 
         function updateOutlineColor(color) {
@@ -1132,38 +837,23 @@
         function openPhoneSmartActions(num) {
             const clean = num.replace(/\D/g, '');
             const container = document.getElementById('phone-options-container');
-            const isMac = navigator.platform.toUpperCase().indexOf('MAC') >= 0;
-            
-            let html = '';
-            
-            // FIX: Target attributes stripped to force same tab
-            if (isMac) {
-                html += `<a href="tel:${clean}" class="smart-option" onclick="smartTabClick(event, this, 'tab_sk_tel', this.href)"><i data-lucide="monitor"></i> FaceTime / iPhone</a>`;
-            } else {
-                html += `<a href="tel:${clean}" class="smart-option" onclick="smartTabClick(event, this, 'tab_sk_tel', this.href)"><i data-lucide="phone"></i> Direct Call</a>`;
-            }
-            
-            if (num.includes('618')) {
-                html += `<a href="https://wa.me/1${clean}" class="smart-option" onclick="smartTabClick(event, this, 'tab_sk_wa', this.href)"><i data-lucide="message-circle"></i> WhatsApp Specialist</a>`;
-            }
-
+            // Target attributes removed
+            let html = `
+                <a href="tel:${clean}" class="smart-option" onclick="smartTabClick(event, this, 'tab_sk_tel', this.href)"><i data-lucide="phone"></i> Direct Call</a>
+            `;
+            if (num.includes('618')) html += `<a href="https://wa.me/1${clean}" class="smart-option" onclick="smartTabClick(event, this, 'tab_sk_wa', this.href)"><i data-lucide="message-circle"></i> WhatsApp Specialist</a>`;
             container.innerHTML = html;
             document.getElementById('phone-modal').style.display = 'flex';
             lucide.createIcons();
         }
 
-        function openEmailSmartActions(email, subject = "General Inquiry") {
-            const encodedSubject = encodeURIComponent(subject);
+        function openEmailSmartActions(email) {
             const container = document.getElementById('email-options-container');
-            
-            const defUrl = `mailto:${email}?subject=${encodedSubject}`;
-            const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=${email}&su=${encodedSubject}`;
-            
-            // FIX: Target attributes stripped to force same tab
+            // Target attributes removed
             container.innerHTML = `
-                <a href="${defUrl}" class="smart-option" onclick="smartTabClick(event, this, 'tab_sk_mail_def', this.href)"><i data-lucide="mail"></i> Default Client</a>
-                <a href="${gmailUrl}" class="smart-option" onclick="smartTabClick(event, this, 'tab_sk_mail_gmail', this.href)"><i data-lucide="send"></i> Gmail Web</a>
-                <div onclick="navigator.clipboard.writeText('${email}'); alert('Email Copied');" class="smart-option"><i data-lucide="copy"></i> Copy Address</div>
+                <a href="mailto:${email}" class="smart-option" onclick="smartTabClick(event, this, 'tab_sk_mail_def', this.href)"><i data-lucide="mail"></i> Default Client</a>
+                <a href="https://mail.google.com/mail/?view=cm&fs=1&to=${email}" class="smart-option" onclick="smartTabClick(event, this, 'tab_sk_mail_gmail', this.href)"><i data-lucide="send"></i> Gmail Web</a>
+                <div onclick="navigator.clipboard.writeText('${email}'); closeModals();" class="smart-option"><i data-lucide="copy"></i> Copy Address</div>
             `;
             document.getElementById('email-modal').style.display = 'flex';
             lucide.createIcons();
@@ -1172,92 +862,80 @@
         function openMapSmartActions() {
             const addrStr = `${siteData.addressStreet} ${siteData.addressCity}`;
             const addr = encodeURIComponent(addrStr);
-            
-            const gmapsUrl = `https://www.google.com/maps/dir/?api=1&destination=${addr}`;
-            const amapsUrl = `http://maps.apple.com/?daddr=${addr}`;
-            const wazeUrl = `https://waze.com/ul?q=${addr}&navigate=yes`;
-            
-            // FIX: Target attributes stripped & smartTabClick injected
-            document.getElementById('link-gmaps').href = gmapsUrl;
-            document.getElementById('link-gmaps').setAttribute('onclick', `smartTabClick(event, this, 'tab_sk_gmaps', '${gmapsUrl}')`);
-            
-            document.getElementById('link-amaps').href = amapsUrl;
-            document.getElementById('link-amaps').setAttribute('onclick', `smartTabClick(event, this, 'tab_sk_amaps', '${amapsUrl}')`);
-            
-            document.getElementById('link-waze').href = wazeUrl;
-            document.getElementById('link-waze').setAttribute('onclick', `smartTabClick(event, this, 'tab_sk_waze', '${wazeUrl}')`);
+            // Target attributes removed
+            document.getElementById('link-gmaps').href = `https://www.google.com/maps/dir/?api=1&destination=${addr}`;
+            document.getElementById('link-gmaps').setAttribute('onclick', `smartTabClick(event, this, 'tab_sk_gmaps', '${document.getElementById('link-gmaps').href}')`);
+
+            document.getElementById('link-amaps').href = `http://maps.apple.com/?daddr=${addr}&dirflg=d`;
+            document.getElementById('link-amaps').setAttribute('onclick', `smartTabClick(event, this, 'tab_sk_amaps', '${document.getElementById('link-amaps').href}')`);
+
+            document.getElementById('link-waze').href = `https://waze.com/ul?q=${addr}&navigate=yes`;
+            document.getElementById('link-waze').setAttribute('onclick', `smartTabClick(event, this, 'tab_sk_waze', '${document.getElementById('link-waze').href}')`);
             
             document.getElementById('map-modal').style.display = 'flex';
             lucide.createIcons();
         }
 
-        function closeModals() {
-            document.querySelectorAll('.sk-modal-overlay').forEach(m => m.style.display = 'none');
-        }
+        function closeModals() { document.querySelectorAll('.sk-modal-overlay').forEach(m => m.style.display = 'none'); }
 
-        const trackSectionView = () => {
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        gtag('event', 'section_view', { 'section_id': entry.target.id });
-                        observer.unobserve(entry.target);
-                    }
-                });
-            }, { threshold: 0.5 });
-
-            document.querySelectorAll('main > div, footer').forEach(section => {
-                if (section.id) observer.observe(section);
-            });
-        };
-
-        /* =========================================================
-           EVENT LISTENERS & INITIALIZATION
-        ========================================================= */
-        window.addEventListener('scroll', () => {
+        function updateHeaderVisuals() {
             const header = document.getElementById('main-header');
             const logo = document.getElementById('header-logo');
             const isDark = document.body.classList.contains('dark-mode');
-
             if (window.scrollY > 50) {
                 header.classList.add('header-scrolled');
-                logo.src = isDark ? "https://raw.githubusercontent.com/Werewolf3788/SKVentureSigns/a19e4b81ccba61d2b1359a357e91972d6a3d33e8/images/S%26K%20Sign%20White.png" : "https://raw.githubusercontent.com/Werewolf3788/SKVentureSigns/a19e4b81ccba61d2b1359a357e91972d6a3d33e8/images/S%26K%20Sign%20Black.png";
+                logo.src = isDark ? "https://raw.githubusercontent.com/Werewolf3788/SKVentureSigns/43ce7372c309633c13f3570093eb8af2bfb3de6b/images/S%26K%20Sign%20White.png" : "https://raw.githubusercontent.com/Werewolf3788/SKVentureSigns/27f007340a35a758a2c83fa73a662cae242f9b16/images/S%26K%20Sign%20Black.png";
             } else {
                 header.classList.remove('header-scrolled');
-                logo.src = "https://raw.githubusercontent.com/Werewolf3788/SKVentureSigns/a19e4b81ccba61d2b1359a357e91972d6a3d33e8/images/S%26K%20Sign%20White.png";
+                logo.src = "https://skventuresigns.com/wp-content/uploads/2025/03/SK-Sign-White.png";
             }
-        });
+        }
 
-        document.getElementById('menu-toggle').addEventListener('click', () => {
+        function downloadSKContact() {
+            const PHOTO_URL = "https://skventuresigns.com/wp-content/uploads/2025/03/SK-Sign-Black.png";
+            const vcard = "BEGIN:VCARD\n" +
+                        "VERSION:3.0\n" +
+                        "N:Robinson;Scott;;;\n" +
+                        "FN:Scott Robinson\n" +
+                        "ORG:S&K Venture Signs\n" +
+                        "TITLE:Digital Billboard Specialist\n" +
+                        "TEL;TYPE=WORK,VOICE:844-907-4450\n" +
+                        "TEL;TYPE=CELL,VOICE:618-708-4450\n" +
+                        "EMAIL;TYPE=PREF,INTERNET:" + siteData.email + "\n" +
+                        "ADR;TYPE=WORK:;;" + siteData.addressStreet + ";" + siteData.addressCity.split(' ')[0] + ";IL;" + siteData.addressCity.split(' ').pop() + ";USA\n" +
+                        "PHOTO;VALUE=URI:" + PHOTO_URL + "\n" +
+                        "END:VCARD";
+            const blob = new Blob([vcard], { type: 'text/vcard;charset=utf-8' });
+            const url = window.URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.setAttribute('download', 'Scott_Robinson_SKVenture.vcf');
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+
+        window.addEventListener('scroll', updateHeaderVisuals);
+
+        document.getElementById('menu-toggle').onclick = () => {
             const m = document.getElementById('mobile-menu');
             m.classList.toggle('hidden'); m.classList.toggle('flex');
-        });
+        };
 
         window.onload = () => {
             loadSheetData();
-            trackSectionView();
-            
+            fetchServices();
             const cookies = document.cookie.split('; ').reduce((acc, curr) => {
                 const [k, v] = curr.split('='); acc[k] = v; return acc;
             }, {});
-            
             if (cookies['outline-color']) {
                 updateOutlineColor(cookies['outline-color']);
             } else {
                 updateOutlineColor('transparent');
             }
-
             setTheme(cookies['theme'] || 'auto');
-            if (typeof lucide !== 'undefined') lucide.createIcons();
+            lucide.createIcons();
         };
-
-        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
-            const cookies = document.cookie.split('; ').reduce((acc, curr) => {
-                const [k, v] = curr.split('='); acc[k] = v; return acc;
-            }, {});
-            if (!cookies['theme'] || cookies['theme'] === 'auto') {
-                setTheme('auto');
-            }
-        });
     </script>
 </body>
 </html>
