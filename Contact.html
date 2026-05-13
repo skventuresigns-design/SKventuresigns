@@ -19,6 +19,8 @@
         FIX: Updated navigation logic to actively highlight the "Contact" tab.
         FIX: Removed KF Signature Watermark while preserving both G-Tags for tracking.
         FIX: Removed Google Voice option from the phone modal logic to match global standards.
+        FIX: Modified ITC logic to navigate CURRENT tab if target isn't already open (No new tabs).
+        FIX: Re-wrote Formspree submission handler for better error catching and reset states.
     -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
@@ -491,16 +493,16 @@
             border: 2px outset rgb(0, 0, 0);
             box-sizing: border-box;
             color: rgb(0, 0, 0);
-            cursor: default;
+            cursor: pointer; /* Fixed cursor from default to pointer */
             display: inline-block;
             font-family: "Open Sans", Arial, sans-serif;
             font-size: 13.3333px;
             font-weight: 400;
             height: 24px;
-            width: 60.1094px; 
+            width: auto; 
             line-height: normal;
             margin: 25px 0 0 0;
-            padding: 1px 6px;
+            padding: 1px 10px;
             text-align: center;
             text-wrap: nowrap;
             -webkit-font-smoothing: antialiased;
@@ -508,6 +510,7 @@
         }
 
         .btn-submit-contact:hover { opacity: 0.8; }
+        .btn-submit-contact:disabled { opacity: 0.5; cursor: not-allowed; }
 
         .formspree-note { 
             font-size: 13px; 
@@ -596,7 +599,7 @@
     <header id="main-header" class="fixed top-0 left-0 w-full z-[1000] flex flex-col justify-center">
         <div class="main-container flex items-center justify-between h-full px-4 lg:px-0">
             <div class="flex-shrink-0 z-[1001]">
-                <a href="./index.html" target="tab_sk_Home" class="smart-tab-btn" onclick="smartTabClick(event, this, 'tab_sk_Home', this.href)">
+                <a href="./index.html" class="smart-tab-btn" onclick="smartTabClick(event, this, 'tab_sk_Home', this.href)">
                     <img src="https://raw.githubusercontent.com/Werewolf3788/SKVentureSigns/a19e4b81ccba61d2b1359a357e91972d6a3d33e8/images/S%26K%20Sign%20White.png" alt="S&K" id="header-logo" />
                 </a>
             </div>
@@ -653,7 +656,8 @@
                         </div>
                         <div class="form-field-group">
                             <label class="field-label">Your Email</label>
-                            <input type="email" name="_replyto" class="input-text-single" required>
+                            <!-- Updated to 'email' instead of '_replyto' for better Formspree parsing -->
+                            <input type="email" name="email" class="input-text-single" required>
                         </div>
                         <div class="form-field-group">
                             <label class="field-label">Phone Number</label>
@@ -748,9 +752,9 @@
         <div class="sk-modal-content" onclick="event.stopPropagation()">
             <div class="bg-[#3E0100] p-8 text-[#FFC627] text-center font-serif text-2xl">Start Navigation</div>
             <div class="p-8">
-                <a id="link-gmaps" target="_blank" class="smart-option"><i data-lucide="map"></i> Google Maps</a>
-                <a id="link-amaps" target="_blank" class="smart-option"><i data-lucide="navigation"></i> Apple Maps</a>
-                <a id="link-waze" target="_blank" class="smart-option"><i data-lucide="navigation-2"></i> Waze Navigation</a>
+                <a id="link-gmaps" class="smart-option"><i data-lucide="map"></i> Google Maps</a>
+                <a id="link-amaps" class="smart-option"><i data-lucide="navigation"></i> Apple Maps</a>
+                <a id="link-waze" class="smart-option"><i data-lucide="navigation-2"></i> Waze Navigation</a>
             </div>
             <div class="p-6 text-center text-sm font-bold modal-cancel-text" onclick="closeModals()">CANCEL</div>
         </div>
@@ -773,26 +777,39 @@
 
         /* =========================================================
            V10.19 CROSS-TAB AWARENESS & AGGRESSIVE FOCUS
+           Modified to NOT force a new tab if it isn't already open
         ========================================================= */
         window.smartTabClick = function(event, element, targetName, url) {
             if(event) event.preventDefault(); // Stop standard link behavior
             
-            // Set global cross-tab memory so all pages know this is open
-            localStorage.setItem(targetName, 'true');
-            if(element && element.classList) element.classList.add('already-open');
-            
-            // Explicitly force browser to select the existing named tab
-            let tabWindow = window.open(url, targetName);
-            if (tabWindow) {
-                tabWindow.focus();
+            // If clicking a link to the tab we are CURRENTLY on, just navigate normally
+            if (window.name === targetName) {
+                window.location.href = url;
+                return;
+            }
+
+            const isTabAlreadyOpen = localStorage.getItem(targetName) === 'true';
+
+            if (isTabAlreadyOpen) {
+                // Set memory and visually indicate
+                if(element && element.classList) element.classList.add('already-open');
+                
+                // Jump to the already open tab
+                let tabWindow = window.open(url, targetName);
+                if (tabWindow) {
+                    tabWindow.focus();
+                } else {
+                    // Failsafe in case aggressive popup blockers intercept the focus attempt
+                    window.location.href = url;
+                }
             } else {
-                // Failsafe in case aggressive popup blockers intercept the focus attempt
+                // DO NOT open a new tab. Navigate locally within the current tab.
                 window.location.href = url;
             }
         };
 
         /* =========================================================
-           FRAMEWORK SYSTEM LOGIC
+            FRAMEWORK SYSTEM LOGIC
         ========================================================= */
         function parseCSVRow(text) {
             const result = [];
@@ -877,13 +894,14 @@
                 const openClass = isOpen && !isActive ? 'already-open' : '';
                 const desktopActive = isActive ? 'active' : '';
 
-                dNav.innerHTML += `<li><a href="${n.url}" target="${uniqueTarget}" class="nav-link ${desktopActive} ${openClass}" onclick="smartTabClick(event, this, '${uniqueTarget}', '${n.url}')">${n.label}</a></li>`;
+                // Removed target attribute from links so smartTabClick fully controls navigation
+                dNav.innerHTML += `<li><a href="${n.url}" class="nav-link ${desktopActive} ${openClass}" onclick="smartTabClick(event, this, '${uniqueTarget}', '${n.url}')">${n.label}</a></li>`;
                 
                 const mobileClass = isActive 
                     ? `text-2xl font-bold border-b border-black/10 dark:border-white/10 pb-3 text-[var(--sk-gold)]`
                     : `text-2xl font-bold border-b border-black/10 dark:border-white/10 pb-3`;
 
-                mNav.innerHTML += `<a href="${n.url}" target="${uniqueTarget}" class="${mobileClass} ${openClass}" onclick="smartTabClick(event, this, '${uniqueTarget}', '${n.url}')">${n.label}</a>`;
+                mNav.innerHTML += `<a href="${n.url}" class="${mobileClass} ${openClass}" onclick="smartTabClick(event, this, '${uniqueTarget}', '${n.url}')">${n.label}</a>`;
             });
 
             // V10.19 Footer Matching Logic
@@ -914,7 +932,8 @@
         }
 
         function downloadSKContact() {
-            const PHOTO_URL = "hhttps://raw.githubusercontent.com/Werewolf3788/SKVentureSigns/a19e4b81ccba61d2b1359a357e91972d6a3d33e8/images/S%26K%20Sign%20Black.png";
+            // Fixed typo: removed double 'h' from https
+            const PHOTO_URL = "https://raw.githubusercontent.com/Werewolf3788/SKVentureSigns/a19e4b81ccba61d2b1359a357e91972d6a3d33e8/images/S%26K%20Sign%20Black.png";
             const vcard = "BEGIN:VCARD\n" +
                         "VERSION:3.0\n" +
                         "FN:Scott Robinson\n" +
@@ -995,13 +1014,13 @@
             
             // V10.19: Smart Tab applied to modal options
             if (isMac) {
-                html += `<a href="tel:${clean}" target="tab_sk_tel" class="smart-option" onclick="smartTabClick(event, this, 'tab_sk_tel', this.href)"><i data-lucide="monitor"></i> FaceTime / iPhone</a>`;
+                html += `<a href="tel:${clean}" class="smart-option" onclick="smartTabClick(event, this, 'tab_sk_tel', this.href)"><i data-lucide="monitor"></i> FaceTime / iPhone</a>`;
             } else {
-                html += `<a href="tel:${clean}" target="tab_sk_tel" class="smart-option" onclick="smartTabClick(event, this, 'tab_sk_tel', this.href)"><i data-lucide="phone"></i> Direct Call</a>`;
+                html += `<a href="tel:${clean}" class="smart-option" onclick="smartTabClick(event, this, 'tab_sk_tel', this.href)"><i data-lucide="phone"></i> Direct Call</a>`;
             }
 
             if (num.includes('618')) {
-                html += `<a href="https://wa.me/1${clean}" target="tab_sk_wa" class="smart-option" onclick="smartTabClick(event, this, 'tab_sk_wa', this.href)"><i data-lucide="message-circle"></i> WhatsApp Specialist</a>`;
+                html += `<a href="https://wa.me/1${clean}" class="smart-option" onclick="smartTabClick(event, this, 'tab_sk_wa', this.href)"><i data-lucide="message-circle"></i> WhatsApp Specialist</a>`;
             }
 
             container.innerHTML = html;
@@ -1017,8 +1036,8 @@
             
             // V10.19: Smart Tab applied to modal options
             container.innerHTML = `
-                <a href="${defUrl}" target="tab_sk_mail_def" class="smart-option" onclick="smartTabClick(event, this, 'tab_sk_mail_def', this.href)"><i data-lucide="mail"></i> Default Client</a>
-                <a href="${gmailUrl}" target="tab_sk_mail_gmail" class="smart-option" onclick="smartTabClick(event, this, 'tab_sk_mail_gmail', this.href)"><i data-lucide="send"></i> Gmail Web</a>
+                <a href="${defUrl}" class="smart-option" onclick="smartTabClick(event, this, 'tab_sk_mail_def', this.href)"><i data-lucide="mail"></i> Default Client</a>
+                <a href="${gmailUrl}" class="smart-option" onclick="smartTabClick(event, this, 'tab_sk_mail_gmail', this.href)"><i data-lucide="send"></i> Gmail Web</a>
                 <div onclick="navigator.clipboard.writeText('${email}'); alert('Email Copied');" class="smart-option"><i data-lucide="copy"></i> Copy Address</div>
             `;
             document.getElementById('email-modal').style.display = 'flex';
@@ -1052,7 +1071,7 @@
         }
 
         /* =========================================================
-           EVENT LISTENERS & INITIALIZATION
+            EVENT LISTENERS & INITIALIZATION
         ========================================================= */
         window.addEventListener('scroll', () => {
             const header = document.getElementById('main-header');
@@ -1076,7 +1095,7 @@
         window.onload = () => {
             loadSheetData();
             
-            // Initial Formspree Integration Logic
+            // Robust Formspree Integration Logic
             const contactForm = document.getElementById('contact-scott-form');
             const status = document.getElementById('form-status');
             const btn = document.getElementById('submit-btn');
@@ -1084,27 +1103,48 @@
             if(contactForm) {
                 contactForm.addEventListener('submit', async function(ev) {
                     ev.preventDefault();
+                    
+                    // Temporarily disable the button to prevent spam
                     btn.disabled = true;
                     btn.value = "SENDING...";
-                    const data = new FormData(ev.target);
+                    
+                    const data = new FormData(contactForm);
+                    
                     try {
-                        const res = await fetch(ev.target.action, { method: 'POST', body: data, headers: { 'Accept': 'application/json' } });
+                        const res = await fetch(contactForm.action, { 
+                            method: 'POST', 
+                            body: data, 
+                            headers: { 'Accept': 'application/json' } 
+                        });
+                        
                         if (res.ok) {
                             status.innerText = "SENT SUCCESSFULLY! SCOTT WILL REACH OUT.";
                             status.style.display = "block";
-                            status.style.background = "#28a745";
+                            status.style.background = "#28a745"; // Success Green
                             status.style.color = "white";
                             contactForm.reset();
                             btn.value = "SUBMIT";
+                            btn.disabled = false;
                         } else {
-                            status.innerText = "ERROR. PLEASE CALL 844-907-4450.";
+                            // Extract formspree-specific validation errors if they exist
+                            const responseData = await res.json();
+                            if (Object.hasOwn(responseData, 'errors')) {
+                                status.innerText = responseData.errors.map(error => error.message).join(", ");
+                            } else {
+                                status.innerText = "ERROR. PLEASE CALL 844-907-4450.";
+                            }
                             status.style.display = "block";
-                            status.style.background = "#dc3545";
+                            status.style.background = "#dc3545"; // Error Red
+                            status.style.color = "white";
+                            btn.value = "SUBMIT";
                             btn.disabled = false;
                         }
                     } catch (e) {
+                        status.innerText = "NETWORK ERROR. PLEASE CALL 844-907-4450.";
                         status.style.display = "block";
-                        status.style.background = "#dc3545";
+                        status.style.background = "#dc3545"; // Error Red
+                        status.style.color = "white";
+                        btn.value = "SUBMIT";
                         btn.disabled = false;
                     }
                 });
