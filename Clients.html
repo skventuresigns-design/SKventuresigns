@@ -6,13 +6,14 @@
         ADMIN: Kevin (Werewolf3788)
         CLIENT: Scott (S&K Venture Signs)
         STANDARDS: Responsive, No-Minify, G-Tag Integrated, GitHack Compatible
-        VERSION: 10.15 (ITC Integrated & Global Layout Sync)
+        VERSION: 10.16 (ITC Integrated & Global Layout Sync - Current Tab Focused Navigation)
         TECHNICAL: Locked Header (125px -> 75px), Dynamic Modals, Auto-Night Mode, Precision Integration
-        TIMESTAMP: May 9, 2026
+        TIMESTAMP: May 13, 2026
         Nesting Code: Header/Footer Primary Wrapper Integrated
         
         NO STRIPPING, NO COMPRESSING, DON'T CHANGE WHAT I DIDN'T SAY TO CHANGE.
         FIX: Ported Inter-Tab Communication (ITC) and Named Window Targeting from Services.
+        FIX: Modified ITC logic to navigate CURRENT tab if target isn't already open (No new tabs).
         FIX: Highlighted "Clients" tab dynamically.
         FIX: Ported footer CSS and layout (60px top padding, flexbox phone formatting, single-line address).
         FIX: Integrated Global Outline Color System.
@@ -45,17 +46,17 @@
       gtag('config', 'G-H6Q756MVE8', {
           'page_title': 'S&K Venture Signs | Clients',
           'page_path': '/clients',
-          'page_type': 'clients_portal_v10.15',
+          'page_type': 'clients_portal_v10.16',
           'content_group': 'business_partners',
-          'layout_version': '10.15'
+          'layout_version': '10.16'
       });
       gtag('config', 'G-L376P3NPY4');
     </script>
 
     <!-- External Assets with Smart Cache Buster -->
-    <script src="https://cdn.tailwindcss.com?v=10.15"></script>
-    <script src="https://unpkg.com/lucide@latest?v=10.15"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Abril+Fatface&family=Poppins:wght@400;500;600;700&family=Open+Sans:wght@300;400;500;600;700;800&display=swap&v=10.15" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com?v=10.16"></script>
+    <script src="https://unpkg.com/lucide@latest?v=10.16"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Abril+Fatface&family=Poppins:wght@400;500;600;700&family=Open+Sans:wght@300;400;500;600;700;800&display=swap&v=10.16" rel="stylesheet">
 
     <style>
         :root {
@@ -185,7 +186,7 @@
         .header-scrolled .nav-link.active { color: var(--sk-gold) !important; }
         .header-scrolled #menu-toggle { color: var(--nav-text-scrolled); }
 
-        /* V10.12/10.15 Smart Tab Indicators for Nav Links */
+        /* V10.12/10.16 Smart Tab Indicators for Nav Links */
         .nav-link.already-open:hover { 
             color: #FF4500 !important; /* Glows Jet Orange to indicate it will switch tabs */
         }
@@ -224,6 +225,7 @@
             opacity: 0;
             pointer-events: none;
         }
+        
         .settings-toggle-btn {
             background: var(--sk-maroon);
             color: var(--sk-gold);
@@ -540,7 +542,8 @@
     <header id="main-header" class="fixed top-0 left-0 w-full z-[1000] flex flex-col justify-center">
         <div class="main-container flex items-center justify-between h-full px-4 lg:px-0">
             <div class="flex-shrink-0 z-[1001]">
-                <a href="./index.html" target="_blank">
+                <!-- Removed target="_blank" from logo to ensure local site navigation -->
+                <a href="./index.html">
                     <img src="https://raw.githubusercontent.com/Werewolf3788/SKVentureSigns/a19e4b81ccba61d2b1359a357e91972d6a3d33e8/images/S%26K%20Sign%20White.png" alt="S&K" id="header-logo" />
                 </a>
             </div>
@@ -588,7 +591,7 @@
         </div>
     </main>
 
-    <!-- FOOTER (V10.15 MATCHED) -->
+    <!-- FOOTER (V10.16 MATCHED) -->
     <footer id="main-footer">
         <div class="main-container footer-grid">
             <div class="footer-col">
@@ -640,7 +643,7 @@
 
     <script>
         /**
-         * S&K SMART SYNC ENGINE v10.15
+         * S&K SMART SYNC ENGINE v10.16
          */
         const SITE_DATA_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTZY38nsz_aJDO3cdtAwv4w359jK1aMt1rhBwZ3LAGarLyddtbBowFZv6mjlpnR1eGdNCpFhat8FuKp/pub?output=csv";
         
@@ -663,27 +666,40 @@
         let currentLightboxIndex = 0;
 
         /* =========================================================
-           V10.15 CROSS-TAB AWARENESS & AGGRESSIVE FOCUS
+           V10.16 CROSS-TAB AWARENESS & AGGRESSIVE FOCUS
+           Modified to NOT force a new tab if it isn't already open
         ========================================================= */
         window.smartTabClick = function(event, element, targetName, url) {
             event.preventDefault(); // Stop standard link behavior
             
-            // Set global cross-tab memory so all pages know this is open
-            localStorage.setItem(targetName, 'true');
-            element.classList.add('already-open');
-            
-            // Explicitly force browser to select the existing named tab
-            let tabWindow = window.open(url, targetName);
-            if (tabWindow) {
-                tabWindow.focus();
+            // If clicking a link to the tab we are CURRENTLY on, just navigate normally
+            if (window.name === targetName) {
+                window.location.href = url;
+                return;
+            }
+
+            // Check global cross-tab memory to see if the target tab is open elsewhere
+            const isTabAlreadyOpen = localStorage.getItem(targetName) === 'true';
+
+            if (isTabAlreadyOpen) {
+                // It IS open. Make element glow orange, and jump focus to that tab via targetName
+                element.classList.add('already-open');
+                let tabWindow = window.open(url, targetName);
+                if (tabWindow) {
+                    tabWindow.focus();
+                } else {
+                    // Failsafe in case aggressive popup blockers intercept the focus attempt
+                    window.location.href = url;
+                }
             } else {
-                // Failsafe in case aggressive popup blockers intercept the focus attempt
+                // It is NOT open anywhere else. 
+                // DO NOT open a new tab. Navigate locally within the current tab.
                 window.location.href = url;
             }
         };
 
         /* =========================================================
-           FRAMEWORK SYSTEM LOGIC
+            FRAMEWORK SYSTEM LOGIC
         ========================================================= */
         function parseCSVRow(text) {
             const result = [];
@@ -766,13 +782,14 @@
                 const openClass = isOpen && !isActive ? 'already-open' : '';
                 const desktopActive = isActive ? 'active' : '';
 
-                dNav.innerHTML += `<li><a href="${n.url}" target="${uniqueTarget}" class="nav-link ${desktopActive} ${openClass}" onclick="smartTabClick(event, this, '${uniqueTarget}', '${n.url}')">${n.label}</a></li>`;
+                // Note: removed target attribute so pure clicks are handled cleanly by smartTabClick avoiding new tabs
+                dNav.innerHTML += `<li><a href="${n.url}" class="nav-link ${desktopActive} ${openClass}" onclick="smartTabClick(event, this, '${uniqueTarget}', '${n.url}')">${n.label}</a></li>`;
                 
                 const mobileClass = isActive 
                     ? `text-2xl font-bold border-b border-black/10 dark:border-white/10 pb-3 text-[var(--sk-gold)]`
                     : `text-2xl font-bold border-b border-black/10 dark:border-white/10 pb-3`;
 
-                mNav.innerHTML += `<a href="${n.url}" target="${uniqueTarget}" class="${mobileClass} ${openClass}" onclick="smartTabClick(event, this, '${uniqueTarget}', '${n.url}')">${n.label}</a>`;
+                mNav.innerHTML += `<a href="${n.url}" class="${mobileClass} ${openClass}" onclick="smartTabClick(event, this, '${uniqueTarget}', '${n.url}')">${n.label}</a>`;
             });
 
             // Footer Matching Logic
@@ -921,7 +938,7 @@
         }
 
         /* =========================================================
-           LIGHTBOX ZOOM & PAN ENGINE WITH NAVIGATION
+            LIGHTBOX ZOOM & PAN ENGINE WITH NAVIGATION
         ========================================================= */
         let lbScale = 1;
         let lbTranslateX = 0;
@@ -1076,7 +1093,7 @@
         }
 
         /* =========================================================
-           CLIENT GALLERY AUTO-SYNC ENGINE
+            CLIENT GALLERY AUTO-SYNC ENGINE
         ========================================================= */
         async function fetchCustomers(isAutoRefresh = false) {
             const grid = document.getElementById('customer-grid');
@@ -1179,7 +1196,7 @@
         };
 
         /* =========================================================
-           EVENT LISTENERS & INITIALIZATION
+            EVENT LISTENERS & INITIALIZATION
         ========================================================= */
         window.addEventListener('scroll', () => {
             const header = document.getElementById('main-header');
