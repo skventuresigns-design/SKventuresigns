@@ -1,557 +1,70 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <!-- 
-        PROJECT: S&K Venture Signs Global Framework
-        ADMIN: Kevin (DJ Werewolf) - Admin
-        CLIENT: Scott (S&K Venture Signs)
-        STANDARDS: Responsive, No-Minify, G-Tag Integrated, GitHack Compatible
-        VERSION: 10.12 (CSS Separated & Full ITC Integration)
-        TECHNICAL: Precision Integration, Auto-Night Mode, High-Contrast Outlines, Dual-Column Mapping (A: Street, B: City/State/Zip), Inter-Tab Communication (ITC) / Cross-Tab State Synchronization (Named Window Targeting)
-        TIMESTAMP: May 8, 2026 - 12:12 AM EDT (New York Time)
-        
-        NO STRIPPING, NO COMPRESSING, DON'T CHANGE WHAT I DIDN'T SAY TO CHANGE.
-        FIX: Extracted CSS into an external style.css file as requested for modularity.
-        FIX: Applied Inter-Tab Communication (ITC) / Named Window Targeting to all remaining web URLs (WhatsApp, Gmail Web, Google Maps, Apple Maps, Waze).
-        FIX: Adjusted "Get Started" button to precise dimensions (149px width, 45px height) as requested via image data.
-        FIX: Upgraded Smart Tab Management to use window.open().focus() to aggressively force the browser to switch view to the open tab.
-        FIX: Integrated Session-Aware Smart Tab Management to prevent duplicate browser tabs.
-        FIX: Added Jet Orange hover state and "SWITCH TO TAB" text swap for opened Service Card links.
-        FIX: Added Jet Orange hover state for opened Header Navigation links (text swap omitted on nav to preserve layout width).
-        FIX: Home tab actively highlighted dynamically for index.html.
-        FIX: Preserved the standard footer structure for deployment across all S&K sites.
-        FIX: Applied bold yellow borders to Advertising/Sales buttons and bold white borders to Rental/Maintenance buttons.
-        FIX: Consolidated address (Street, City) onto a single line.
-        FIX: Slightly increased the footer's top padding to bring the footer content down a little bit more for better visual balance.
-        FIX: Removed Google Voice option from the phone number lightbox modal.
-        FIX: Placed footer phone numbers on the same line with a gap and "or" text styled via flexbox.
-        FIX: Removed the erroneous margin-top that created a white void above the footer.
-        FIX: Removed the blue border from the top of the Hero Section's white card.
-        FIX: Applied symmetrical width rules (lg:w-1/2) to the Hero section to ensure the title and white box have equal distance from screen edges.
-        FIX: Added border stylings to the header phone button, dynamic service buttons, and bottom CTA button.
-        FIX: Defaulted Outline Color to "transparent" (No color) as per admin request.
-        FIX: Outline only renders when a color is explicitly selected or loaded from cookies.
-        FIX: Applied High-Contrast Outline Color logic globally to all letters/elements.
-        FIX: Maintained Advertising/Sales card title logic (Black in Light Mode / Yellow in Dark Mode).
-        FIX: Yellow et_pb_divider preserved between Fair Dates and Fair Description.
-        FIX: openMapSmartActions strictly locked to Row A10/B10 for Google, Apple, and Waze.
-        FIX: Header Button linked to downloadSKContact() logic with phone number display.
-    -->
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>S&K Venture Signs | Digital Billboard Portal</title>
-    
-    <!-- PWA Manifest & Service Worker -->
-    <link rel="manifest" href="./manifest.json">
-    <script>
-        if ('serviceWorker' in navigator) {
-            window.addEventListener('load', () => {
-                navigator.serviceWorker.register('./sw.js').catch(err => console.log('SW failed', err));
-            });
+/**
+ * S&K VENTURE SIGNS - MASTER DATA CONFIGURATION
+ * This file replaces the Google Sheets. Edit variables here to update all pages automatically.
+ */
+
+const SK_DATA = {
+    // 1. GLOBAL SITE SETTINGS (Used on every page for Footer/Nav/Modals)
+    global: {
+        phones: ["618-708-4450", "844-907-4450"],
+        email: "Scott.Robinson@skventuresigns.com",
+        addressStreet: "607 W Clark Ave",
+        addressCity: "Effingham IL 62401",
+        navigation: [
+            { label: "Home", url: "./index.html" },
+            { label: "Services", url: "./services.html" },
+            { label: "Locations", url: "./locations.html" },
+            { label: "Fair", url: "./fair.html" },
+            { label: "Clients", url: "./clients.html" },
+            { label: "Contact", url: "./contact.html" }
+        ]
+    },
+
+    // 2. THE "IMAGE WITH URL" FORMULA FOR CLIENTS
+    // Copy a block {} and paste it below to add a new client.
+    clients: [
+        {
+            name: "Example Client 1",
+            url: "https://theirwebsite.com",
+            image: "https://skventuresigns.com/wp-content/uploads/2025/03/client1.png" // Can be a Google Drive link
+        },
+        {
+            name: "Example Client 2",
+            url: "https://anotherwebsite.com",
+            image: "https://skventuresigns.com/wp-content/uploads/2025/03/client2.png"
         }
-    </script>
+    ],
 
-    <!-- Google Analytics: Boss Tracking + Watermark Tracking -->
-    <script async src="[https://www.googletagmanager.com/gtag/js?id=G-H6Q756MVE8](https://www.googletagmanager.com/gtag/js?id=G-H6Q756MVE8)"></script>
-    <script async src="[https://www.googletagmanager.com/gtag/js?id=G-L376P3YPY4](https://www.googletagmanager.com/gtag/js?id=G-L376P3YPY4)"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-      gtag('config', 'G-H6Q756MVE8', { 'page_type': 'global_framework_v10.12_home' });
-      gtag('config', 'G-L376P3YPY4');
-    </script>
-
-    <!-- External Assets with Smart Cache Buster -->
-    <script src="[https://cdn.tailwindcss.com?v=10.12](https://cdn.tailwindcss.com?v=10.12)"></script>
-    <script src="[https://unpkg.com/lucide@latest?v=10.12](https://unpkg.com/lucide@latest?v=10.12)"></script>
-    <link href="[https://fonts.googleapis.com/css2?family=Abril+Fatface&family=Poppins:wght@400;500;600;700&family=Open+Sans:wght@600;700&display=swap&v=10.12](https://fonts.googleapis.com/css2?family=Abril+Fatface&family=Poppins:wght@400;500;600;700&family=Open+Sans:wght@600;700&display=swap&v=10.12)" rel="stylesheet">
-    
-    <!-- External Stylesheet -->
-    <link rel="stylesheet" href="./style.css?v=10.12">
-</head>
-<body class="light-mode">
-
-    <!-- KF Signature Watermark -->
-    <div class="kf-signature">
-        <span class="kf-k">K</span>
-        <span class="kf-f">F</span>
-    </div>
-
-    <!-- Theme Settings UI -->
-    <div class="theme-toggle-wrapper">
-        <div class="settings-toggle-btn shadow-xl" onclick="toggleSettingsPanel()">
-            <i data-lucide="settings"></i>
-        </div>
-        <div class="theme-toggle-panel hidden-settings" id="settings-panel">
-            <p class="font-bold text-xs mb-2 uppercase text-gray-500">System Preferences</p>
-            <div class="flex flex-col gap-2">
-                <button onclick="setTheme('light')" class="text-[10px] bg-gray-100 p-1 rounded">Bright</button>
-                <button onclick="setTheme('dark')" class="text-[10px] bg-gray-800 text-white p-1 rounded">Dark</button>
-                <button onclick="setTheme('auto')" class="text-[10px] border p-1 rounded">Match System</button>
-                <hr class="my-1">
-                <div class="flex flex-col gap-1">
-                    <input type="color" id="outline-color-picker" onchange="updateOutlineColor(this.value)" value="#000000" class="w-full h-6 rounded cursor-pointer">
-                    <button onclick="updateOutlineColor('transparent')" class="text-[8px] bg-red-100 text-red-800 rounded p-1 uppercase font-bold">No Outline</button>
-                    <label class="text-[9px]">Outline Color</label>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- MAIN HEADER -->
-    <header id="main-header" class="fixed top-0 left-0 w-full z-[1000] flex flex-col justify-center">
-        <div class="main-container flex items-center justify-between h-full px-4 lg:px-0">
-            <div class="flex-shrink-0 z-[1001]">
-                <a href="./index.html">
-                    <img src="[https://skventuresigns.com/wp-content/uploads/2025/03/SK-Sign-White.png?v=10.7](https://skventuresigns.com/wp-content/uploads/2025/03/SK-Sign-White.png?v=10.7)" alt="S&K" id="header-logo" />
-                </a>
-            </div>
-
-            <nav class="hidden lg:flex flex-grow items-center justify-center px-10">
-                <ul id="desktop-nav-root" class="flex items-center gap-8 xl:gap-12">
-                    <!-- Synced via Sheet -->
-                </ul>
-            </nav>
-
-            <div class="flex items-center gap-4 z-[1001]">
-                <button onclick="downloadSKContact()" class="hidden sm:flex bg-[#FFC627] text-[#3E0100] px-6 py-3 rounded-xl font-extrabold uppercase text-xs shadow-lg hover:scale-105 transition-all border-2 border-[#3E0100]">
-                    <i data-lucide="user-plus" class="w-4 h-4 mr-2"></i> 844-907-4450
-                </button>
-                <button id="menu-toggle" class="lg:hidden text-white">
-                    <i data-lucide="menu" class="w-9 h-9"></i>
-                </button>
-            </div>
-        </div>
-        <div id="mobile-menu" class="hidden absolute top-full left-0 w-full bg-[var(--card-bg)] shadow-2xl flex-col p-8 gap-6 text-[var(--text-primary)] border-t border-black/5 transition-colors"></div>
-    </header>
-
-    <main>
-        <!-- HERO SPLASH (Symmetrical Layout Logic) -->
-        <section class="advertising-hero">
-            <div class="main-container flex flex-col lg:flex-row items-center justify-between gap-10">
-                <!-- Left Column strictly at 50% mapping -->
-                <div class="lg:w-1/2 w-full flex justify-center">
-                    <h5 class="hero-title-precision">Transform Your Advertising with S&K Venture Signs</h5>
-                </div>
-                <!-- Right Column strictly at 50% mapping -->
-                <div class="lg:w-1/2 w-full flex justify-center">
-                    <div class="bg-[var(--card-bg)] p-10 rounded-3xl shadow-2xl w-full max-w-[450px] text-center transition-colors">
-                        <span class="hero-label-precision">Innovative Solutions for Modern Advertising</span>
-                        <h3 class="text-4xl mb-4 text-[var(--text-primary)]">Join the Digital Revolution</h3>
-                        <p class="text-[var(--text-primary)] opacity-70">Discover how our digital advertising solutions can drive your business forward.</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- FAIR DIVIDER -->
-        <section class="adventurous-divider">
-            <div class="main-container">
-                <div class="flex flex-col lg:flex-row items-center gap-12 mb-16">
-                    <div class="w-full lg:w-1/2">
-                        <img src="[https://i0.wp.com/skventuresigns.com/wp-content/uploads/2026/04/EFF-fair-locations.png?v=10.7](https://i0.wp.com/skventuresigns.com/wp-content/uploads/2026/04/EFF-fair-locations.png?v=10.7)" class="w-full h-auto rounded-3xl shadow-2xl lightbox-trigger cursor-zoom-in">
-                    </div>
-                    <div class="w-full lg:w-1/2 text-center text-white">
-                        <h5 class="fair-heading-precision">2026 Effingham County Fair</h5>
-                        <h1 class="fair-date-precision">August 1st to August 8th</h1>
-                        
-                        <!-- Yellow Divider Integration -->
-                        <div class="et_pb_module et_pb_divider et_pb_divider_0 et_pb_divider_position_ et_pb_space">
-                            <div class="et_pb_divider_internal"></div>
-                        </div>
-
-                        <p class="fair-desc-precision mb-8">Explore our Locations below for the 2026 Effingham County Fair and Explore how we can support Your Advertising needs.</p>
-                        <div class="space-y-6 mb-10 fair-location-precision">
-                            <p>Location 1 - RT 40 - Graphic Advertising between the Entrances of the Fair Grounds</p>
-                            <p>Locations 2 & 3 - Inside the Fairgrounds above the Entrances to the Grandstands</p>
-                            <p>Locations 4 & 5 - Inside the Fairgrounds in the infield on the track</p>
-                        </div>
-                        <!-- V10.10/10.12: Aggressive Tab Focus applied here -->
-                        <a href="[https://skventuresigns.com/effinghamcountyfair/](https://skventuresigns.com/effinghamcountyfair/)" target="tab_sk_fair" class="get-started-btn shadow-xl smart-tab-btn" onclick="smartTabClick(event, this, 'tab_sk_fair', this.href)">
-                            <span class="btn-text">Get Started</span>
-                        </a>
-                    </div>
-                </div>
-                <h2 class="rental-heading-precision">Rental Opportunities still available !!</h2>
-            </div>
-        </section>
-
-        <!-- DYNAMIC SERVICES -->
-        <section id="services-grid-container" class="py-20 bg-[#3E0100]">
-            <div class="main-container">
-                <!-- Banners above Cards -->
-                <div class="flex flex-col items-center gap-6 mb-12">
-                    <img src="[https://i0.wp.com/skventuresigns.com/wp-content/uploads/2025/01/Topline.png?v=10.7](https://i0.wp.com/skventuresigns.com/wp-content/uploads/2025/01/Topline.png?v=10.7)" alt="Engage Your Audience Like Never Before With Our State-of-the Art Digital Sign Solutions" class="w-full max-w-[1080px] h-auto">
-                    <img src="[https://i0.wp.com/skventuresigns.com/wp-content/uploads/2025/03/Customize.png?v=10.7](https://i0.wp.com/skventuresigns.com/wp-content/uploads/2025/03/Customize.png?v=10.7)" alt="Customize Digital Advertising" class="w-full max-w-[1080px] h-auto">
-                </div>
-
-                <div id="services-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-                    <div class="text-center py-10 w-full col-span-full">
-                        <p class="text-white animate-pulse">Loading S&K Services...</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- TAGLINE -->
-        <section class="bg-[#3E0100] pb-20 flex justify-center">
-            <div class="main-container flex justify-center">
-                <img src="[https://i0.wp.com/skventuresigns.com/wp-content/uploads/2024/12/SK-tagline.png?v=10.7](https://i0.wp.com/skventuresigns.com/wp-content/uploads/2024/12/SK-tagline.png?v=10.7)" class="w-full max-w-[950px] lightbox-trigger cursor-zoom-in">
-            </div>
-        </section>
-
-        <!-- CTA -->
-        <section class="py-24" style="background-color:rgb(69,123,157);">
-            <div class="main-container text-center text-white">
-                <h2 class="text-5xl md:text-7xl mb-8">Unlock Your Advertising Potential</h2>
-                <p class="text-xl md:text-2xl mb-12 max-w-4xl mx-auto leading-relaxed">
-                    Ready to elevate your brand’s visibility? Reach out to S&K Venture Signs today for tailored digital solutions that meet your unique needs.
-                </p>
-                <!-- Bold Border added to CTA -->
-                <a href="mailto:Scott.Robinson@skventuresigns.com" class="bg-white text-blue-900 px-16 py-5 rounded-full font-black uppercase tracking-widest shadow-2xl inline-block hover:scale-105 transition-all border-4 border-blue-900">Request A Quote</a>
-            </div>
-        </section>
-    </main>
-
-    <!-- FOOTER -->
-    <footer id="main-footer">
-        <div class="main-container footer-grid">
-            <div class="footer-col">
-                <p class="footer-label">Give us a call</p>
-                <div id="footer-phone-list"></div>
-            </div>
-            <div class="footer-col">
-                <p class="footer-label">Send us an Email</p>
-                <div id="footer-email-list"></div>
-            </div>
-            <div class="footer-col">
-                <p class="footer-label">Visit our office</p>
-                <div id="footer-address-container"></div>
-            </div>
-        </div>
-        <div class="main-container mt-10 pt-6 border-t border-white/10 text-center">
-            <h5 class="font-bold opacity-50 text-sm tracking-widest uppercase text-white">© 2026 S&K VENTURE SIGNS</h5>
-        </div>
-    </footer>
-
-    <!-- MODALS -->
-    <div id="lightbox-overlay" onclick="this.style.display='none'" class="fixed inset-0 bg-black/95 z-[10000] hidden items-center justify-center p-10">
-        <img id="lightbox-img" src="" class="max-w-full max-h-full object-contain rounded-xl border-4 border-white shadow-2xl">
-    </div>
-
-    <div id="phone-modal" class="sk-modal-overlay" onclick="closeModals()">
-        <div class="sk-modal-content" onclick="event.stopPropagation()">
-            <div class="bg-[#3E0100] p-8 text-[#FFC627] text-center font-serif text-2xl">Contact Specialist</div>
-            <div class="p-8" id="phone-options-container"></div>
-            <div class="p-6 text-center text-sm font-bold modal-cancel-text" onclick="closeModals()">CANCEL</div>
-        </div>
-    </div>
-
-    <div id="email-modal" class="sk-modal-overlay" onclick="closeModals()">
-        <div class="sk-modal-content" onclick="event.stopPropagation()">
-            <div class="bg-[#3E0100] p-8 text-[#FFC627] text-center font-serif text-2xl">Send Message</div>
-            <div class="p-8" id="email-options-container"></div>
-            <div class="p-6 text-center text-sm font-bold modal-cancel-text" onclick="closeModals()">CANCEL</div>
-        </div>
-    </div>
-
-    <div id="map-modal" class="sk-modal-overlay" onclick="closeModals()">
-        <div class="sk-modal-content" onclick="event.stopPropagation()">
-            <div class="bg-[#3E0100] p-8 text-[#FFC627] text-center font-serif text-2xl">Start Navigation</div>
-            <div class="p-8">
-                <!-- V10.12 ITC Logic applied directly to standard HTML tags -->
-                <a id="link-gmaps" class="smart-option" target="tab_gmaps_sk" onclick="smartTabClick(event, this, 'tab_gmaps_sk', this.href)"><i data-lucide="map"></i> Google Maps</a>
-                <a id="link-amaps" class="smart-option" target="tab_amaps_sk" onclick="smartTabClick(event, this, 'tab_amaps_sk', this.href)"><i data-lucide="navigation"></i> Apple Maps</a>
-                <a id="link-waze" class="smart-option" target="tab_waze_sk" onclick="smartTabClick(event, this, 'tab_waze_sk', this.href)"><i data-lucide="navigation-2"></i> Waze Navigation</a>
-            </div>
-            <div class="p-6 text-center text-sm font-bold modal-cancel-text" onclick="closeModals()">CANCEL</div>
-        </div>
-    </div>
-
-    <script>
-        /**
-         * S&K UNIVERSAL ENGINE v10.12
-         */
-        const SYNC_CSV = "[https://docs.google.com/spreadsheets/d/e/2PACX-1vTZY38nsz_aJDO3cdtAwv4w359jK1aMt1rhBwZ3LAGarLyddtbBowFZv6mjlpnR1eGdNCpFhat8FuKp/pub?output=csv](https://docs.google.com/spreadsheets/d/e/2PACX-1vTZY38nsz_aJDO3cdtAwv4w359jK1aMt1rhBwZ3LAGarLyddtbBowFZv6mjlpnR1eGdNCpFhat8FuKp/pub?output=csv)";
-        const SERVICES_CSV = "[https://docs.google.com/spreadsheets/d/e/2PACX-1vT9HBnWuIELZ5IxaTxuCpNgs5ep7Tz4NpaU8__laH9a1DK52CreOSM8IqQxUK95CMyzsmTmkHoTgc1b/pub?output=csv](https://docs.google.com/spreadsheets/d/e/2PACX-1vT9HBnWuIELZ5IxaTxuCpNgs5ep7Tz4NpaU8__laH9a1DK52CreOSM8IqQxUK95CMyzsmTmkHoTgc1b/pub?output=csv)";
-
-        let siteData = { nav: [], phones: [], email: "", addressStreet: "", addressCity: "" };
-
-        /**
-         * V10.10/10.12: AGGRESSIVE TAB FOCUS / ITC INTER-TAB SYNC
-         * This script intercepts the click, saves the state, and explicitly 
-         * instructs the browser to open and pull focus to the named tab.
-         */
-        window.smartTabClick = function(event, element, targetName, url) {
-            event.preventDefault(); // Stop standard link behavior
-            sessionStorage.setItem(targetName, 'true');
-            element.classList.add('already-open');
-            
-            // Explicitly force browser to select the existing named tab
-            let tabWindow = window.open(url, targetName);
-            if (tabWindow) {
-                tabWindow.focus();
-            } else {
-                // Failsafe in case aggressive popup blockers intercept the focus attempt
-                window.location.href = url;
-            }
-        };
-
-        function parseCSVRow(text) {
-            const result = [];
-            let current = '';
-            let inQuotes = false;
-            for (let i = 0; i < text.length; i++) {
-                const char = text[i];
-                if (char === '"') { inQuotes = !inQuotes; }
-                else if (char === ',' && !inQuotes) { result.push(current.trim()); current = ''; }
-                else { current += char; }
-            }
-            result.push(current.trim());
-            return result.map(v => v.replace(/^"|"$/g, ''));
+    // 3. SERVICES (Home Page & Services Page)
+    services: [
+        {
+            title: "Digital Sign Rental",
+            description: "Flexible rental options for high-quality digital displays.",
+            btnLabel: "Learn More",
+            btnUrl: "./services.html",
+            image: "https://raw.githubusercontent.com/Werewolf3788/SKVentureSigns/b3ae21594b6a28420e4eb4937ff2f237b7889df0/images/signs.PNG"
+        },
+        {
+            title: "Sign Maintenance & Repair",
+            description: "Comprehensive maintenance and repair services.",
+            btnLabel: "Get Support",
+            btnUrl: "./contact.html",
+            image: "https://raw.githubusercontent.com/Werewolf3788/SKVentureSigns/b3ae21594b6a28420e4eb4937ff2f237b7889df0/images/signs1.PNG"
         }
+    ],
 
-        async function loadSheetData() {
-            try {
-                const response = await fetch(SYNC_CSV);
-                const text = await response.text();
-                const lines = text.split(/\r?\n/);
-                let tempNav = [];
-                lines.forEach((line, idx) => {
-                    const row = parseCSVRow(line);
-                    const rowNum = idx + 1;
-                    if (row[2]?.trim().toLowerCase() === 'header') tempNav.push({ label: row[0], url: row[1] });
-                    if (rowNum === 7) siteData.phones[0] = row[0];
-                    if (rowNum === 8) siteData.phones[1] = row[0];
-                    if (rowNum === 9) siteData.email = row[0];
-                    if (rowNum === 10) {
-                        siteData.addressStreet = row[0]; // A10
-                        siteData.addressCity = row[1];   // B10
-                    }
-                });
-                siteData.nav = tempNav;
-                renderDynamicFramework();
-            } catch (err) { console.warn("Framework Sync Fallback"); renderDynamicFramework(); }
+    // 4. LOCATIONS INVENTORY
+    locations: [
+        {
+            town: "Effingham",
+            county: "Effingham",
+            address: "Route 40",
+            info: "High traffic digital board.",
+            lat: 39.1243,
+            long: -88.5524,
+            price: "$300/mo",
+            pdf: "https://skventuresigns.com/specs.pdf",
+            specs: { size: "8x16", traffic: "15,000 VPD" }
         }
-
-        function renderDynamicFramework() {
-            const dNav = document.getElementById('desktop-nav-root');
-            const mNav = document.getElementById('mobile-menu');
-            const fPhone = document.getElementById('footer-phone-list');
-            const fEmail = document.getElementById('footer-email-list');
-            const fAddr = document.getElementById('footer-address-container');
-
-            dNav.innerHTML = ''; mNav.innerHTML = '';
-            siteData.nav.forEach(n => {
-                const isActive = n.label.toLowerCase() === 'home' ? 'active' : '';
-                
-                // V10.10: Aggressive Tab Focus integration for header navigation
-                const uniqueTarget = `tab_sk_${n.label.replace(/[^a-zA-Z0-9]/g, '_')}`;
-                const isOpen = sessionStorage.getItem(uniqueTarget) === 'true';
-                const openClass = isOpen ? 'already-open' : '';
-
-                dNav.innerHTML += `<li><a href="${n.url}" target="${uniqueTarget}" class="nav-link ${isActive} ${openClass}" onclick="smartTabClick(event, this, '${uniqueTarget}', '${n.url}')">${n.label}</a></li>`;
-                mNav.innerHTML += `<a href="${n.url}" target="${uniqueTarget}" class="text-2xl font-bold border-b border-black/5 pb-3 ${isActive ? 'text-[var(--sk-gold)]' : ''}" onclick="smartTabClick(event, this, '${uniqueTarget}', '${n.url}')">${n.label}</a>`;
-            });
-
-            fPhone.className = "flex flex-wrap items-center justify-center gap-3";
-            let phoneHTML = `<span class="footer-value !mb-0" onclick="openPhoneSmartActions('${siteData.phones[0]}')">${siteData.phones[0]}</span>`;
-            if (siteData.phones[1]) phoneHTML += `<span class="text-white opacity-70 text-sm font-bold uppercase">or</span><span class="footer-value !mb-0" onclick="openPhoneSmartActions('${siteData.phones[1]}')">${siteData.phones[1]}</span>`;
-            fPhone.innerHTML = phoneHTML;
-
-            fEmail.innerHTML = `<span class="footer-value" onclick="openEmailSmartActions('${siteData.email}')">${siteData.email}</span>`;
-            
-            // Re-formatted to put Street and City on the same line, separated by a comma and space
-            fAddr.innerHTML = `<span class="footer-value" onclick="openMapSmartActions()">${siteData.addressStreet}, ${siteData.addressCity}</span>`;
-
-            lucide.createIcons();
-        }
-
-        async function fetchServices() {
-            const grid = document.getElementById('services-grid');
-            try {
-                const response = await fetch(SERVICES_CSV);
-                const csvText = await response.text();
-                const lines = csvText.split('\n');
-                const titles = lines[0].split(',');
-                const descs = lines[1].split(',');
-                const btnLabels = lines[2].split(',');
-                const btnLinks = lines[3].split(',');
-                const imgs = lines[4].split(',');
-                grid.innerHTML = '';
-                for(let i=1; i < titles.length; i++) {
-                    const isEven = i % 2 !== 0;
-                    const titleText = titles[i]?.trim();
-                    const titleLower = titleText.toLowerCase();
-                    
-                    let customTitleColor = 'text-[var(--text-primary)]'; 
-                    let customBtnBorder = ''; // Added variable for dynamic borders
-
-                    if (titleLower.includes('advertising') || titleLower.includes('sales')) {
-                        customTitleColor = 'dynamic-ad-title';
-                        customBtnBorder = 'border-4 border-[#FFC627]'; // Bold yellow border
-                    } else if (titleLower.includes('rental') || titleLower.includes('leasing') || titleLower.includes('maintenance') || titleLower.includes('repair')) {
-                        customTitleColor = 'text-black'; 
-                        customBtnBorder = 'border-4 border-white'; // Bold white border
-                    } else {
-                        customBtnBorder = isEven ? 'border-4 border-[#FFC627]' : 'border-4 border-white'; // Fallback mapping
-                    }
-
-                    // V10.10: Aggressive Tab Focus integration for dynamic services
-                    const uniqueTarget = `tab_sk_svc_${titleText.replace(/[^a-zA-Z0-9]/g, '_')}`;
-                    const isOpen = sessionStorage.getItem(uniqueTarget) === 'true';
-                    const openClass = isOpen ? 'already-open' : '';
-
-                    grid.innerHTML += `
-                        <div class="service-card ${isEven ? 'bg-[var(--card-bg)]' : 'bg-[#DAA421]'}">
-                            <img src="${imgs[i]?.trim()}?v=10.10" class="lightbox-trigger" onerror="this.src='[https://via.placeholder.com/400x220?text=S%26K+Venture+Signs](https://via.placeholder.com/400x220?text=S%26K+Venture+Signs)'">
-                            <div class="text-center mt-4 flex-grow">
-                                <h3 class="text-2xl mb-2 ${customTitleColor}" style="font-family:'Abril Fatface', cursive;">${titleText}</h3>
-                                <p class="text-sm mb-6 ${isEven ? 'text-[var(--text-primary)] opacity-70' : 'text-[#3E0100]'} font-medium">${descs[i]}</p>
-                            </div>
-                            <a href="${btnLinks[i]?.trim()}" target="${uniqueTarget}" class="block py-3 rounded-full font-black uppercase text-xs tracking-widest text-white text-center ${isEven ? 'bg-[#2A0001]' : 'bg-[#023456]'} ${customBtnBorder} hover:scale-105 transition-all shadow-lg smart-tab-btn ${openClass}" onclick="smartTabClick(event, this, '${uniqueTarget}', '${btnLinks[i]?.trim()}')">
-                                <span class="btn-text">${btnLabels[i]?.trim() || 'Learn More'}</span>
-                            </a>
-                        </div>
-                    `;
-                }
-                initLightbox();
-            } catch (e) { grid.innerHTML = '<p class="text-white col-span-full text-center">Service updates pending.</p>'; }
-        }
-
-        function initLightbox() {
-            const overlay = document.getElementById('lightbox-overlay');
-            const overlayImg = document.getElementById('lightbox-img');
-            document.querySelectorAll('.lightbox-trigger').forEach(img => {
-                img.onclick = () => { overlayImg.src = img.src; overlay.style.display = 'flex'; };
-            });
-        }
-
-        function toggleSettingsPanel() {
-            document.getElementById('settings-panel').classList.toggle('hidden-settings');
-        }
-
-        function setTheme(mode) {
-            const body = document.body;
-            const hour = new Date().getHours();
-            if (mode === 'auto') mode = (hour < 6 || hour >= 19) ? 'dark' : 'light';
-            if (mode === 'dark') {
-                document.documentElement.style.setProperty('--bg-primary', '#121212');
-                document.documentElement.style.setProperty('--text-primary', '#e0e0e0');
-                document.documentElement.style.setProperty('--card-bg', '#1e1e1e');
-                body.classList.add('dark-mode');
-            } else {
-                document.documentElement.style.setProperty('--bg-primary', '#fcfcfc');
-                document.documentElement.style.setProperty('--text-primary', '#333333');
-                document.documentElement.style.setProperty('--card-bg', '#ffffff');
-                body.classList.remove('dark-mode');
-            }
-            document.cookie = `theme=${mode};max-age=31536000;path=/`;
-            updateHeaderVisuals();
-        }
-
-        function updateOutlineColor(color) {
-            document.documentElement.style.setProperty('--outline-color', color);
-            document.cookie = `outline-color=${color};max-age=31536000;path=/`;
-        }
-
-        function openPhoneSmartActions(num) {
-            const clean = num.replace(/\D/g, '');
-            const container = document.getElementById('phone-options-container');
-            let html = `
-                <a href="tel:${clean}" class="smart-option"><i data-lucide="phone"></i> Direct Call</a>
-            `;
-            // V10.12 ITC Logic Update
-            if (num.includes('618')) html += `<a href="https://wa.me/1${clean}" target="tab_whatsapp_sk" class="smart-option" onclick="smartTabClick(event, this, 'tab_whatsapp_sk', this.href)"><i data-lucide="message-circle"></i> WhatsApp Specialist</a>`;
-            container.innerHTML = html;
-            document.getElementById('phone-modal').style.display = 'flex';
-            lucide.createIcons();
-        }
-
-        function openEmailSmartActions(email) {
-            const container = document.getElementById('email-options-container');
-            // V10.12 ITC Logic Update
-            container.innerHTML = `
-                <a href="mailto:${email}" class="smart-option"><i data-lucide="mail"></i> Default Client</a>
-                <a href="[https://mail.google.com/mail/?view=cm&fs=1&to=$](https://mail.google.com/mail/?view=cm&fs=1&to=$){email}" target="tab_gmail_sk" class="smart-option" onclick="smartTabClick(event, this, 'tab_gmail_sk', this.href)"><i data-lucide="send"></i> Gmail Web</a>
-                <div onclick="navigator.clipboard.writeText('${email}'); alert('Email Copied');" class="smart-option"><i data-lucide="copy"></i> Copy Address</div>
-            `;
-            document.getElementById('email-modal').style.display = 'flex';
-            lucide.createIcons();
-        }
-
-        function openMapSmartActions() {
-            const addrStr = `${siteData.addressStreet} ${siteData.addressCity}`;
-            const addr = encodeURIComponent(addrStr);
-            document.getElementById('link-gmaps').href = `https://www.google.com/maps/dir/?api=1&destination=${addr}`;
-            document.getElementById('link-amaps').href = `http://maps.apple.com/?daddr=${addr}&dirflg=d`;
-            document.getElementById('link-waze').href = `https://waze.com/ul?q=${addr}&navigate=yes`;
-            document.getElementById('map-modal').style.display = 'flex';
-            lucide.createIcons();
-        }
-
-        function closeModals() { document.querySelectorAll('.sk-modal-overlay').forEach(m => m.style.display = 'none'); }
-
-        function updateHeaderVisuals() {
-            const header = document.getElementById('main-header');
-            const logo = document.getElementById('header-logo');
-            const isDark = document.body.classList.contains('dark-mode');
-            if (window.scrollY > 50) {
-                header.classList.add('header-scrolled');
-                logo.src = isDark ? "[https://skventuresigns.com/wp-content/uploads/2025/03/SK-Sign-White.png](https://skventuresigns.com/wp-content/uploads/2025/03/SK-Sign-White.png)" : "[https://skventuresigns.com/wp-content/uploads/2025/03/SK-Sign-Black.png](https://skventuresigns.com/wp-content/uploads/2025/03/SK-Sign-Black.png)";
-            } else {
-                header.classList.remove('header-scrolled');
-                logo.src = "[https://skventuresigns.com/wp-content/uploads/2025/03/SK-Sign-White.png](https://skventuresigns.com/wp-content/uploads/2025/03/SK-Sign-White.png)";
-            }
-        }
-
-        function downloadSKContact() {
-            const PHOTO_URL = "[https://skventuresigns.com/wp-content/uploads/2025/03/SK-Sign-Black.png](https://skventuresigns.com/wp-content/uploads/2025/03/SK-Sign-Black.png)";
-            const vcard = "BEGIN:VCARD\n" +
-                        "VERSION:3.0\n" +
-                        "N:Robinson;Scott;;;\n" +
-                        "FN:Scott Robinson\n" +
-                        "ORG:S&K Venture Signs\n" +
-                        "TITLE:Digital Billboard Specialist\n" +
-                        "TEL;TYPE=WORK,VOICE:844-907-4450\n" +
-                        "TEL;TYPE=CELL,VOICE:618-708-4450\n" +
-                        "EMAIL;TYPE=PREF,INTERNET:" + siteData.email + "\n" +
-                        "ADR;TYPE=WORK:;;" + siteData.addressStreet + ";" + siteData.addressCity.split(' ')[0] + ";IL;" + siteData.addressCity.split(' ').pop() + ";USA\n" +
-                        "PHOTO;VALUE=URI:" + PHOTO_URL + "\n" +
-                        "END:VCARD";
-            const blob = new Blob([vcard], { type: 'text/vcard;charset=utf-8' });
-            const url = window.URL.createObjectURL(blob);
-            const link = document.createElement('a');
-            link.href = url;
-            link.setAttribute('download', 'Scott_Robinson_SKVenture.vcf');
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-        }
-
-        window.addEventListener('scroll', updateHeaderVisuals);
-
-        document.getElementById('menu-toggle').onclick = () => {
-            const m = document.getElementById('mobile-menu');
-            m.classList.toggle('hidden'); m.classList.toggle('flex');
-        };
-
-        window.onload = () => {
-            loadSheetData();
-            fetchServices();
-            const cookies = document.cookie.split('; ').reduce((acc, curr) => {
-                const [k, v] = curr.split('='); acc[k] = v; return acc;
-            }, {});
-            if (cookies['outline-color']) {
-                updateOutlineColor(cookies['outline-color']);
-            } else {
-                // Default to no color (transparent) if no cookie exists
-                updateOutlineColor('transparent');
-            }
-            setTheme(cookies['theme'] || 'auto');
-            lucide.createIcons();
-        };
-    </script>
-</body>
-</html>
+    ]
+};
