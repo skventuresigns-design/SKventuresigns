@@ -649,7 +649,7 @@
 
                 <!-- LEFT: Lead Generation Form -->
                 <div class="form-left-panel">
-                    <form id="contact-scott-form" action="https://formspree.io/f/mqaeapql" method="POST">
+                    <form id="contact-scott-form" action="https://formspree.io/f/mgodgnog" method="POST">
                         <div class="form-field-group">
                             <label class="field-label">Your Name</label>
                             <input type="text" name="client_name" class="input-text-single" required>
@@ -809,7 +809,7 @@
         };
 
         /* =========================================================
-            FRAMEWORK SYSTEM LOGIC
+             FRAMEWORK SYSTEM LOGIC
         ========================================================= */
         function parseCSVRow(text) {
             const result = [];
@@ -1095,7 +1095,7 @@
         window.onload = () => {
             loadSheetData();
             
-            // Robust Formspree Integration Logic
+            // Robust Formspree Integration Logic - RESTORED since Captcha is disabled
             const contactForm = document.getElementById('contact-scott-form');
             const status = document.getElementById('form-status');
             const btn = document.getElementById('submit-btn');
@@ -1128,8 +1128,10 @@
                         } else {
                             // Extract formspree-specific validation errors if they exist
                             const responseData = await res.json();
-                            if (Object.hasOwn(responseData, 'errors')) {
+                            if (responseData.errors) {
                                 status.innerText = responseData.errors.map(error => error.message).join(", ");
+                            } else if (responseData.error) {
+                                status.innerText = responseData.error.toUpperCase(); // Captures singular errors
                             } else {
                                 status.innerText = "ERROR. PLEASE CALL 844-907-4450.";
                             }
