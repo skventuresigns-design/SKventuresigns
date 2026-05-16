@@ -218,9 +218,10 @@
         .pricing-grid {
             display: grid;
             grid-template-columns: 1fr;
-            gap: 40px;
+            gap: 80px;
             align-items: center;
-            max-width: 1600px;
+            width: 95%; /* Forces the grid to stretch across 95% of its area */
+            max-width: 2400px; /* Raised from 1600px so it can spread out on big monitors */
             margin: 0 auto;
         }
         @media(min-width: 1024px) { .pricing-grid { grid-template-columns: 1fr 1fr; } }
@@ -304,7 +305,7 @@
         
         <!-- Full-Width Header Row -->
         <div class="text-center mb-12">
-            <h1 style="font-family: 'Abril Fatface', cursive; font-size: 50px; font-weight: 700; color: #ffc000; text-decoration: underline; text-underline-offset: 8px;">
+            <h1 style="font-family: 'Abril Fatface', cursive; font-size: 45px; font-weight: 600; color: #ffc000; text-decoration: underline; text-underline-offset: 8px;">
                 2026 Effingham County Fairgrounds Digital Sign Advertising
             </h1>
         </div>
