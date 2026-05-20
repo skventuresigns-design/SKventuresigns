@@ -12,9 +12,6 @@
     <title>S&K Venture Signs | Digital Billboard Portal</title>
         
     <link rel="icon" type="image/png" href="./favicon.png">
-</head>
-
-<body class="light-mode">
 
     <!-- Google Analytics: Official S&K Tracking + Developer Portfolio Credit -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-62F8P74L0J"></script>
@@ -26,6 +23,11 @@
       gtag('config', 'G-62F8P74L0J');
       gtag('config', 'G-L376P3NPY4');
     </script>
+
+    <!-- External Assets with Smart Cache Buster -->
+    <script src="https://cdn.tailwindcss.com?v=10.14"></script>
+    <script src="https://unpkg.com/lucide@latest?v=10.14"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Abril+Fatface&family=Poppins:wght@400;500;600;700&family=Open+Sans:wght@600;700&display=swap&v=10.14" rel="stylesheet">
 
     <style>
         :root {
@@ -71,7 +73,7 @@
             -webkit-tap-highlight-color: transparent;
             line-height: 1.6;
             margin: 0;
-            padding-top: 0;
+            padding-top: var(--header-height);
             transition: background-color 0.3s, color 0.3s;
         }
 
@@ -249,7 +251,6 @@
             background-position: center;
             display: flex; 
             align-items: center;
-            padding-top: var(--header-height);
         }
 
         .adventurous-divider {
@@ -861,9 +862,11 @@
 
         function closeModals() { document.querySelectorAll('.sk-modal-overlay').forEach(m => m.style.display = 'none'); }
 
+        // Core fix applied right here to prevent rendering collisions during scroll handling
         function updateHeaderVisuals() {
             const header = document.getElementById('main-header');
             const logo = document.getElementById('header-logo');
+            if (!header || !logo) return;
             const isDark = document.body.classList.contains('dark-mode');
             if (window.scrollY > 50) {
                 header.classList.add('header-scrolled');
@@ -872,30 +875,6 @@
                 header.classList.remove('header-scrolled');
                 logo.src = "https://skventuresigns.com/wp-content/uploads/2025/03/SK-Sign-White.png";
             }
-        }
-
-        function downloadSKContact() {
-            const PHOTO_URL = "https://skventuresigns.com/wp-content/uploads/2025/03/SK-Sign-Black.png";
-            const vcard = "BEGIN:VCARD\n" +
-                        "VERSION:3.0\n" +
-                        "N:Robinson;Scott;;;\n" +
-                        "FN:Scott Robinson\n" +
-                        "ORG:S&K Venture Signs\n" +
-                        "TITLE:Digital Billboard Specialist\n" +
-                        "TEL;TYPE=WORK,VOICE:844-907-4450\n" +
-                        "TEL;TYPE=CELL,VOICE:618-708-4450\n" +
-                        "EMAIL;TYPE=PREF,INTERNET:" + siteData.email + "\n" +
-                        "ADR;TYPE=WORK:;;" + siteData.addressStreet + ";" + siteData.addressCity.split(' ')[0] + ";IL;" + siteData.addressCity.split(' ').pop() + ";USA\n" +
-                        "PHOTO;VALUE=URI:" + PHOTO_URL + "\n" +
-                        "END:VCARD";
-            const blob = new Blob([vcard], { type: 'text/vcard;charset=utf-8' });
-            const url = window.URL.createObjectURL(blob);
-            const link = document.createElement('a');
-            link.href = url;
-            link.setAttribute('download', 'Scott_Robinson_SKVenture.vcf');
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
         }
 
         window.addEventListener('scroll', updateHeaderVisuals);
