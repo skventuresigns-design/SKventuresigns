@@ -920,7 +920,7 @@
             lucide.createIcons();
         }
 
-       function openMapSmartActions() {
+     function openMapSmartActions() {
             const addrStr = `${siteData.addressStreet} ${siteData.addressCity}`;
             const addr = encodeURIComponent(addrStr);
             
@@ -938,7 +938,7 @@
             document.getElementById('link-waze').setAttribute('onclick', `smartTabClick(event, this, 'tab_sk_waze', '${wazeUrl}')`);
             
             document.getElementById('map-modal').style.display = 'flex';
-            lucide.createIcons();
+            if (typeof lucide !== 'undefined') lucide.createIcons();
         }
 
         function closeModals() {
