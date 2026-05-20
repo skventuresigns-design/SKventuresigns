@@ -2,17 +2,10 @@
 <html lang="en">
 <head>
     <!-- 
-        PROJECT: S&K Venture Signs Global Framework - SERVICES TAB
-        ADMIN: Kevin (Werewolf3788)
-        CLIENT: Scott (S&K Venture Signs)
-        STANDARDS: Responsive, No-Minify, G-Tag Integrated, GitHack Compatible
-        VERSION: 10.15 (Strict Same-Tab Navigation)
-        TECHNICAL: Locked Header (125px -> 75px), Dynamic Modals, Auto-Night Mode, Precision Integration
-        TIMESTAMP: May 13, 2026
-        
-        NO STRIPPING, NO COMPRESSING, DON'T CHANGE WHAT I DIDN'T SAY TO CHANGE.
-        FIX: Completely stripped cross-tab switching logic and window.open().
-        FIX: All links now strictly force same-tab loading via window.location.href.
+        PROJECT: S&K Venture Signs - Master Web Framework
+        OWNER: S&K Venture Signs, Inc.
+        STANDARDS: Responsive, Clean Layout, Dynamic Data Sync Enabled
+        LAST UPDATED: May 2026
     -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -28,25 +21,6 @@
         }
     </script>
 
-    <!-- Google Analytics: Boss Tracking + Watermark Tracking -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-H6Q756MVE8"></script>
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-L376P3NPY4"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-
-      // V10.15: Advanced GA4 Intent Tracking Configuration
-      gtag('config', 'G-H6Q756MVE8', {
-          'page_title': 'S&K Venture Signs | Services',
-          'page_path': '/services',
-          'page_type': 'services_portal_v10.15',
-          'content_group': 'company_services',
-          'layout_version': '10.15'
-      });
-      gtag('config', 'G-L376P3NPY4');
-    </script>
-
     <!-- External Assets with Smart Cache Buster -->
     <script src="https://cdn.tailwindcss.com?v=10.15"></script>
     <script src="https://unpkg.com/lucide@latest?v=10.15"></script>
@@ -54,7 +28,7 @@
 
     <style>
         :root {
-            /* Kevin's Admin Global Settings */
+            /* Admin Global Settings */
             --divi-section: 50px;
             --divi-row: 30px;
             --divi-body: 14px; 
@@ -1154,11 +1128,11 @@
             lucide.createIcons();
         }
 
-        function openMapSmartActions() {
+       function openMapSmartActions() {
             const addrStr = `${siteData.addressStreet} ${siteData.addressCity}`;
             const addr = encodeURIComponent(addrStr);
             
-            const gmapsUrl = `https://www.google.com/maps/dir/?api=1&destination=${addr}`;
+            const gmapsUrl = `https://www.google.com/maps/search/?api=1&query=${addr}`;
             const amapsUrl = `http://maps.apple.com/?daddr=${addr}`;
             const wazeUrl = `https://waze.com/ul?q=${addr}&navigate=yes`;
             
@@ -1172,7 +1146,7 @@
             document.getElementById('link-waze').setAttribute('onclick', `smartTabClick(event, this, 'tab_sk_waze', '${wazeUrl}')`);
             
             document.getElementById('map-modal').style.display = 'flex';
-            lucide.createIcons();
+            if (typeof lucide !== 'undefined') lucide.createIcons();
         }
 
         function closeModals() {
