@@ -503,4 +503,355 @@
                             <h3 class="text-2xl mb-2 text-black" style="font-family:'Abril Fatface', cursive;">Advertising</h3>
                             <p class="text-sm mb-6 text-black opacity-70 font-medium">Ensure your message reaches the right audience at the right time.</p>
                         </div>
-                        <a href="./Locations.html" class="block py-3 rounded-full font-black uppercase text-xs tracking-widest text-white text-center bg-
+                        <a href="./Locations.html" class="block py-3 rounded-full font-black uppercase text-xs tracking-widest text-white text-center bg-[#2A0001] border-4 border-[#FFC627] hover:scale-105 transition-all shadow-lg" onclick="smartTabClick(event, this, 'tab_sk_svc_advertising', './Locations.html')">
+                            <span class="btn-text">Available Locations ></span>
+                        </a>
+                    </div>
+
+                    <div class="service-card bg-[#DAA421]">
+                        <img src="./images/skbackground.png" class="lightbox-trigger object-contain w-full h-[220px] p-4">
+                        <div class="text-center mt-4 flex-grow px-4">
+                            <h3 class="text-2xl mb-2 text-black" style="font-family:'Abril Fatface', cursive;">Rental and Leasing</h3>
+                            <p class="text-sm mb-6 text-[#3E0100] font-medium">Flexible rental options tailored to fit Your Marketing needs and budget.</p>
+                        </div>
+                        <a href="./Services.html" class="block py-3 rounded-full font-black uppercase text-xs tracking-widest text-white text-center bg-[#023456] border-4 border-white hover:scale-105 transition-all shadow-lg" onclick="smartTabClick(event, this, 'tab_sk_svc_rental', './Services.html')">
+                            <span class="btn-text">Rental and Leasing ></span>
+                        </a>
+                    </div>
+
+                    <div class="service-card bg-[#ffffff]">
+                        <img src="./images/Marble-in-city.png" class="lightbox-trigger object-contain w-full h-[220px] p-4">
+                        <div class="text-center mt-4 flex-grow px-4">
+                            <h3 class="text-2xl mb-2 text-black" style="font-family:'Abril Fatface', cursive;">Sales</h3>
+                            <p class="text-sm mb-6 text-black opacity-70 font-medium">Our Digital Signs will help to enhance and Promote Your Business</p>
+                        </div>
+                        <a href="./Services.html" class="block py-3 rounded-full font-black uppercase text-xs tracking-widest text-white text-center bg-[#2A0001] border-4 border-[#FFC627] hover:scale-105 transition-all shadow-lg" onclick="smartTabClick(event, this, 'tab_sk_svc_sales', './Services.html')">
+                            <span class="btn-text">Digital Sign Sales ></span>
+                        </a>
+                    </div>
+
+                    <div class="service-card bg-[#DAA421]">
+                        <img src="./images/S&K-Sign-White.png" class="lightbox-trigger object-contain w-full h-[220px] p-4">
+                        <div class="text-center mt-4 flex-grow px-4">
+                            <h3 class="text-2xl mb-2 text-black" style="font-family:'Abril Fatface', cursive;">Maintenance and Repair Services</h3>
+                            <p class="text-sm mb-6 text-[#3E0100] font-medium">Your Digital Signs are always in top condition with our expert services.</p>
+                        </div>
+                        <a href="./Services.html" class="block py-3 rounded-full font-black uppercase text-xs tracking-widest text-white text-center bg-[#023456] border-4 border-white hover:scale-105 transition-all shadow-lg" onclick="smartTabClick(event, this, 'tab_sk_svc_repair', './Services.html')">
+                             <span class="btn-text">Maintenance and Repair ></span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="bg-[#3E0100] pb-20 flex justify-center">
+            <div class="main-container flex justify-center">
+                <img src="./images/SK-tagline.png" class="w-full max-w-[950px] lightbox-trigger cursor-zoom-in">
+            </div>
+        </section>
+
+        <section class="py-24" style="background-color:rgb(69,123,157);">
+            <div class="main-container text-center text-white">
+                <h2 class="text-5xl md:text-7xl mb-8">Unlock Your Advertising Potential</h2>
+                <p class="text-xl md:text-2xl mb-12 max-w-4xl mx-auto leading-relaxed">
+                    Ready to elevate your brand’s visibility? Reach out to S&K Venture Signs today for tailored digital solutions that meet your unique needs.
+                </p>
+                <a href="mailto:Scott.Robinson@skventuresigns.com" class="bg-white text-blue-900 px-16 py-5 rounded-full font-black uppercase tracking-widest shadow-2xl inline-block hover:scale-105 transition-all border-4 border-blue-900" onclick="smartTabClick(event, this, 'tab_sk_mailto_quote', this.href)">
+                    <span class="btn-text">Request A Quote</span>
+                </a>
+            </div>
+        </section>
+    </main>
+
+    <footer id="main-footer">
+        <div class="main-container footer-grid">
+            <div class="footer-col">
+                <p class="footer-label">Give us a call</p>
+                <div id="footer-phone-list"></div>
+            </div>
+            <div class="footer-col">
+                <p class="footer-label">Send us an Email</p>
+                <div id="footer-email-list"></div>
+            </div>
+            <div class="footer-col">
+                <p class="footer-label">Visit our office</p>
+                <div id="footer-address-container"></div>
+            </div>
+        </div>
+        <div class="main-container mt-10 pt-6 border-t border-white/10 text-center">
+            <h5 class="font-bold opacity-50 text-sm tracking-widest uppercase text-white">© 2026 S&K VENTURE SIGNS</h5>
+        </div>
+    </footer>
+
+    <div id="lightbox-overlay" onclick="this.style.display='none'" class="fixed inset-0 bg-black/95 z-[10000] hidden items-center justify-center p-10">
+        <img id="lightbox-img" src="" class="max-w-full max-h-full object-contain rounded-xl border-4 border-white shadow-2xl">
+    </div>
+
+    <div id="phone-modal" class="sk-modal-overlay" onclick="closeModals()">
+        <div class="sk-modal-content" onclick="event.stopPropagation()">
+            <div class="bg-[#3E0100] p-8 text-[#FFC627] text-center font-serif text-2xl">Contact Specialist</div>
+            <div class="p-8" id="phone-options-container"></div>
+            <div class="p-6 text-center text-sm font-bold modal-cancel-text" onclick="closeModals()">CANCEL</div>
+        </div>
+    </div>
+
+    <div id="email-modal" class="sk-modal-overlay" onclick="closeModals()">
+        <div class="sk-modal-content" onclick="event.stopPropagation()">
+            <div class="bg-[#3E0100] p-8 text-[#FFC627] text-center font-serif text-2xl">Send Message</div>
+            <div class="p-8" id="email-options-container"></div>
+            <div class="p-6 text-center text-sm font-bold modal-cancel-text" onclick="closeModals()">CANCEL</div>
+        </div>
+    </div>
+
+    <div id="map-modal" class="sk-modal-overlay" onclick="closeModals()">
+        <div class="sk-modal-content" onclick="event.stopPropagation()">
+            <div class="bg-[#3E0100] p-8 text-[#FFC627] text-center font-serif text-2xl">Start Navigation</div>
+            <div class="p-8">
+                <a id="link-gmaps" class="smart-option"><i data-lucide="map"></i> Google Maps</a>
+                <a id="link-amaps" class="smart-option"><i data-lucide="navigation"></i> Apple Maps</a>
+                <a id="link-waze" class="smart-option"><i data-lucide="navigation-2"></i> Waze Navigation</a>
+            </div>
+            <div class="p-6 text-center text-sm font-bold modal-cancel-text" onclick="closeModals()">CANCEL</div>
+        </div>
+    </div>
+
+    <script>
+        /**
+         * S&K UNIVERSAL ENGINE v10.14 (Safe ITC / Global Sync / Same Tab Forced)
+         */
+        const SYNC_CSV = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTrs2-zHEDCHZcBecOrMd_pokyGDjCR7NUl9pp1EAEb9hfUKYeZm4Di5W3fjX75NWtRbRKOHF2DeWYy/pub?output=csv";
+
+        let siteData = { nav: [], phones: [], email: "", addressStreet: "", addressCity: "" };
+
+        /**
+         * V10.14: SAFE STORAGE WRAPPERS (Retained for visual states, removed for tab jumping)
+         */
+        function safeSetStorage(key, val) {
+            try { localStorage.setItem(key, val); } catch (e) { console.warn('Storage blocked'); }
+        }
+        function safeGetStorage(key) {
+            try { return localStorage.getItem(key); } catch (e) { return null; }
+        }
+        function safeRemoveStorage(key) {
+            try { localStorage.removeItem(key); } catch (e) {}
+        }
+
+        /**
+         * V10.14: FIXED SAME-TAB NAVIGATION
+         * Completely stripped window.open() jumping logic to STRICTLY force links into the same active tab.
+         */
+        window.smartTabClick = function(event, element, targetName, url) {
+            if(event) event.preventDefault(); // Stop standard link behavior
+            window.location.href = url;
+        };
+
+        function parseCSVRow(text) {
+            const result = [];
+            let current = '';
+            let inQuotes = false;
+            for (let i = 0; i < text.length; i++) {
+                const char = text[i];
+                if (char === '"') { inQuotes = !inQuotes; }
+                else if (char === ',' && !inQuotes) { result.push(current.trim()); current = ''; }
+                else { current += char; }
+            }
+            result.push(current.trim());
+            return result.map(v => v.replace(/^"|"$/g, ''));
+        }
+
+        async function loadSheetData() {
+            try {
+                const response = await fetch(SYNC_CSV);
+                const text = await response.text();
+                const lines = text.split(/\r?\n/);
+                let tempNav = [];
+                lines.forEach((line, idx) => {
+                    const row = parseCSVRow(line);
+                    const rowNum = idx + 1;
+                    if (row[2]?.trim().toLowerCase() === 'header') tempNav.push({ label: row[0], url: row[1] });
+                    if (rowNum === 7) siteData.phones[0] = row[0];
+                    if (rowNum === 8) siteData.phones[1] = row[0];
+                    if (rowNum === 9) siteData.email = row[0];
+                    if (rowNum === 10) {
+                        siteData.addressStreet = row[0];
+                        siteData.addressCity = row[1];
+                    }
+                });
+                siteData.nav = tempNav;
+                renderDynamicFramework();
+            } catch (err) { console.warn("Framework Sync Fallback"); renderDynamicFramework(); }
+        }
+
+        function renderDynamicFramework() {
+            const dNav = document.getElementById('desktop-nav-root');
+            const mNav = document.getElementById('mobile-menu');
+            const fPhone = document.getElementById('footer-phone-list');
+            const fEmail = document.getElementById('footer-email-list');
+            const fAddr = document.getElementById('footer-address-container');
+
+            dNav.innerHTML = ''; mNav.innerHTML = '';
+            
+            siteData.nav.forEach(n => {
+                const isActive = n.label.toLowerCase() === 'home';
+                const uniqueTarget = `tab_sk_${n.label.replace(/[^a-zA-Z0-9]/g, '_')}`;
+                const desktopActive = isActive ? 'active' : '';
+
+                dNav.innerHTML += `<li><a href="${n.url}" class="nav-link ${desktopActive}" onclick="smartTabClick(event, this, '${uniqueTarget}', '${n.url}')">${n.label}</a></li>`;
+                
+                const mobileClass = isActive
+                    ? `text-2xl font-bold border-b border-black/5 pb-3 text-[var(--sk-gold)]`
+                    : `text-2xl font-bold border-b border-black/5 pb-3`;
+
+                mNav.innerHTML += `<a href="${n.url}" class="${mobileClass}" onclick="smartTabClick(event, this, '${uniqueTarget}', '${n.url}')">${n.label}</a>`;
+            });
+
+            fPhone.className = "flex flex-wrap items-center justify-center gap-3";
+            let phoneHTML = `<span class="footer-value !mb-0" onclick="openPhoneSmartActions('${siteData.phones[0]}')">${siteData.phones[0]}</span>`;
+            if (siteData.phones[1]) phoneHTML += `<span class="text-white opacity-70 text-sm font-bold uppercase">or</span><span class="footer-value !mb-0" onclick="openPhoneSmartActions('${siteData.phones[1]}')">${siteData.phones[1]}</span>`;
+            fPhone.innerHTML = phoneHTML;
+
+            fEmail.innerHTML = `<span class="footer-value" onclick="openEmailSmartActions('${siteData.email}')">${siteData.email}</span>`;
+            fAddr.innerHTML = `<span class="footer-value" onclick="openMapSmartActions()">${siteData.addressStreet}, ${siteData.addressCity}</span>`;
+
+            lucide.createIcons();
+        }
+
+        function initLightbox() {
+            const overlay = document.getElementById('lightbox-overlay');
+            const overlayImg = document.getElementById('lightbox-img');
+            document.querySelectorAll('.lightbox-trigger').forEach(img => {
+                img.onclick = () => { overlayImg.src = img.src; overlay.style.display = 'flex'; };
+            });
+        }
+
+        function toggleSettingsPanel() {
+            document.getElementById('settings-panel').classList.toggle('hidden-settings');
+        }
+
+        function setTheme(mode) {
+            const body = document.body;
+            const hour = new Date().getHours();
+            if (mode === 'auto') mode = (hour < 6 || hour >= 19) ? 'dark' : 'light';
+            if (mode === 'dark') {
+                document.documentElement.style.setProperty('--bg-primary', '#121212');
+                document.documentElement.style.setProperty('--text-primary', '#e0e0e0');
+                document.documentElement.style.setProperty('--card-bg', '#1e1e1e');
+                body.classList.add('dark-mode');
+            } else {
+                document.documentElement.style.setProperty('--bg-primary', '#fcfcfc');
+                document.documentElement.style.setProperty('--text-primary', '#333333');
+                document.documentElement.style.setProperty('--card-bg', '#ffffff');
+                body.classList.remove('dark-mode');
+            }
+            document.cookie = `theme=${mode};max-age=31536000;path=/`;
+            updateHeaderVisuals();
+        }
+
+        function updateOutlineColor(color) {
+            document.documentElement.style.setProperty('--outline-color', color);
+            document.cookie = `outline-color=${color};max-age=31536000;path=/`;
+        }
+
+        function openPhoneSmartActions(num) {
+            const clean = num.replace(/\D/g, '');
+            const container = document.getElementById('phone-options-container');
+            let html = `
+                <a href="tel:${clean}" class="smart-option" onclick="smartTabClick(event, this, 'tab_sk_tel', this.href)"><i data-lucide="phone"></i> Direct Call</a>
+            `;
+            if (num.includes('618')) html += `<a href="https://wa.me/1${clean}" class="smart-option" onclick="smartTabClick(event, this, 'tab_sk_wa', this.href)"><i data-lucide="message-circle"></i> WhatsApp Specialist</a>`;
+            container.innerHTML = html;
+            document.getElementById('phone-modal').style.display = 'flex';
+            lucide.createIcons();
+        }
+
+        function openEmailSmartActions(email) {
+            const container = document.getElementById('email-options-container');
+            container.innerHTML = `
+                <a href="mailto:${email}" class="smart-option" onclick="smartTabClick(event, this, 'tab_sk_mail_def', this.href)"><i data-lucide="mail"></i> Default Client</a>
+                <a href="https://mail.google.com/mail/?view=cm&fs=1&to=${email}" class="smart-option" onclick="smartTabClick(event, this, 'tab_sk_mail_gmail', this.href)"><i data-lucide="send"></i> Gmail Web</a>
+                <div onclick="navigator.clipboard.writeText('${email}'); closeModals();" class="smart-option"><i data-lucide="copy"></i> Copy Address</div>
+            `;
+            document.getElementById('email-modal').style.display = 'flex';
+            lucide.createIcons();
+        }
+
+        function openMapSmartActions() {
+            const addrStr = `${siteData.addressStreet} ${siteData.addressCity}`;
+            const addr = encodeURIComponent(addrStr);
+            
+            document.getElementById('link-gmaps').href = `https://www.google.com/maps/search/?api=1&query=${addr}`;
+            document.getElementById('link-gmaps').setAttribute('onclick', `smartTabClick(event, this, 'tab_sk_gmaps', '${document.getElementById('link-gmaps').href}')`);
+
+            document.getElementById('link-amaps').href = `http://maps.apple.com/?daddr=${addr}&dirflg=d`;
+            document.getElementById('link-amaps').setAttribute('onclick', `smartTabClick(event, this, 'tab_sk_amaps', '${document.getElementById('link-amaps').href}')`);
+
+            document.getElementById('link-waze').href = `https://waze.com/ul?q=${addr}&navigate=yes`;
+            document.getElementById('link-waze').setAttribute('onclick', `smartTabClick(event, this, 'tab_sk_waze', '${document.getElementById('link-waze').href}')`);
+            
+            document.getElementById('map-modal').style.display = 'flex';
+            lucide.createIcons();
+        }
+
+        function closeModals() { document.querySelectorAll('.sk-modal-overlay').forEach(m => m.style.display = 'none'); }
+
+        function updateHeaderVisuals() {
+            const header = document.getElementById('main-header');
+            const logo = document.getElementById('header-logo');
+            const isDark = document.body.classList.contains('dark-mode');
+            if (window.scrollY > 50) {
+                header.classList.add('header-scrolled');
+                logo.src = isDark ? "./images/S&K-Sign-White.png" : "./images/S&K-Sign-Black.png";
+            } else {
+                header.classList.remove('header-scrolled');
+                logo.src = "./images/S&K-Sign-White.png";
+            }
+        }
+
+        function downloadSKContact() {
+            const PHOTO_URL = "./images/S&K-Sign-Black.png";
+            const vcard = "BEGIN:VCARD\n" +
+                        "VERSION:3.0\n" +
+                        "N:Robinson;Scott;;;\n" +
+                        "FN:Scott Robinson\n" +
+                        "ORG:S&K Venture Signs\n" +
+                        "TITLE:Digital Billboard Specialist\n" +
+                        "TEL;TYPE=WORK,VOICE:844-907-4450\n" +
+                        "TEL;TYPE=CELL,VOICE:618-708-4450\n" +
+                        "EMAIL;TYPE=PREF,INTERNET:" + siteData.email + "\n" +
+                        "ADR;TYPE=WORK:;;" + siteData.addressStreet + ";" + siteData.addressCity.split(' ')[0] + ";IL;" + siteData.addressCity.split(' ').pop() + ";USA\n" +
+                        "PHOTO;VALUE=URI:" + PHOTO_URL + "\n" +
+                        "END:VCARD";
+            const blob = new Blob([vcard], { type: 'text/vcard;charset=utf-8' });
+            const url = window.URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.setAttribute('download', 'Scott_Robinson_SKVenture.vcf');
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+
+        window.addEventListener('scroll', updateHeaderVisuals);
+
+        document.getElementById('menu-toggle').onclick = () => {
+            const m = document.getElementById('mobile-menu');
+            m.classList.toggle('hidden'); m.classList.toggle('flex');
+        };
+
+        window.onload = () => {
+            loadSheetData();
+            initLightbox();
+            const cookies = document.cookie.split('; ').reduce((acc, curr) => {
+                const [k, v] = curr.split('='); acc[k] = v; return acc;
+            }, {});
+            if (cookies['outline-color']) {
+                updateOutlineColor(cookies['outline-color']);
+            } else {
+                updateOutlineColor('transparent');
+            }
+            setTheme(cookies['theme'] || 'auto');
+            lucide.createIcons();
+        };
+    </script>
+</body>
+</html>
