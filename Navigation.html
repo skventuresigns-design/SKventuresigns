@@ -2,39 +2,25 @@
 <html lang="en">
 <head>
     <!-- 
-        PROJECT: S&K Venture Signs Global Framework
-        ADMIN: Kevin (DJ Werewolf) - Admin
-        CLIENT: Scott (S&K Venture Signs)
-        STANDARDS: Responsive, No-Minify, G-Tag Integrated, GitHack Compatible
-        VERSION: 9.5 (Default "Match System" Logic + OS/Time Hybrid Sync + v9.4 Integrity)
-        TECHNICAL: Precision Integration, Auto-Night Mode, Dual-Column Mapping
-        TIMESTAMP: May 6, 2026 - 8:55 PM EDT (New York Time)
-        Nesting Code: Header/Footer Primary Wrapper
-        
-        NO STRIPPING, NO COMPRESSING, DON'T CHANGE WHAT I DIDN'T SAY TO CHANGE.
+        PROJECT: S&K Venture Signs - Master Web Framework
+        OWNER: S&K Venture Signs, Inc.
+        STANDARDS: Responsive, Clean Layout, Dynamic Data Sync Enabled
+        LAST UPDATED: May 2026
     -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>S&K Venture Signs | Digital Billboard Portal</title>
-    
-    <!-- PWA Manifest & Service Worker -->
-    <link rel="manifest" href="./manifest.json">
-    <script>
-        if ('serviceWorker' in navigator) {
-            window.addEventListener('load', () => {
-                navigator.serviceWorker.register('./sw.js').catch(err => console.log('SW failed', err));
-            });
-        }
-    </script>
+    <title>Digital Billboards & Mobile Sign Trailers | S&K Venture Signs</title>
+    <meta name="description" content="S&K Venture Signs offers premium digital billboard advertising along major Illinois thoroughfares and mobile digital sign trailers for community events and festivals.">
+    <link rel="icon" type="image/png" href="./favicon.png">
 
-    <!-- Google Analytics: Boss Tracking + Watermark Tracking -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-H6Q756MVE8"></script>
+   <!-- Google Analytics: Official S&K Tracking + Developer Portfolio Credit -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-62F8P74L0J"></script>
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-L376P3NPY4"></script>
     <script>
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
-      gtag('config', 'G-H6Q756MVE8', { 'page_type': 'global_framework_v9.5' });
+      gtag('config', 'G-62F8P74L0J');
       gtag('config', 'G-L376P3NPY4');
     </script>
 
@@ -45,7 +31,7 @@
 
     <style>
         :root {
-            /* Kevin's Admin Global Settings */
+            /* Admin Global Settings */
             --divi-header: 30px;
             --divi-body: 14px;
             --divi-section: 50px;
@@ -332,13 +318,7 @@
 </head>
 <body class="light-mode">
 
-    <!-- KF Signature Watermark -->
-    <div class="kf-signature">
-        <span class="kf-k">K</span>
-        <span class="kf-f">F</span>
-    </div>
-
-    <!-- Theme & Persistence Panel -->
+     <!-- Theme & Persistence Panel -->
     <div class="theme-toggle-wrapper">
         <div class="settings-toggle-btn shadow-xl" onclick="toggleSettingsPanel()">
             <i data-lucide="settings"></i>
@@ -360,7 +340,7 @@
         <div class="main-container flex items-center justify-between h-full px-4 lg:px-0">
             <div class="flex-shrink-0 z-[1001]">
                 <a href="./index.html">
-                    <img src="https://skventuresigns.com/wp-content/uploads/2025/03/SK-Sign-White.png?v=9.5" alt="S&K" id="header-logo" />
+                    <img src="./images/S&K-Sign-White.png" alt="S&K" id="header-logo" />
                 </a>
             </div>
 
@@ -398,7 +378,7 @@
         <section class="main-container py-12 grid grid-cols-1 md:grid-cols-2 gap-10">
             <a href="./Locations.html" class="group bg-white dark:bg-zinc-900 p-10 rounded-3xl shadow-xl border-b-8 border-transparent hover:border-[#FFC627] transition-all">
                 <div class="relative w-full pb-[56.25%] overflow-hidden rounded-2xl mb-8 bg-gray-50 dark:bg-zinc-800">
-                    <img src="https://skventuresigns.com/wp-content/uploads/2025/03/SK-Sign-Black.png" alt="Map" class="absolute inset-0 w-full h-full object-contain p-12 opacity-10 dark:invert">
+                    <img src="./images/S&K-Sign-Black.png" alt="Map" class="absolute inset-0 w-full h-full object-contain p-12 opacity-10 dark:invert">
                     <div class="absolute inset-0 flex items-center justify-center">
                         <i data-lucide="map-pin" class="w-20 h-20 text-[#3E0100] dark:text-[#FFC627]"></i>
                     </div>
@@ -475,7 +455,7 @@
          * S&K SMART SYNC ENGINE v9.5
          * Logic: Hybrid System Match (OS Preference + Admin Night Hour Protocol)
          */
-        const CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTZY38nsz_aJDO3cdtAwv4w359jK1aMt1rhBwZ3LAGarLyddtbBowFZv6mjlpnR1eGdNCpFhat8FuKp/pub?output=csv";
+        const CSV_URL = "const CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTZY38nsz_aJDO3cdtAwv4w359jK1aMt1rhBwZ3LAGarLyddtbBowFZv6mjlpnR1eGdNCpFhat8FuKp/pub?output=csv";
         
         let siteData = { 
             nav: [], 
@@ -576,7 +556,7 @@
         }
 
         function downloadSKContact() {
-            const PHOTO_URL = "https://skventuresigns.com/wp-content/uploads/2025/03/SK-Sign-Black.png";
+            const PHOTO_URL = "./images/SK-Sign-Black.png";
             const vcard = "BEGIN:VCARD\n" +
                         "VERSION:3.0\n" +
                         "FN:Scott Robinson\n" +
@@ -636,7 +616,7 @@
             const header = document.getElementById('main-header');
             const logo = document.getElementById('header-logo');
             if (header.classList.contains('header-scrolled')) {
-                logo.src = (targetMode === 'dark') ? "https://skventuresigns.com/wp-content/uploads/2025/03/SK-Sign-White.png" : "https://skventuresigns.com/wp-content/uploads/2025/03/SK-Sign-Black.png";
+                logo.src = (targetMode === 'dark') ? "./images/S&K-Sign-White.png" : "./imanges/S&K-Sign-Black.png";
             }
 
             document.cookie = `theme=${mode};max-age=31536000;path=/`;
@@ -698,10 +678,10 @@
 
             if (window.scrollY > 50) {
                 header.classList.add('header-scrolled');
-                logo.src = isDark ? "https://skventuresigns.com/wp-content/uploads/2025/03/SK-Sign-White.png" : "https://skventuresigns.com/wp-content/uploads/2025/03/SK-Sign-Black.png";
+                logo.src = isDark ? "./images/S&K-Sign-White.png" : "./images/S&K-Sign-Black.png";
             } else {
                 header.classList.remove('header-scrolled');
-                logo.src = "https://skventuresigns.com/wp-content/uploads/2025/03/SK-Sign-White.png";
+                logo.src = "./images/S&K-Sign-White.png";
             }
         });
 
