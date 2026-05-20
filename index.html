@@ -738,12 +738,13 @@
             try {
                 const response = await fetch(SERVICES_CSV);
                 const csvText = await response.text();
-                const lines = csvText.split('\n');
-                const titles = lines[0].split(',');
-                const descs = lines[1].split(',');
-                const btnLabels = lines[2].split(',');
-                const btnLinks = lines[3].split(',');
-                const imgs = lines[4].split(',');
+                const lines = csvText.split(/\r?\n/).filter(line => line.trim());
+                
+                const titles = parseCSVRow(lines[0]);
+                const descs = parseCSVRow(lines[1]);
+                const btnLabels = parseCSVRow(lines[2]);
+                const btnLinks = parseCSVRow(lines[3]);
+                const imgs = parseCSVRow(lines[4]);
                 grid.innerHTML = '';
                 for(let i=1; i < titles.length; i++) {
                     const isEven = i % 2 !== 0;
