@@ -2,26 +2,41 @@
 <html lang="en">
 <head>
     <!-- 
-        PROJECT: S&K Venture Signs - Master Web Framework
-        OWNER: S&K Venture Signs, Inc.
-        STANDARDS: Responsive, Clean Layout, Dynamic Data Sync Enabled
-        LAST UPDATED: May 2026
+        PROJECT: S&K Venture Signs Global Framework
+        ADMIN: Kevin (DJ Werewolf) - Admin
+        CLIENT: Scott (S&K Venture Signs)
+        STANDARDS: Responsive, No-Minify, G-Tag Integrated, GitHack Compatible
+        VERSION: 10.14 (Strict Same-Tab Navigation)
+        TECHNICAL: Precision Integration, Auto-Night Mode, High-Contrast Outlines, Dual-Column Mapping
+        TIMESTAMP: May 13, 2026
+        
+        NO STRIPPING, NO COMPRESSING, DON'T CHANGE WHAT I DIDN'T SAY TO CHANGE.
+        FIX: Completely stripped cross-tab switching logic.
+        FIX: All links now strictly force same-tab loading via window.location.href.
     -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>S&K Venture Signs | Digital Billboard Portal</title>
-        
-    <link rel="icon" type="image/png" href="./favicon.png">
+    
+    <!-- PWA Manifest & Service Worker -->
+    <link rel="manifest" href="./manifest.json">
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('./sw.js').catch(err => console.log('SW failed', err));
+            });
+        }
+    </script>
 
-    <!-- Google Analytics: Official S&K Tracking + Developer Portfolio Credit -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-62F8P74L0J"></script>
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-L376P3NPY4"></script>
+    <!-- Google Analytics: Boss Tracking + Watermark Tracking -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-H6Q756MVE8"></script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-L376P3YPY4"></script>
     <script>
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
-      gtag('config', 'G-62F8P74L0J');
-      gtag('config', 'G-L376P3NPY4');
+      gtag('config', 'G-H6Q756MVE8', { 'page_type': 'global_framework_v10.14_home' });
+      gtag('config', 'G-L376P3YPY4');
     </script>
 
     <!-- External Assets with Smart Cache Buster -->
@@ -73,7 +88,7 @@
             -webkit-tap-highlight-color: transparent;
             line-height: 1.6;
             margin: 0;
-            padding-top: var(--header-height);
+            padding-top: 0;
             transition: background-color 0.3s, color 0.3s;
         }
 
@@ -251,6 +266,7 @@
             background-position: center;
             display: flex; 
             align-items: center;
+            padding-top: var(--header-height);
         }
 
         .adventurous-divider {
@@ -862,11 +878,9 @@
 
         function closeModals() { document.querySelectorAll('.sk-modal-overlay').forEach(m => m.style.display = 'none'); }
 
-        // Core fix applied right here to prevent rendering collisions during scroll handling
         function updateHeaderVisuals() {
             const header = document.getElementById('main-header');
             const logo = document.getElementById('header-logo');
-            if (!header || !logo) return;
             const isDark = document.body.classList.contains('dark-mode');
             if (window.scrollY > 50) {
                 header.classList.add('header-scrolled');
@@ -875,6 +889,30 @@
                 header.classList.remove('header-scrolled');
                 logo.src = "https://skventuresigns.com/wp-content/uploads/2025/03/SK-Sign-White.png";
             }
+        }
+
+        function downloadSKContact() {
+            const PHOTO_URL = "https://skventuresigns.com/wp-content/uploads/2025/03/SK-Sign-Black.png";
+            const vcard = "BEGIN:VCARD\n" +
+                        "VERSION:3.0\n" +
+                        "N:Robinson;Scott;;;\n" +
+                        "FN:Scott Robinson\n" +
+                        "ORG:S&K Venture Signs\n" +
+                        "TITLE:Digital Billboard Specialist\n" +
+                        "TEL;TYPE=WORK,VOICE:844-907-4450\n" +
+                        "TEL;TYPE=CELL,VOICE:618-708-4450\n" +
+                        "EMAIL;TYPE=PREF,INTERNET:" + siteData.email + "\n" +
+                        "ADR;TYPE=WORK:;;" + siteData.addressStreet + ";" + siteData.addressCity.split(' ')[0] + ";IL;" + siteData.addressCity.split(' ').pop() + ";USA\n" +
+                        "PHOTO;VALUE=URI:" + PHOTO_URL + "\n" +
+                        "END:VCARD";
+            const blob = new Blob([vcard], { type: 'text/vcard;charset=utf-8' });
+            const url = window.URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.setAttribute('download', 'Scott_Robinson_SKVenture.vcf');
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
         }
 
         window.addEventListener('scroll', updateHeaderVisuals);
