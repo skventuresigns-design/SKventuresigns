@@ -1,42 +1,27 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <!-- 
-        PROJECT: S&K Venture Signs Global Framework
-        ADMIN: Kevin (DJ Werewolf) - Admin
-        CLIENT: Scott (S&K Venture Signs)
-        STANDARDS: Responsive, No-Minify, G-Tag Integrated, GitHack Compatible
-        VERSION: 10.14 (Strict Same-Tab Navigation)
-        TECHNICAL: Precision Integration, Auto-Night Mode, High-Contrast Outlines, Dual-Column Mapping
-        TIMESTAMP: May 13, 2026
-        
-        NO STRIPPING, NO COMPRESSING, DON'T CHANGE WHAT I DIDN'T SAY TO CHANGE.
-        FIX: Completely stripped cross-tab switching logic.
-        FIX: All links now strictly force same-tab loading via window.location.href.
+   <!-- 
+        PROJECT: S&K Venture Signs - Master Web Framework
+        OWNER: S&K Venture Signs, Inc.
+        STANDARDS: Responsive, Clean Layout, Dynamic Data Sync Enabled
+        LAST UPDATED: May 2026
     -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>S&K Venture Signs | Digital Billboard Portal</title>
-    
-    <!-- PWA Manifest & Service Worker -->
-    <link rel="manifest" href="./manifest.json">
-    <script>
-        if ('serviceWorker' in navigator) {
-            window.addEventListener('load', () => {
-                navigator.serviceWorker.register('./sw.js').catch(err => console.log('SW failed', err));
-            });
-        }
-    </script>
+    <title>Digital Billboards & Mobile Sign Trailers | S&K Venture Signs</title>
+    <meta name="description" content="S&K Venture Signs offers premium digital billboard advertising along major Illinois thoroughfares and mobile digital sign trailers for community events and festivals.">
+    <link rel="icon" type="image/png" href="./favicon.png">
 
-    <!-- Google Analytics: Boss Tracking + Watermark Tracking -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-H6Q756MVE8"></script>
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-L376P3YPY4"></script>
+   <!-- Google Analytics: Official S&K Tracking + Developer Portfolio Credit -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-62F8P74L0J"></script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-L376P3NPY4"></script>
     <script>
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
-      gtag('config', 'G-H6Q756MVE8', { 'page_type': 'global_framework_v10.14_home' });
-      gtag('config', 'G-L376P3YPY4');
+      gtag('config', 'G-62F8P74L0J');
+      gtag('config', 'G-L376P3NPY4');
     </script>
 
     <!-- External Assets with Smart Cache Buster -->
@@ -261,7 +246,7 @@
             position: relative; 
             min-height: 625px; 
             background-image: linear-gradient(rgba(0, 0, 0, 0.5) 0%, rgba(0, 0, 0, 0.5) 100%), 
-                              url('https://raw.githubusercontent.com/Werewolf3788/SKVentureSigns/5964982228b88201a817521985ebd15199b77eb4/images/Marbel%20in%20city.png');
+                              url('./images/Marble-in-city.png');
             background-size: cover; 
             background-position: center;
             display: flex; 
@@ -272,7 +257,7 @@
         .adventurous-divider {
             position: relative; 
             min-height: 600px;
-            background-image: url('https://raw.githack.com/Werewolf3788/SKVentureSigns/bcd39125f3e66cfe95baab52771628778e15654f/images/skbackground.png');
+            background-image: url('./images/skbackground.png');
             background-size: cover; 
             background-position: center;
             display: flex; 
@@ -472,7 +457,7 @@
             <div class="flex-shrink-0 z-[1001]">
                 <!-- Same Tab Setup for Logo -->
                 <a href="./index.html" class="smart-tab-btn" onclick="smartTabClick(event, this, 'tab_sk_Home', this.href)">
-                    <img src="https://raw.githubusercontent.com/Werewolf3788/SKVentureSigns/43ce7372c309633c13f3570093eb8af2bfb3de6b/images/S%26K%20Sign%20White.png" alt="S&K" id="header-logo" />
+                    <img src="./images/S&K-Sign-White.png" alt="S&K" id="header-logo" />
                 </a>
             </div>
 
@@ -518,7 +503,7 @@
             <div class="main-container">
                 <div class="flex flex-col lg:flex-row items-center gap-12 mb-16">
                     <div class="w-full lg:w-1/2">
-                        <img src="https://i0.wp.com/skventuresigns.com/wp-content/uploads/2026/04/EFF-fair-locations.png?v=10.7" class="w-full h-auto rounded-3xl shadow-2xl lightbox-trigger cursor-zoom-in">
+                        <img src="./images/EFF-fair-locations.png" class="w-full h-auto rounded-3xl shadow-2xl lightbox-trigger cursor-zoom-in">
                     </div>
                     <div class="w-full lg:w-1/2 text-center text-white">
                         <h5 class="fair-heading-precision">2026 Effingham County Fair</h5>
@@ -536,7 +521,7 @@
                             <p>Locations 4 & 5 - Inside the Fairgrounds in the infield on the track</p>
                         </div>
                         <!-- Same Tab Setup for Get Started Button -->
-                        <a href="https://werewolf3788.github.io/SKVentureSigns/effinghamcountyfair.html" class="get-started-btn shadow-xl smart-tab-btn" onclick="smartTabClick(event, this, 'tab_sk_efair', this.href)">
+                        <a href="effinghamcountyfair.html" class="get-started-btn shadow-xl smart-tab-btn" onclick="smartTabClick(event, this, 'tab_sk_efair', this.href)">
                             <span class="btn-text">Get Started</span>
                         </a>
                     </div>
@@ -550,8 +535,8 @@
             <div class="main-container">
                 <!-- Banners above Cards -->
                 <div class="flex flex-col items-center gap-6 mb-12">
-                    <img src="https://i0.wp.com/skventuresigns.com/wp-content/uploads/2025/01/Topline.png?v=10.7" alt="Engage Your Audience Like Never Before With Our State-of-the Art Digital Sign Solutions" class="w-full max-w-[1080px] h-auto">
-                    <img src="https://i0.wp.com/skventuresigns.com/wp-content/uploads/2025/03/Customize.png?v=10.7" alt="Customize Digital Advertising" class="w-full max-w-[1080px] h-auto">
+                    <img src="./images/Topline.png" alt="Engage Your Audience Like Never Before With Our State-of-the Art Digital Sign Solutions" class="w-full max-w-[1080px] h-auto">
+                    <img src="./images/Customize.png" alt="Customize Digital Advertising" class="w-full max-w-[1080px] h-auto">
                 </div>
 
                 <div id="services-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
@@ -565,7 +550,7 @@
         <!-- TAGLINE -->
         <section class="bg-[#3E0100] pb-20 flex justify-center">
             <div class="main-container flex justify-center">
-                <img src="https://i0.wp.com/skventuresigns.com/wp-content/uploads/2024/12/SK-tagline.png?v=10.7" class="w-full max-w-[950px] lightbox-trigger cursor-zoom-in">
+                <img src="./images/SK-tagline.png" class="w-full max-w-[950px] lightbox-trigger cursor-zoom-in">
             </div>
         </section>
 
@@ -884,15 +869,15 @@
             const isDark = document.body.classList.contains('dark-mode');
             if (window.scrollY > 50) {
                 header.classList.add('header-scrolled');
-                logo.src = isDark ? "https://raw.githubusercontent.com/Werewolf3788/SKVentureSigns/43ce7372c309633c13f3570093eb8af2bfb3de6b/images/S%26K%20Sign%20White.png" : "https://raw.githubusercontent.com/Werewolf3788/SKVentureSigns/27f007340a35a758a2c83fa73a662cae242f9b16/images/S%26K%20Sign%20Black.png";
+                logo.src = isDark ? "./images/S&K-Sign-White.png" : "./images/S&K-Sign-Black.png";
             } else {
                 header.classList.remove('header-scrolled');
-                logo.src = "https://skventuresigns.com/wp-content/uploads/2025/03/SK-Sign-White.png";
+                logo.src = "./images/S&K-Sign-White.png";
             }
         }
 
         function downloadSKContact() {
-            const PHOTO_URL = "https://skventuresigns.com/wp-content/uploads/2025/03/SK-Sign-Black.png";
+            const PHOTO_URL = "./images/S&K-Sign-Black.png";
             const vcard = "BEGIN:VCARD\n" +
                         "VERSION:3.0\n" +
                         "N:Robinson;Scott;;;\n" +
