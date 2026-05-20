@@ -733,44 +733,56 @@
             lucide.createIcons();
         }
 
-        async function fetchServices() {
+       async function fetchServices() {
             const grid = document.getElementById('services-grid');
-            try {
-                const response = await fetch(SERVICES_CSV);
-                const csvText = await response.text();
-                const lines = csvText.split(/\r?\n/).filter(line => line.trim());
-                
-                grid.innerHTML = '';
-                
-                // Skip row 1 (the header labels) and loop through every client row vertically
-                for(let i = 1; i < lines.length; i++) {
-                    const row = parseCSVRow(lines[i]);
-                    if (!row[0]) continue; // Skip blank rows
-                    
-                    const clientName = row[0].trim();
-                    const webLink = row[1] ? row[1].trim() : '#';
-                    const imgUrl = row[2] ? row[2].trim() : 'https://placehold.co/400x220?text=S%26K+Venture+Signs';
-                    
-                    const isEven = i % 2 === 0;
-                    const uniqueTarget = `tab_sk_client_${clientName.replace(/[^a-zA-Z0-9]/g, '_')}`;
+            
+            // Hardcoding your 4 core services directly so the layout can never be scrambled again
+            grid.innerHTML = `
+                <div class="service-card bg-[#ffffff]">
+                    <img src="./images/S&K-Sign-Black.png" class="lightbox-trigger object-contain w-full h-[220px] p-4" onerror="this.src='https://placehold.co/400x220?text=S%26K+Venture+Signs'">
+                    <div class="text-center mt-4 flex-grow px-4">
+                        <h3 class="text-2xl mb-2 text-black" style="font-family:'Abril Fatface', cursive;">Advertising</h3>
+                        <p class="text-sm mb-6 text-black opacity-70 font-medium">Ensure your message reaches the right audience at the right time.</p>
+                    </div>
+                    <a href="./Locations.html" class="block py-3 rounded-full font-black uppercase text-xs tracking-widest text-white text-center bg-[#2A0001] border-4 border-[#FFC627] hover:scale-105 transition-all shadow-lg smart-tab-btn" onclick="smartTabClick(event, this, 'tab_sk_svc_advertising', './Locations.html')">
+                        <span class="btn-text">Available Locations ></span>
+                    </a>
+                </div>
 
-                    grid.innerHTML += `
-                        <div class="service-card ${isEven ? 'bg-[var(--card-bg)]' : 'bg-[#DAA421]'}">
-                            <img src="${imgUrl}" class="lightbox-trigger object-contain w-full h-[220px] rounded-t-2xl p-4" onerror="this.src='https://placehold.co/400x220?text=S%26K+Venture+Signs'">
-                            <div class="text-center mt-4 flex-grow px-4">
-                                <h3 class="text-2xl mb-4 text-[var(--text-primary)]" style="font-family:'Abril Fatface', cursive;">${clientName}</h3>
-                            </div>
-                            <a href="${webLink}" ${webLink !== '#' ? '' : 'style="display:none;"'} class="block mx-4 mb-4 py-3 rounded-full font-black uppercase text-xs tracking-widest text-white text-center ${isEven ? 'bg-[#2A0001]' : 'bg-[#023456]'} hover:scale-105 transition-all shadow-lg smart-tab-btn" onclick="smartTabClick(event, this, '${uniqueTarget}', '${webLink}')">
-                                <span class="btn-text">Visit Website</span>
-                            </a>
-                        </div>
-                    `;
-                }
-                initLightbox();
-            } catch (e) { 
-                console.error(e);
-                grid.innerHTML = '<p class="text-white col-span-full text-center">Service updates pending.</p>'; 
-            }
+                <div class="service-card bg-[#DAA421]">
+                    <img src="./images/skbackground.png" class="lightbox-trigger object-contain w-full h-[220px] p-4" onerror="this.src='https://placehold.co/400x220?text=S%26K+Venture+Signs'">
+                    <div class="text-center mt-4 flex-grow px-4">
+                        <h3 class="text-2xl mb-2 text-black" style="font-family:'Abril Fatface', cursive;">Rental and Leasing</h3>
+                        <p class="text-sm mb-6 text-[#3E0100] font-medium">Flexible rental options tailored to fit Your Marketing needs and budget.</p>
+                    </div>
+                    <a href="./Services.html" class="block py-3 rounded-full font-black uppercase text-xs tracking-widest text-white text-center bg-[#023456] border-4 border-white hover:scale-105 transition-all shadow-lg smart-tab-btn" onclick="smartTabClick(event, this, 'tab_sk_svc_rental', './Services.html')">
+                        <span class="btn-text">Rental and Leasing ></span>
+                    </a>
+                </div>
+
+                <div class="service-card bg-[#ffffff]">
+                    <img src="./images/Marble-in-city.png" class="lightbox-trigger object-contain w-full h-[220px] p-4" onerror="this.src='https://placehold.co/400x220?text=S%26K+Venture+Signs'">
+                    <div class="text-center mt-4 flex-grow px-4">
+                        <h3 class="text-2xl mb-2 text-black" style="font-family:'Abril Fatface', cursive;">Sales</h3>
+                        <p class="text-sm mb-6 text-black opacity-70 font-medium">Our Digital Signs will help to enhance and Promote Your Business</p>
+                    </div>
+                    <a href="./Services.html" class="block py-3 rounded-full font-black uppercase text-xs tracking-widest text-white text-center bg-[#2A0001] border-4 border-[#FFC627] hover:scale-105 transition-all shadow-lg smart-tab-btn" onclick="smartTabClick(event, this, 'tab_sk_svc_sales', './Services.html')">
+                        <span class="btn-text">Digital Sign Sales ></span>
+                    </a>
+                </div>
+
+                <div class="service-card bg-[#DAA421]">
+                    <img src="./images/S&K-Sign-White.png" class="lightbox-trigger object-contain w-full h-[220px] p-4" onerror="this.src='https://placehold.co/400x220?text=S%26K+Venture+Signs'">
+                    <div class="text-center mt-4 flex-grow px-4">
+                        <h3 class="text-2xl mb-2 text-black" style="font-family:'Abril Fatface', cursive;">Maintenance and Repair Services</h3>
+                        <p class="text-sm mb-6 text-[#3E0100] font-medium">Your Digital Signs are always in top condition with our expert services.</p>
+                    </div>
+                    <a href="./Services.html" class="block py-3 rounded-full font-black uppercase text-xs tracking-widest text-white text-center bg-[#023456] border-4 border-white hover:scale-105 transition-all shadow-lg smart-tab-btn" onclick="smartTabClick(event, this, 'tab_sk_svc_repair', './Services.html')">
+                        <span class="btn-text">Maintenance and Repair ></span>
+                    </a>
+                </div>
+            `;
+            initLightbox();
         }
 
         function initLightbox() {
