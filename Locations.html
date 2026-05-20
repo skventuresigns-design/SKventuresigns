@@ -2,50 +2,25 @@
 <html lang="en">
 <head>
     <!-- 
-        PROJECT: S&K Venture Signs Global Framework - LOCATIONS TAB
-        ADMIN: Kevin (DJ Werewolf) - Admin
-        CLIENT: Scott (S&K Venture Signs)
-        STANDARDS: Responsive, No-Minify, G-Tag Integrated, GitHack Compatible
-        VERSION: 10.16 (Dark Mode Elevation Color Update)
-        TECHNICAL: Precision Integration, Auto-Night Mode, Dual-Column Mapping, Empty Slot Hiding
-        TIMESTAMP: May 7, 2026 - 9:41 PM EDT (New York Time)
-        Nesting Code: Header/Footer Primary Wrapper replaced in Locations Portal
-        
-        NO STRIPPING, NO COMPRESSING, DON'T CHANGE WHAT I DIDN'T SAY TO CHANGE.
-        FIX: Updated .elevation-section background color to #0000FF specifically for Dark Mode.
-        FIX: Updated navigation logic to actively highlight the "Locations" tab.
-        FIX: Ported footer CSS and layout exactly from index.html (60px top padding, flexbox phone formatting, single-line address).
-        FIX: Applied Inter-Tab Communication (ITC) with Cross-Tab State Sync to ALL links (Nav, CTAs, Maps, PDFs, Modals).
-        FIX: Added .adaptive-dashed-box to make the "Seeking new locations" and "Regional High-Traffic Impact" boxes sync with Dark Mode.
-        FIX: Removed KF Signature Watermark while preserving both G-Tags for tracking.
+        PROJECT: S&K Venture Signs - Master Web Framework
+        OWNER: S&K Venture Signs, Inc.
+        STANDARDS: Responsive, Clean Layout, Dynamic Data Sync Enabled
+        LAST UPDATED: May 2026
     -->
-    <meta charset="UTF-8">
+   <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>S&K Venture Signs | Digital Billboard Portal</title>
-    
-    <!-- PWA Manifest & Service Worker -->
-    <link rel="manifest" href="./manifest.json">
-    <script>
-        if ('serviceWorker' in navigator) {
-            window.addEventListener('load', () => {
-                navigator.serviceWorker.register('./sw.js').catch(err => console.log('SW failed', err));
-            });
-        }
-    </script>
+    <title>Digital Billboards & Mobile Sign Trailers | S&K Venture Signs</title>
+    <meta name="description" content="S&K Venture Signs offers premium digital billboard advertising along major Illinois thoroughfares and mobile digital sign trailers for community events and festivals.">
+    <link rel="icon" type="image/png" href="./favicon.png">
 
-    <!-- Google Analytics: Boss Tracking + Watermark Tracking -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-H6Q756MVE8"></script>
+    <!-- Google Analytics: Official S&K Tracking + Developer Portfolio Credit -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-62F8P74L0J"></script>
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-L376P3NPY4"></script>
     <script>
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
-
-      gtag('config', 'G-H6Q756MVE8', {
-          'page_type': 'locations_portal_v10.16',
-          'content_group': 'inventory',
-          'layout_version': '10.16'
-      });
+      gtag('config', 'G-62F8P74L0J');
       gtag('config', 'G-L376P3NPY4');
     </script>
 
@@ -56,7 +31,7 @@
 
     <style>
         :root {
-            /* Kevin's Admin Global Settings */
+            /* Admin Global Settings */
             --divi-section: 50px;
             --divi-row: 30px;
             --divi-body: 14px;
@@ -945,15 +920,14 @@
             lucide.createIcons();
         }
 
-        function openMapSmartActions() {
+       function openMapSmartActions() {
             const addrStr = `${siteData.addressStreet} ${siteData.addressCity}`;
             const addr = encodeURIComponent(addrStr);
             
-            const gmapsUrl = `https://www.google.com/maps/dir/?api=1&destination=${addr}`;
+            const gmapsUrl = `https://www.google.com/maps/search/?api=1&query=${addr}`;
             const amapsUrl = `http://maps.apple.com/?daddr=${addr}`;
             const wazeUrl = `https://waze.com/ul?q=${addr}&navigate=yes`;
             
-            // V10.15: Smart Tab applied to modal options
             document.getElementById('link-gmaps').href = gmapsUrl;
             document.getElementById('link-gmaps').setAttribute('onclick', `smartTabClick(event, this, 'tab_sk_gmaps', '${gmapsUrl}')`);
             
