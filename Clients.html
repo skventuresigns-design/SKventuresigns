@@ -21,24 +21,6 @@
         }
     </script>
 
-    <!-- Google Analytics: Boss Tracking + Watermark Tracking -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-H6Q756MVE8"></script>
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-L376P3NPY4"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-
-      // V10.15: Advanced GA4 Intent Tracking Configuration
-      gtag('config', 'G-H6Q756MVE8', {
-          'page_title': 'S&K Venture Signs | Clients',
-          'page_path': '/clients',
-          'page_type': 'clients_portal_v10.16',
-          'content_group': 'business_partners',
-          'layout_version': '10.16'
-      });
-      gtag('config', 'G-L376P3NPY4');
-    </script>
 
     <!-- External Assets with Smart Cache Buster -->
     <script src="https://cdn.tailwindcss.com?v=10.16"></script>
@@ -47,7 +29,7 @@
 
     <style>
         :root {
-            /* Kevin's Admin Global Settings */
+            /* Admin Global Settings */
             --divi-section: 50px;
             --divi-row: 30px;
             --divi-body: 14px; 
@@ -626,10 +608,10 @@
         /**
          * S&K SMART SYNC ENGINE v10.16
          */
-        const SITE_DATA_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTZY38nsz_aJDO3cdtAwv4w359jK1aMt1rhBwZ3LAGarLyddtbBowFZv6mjlpnR1eGdNCpFhat8FuKp/pub?output=csv";
+        const SITE_DATA_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTrs2-zHEDCHZcBecOrMd_pokyGDjCR7NUl9pp1EAEb9hfUKYeZm4Di5W3fjX75NWtRbRKOHF2DeWYy/pub?output=csv";
         
         // Original Customer Data URL
-        const CLIENTS_CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vT9aXB9z9jcsaA0U-LsuV4nIHwIIw2huGB8zaalh7It4GQP_DWFFdQ4Utaw_ajkdhx5ydn87BcfS82d/pub?output=csv';
+        const CLIENTS_CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRnA9-Do3sVsDW72nPrEkQluHP3PfOD6KajKpnkQW2DXHk0F2tjpckENVUWj_MCImh82VfQOibzXHsL/pub?output=csv';
 
         let siteData = { 
             nav: [], 
@@ -861,21 +843,25 @@
             lucide.createIcons();
         }
 
-        function openMapSmartActions() {
+      function openMapSmartActions() {
             const addrStr = `${siteData.addressStreet} ${siteData.addressCity}`;
             const addr = encodeURIComponent(addrStr);
             
-            const gmapsUrl = `https://www.google.com/maps/dir/?api=1&destination=${addr}`;
+            const gmapsUrl = `https://www.google.com/maps/search/?api=1&query=${addr}`;
+            const amapsUrl = `http://maps.apple.com/?daddr=${addr}`;
+            const wazeUrl = `https://waze.com/ul?q=${addr}&navigate=yes`;
+            
+            document.getElementById('link-gmaps').href = gmapsUrl;
             document.getElementById('link-gmaps').setAttribute('onclick', `smartTabClick(event, this, 'tab_sk_gmaps', '${gmapsUrl}')`);
             
-            const amapsUrl = `http://maps.apple.com/?daddr=${addr}`;
+            document.getElementById('link-amaps').href = amapsUrl;
             document.getElementById('link-amaps').setAttribute('onclick', `smartTabClick(event, this, 'tab_sk_amaps', '${amapsUrl}')`);
             
-            const wazeUrl = `https://waze.com/ul?q=${addr}&navigate=yes`;
+            document.getElementById('link-waze').href = wazeUrl;
             document.getElementById('link-waze').setAttribute('onclick', `smartTabClick(event, this, 'tab_sk_waze', '${wazeUrl}')`);
             
             document.getElementById('map-modal').style.display = 'flex';
-            lucide.createIcons();
+            if (typeof lucide !== 'undefined') lucide.createIcons();
         }
 
         function closeModals() {
