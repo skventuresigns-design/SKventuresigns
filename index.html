@@ -740,48 +740,37 @@
                 const csvText = await response.text();
                 const lines = csvText.split(/\r?\n/).filter(line => line.trim());
                 
-                const titles = parseCSVRow(lines[0]);
-                const descs = parseCSVRow(lines[1]);
-                const btnLabels = parseCSVRow(lines[2]);
-                const btnLinks = parseCSVRow(lines[3]);
-                const imgs = parseCSVRow(lines[4]);
                 grid.innerHTML = '';
-                for(let i=1; i < titles.length; i++) {
-                    const isEven = i % 2 !== 0;
-                    const titleText = titles[i]?.trim();
-                    const titleLower = titleText.toLowerCase();
+                
+                // Skip row 1 (the header labels) and loop through every client row vertically
+                for(let i = 1; i < lines.length; i++) {
+                    const row = parseCSVRow(lines[i]);
+                    if (!row[0]) continue; // Skip blank rows
                     
-                    let customTitleColor = 'text-[var(--text-primary)]'; 
-                    let customBtnBorder = ''; 
+                    const clientName = row[0].trim();
+                    const webLink = row[1] ? row[1].trim() : '#';
+                    const imgUrl = row[2] ? row[2].trim() : 'https://placehold.co/400x220?text=S%26K+Venture+Signs';
+                    
+                    const isEven = i % 2 === 0;
+                    const uniqueTarget = `tab_sk_client_${clientName.replace(/[^a-zA-Z0-9]/g, '_')}`;
 
-                    if (titleLower.includes('advertising') || titleLower.includes('sales')) {
-                        customTitleColor = 'dynamic-ad-title';
-                        customBtnBorder = 'border-4 border-[#FFC627]'; 
-                    } else if (titleLower.includes('rental') || titleLower.includes('leasing') || titleLower.includes('maintenance') || titleLower.includes('repair')) {
-                        customTitleColor = 'text-black'; 
-                        customBtnBorder = 'border-4 border-white'; 
-                    } else {
-                        customBtnBorder = isEven ? 'border-4 border-[#FFC627]' : 'border-4 border-white';
-                    }
-
-                    const uniqueTarget = `tab_sk_svc_${titleText.replace(/[^a-zA-Z0-9]/g, '_')}`;
-
-                    // Stripped cross-tab check class injections to prevent confusing button states
                     grid.innerHTML += `
                         <div class="service-card ${isEven ? 'bg-[var(--card-bg)]' : 'bg-[#DAA421]'}">
-                            <img src="${imgs[i]?.trim()}?v=10.10" class="lightbox-trigger" onerror="this.src='https://placehold.co/400x220?text=S%26K+Venture+Signs'">
-                            <div class="text-center mt-4 flex-grow">
-                                <h3 class="text-2xl mb-2 ${customTitleColor}" style="font-family:'Abril Fatface', cursive;">${titleText}</h3>
-                                <p class="text-sm mb-6 ${isEven ? 'text-[var(--text-primary)] opacity-70' : 'text-[#3E0100]'} font-medium">${descs[i]}</p>
+                            <img src="${imgUrl}" class="lightbox-trigger object-contain w-full h-[220px] rounded-t-2xl p-4" onerror="this.src='https://placehold.co/400x220?text=S%26K+Venture+Signs'">
+                            <div class="text-center mt-4 flex-grow px-4">
+                                <h3 class="text-2xl mb-4 text-[var(--text-primary)]" style="font-family:'Abril Fatface', cursive;">${clientName}</h3>
                             </div>
-                            <a href="${btnLinks[i]?.trim()}" class="block py-3 rounded-full font-black uppercase text-xs tracking-widest text-white text-center ${isEven ? 'bg-[#2A0001]' : 'bg-[#023456]'} ${customBtnBorder} hover:scale-105 transition-all shadow-lg smart-tab-btn" onclick="smartTabClick(event, this, '${uniqueTarget}', '${btnLinks[i]?.trim()}')">
-                                <span class="btn-text">${btnLabels[i]?.trim() || 'Learn More'}</span>
+                            <a href="${webLink}" ${webLink !== '#' ? '' : 'style="display:none;"'} class="block mx-4 mb-4 py-3 rounded-full font-black uppercase text-xs tracking-widest text-white text-center ${isEven ? 'bg-[#2A0001]' : 'bg-[#023456]'} hover:scale-105 transition-all shadow-lg smart-tab-btn" onclick="smartTabClick(event, this, '${uniqueTarget}', '${webLink}')">
+                                <span class="btn-text">Visit Website</span>
                             </a>
                         </div>
                     `;
                 }
                 initLightbox();
-            } catch (e) { grid.innerHTML = '<p class="text-white col-span-full text-center">Service updates pending.</p>'; }
+            } catch (e) { 
+                console.error(e);
+                grid.innerHTML = '<p class="text-white col-span-full text-center">Service updates pending.</p>'; 
+            }
         }
 
         function initLightbox() {
