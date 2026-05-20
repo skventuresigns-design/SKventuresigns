@@ -533,15 +533,54 @@
         <!-- DYNAMIC SERVICES -->
         <section id="services-grid-container" class="py-20 bg-[#3E0100]">
             <div class="main-container">
-                <!-- Banners above Cards -->
                 <div class="flex flex-col items-center gap-6 mb-12">
                     <img src="./images/Topline.png" alt="Engage Your Audience Like Never Before With Our State-of-the Art Digital Sign Solutions" class="w-full max-w-[1080px] h-auto">
                     <img src="./images/Customize.png" alt="Customize Digital Advertising" class="w-full max-w-[1080px] h-auto">
                 </div>
 
                 <div id="services-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-                    <div class="text-center py-10 w-full col-span-full">
-                        <p class="text-white animate-pulse">Loading S&K Services...</p>
+                    <div class="service-card bg-[#ffffff]">
+<img src="./images/S&K-Sign-Black.png" class="lightbox-trigger object-contain w-full h-[220px] p-4">
+
+<h3 class="text-2xl mb-2 text-black" style="font-family:'Abril Fatface', cursive;">Advertising</h3>
+<p class="text-sm mb-6 text-black opacity-70 font-medium">Ensure your message reaches the right audience at the right time.</p>
+</div>
+<a href="./Locations.html" class="block py-3 rounded-full font-black uppercase text-xs tracking-widest text-white text-center bg-[#2A0001] border-4 border-[#FFC627] hover:scale-105 transition-all shadow-lg smart-tab-btn" onclick="smartTabClick(event, this, 'tab_sk_svc_advertising', './Locations.html')">
+<span class="btn-text">Available Locations ></span>
+</a>
+</div>
+
+<div class="service-card bg-[#DAA421]">
+<img src="./images/skbackground.png" class="lightbox-trigger object-contain w-full h-[220px] p-4">
+
+<h3 class="text-2xl mb-2 text-black" style="font-family:'Abril Fatface', cursive;">Rental and Leasing</h3>
+<p class="text-sm mb-6 text-[#3E0100] font-medium">Flexible rental options tailored to fit Your Marketing needs and budget.</p>
+</div>
+<a href="./Services.html" class="block py-3 rounded-full font-black uppercase text-xs tracking-widest text-white text-center bg-[#023456] border-4 border-white hover:scale-105 transition-all shadow-lg smart-tab-btn" onclick="smartTabClick(event, this, 'tab_sk_svc_rental', './Services.html')">
+<span class="btn-text">Rental and Leasing ></span>
+</a>
+</div>
+
+<div class="service-card bg-[#ffffff]">
+<img src="./images/Marble-in-city.png" class="lightbox-trigger object-contain w-full h-[220px] p-4">
+
+<h3 class="text-2xl mb-2 text-black" style="font-family:'Abril Fatface', cursive;">Sales</h3>
+<p class="text-sm mb-6 text-black opacity-70 font-medium">Our Digital Signs will help to enhance and Promote Your Business</p>
+</div>
+<a href="./Services.html" class="block py-3 rounded-full font-black uppercase text-xs tracking-widest text-white text-center bg-[#2A0001] border-4 border-[#FFC627] hover:scale-105 transition-all shadow-lg smart-tab-btn" onclick="smartTabClick(event, this, 'tab_sk_svc_sales', './Services.html')">
+<span class="btn-text">Digital Sign Sales ></span>
+</a>
+</div>
+
+<div class="service-card bg-[#DAA421]">
+<img src="./images/S&K-Sign-White.png" class="lightbox-trigger object-contain w-full h-[220px] p-4">
+
+<h3 class="text-2xl mb-2 text-black" style="font-family:'Abril Fatface', cursive;">Maintenance and Repair Services</h3>
+<p class="text-sm mb-6 text-[#3E0100] font-medium">Your Digital Signs are always in top condition with our expert services.</p>
+</div>
+<a href="./Services.html" class="block py-3 rounded-full font-black uppercase text-xs tracking-widest text-white text-center bg-[#023456] border-4 border-white hover:scale-105 transition-all shadow-lg smart-tab-btn" onclick="smartTabClick(event, this, 'tab_sk_svc_repair', './Services.html')">
+     <span class="btn-text">Maintenance and Repair ></span>
+</a>
                     </div>
                 </div>
             </div>
@@ -910,8 +949,7 @@
 
         window.onload = () => {
             loadSheetData();
-            fetchServices();
-            const cookies = document.cookie.split('; ').reduce((acc, curr) => {
+           const cookies = document.cookie.split('; ').reduce((acc, curr) => {
                 const [k, v] = curr.split('='); acc[k] = v; return acc;
             }, {});
             if (cookies['outline-color']) {
