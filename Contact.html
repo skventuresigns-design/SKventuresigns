@@ -290,7 +290,7 @@
             SECTION: GLOBAL CONTACT WRAPPER & CONTENT
         ----------------------------------------------------------- */
         main#global-contact-wrapper {
-            background-image: url('/images/skbackground.png');
+            background-image: url('./images/skbackground.png');
             background-size: cover;
             background-position: center top;
             background-repeat: no-repeat;
@@ -569,7 +569,7 @@
         <div class="main-container flex items-center justify-between h-full px-4 lg:px-0">
             <div class="flex-shrink-0 z-[1001]">
                 <a href="./index.html" class="smart-tab-btn" onclick="smartTabClick(event, this, 'tab_sk_Home', this.href)">
-                    <img src="/images/S&K-Sign-White.png" alt="S&K" id="header-logo" />
+                    <img src="./images/S&K-Sign-White.png" alt="S&K" id="header-logo" />
                 </a>
             </div>
 
@@ -880,7 +880,7 @@
 
         function downloadSKContact() {
             // Fixed typo: removed double 'h' from https
-            const PHOTO_URL = "https://raw.githubusercontent.com/Werewolf3788/SKVentureSigns/a19e4b81ccba61d2b1359a357e91972d6a3d33e8/images/S%26K%20Sign%20Black.png";
+            const PHOTO_URL = "./images/S&K-Sign-Black.png";
             const vcard = "BEGIN:VCARD\n" +
                         "VERSION:3.0\n" +
                         "FN:Scott Robinson\n" +
@@ -941,7 +941,11 @@
             const header = document.getElementById('main-header');
             const logo = document.getElementById('header-logo');
             if (header.classList.contains('header-scrolled')) {
-                logo.src = (targetMode === 'dark') ? "https://raw.githubusercontent.com/Werewolf3788/SKVentureSigns/a19e4b81ccba61d2b1359a357e91972d6a3d33e8/images/S%26K%20Sign%20White.png" : "https://raw.githubusercontent.com/Werewolf3788/SKVentureSigns/a19e4b81ccba61d2b1359a357e91972d6a3d33e8/images/S%26K%20Sign%20Black.png";
+                if (targetMode === 'dark') {
+                    logo.src = "./images/S&K-Sign-White.png";
+                } else {
+                    logo.src = "./images/S&K-Sign-Black.png";
+                }
             }
 
             document.cookie = `theme=${mode};max-age=31536000;path=/`;
@@ -991,11 +995,94 @@
             lucide.createIcons();
         }
 
-      function openMapSmartActions() {
+   function setTheme(mode) {
+            const body = document.body;
+            const root = document.documentElement;
+            let targetMode = mode;
+
+            if (mode === 'auto') {
+                const hour = new Date().getHours();
+                const isNightTime = (hour < 6 || hour >= 19);
+                const isSystemDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+                targetMode = (isNightTime || isSystemDark) ? 'dark' : 'light';
+            }
+            
+            if (targetMode === 'dark') {
+                root.style.setProperty('--bg-primary', '#121212');
+                root.style.setProperty('--text-primary', '#e0e0e0');
+                root.style.setProperty('--card-bg', '#1e1e1e');
+                root.style.setProperty('--header-bg-scrolled', '#1e1e1e');
+                root.style.setProperty('--nav-text-scrolled', '#ffffff');
+                root.style.setProperty('--mobile-menu-bg', '#1e1e1e');
+                root.style.setProperty('--mobile-menu-text', '#ffffff');
+                body.classList.add('dark-mode');
+            } else {
+                root.style.setProperty('--bg-primary', '#000000');
+                root.style.setProperty('--text-primary', '#FFFFFF');
+                root.style.setProperty('--card-bg', '#ffffff');
+                root.style.setProperty('--header-bg-scrolled', 'white');
+                root.style.setProperty('--nav-text-scrolled', '#222222');
+                root.style.setProperty('--mobile-menu-bg', 'white');
+                root.style.setProperty('--mobile-menu-text', 'black');
+                body.classList.remove('dark-mode');
+            }
+            
+            const header = document.getElementById('main-header');
+            const logo = document.getElementById('header-logo');
+            if (header.classList.contains('header-scrolled')) {
+                logo.src = (targetMode === 'dark') ? "./images/S&K-Sign-White.png" : "./images/S&K-Sign-Black.png";
+            }
+
+            document.cookie = `theme=${mode};max-age=31536000;path=/`;
+        }
+
+        function updateOutlineColor(color) {
+            document.documentElement.style.setProperty('--outline-color', color);
+            document.cookie = `outline-color=${color};max-age=31536000;path=/`;
+        }
+
+        function openPhoneSmartActions(num) {
+            const clean = num.replace(/\D/g, '');
+            const container = document.getElementById('phone-options-container');
+            const isMac = navigator.platform.toUpperCase().indexOf('MAC') >= 0;
+            
+            let html = '';
+            
+            if (isMac) {
+                html += `<a href="tel:${clean}" class="smart-option" onclick="smartTabClick(event, this, 'tab_sk_tel', this.href)"><i data-lucide="monitor"></i> FaceTime / iPhone</a>`;
+            } else {
+                html += `<a href="tel:${clean}" class="smart-option" onclick="smartTabClick(event, this, 'tab_sk_tel', this.href)"><i data-lucide="phone"></i> Direct Call</a>`;
+            }
+
+            if (num.includes('618')) {
+                html += `<a href="https://wa.me/1${clean}" class="smart-option" onclick="smartTabClick(event, this, 'tab_sk_wa', this.href)"><i data-lucide="message-circle"></i> WhatsApp Specialist</a>`;
+            }
+
+            container.innerHTML = html;
+            document.getElementById('phone-modal').style.display = 'flex';
+            lucide.createIcons();
+        }
+
+        function openEmailSmartActions(email) {
+            const container = document.getElementById('email-options-container');
+            
+            const defUrl = `mailto:${email}`;
+            const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=${email}`;
+            
+            container.innerHTML = `
+                <a href="${defUrl}" class="smart-option" onclick="smartTabClick(event, this, 'tab_sk_mail_def', this.href)"><i data-lucide="mail"></i> Default Client</a>
+                <a href="${gmailUrl}" class="smart-option" onclick="smartTabClick(event, this, 'tab_sk_mail_gmail', this.href)"><i data-lucide="send"></i> Gmail Web</a>
+                <div onclick="navigator.clipboard.writeText('${email}'); alert('Email Copied');" class="smart-option"><i data-lucide="copy"></i> Copy Address</div>
+            `;
+            document.getElementById('email-modal').style.display = 'flex';
+            lucide.createIcons();
+        }
+
+        function openMapSmartActions() {
             const addrStr = `${siteData.addressStreet} ${siteData.addressCity}`;
             const addr = encodeURIComponent(addrStr);
             
-            const gmapsUrl = `https://www.google.com/maps/search/?api=1&query=${addr}`;
+            const gmapsUrl = `https://maps.google.com/?q=${addr}`;
             const amapsUrl = `http://maps.apple.com/?daddr=${addr}`;
             const wazeUrl = `https://waze.com/ul?q=${addr}&navigate=yes`;
             
@@ -1026,10 +1113,10 @@
 
             if (window.scrollY > 50) {
                 header.classList.add('header-scrolled');
-                logo.src = isDark ? "https://raw.githubusercontent.com/Werewolf3788/SKVentureSigns/a19e4b81ccba61d2b1359a357e91972d6a3d33e8/images/S%26K%20Sign%20White.png" : "https://raw.githubusercontent.com/Werewolf3788/SKVentureSigns/a19e4b81ccba61d2b1359a357e91972d6a3d33e8/images/S%26K%20Sign%20Black.png";
+                logo.src = isDark ? "./images/S&K-Sign-White.png" : "./images/S&K-Sign-Black.png";
             } else {
                 header.classList.remove('header-scrolled');
-                logo.src = "https://raw.githubusercontent.com/Werewolf3788/SKVentureSigns/a19e4b81ccba61d2b1359a357e91972d6a3d33e8/images/S%26K%20Sign%20White.png";
+                logo.src = ".images/S&K-Sign-White.png";
             }
         });
 

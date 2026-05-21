@@ -800,7 +800,7 @@
             const header = document.getElementById('main-header');
             const logo = document.getElementById('header-logo');
             if (header.classList.contains('header-scrolled')) {
-                logo.src = (targetMode === 'dark') ? "./images/S&k-Sign-White.png" : "./images/S&K-Sign-Black.png";
+                logo.src = (targetMode === 'dark') ? "./images/S&K-Sign-White.png" : "./images/S&K-Sign-Black.png";
             }
 
             document.cookie = `theme=${mode};max-age=31536000;path=/`;
@@ -843,7 +843,7 @@
             lucide.createIcons();
         }
 
-     function openMapSmartActions() {
+    function openMapSmartActions() {
             const addrStr = `${siteData.addressStreet} ${siteData.addressCity}`;
             const addr = encodeURIComponent(addrStr);
             
