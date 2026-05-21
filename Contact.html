@@ -1082,7 +1082,7 @@
             const addrStr = `${siteData.addressStreet} ${siteData.addressCity}`;
             const addr = encodeURIComponent(addrStr);
             
-            const gmapsUrl = `https://maps.google.com/?q=${addr}`;
+            const gmapsUrl = `http://googleusercontent.com/maps.google.com/${addr}`;
             const amapsUrl = `http://maps.apple.com/?daddr=${addr}`;
             const wazeUrl = `https://waze.com/ul?q=${addr}&navigate=yes`;
             
@@ -1116,7 +1116,7 @@
                 logo.src = isDark ? "./images/S&K-Sign-White.png" : "./images/S&K-Sign-Black.png";
             } else {
                 header.classList.remove('header-scrolled');
-                logo.src = ".images/S&K-Sign-White.png";
+                logo.src = "./images/S&K-Sign-White.png";
             }
         });
 
