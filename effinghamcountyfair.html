@@ -1,24 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <!-- 
-        PROJECT: S&K Venture Signs Global Framework - FAIR TAB
-        ADMIN: Kevin (Werewolf3788)
-        CLIENT: Scott (S&K Venture Signs)
-        STANDARDS: Responsive, No-Minify, G-Tag Integrated, GitHack Compatible
-        VERSION: 10.17 (Consistent Image-Left Layout)
-        TECHNICAL: Locked Header, High-Contrast Outlines, Auto-Night Mode, ITC Named Windows
-        TIMESTAMP: May 9, 2026
-        
-        NO STRIPPING, NO COMPRESSING, DON'T CHANGE WHAT I DIDN'T SAY TO CHANGE.
-        FIX: Fully removed "Secure Your Spot Today" section.
-        FIX: Aggressively reduced footer padding and gaps to minimize height.
-        FIX: Restored all 6 sections (Hero, Track, Works, Rt 40, Grandstands, Combo) to prevent any lost code.
-        FIX: Re-applied John Deere Green (#367C2B) to every single $ symbol.
-        FIX: Configured the White background infield track section to turn dark gray in dark mode.
-        FIX: Safely wrapped ITC (localStorage) to prevent iframe crash.
-        FIX: Moved the image to the left side in the "Works Package" (Section 3) to align with all other sections.
-        FIX: Updated ITC Logic - Links will now open in the SAME tab unless already open elsewhere.
+     <!-- 
+        PROJECT: S&K Venture Signs - Master Web Framework
+        OWNER: S&K Venture Signs, Inc.
+        STANDARDS: Responsive, Clean Layout, Dynamic Data Sync Enabled
+        LAST UPDATED: May 2026
     -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -34,9 +21,8 @@
         }
     </script>
 
-    <!-- Google Analytics: Boss Tracking + Site Tracking -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-H6Q756MVE8"></script>
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-L376P3NPY4"></script>
+    <!-- Google Analytics: -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-62F8P74L0J"></script>
     <script>
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
@@ -56,7 +42,7 @@
 
     <style>
         :root {
-            /* Kevin's Admin Global Settings */
+            /* Admin Global Settings */
             --divi-section: 50px;
             --divi-row: 30px;
             --divi-body: 14px; 
@@ -727,22 +713,18 @@
             lucide.createIcons();
         }
 
-        function openMapSmartActions() {
+         function openMapSmartActions() {
             const addrStr = `${siteData.addressStreet} ${siteData.addressCity}`;
             const addr = encodeURIComponent(addrStr);
             
-            // FIX: Used element IDs to set attributes to route via smartTabClick instead of forcing new tabs natively
-            const gmapsUrl = `https://www.google.com/maps/dir/?api=1&destination=${addr}`;
-            document.getElementById('link-gmaps').href = gmapsUrl;
-            document.getElementById('link-gmaps').setAttribute('onclick', `smartTabClick(event, this, 'tab_sk_gmaps', '${gmapsUrl}')`);
-            
-            const amapsUrl = `http://maps.apple.com/?daddr=${addr}`;
-            document.getElementById('link-amaps').href = amapsUrl;
-            document.getElementById('link-amaps').setAttribute('onclick', `smartTabClick(event, this, 'tab_sk_amaps', '${amapsUrl}')`);
-            
-            const wazeUrl = `https://waze.com/ul?q=${addr}&navigate=yes`;
-            document.getElementById('link-waze').href = wazeUrl;
-            document.getElementById('link-waze').setAttribute('onclick', `smartTabClick(event, this, 'tab_sk_waze', '${wazeUrl}')`);
+            document.getElementById('link-gmaps').href = `https://www.google.com/maps/search/?api=1&query=${addr}`;
+            document.getElementById('link-gmaps').setAttribute('onclick', `smartTabClick(event, this, 'tab_sk_gmaps', '${document.getElementById('link-gmaps').href}')`);
+
+            document.getElementById('link-amaps').href = `http://maps.apple.com/?daddr=${addr}&dirflg=d`;
+            document.getElementById('link-amaps').setAttribute('onclick', `smartTabClick(event, this, 'tab_sk_amaps', '${document.getElementById('link-amaps').href}')`);
+
+            document.getElementById('link-waze').href = `https://waze.com/ul?q=${addr}&navigate=yes`;
+            document.getElementById('link-waze').setAttribute('onclick', `smartTabClick(event, this, 'tab_sk_waze', '${document.getElementById('link-waze').href}')`);
             
             document.getElementById('map-modal').style.display = 'flex';
             lucide.createIcons();
