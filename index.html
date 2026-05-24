@@ -785,7 +785,7 @@
             const addrStr = `${siteData.addressStreet} ${siteData.addressCity}`;
             const addr = encodeURIComponent(addrStr);
             
-            document.getElementById('link-gmaps').href = `https://www.google.com/maps/search/?api=1&query=${addr}`;
+            document.getElementById('link-gmaps').href = `https://maps.google.com/?q=${addr}`;
             document.getElementById('link-gmaps').setAttribute('onclick', `smartTabClick(event, this, 'tab_sk_gmaps', '${document.getElementById('link-gmaps').href}')`);
 
             document.getElementById('link-amaps').href = `http://maps.apple.com/?daddr=${addr}&dirflg=d`;
