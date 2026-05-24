@@ -796,7 +796,7 @@
             window.addEventListener('beforeunload', () => { safeRemoveStorage('tab_sk_efair'); });
 
             loadSheetData();
-            initLightboxInteractions();
+            initLightbox();
             
             const cookies = document.cookie.split('; ').reduce((acc, curr) => {
                 const [k, v] = curr.split('='); acc[k] = v; return acc;
