@@ -8,64 +8,69 @@
         LAST UPDATED: May 2026
     -->
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>S&K Venture Signs | Effingham County Fair</title>
+    <meta name="description" content="S&K Venture Signs offers premium digital billboard and mobile trailer sign advertising spaces for the 2026 Effingham County Fairgrounds.">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Effingham County Fairgrounds | S&K Venture Signs</title>
-    <meta name="description" content="S&K Venture Signs offers premium digital billboard advertising along major Illinois thoroughfares and mobile digital sign trailers for community events and festivals.">
     <link rel="icon" type="image/png" href="./favicon.png">
-    <meta property="og:title" content="S&K Venture Signs | Digital Billboards & Custom Sign Displays">
-    <meta property="og:description" content="Boost your business visibility with premium mobile digital billboards and custom sign displays in Effingham and Clay County.">
-    <meta property="og:image" content="https://www.skventuresigns.com/images/S%26K-Sign-White.png">
-    <meta property="og:url" content="https://www.skventuresigns.com/">
-    <meta property="og:type" content="website">
-
+    
+    <!-- Google Analytics: -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-62F8P74L0J"></script>
     <script>
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
-      gtag('config', 'G-62F8P74L0J');
+
+      gtag('config', 'G-H6Q756MVE8', {
+          'page_type': 'fair_portal_v10.17',
+          'layout_version': '10.17'
+      });
+      gtag('config', 'G-L376P3NPY4');
     </script>
 
-    <script src="https://cdn.tailwindcss.com?v=10.14"></script>
-    <script src="https://unpkg.com/lucide@latest?v=10.14"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Abril+Fatface&family=Poppins:wght@400;500;600;700&family=Open+Sans:wght@600;700&display=swap&v=10.14" rel="stylesheet">
+    <!-- External Assets with Smart Cache Buster -->
+    <script src="https://cdn.tailwindcss.com?v=10.17"></script>
+    <script src="https://unpkg.com/lucide@latest?v=10.17"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Abril+Fatface&family=Poppins:wght@400;500;600;700&family=Open+Sans:wght@300;400;500;600;700;800&display=swap&v=10.17" rel="stylesheet">
 
     <style>
         :root {
             /* Admin Global Settings */
-            --divi-header: 30px;
-            --divi-body: 14px;
             --divi-section: 50px;
             --divi-row: 30px;
-
+            --divi-body: 14px; 
+            --divi-header: 30px;
+            
             /* S&K Brand Palette */
             --sk-maroon: rgb(62, 1, 0);
             --sk-gold: #FFC627;
-            --sk-gold-alt: rgb(255, 192, 0);
-            --sk-nav-gold: rgb(218, 164, 33);
             --sk-separator: rgb(187, 162, 140);
-            --sk-adv-blue: rgb(33, 158, 188);
-            
-            /* Theme & Logic Colors */
-            --bg-primary: #fcfcfc;
-            --text-primary: #333333;
+
+            /* Theme & Logic Colors (Pure Contrast) */
+            --bg-primary: #FFFFFF; 
+            --text-primary: #000000; 
             --card-bg: #ffffff;
             
-            /* Default Outline: Transparent (No color) */
+            /* Default Outline: Transparent */
             --outline-color: transparent;
             --outline-width: 1.5px;
+
+            /* Global Brightness Variables */
+            --header-bg-scrolled: white;
+            --nav-text-scrolled: #222222;
+            --mobile-menu-bg: white;
+            --mobile-menu-text: black;
 
             /* Precision Dimensions Locked */
             --header-height: 125px;
             --header-scrolled-height: 75px; 
             --container-width: 90%;
-            --ultra-wide-max: 1800px;
+            --ultra-wide-max: 2496px;
         }
 
-        /* -----------------------------------------------------------
-            GLOBAL TYPOGRAPHY & RESET
-        ----------------------------------------------------------- */
         html, body {
+            scrollbar-width: none;
+            -ms-overflow-style: none;
             overflow-x: hidden;
             font-family: 'Poppins', sans-serif;
             font-size: var(--divi-body);
@@ -77,6 +82,7 @@
             padding-top: 0;
             transition: background-color 0.3s, color 0.3s;
         }
+        ::-webkit-scrollbar { display: none; }
 
         /* GLOBAL PRECISION OUTLINE LOGIC */
         * {
@@ -85,12 +91,6 @@
                 var(--outline-width) calc(var(--outline-width) * -1) 0 var(--outline-color),
                 calc(var(--outline-width) * -1) var(--outline-width) 0 var(--outline-color),
                 var(--outline-width) var(--outline-width) 0 var(--outline-color);
-        }
-
-        h1, h2, h3, h4, h5 { 
-            font-family: 'Abril Fatface', cursive; 
-            font-size: var(--divi-header); 
-            line-height: 1.2;
         }
 
         .main-container {
@@ -111,8 +111,8 @@
         }
 
         .header-scrolled { 
-            background-color: var(--card-bg) !important; 
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2); 
+            background-color: var(--header-bg-scrolled) !important; 
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1); 
             height: var(--header-scrolled-height) !important;
         }
 
@@ -134,282 +134,149 @@
             color: #FFFFFF;
             transition: all 0.4s ease-in-out;
             text-decoration: none;
+            white-space: nowrap;
+            padding: 15px 0;
         }
         .nav-link:hover, .nav-link.active { color: var(--sk-gold) !important; }
-        .header-scrolled .nav-link { color: var(--text-primary); }
+        .header-scrolled .nav-link { color: var(--nav-text-scrolled); }
         .header-scrolled .nav-link.active { color: var(--sk-gold) !important; }
+        .header-scrolled #menu-toggle { color: var(--nav-text-scrolled); }
 
-        /* V10.13 Smart Tab Indicators for Nav Links */
-        .nav-link.already-open:hover { 
-            color: var(--sk-gold) !important; /* Glows Jet Orange to indicate it will switch tabs */
-        }
+        .nav-link.already-open:hover { color: var(--sk-gold) !important; }
 
-        /* -----------------------------------------------------------
-            PAGE CONTENT SPECIFIC (Typography Overrides)
-        ----------------------------------------------------------- */
-        .hero-title-precision {
-            font-family: Georgia, "Times New Roman", serif !important;
-            font-size: 54px !important;
-            font-weight: 500 !important;
-            line-height: 62.1px !important;
-            color: #FFFFFF !important;
-            text-align: center;
-        }
+        #mobile-menu { background-color: var(--mobile-menu-bg); color: var(--mobile-menu-text); z-index: 999; }
+        #refresh-bar { position: absolute; bottom: 0; left: 0; height: 2px; width: 0; background-color: var(--sk-gold); transition: width 0.3s ease; z-index: 1001; }
 
-        .hero-label-precision {
-            font-family: Poppins, Helvetica, Arial, sans-serif !important;
-            font-size: 14px !important;
-            font-weight: 500 !important;
-            letter-spacing: 1px !important;
-            line-height: 19.6px !important;
-            text-transform: uppercase !important;
-            color: rgb(33, 158, 188) !important;
-            display: block;
-            margin-bottom: 10px;
-        }
-
-        .fair-heading-precision {
-            font-family: "Abril Fatface", cursive !important;
-            font-size: 48px !important;
-            font-weight: 500 !important;
-            line-height: 67.2px !important;
-            color: #FFC000 !important;
-            text-decoration: underline !important;
-        }
-
-        .fair-date-precision {
-            font-family: "Abril Fatface", cursive !important;
-            font-size: 45px !important;
-            font-weight: 500 !important;
-            line-height: 45px !important;
-            color: #FFFFFF !important;
-        }
-
-        .fair-desc-precision {
-            font-family: "Abril Fatface", cursive !important;
-            font-size: 20px !important;
-            font-weight: 500 !important;
-            line-height: 28px !important;
-            color: #FFFFFF !important;
-        }
-
-        .fair-location-precision {
-            font-family: "Abril Fatface", cursive !important;
-            font-size: 20px !important;
-            font-weight: 500 !important;
-            line-height: 28px !important;
-            color: #FFC000 !important;
-        }
-
-        /* Divider Component Styles */
-        .et_pb_divider_internal {
-            border-top: 3px solid #FFC627;
-            width: 100%;
-            display: block;
-            margin: 0 auto;
-        }
-        .et_pb_divider {
-            padding: 15px 0;
-            width: 100%;
-        }
-
-        .get-started-btn {
-            background-color: #FFFFFF;
-            color: #000000;
-            border: 2px solid #000000;
-            border-radius: 9px;
-            font-family: "Open Sans", Arial, sans-serif;
-            font-size: 20px;
-            font-weight: 500;
-            width: 149px;
-            height: 45px;
-            padding: 0;
-            margin: 0 auto;
-            transition: all 0.3s ease;
-            display: inline-block;
-            text-decoration: none;
-        }
-        .get-started-btn:hover {
-            background-color: var(--sk-maroon) !important;
-            color: var(--sk-gold) !important;
-        }
-
-        .rental-heading-precision {
-            font-family: Georgia, "Times New Roman", serif !important;
-            font-size: 42px !important;
-            font-weight: 700 !important;
-            line-height: 58.8px !important;
-            color: #FFFFFF !important;
-            text-align: center;
-        }
-
-        .advertising-hero {
-            position: relative; 
-            min-height: 625px; 
-            background-image: linear-gradient(rgba(0, 0, 0, 0.5) 0%, rgba(0, 0, 0, 0.5) 100%), 
-                              url('./images/Marble-in-city.png');
-            background-size: cover; 
-            background-position: center;
-            display: flex; 
-            align-items: center;
-            padding-top: var(--header-height);
-        }
-
-        .adventurous-divider {
-            position: relative; 
-            min-height: 600px;
-            background-image: url('./images/skbackground.png');
-            background-size: cover; 
-            background-position: center;
-            display: flex; 
-            align-items: center; 
-            padding: 4rem 0;
-        }
-
-        .service-card { 
-            box-shadow: 0 4px 20px rgba(0,0,0,0.1); 
-            transition: transform 0.3s ease; 
-            padding: 25px; 
-            height: 100%; 
-            display: flex; 
-            box-sizing: border-box;
-            flex-direction: column; 
-            border-radius: 24px;
-            border: 1px solid rgba(0,0,0,0.05);
-        }
-        .service-card:hover { transform: translateY(-8px); }
-        .service-card img { height: 220px; object-fit: contain; margin-bottom: 15px; cursor: zoom-in; }
-
-        /* Dynamic Contrast Logic for Advertising/Sales Titles */
-        .dynamic-ad-title { 
-            color: #000000 !important; 
-            transition: color 0.3s ease;
-        }
-        .dark-mode .dynamic-ad-title { 
-            color: #FFC627 !important; 
-            }
-
-        /* -----------------------------------------------------------
-            BRANDING & THEME UI
-        ----------------------------------------------------------- */
+        /* THEME SETTINGS UI */
         .theme-toggle-wrapper {
-            position: fixed;
-            top: 140px;
-            right: 20px;
-            z-index: 1001;
-            display: flex;
-            flex-direction: column;
-            align-items: flex-end;
-            gap: 10px;
+            position: fixed; top: 140px; right: 20px; z-index: 1001; display: flex; flex-direction: column; align-items: flex-end; gap: 10px;
         }
         .theme-toggle-panel {
-            background: var(--card-bg);
-            padding: 15px;
-            border-radius: 15px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-            border: 2px solid var(--sk-gold);
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            transform-origin: right top;
+            background: var(--card-bg); padding: 15px; border-radius: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.2); border: 2px solid var(--sk-gold); transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); transform-origin: right top;
         }
-        .theme-toggle-panel.hidden-settings {
-            transform: scale(0) translateX(50px);
-            opacity: 0;
-            pointer-events: none;
-        }
-        .settings-toggle-btn {
-            background: var(--sk-maroon);
-            color: var(--sk-gold);
-            width: 45px;
-            height: 45px;
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-            transition: all 0.3s ease;
-        }
+        .theme-toggle-panel.hidden-settings { transform: scale(0) translateX(50px); opacity: 0; pointer-events: none; }
+        .settings-toggle-btn { background: var(--sk-maroon); color: var(--sk-gold); width: 45px; height: 45px; border-radius: 12px; display: flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.2); transition: all 0.3s ease; }
+        .settings-toggle-btn:hover { transform: rotate(45deg) scale(1.1); }
+
+        /* MODAL SYSTEM & LIGHTBOX */
+        .sk-modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(8px); z-index: 9999; align-items: center; justify-content: center; padding: 20px; }
+        .sk-modal-content { background: var(--card-bg); width: 100%; max-width: 450px; border-radius: 24px; border: 4px solid var(--sk-separator); overflow: hidden; transition: background 0.3s; }
+        .smart-option { display: flex; align-items: center; gap: 15px; padding: 16px 20px; background: rgba(0,0,0,0.03); border-radius: 16px; margin-bottom: 10px; cursor: pointer; transition: 0.2s; text-decoration: none; color: var(--text-primary); font-weight: 700; }
+        .smart-option:hover { background: var(--sk-gold); color: var(--sk-maroon) !important; transform: translateX(5px); }
+        .dark-mode .smart-option { background: rgba(255, 255, 255, 0.05); }
+        .modal-cancel-text { color: var(--text-primary); opacity: 0.5; font-weight: 700; cursor: pointer; }
+
+        #lightbox-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 10000; display: none; justify-content: center; align-items: center; }
+        #lightbox-image { max-width: 80vw; max-height: 80vh; object-fit: contain; border: 4px solid var(--sk-gold); border-radius: 8px; cursor: zoom-in; user-select: none; -webkit-user-drag: none; transform-origin: center center; will-change: transform; transition: opacity 0.2s ease-in-out; }
 
         /* -----------------------------------------------------------
-            MODAL SYSTEM
-        ----------------------------------------------------------- */
-        .sk-modal-overlay {
-            display: none;
-            position: fixed;
-            inset: 0;
-            background: rgba(0, 0, 0, 0.85);
-            backdrop-filter: blur(8px);
-            z-index: 9999;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-        }
-        .sk-modal-content {
-            background: var(--card-bg);
-            width: 100%;
-            max-width: 450px;
-            border-radius: 24px;
-            border: 4px solid var(--sk-separator);
-            overflow: hidden;
-        }
-        .smart-option {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            padding: 16px 20px;
-            background: rgba(128,128,128,0.1);
-            border-radius: 16px;
-            margin-bottom: 10px;
-            cursor: pointer;
-            transition: 0.2s;
-            text-decoration: none;
-            color: var(--text-primary);
-            font-weight: 700;
-        }
-        .smart-option:hover { 
-            background: var(--sk-gold); 
-            color: var(--sk-maroon) !important; 
-            transform: translateX(5px); 
-        }
-
-        /* -----------------------------------------------------------
-            FOOTER SYMMETRY
+            FOOTER SYMMETRY (SMALLER HEIGHT)
         ----------------------------------------------------------- */
         footer#main-footer {
             background-color: var(--sk-maroon);
             color: white;
             border-top: 5px solid var(--sk-separator);
-            padding: 60px 0 30px 0; 
+            padding: 40px 0 20px 0; /* Minimized padding */
         }
         .footer-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 40px;
+            gap: 30px; /* Reduced gap */
             text-align: center;
         }
         .footer-col { display: flex; flex-direction: column; align-items: center; }
-        .footer-label { 
-            font-family: Georgia, serif; font-size: 14px; font-weight: 500; 
-            margin-bottom: 15px; color: white; opacity: 0.8;
-        }
-        .footer-value { 
-            font-family: "Abril Fatface", display; font-size: 18px; 
-            cursor: pointer; transition: 0.3s; margin-bottom: 5px; color: #FFFFFF;
-        }
+        .footer-label { font-family: Georgia, serif; font-size: 14px; font-weight: 500; margin-bottom: 10px; color: white; opacity: 0.8; }
+        .footer-value { font-family: "Abril Fatface", display; font-size: 18px; cursor: pointer; transition: 0.3s; margin-bottom: 2px; color: #FFFFFF; }
         .footer-value:hover { color: var(--sk-gold); }
 
-        @media (max-width: 1023px) {
+        /* -----------------------------------------------------------
+            PRICING GRID & CUSTOM COLORS
+        ----------------------------------------------------------- */
+        .john-deere-green { color: #367C2B !important; }
+        
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 80px;
+            align-items: center;
+            width: 95%; /* Forces the grid to stretch across 95% of its area */
+            max-width: 2400px; /* Raised from 1600px so it can spread out on big monitors */
+            margin: 0 auto;
+        }
+        @media(min-width: 1024px) { .pricing-grid { grid-template-columns: 1fr 1fr; } }
+        
+        .pricing-text-wrap { display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; }
+        .pricing-img { width: 100%; height: auto; cursor: zoom-in; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+
+        @media (max-width: 1024px) {
             :root { --header-height: 100px; --container-width: 90%; }
-            .advertising-hero { padding-top: 100px; }
             #header-logo { width: 220px; }
+            .header-scrolled #header-logo { width: 170px; }
             .footer-grid { grid-template-columns: 1fr; gap: 40px; }
-            .hero-title-precision { font-size: 38px !important; line-height: 1.2 !important; }
-            .fair-heading-precision { font-size: 32px !important; line-height: 1.2 !important; }
+            .theme-toggle-wrapper { top: auto; bottom: 80px; }
+            .nav-link { padding-top: 15px; padding-bottom: 15px; font-size: 15px; }
+            h2, h3, p { height: auto !important; line-height: 1.4 !important; }
         }
     </style>
 </head>
+<body class="light-mode">
 
- <main id="home">
+    <!-- Global Image Lightbox w/ Navigation Arrows -->
+    <div id="lightbox-overlay" onclick="closeLightbox()">
+        <button id="lightbox-prev" onclick="navigateLightbox(event, -1)" class="absolute left-2 sm:left-8 top-1/2 -translate-y-1/2 text-white hover:text-[#FFC627] z-50 bg-black/60 p-3 rounded-full transition-transform hover:scale-110 focus:outline-none"><i data-lucide="chevron-left" class="w-8 h-8 sm:w-10 sm:h-10"></i></button>
+        <img id="lightbox-image" src="" alt="Enlarged Image" onclick="event.stopPropagation()">
+        <button id="lightbox-next" onclick="navigateLightbox(event, 1)" class="absolute right-2 sm:right-8 top-1/2 -translate-y-1/2 text-white hover:text-[#FFC627] z-50 bg-black/60 p-3 rounded-full transition-transform hover:scale-110 focus:outline-none"><i data-lucide="chevron-right" class="w-8 h-8 sm:w-10 sm:h-10"></i></button>
+        <button class="absolute top-8 right-8 text-white hover:text-[#FFC627] z-50 bg-black/60 p-3 rounded-full transition-transform hover:scale-110 focus:outline-none" onclick="closeLightbox()"><i data-lucide="x" class="w-6 h-6 sm:w-8 sm:h-8"></i></button>
+    </div>
+
+    <!-- Theme Settings UI (Pure Black / Pure White) -->
+    <div class="theme-toggle-wrapper">
+        <div class="settings-toggle-btn shadow-xl" onclick="toggleSettingsPanel()">
+            <i data-lucide="settings"></i>
+        </div>
+        <div class="theme-toggle-panel hidden-settings" id="settings-panel">
+            <p class="font-bold text-xs mb-2 uppercase text-gray-500">System Preferences</p>
+            <div class="flex flex-col gap-2">
+                <button onclick="setTheme('light')" class="text-[10px] bg-white border border-gray-300 p-1 rounded text-black font-bold">Pure White</button>
+                <button onclick="setTheme('dark')" class="text-[10px] bg-black text-white border border-gray-700 p-1 rounded font-bold">Pure Black</button>
+                <button onclick="setTheme('auto')" class="text-[10px] border p-1 rounded">Match System</button>
+                <hr class="my-1">
+                <div class="flex flex-col gap-1">
+                    <button onclick="updateOutlineColor('#000000')" class="text-[10px] bg-gray-200 text-black rounded p-1 font-bold">Black Outline</button>
+                    <button onclick="updateOutlineColor('#FFFFFF')" class="text-[10px] bg-gray-800 text-white rounded p-1 font-bold">White Outline</button>
+                    <button onclick="updateOutlineColor('transparent')" class="text-[8px] bg-red-100 text-red-800 rounded p-1 uppercase font-bold mt-1">No Outline</button>
+                    <label class="text-[9px]">High-Contrast Overrides</label>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MAIN HEADER -->
+    <header id="main-header" class="fixed top-0 left-0 w-full z-[1000] flex flex-col justify-center">
+        <div class="main-container flex items-center justify-between h-full px-4 lg:px-0">
+            <div class="flex-shrink-0 z-[1001]">
+                <!-- FIX: Target removed, using smartTabClick -->
+                <a href="./index.html" class="smart-tab-btn" onclick="smartTabClick(event, this, 'tab_sk_Home', this.href)">
+                    <img src="./images/S&K-Sign-White.png" alt="S&K" id="header-logo" />
+                </a>
+            </div>
+            <nav class="hidden lg:flex flex-grow items-center justify-center px-10">
+                <ul id="desktop-nav-root" class="flex items-center gap-8 xl:gap-12"></ul>
+            </nav>
+            <div class="flex items-center gap-4 z-[1001]">
+                <button onclick="downloadSKContact()" class="hidden sm:flex bg-[#FFC627] text-[#3E0100] px-6 py-3 rounded-xl font-extrabold uppercase text-xs shadow-lg hover:scale-105 transition-all">
+                    <i data-lucide="user-plus" class="w-4 h-4 mr-2"></i> 844-907-4450
+                </button>
+                <button id="menu-toggle" class="lg:hidden text-white">
+                    <i data-lucide="menu" class="w-9 h-9"></i>
+                </button>
+            </div>
+        </div>
+        <div id="refresh-bar"></div>
+        <div id="mobile-menu" class="hidden absolute top-full left-0 w-full shadow-2xl flex-col p-8 gap-6 border-t border-black/5"></div>
+    </header>
+
+    <main id="home">
         
        <!-- SECTION 1: HERO (5 Locations) -->
 <section class="py-16" style="background-image: url('./images/skbackground.png'); background-color: #000; background-size: cover; background-position: center; margin-top: var(--header-height);">
@@ -542,6 +409,7 @@
 
     </main>
 
+    <!-- FOOTER (SMALLER FORMAT) -->
     <footer id="main-footer">
         <div class="main-container footer-grid">
             <div class="footer-col">
@@ -557,15 +425,12 @@
                 <div id="footer-address-container"></div>
             </div>
         </div>
-        <div class="main-container mt-10 pt-6 border-t border-white/10 text-center">
+        <div class="main-container mt-6 pt-4 border-t border-white/10 text-center">
             <h5 class="font-bold opacity-50 text-sm tracking-widest uppercase text-white">© 2026 S&K VENTURE SIGNS</h5>
         </div>
     </footer>
 
-    <div id="lightbox-overlay" onclick="this.style.display='none'" class="fixed inset-0 bg-black/95 z-[10000] hidden items-center justify-center p-10">
-        <img id="lightbox-img" src="" class="max-w-full max-h-full object-contain rounded-xl border-4 border-white shadow-2xl">
-    </div>
-
+    <!-- MODALS -->
     <div id="phone-modal" class="sk-modal-overlay" onclick="closeModals()">
         <div class="sk-modal-content" onclick="event.stopPropagation()">
             <div class="bg-[#3E0100] p-8 text-[#FFC627] text-center font-serif text-2xl">Contact Specialist</div>
@@ -586,6 +451,7 @@
         <div class="sk-modal-content" onclick="event.stopPropagation()">
             <div class="bg-[#3E0100] p-8 text-[#FFC627] text-center font-serif text-2xl">Start Navigation</div>
             <div class="p-8">
+                <!-- FIX: Targets removed, using smartTabClick -->
                 <a id="link-gmaps" class="smart-option"><i data-lucide="map"></i> Google Maps</a>
                 <a id="link-amaps" class="smart-option"><i data-lucide="navigation"></i> Apple Maps</a>
                 <a id="link-waze" class="smart-option"><i data-lucide="navigation-2"></i> Waze Navigation</a>
@@ -596,34 +462,57 @@
 
     <script>
         /**
-         * S&K UNIVERSAL ENGINE v10.14 (Safe ITC / Global Sync / Same Tab Forced)
+         * S&K SMART SYNC ENGINE v10.17
          */
-        const SYNC_CSV = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTrs2-zHEDCHZcBecOrMd_pokyGDjCR7NUl9pp1EAEb9hfUKYeZm4Di5W3fjX75NWtRbRKOHF2DeWYy/pub?output=csv";
-
-        let siteData = { nav: [], phones: [], email: "", addressStreet: "", addressCity: "" };
-
-        /**
-         * V10.14: SAFE STORAGE WRAPPERS (Retained for visual states, removed for tab jumping)
-         */
-        function safeSetStorage(key, val) {
-            try { localStorage.setItem(key, val); } catch (e) { console.warn('Storage blocked'); }
-        }
-        function safeGetStorage(key) {
-            try { return localStorage.getItem(key); } catch (e) { return null; }
-        }
-        function safeRemoveStorage(key) {
-            try { localStorage.removeItem(key); } catch (e) {}
-        }
-
-        /**
-         * V10.14: FIXED SAME-TAB NAVIGATION
-         * Completely stripped window.open() jumping logic to STRICTLY force links into the same active tab.
-         */
-        window.smartTabClick = function(event, element, targetName, url) {
-            if(event) event.preventDefault(); // Stop standard link behavior
-            window.location.href = url;
+        const SITE_DATA_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTrs2-zHEDCHZcBecOrMd_pokyGDjCR7NUl9pp1EAEb9hfUKYeZm4Di5W3fjX75NWtRbRKOHF2DeWYy/pub?output=csv";
+        
+        let siteData = { 
+            nav: [], 
+            phones: ["618-708-4450", "844-907-4450"], 
+            email: "Scott.Robinson@skventuresigns.com", 
+            addressStreet: "607 W Clark Ave", 
+            addressCity: "Effingham IL 62401" 
         };
 
+        let lightboxGallery = [];
+        let currentLightboxIndex = 0;
+
+        /* =========================================================
+           V10.17 CROSS-TAB AWARENESS (Smart Navigation Update)
+        ========================================================= */
+        function safeSetStorage(key, val) { try { localStorage.setItem(key, val); } catch (e) {} }
+        function safeGetStorage(key) { try { return localStorage.getItem(key); } catch (e) { return null; } }
+        function safeRemoveStorage(key) { try { localStorage.removeItem(key); } catch (e) {} }
+
+        window.smartTabClick = function(event, element, targetName, url) {
+            if(event) event.preventDefault(); 
+            
+            // If we are clicking a link to the tab we are CURRENTLY on, just navigate normally
+            if (window.name === targetName) {
+                window.location.href = url;
+                return;
+            }
+
+            // Check if the tab is already open somewhere else
+            const isTabAlreadyOpen = safeGetStorage(targetName) === 'true';
+
+            if (isTabAlreadyOpen) {
+                if(element && element.classList) element.classList.add('already-open');
+                let tabWindow = window.open(url, targetName);
+                if (tabWindow) { 
+                    tabWindow.focus(); 
+                } else { 
+                    window.location.href = url; 
+                }
+            } else {
+                // Not open anywhere else? Navigate smoothly in the CURRENT tab.
+                window.location.href = url;
+            }
+        };
+
+        /* =========================================================
+           FRAMEWORK SYSTEM LOGIC
+        ========================================================= */
         function parseCSVRow(text) {
             const result = [];
             let current = '';
@@ -640,90 +529,146 @@
 
         async function loadSheetData() {
             try {
-                const response = await fetch(SYNC_CSV);
+                const response = await fetch(SITE_DATA_CSV_URL);
                 const text = await response.text();
                 const lines = text.split(/\r?\n/);
+                
                 let tempNav = [];
+                let tempPhones = [];
+
                 lines.forEach((line, idx) => {
+                    if (!line.trim()) return; 
                     const row = parseCSVRow(line);
                     const rowNum = idx + 1;
-                    if (row[2]?.trim().toLowerCase() === 'header') tempNav.push({ label: row[0], url: row[1] });
-                    if (rowNum === 7) siteData.phones[0] = row[0];
-                    if (rowNum === 8) siteData.phones[1] = row[0];
+
+                    if (row[2]?.trim().toLowerCase() === 'header') {
+                        tempNav.push({ label: row[0], url: row[1] });
+                    }
+
+                    if (rowNum === 7) tempPhones[0] = row[0];
+                    if (rowNum === 8) tempPhones[1] = row[0];
                     if (rowNum === 9) siteData.email = row[0];
                     if (rowNum === 10) {
                         siteData.addressStreet = row[0];
                         siteData.addressCity = row[1];
                     }
                 });
-                siteData.nav = tempNav;
-                renderDynamicFramework();
-            } catch (err) { console.warn("Framework Sync Fallback"); renderDynamicFramework(); }
+
+                if (tempNav.length > 0) siteData.nav = tempNav;
+                if (tempPhones.length > 0) siteData.phones = tempPhones.filter(p => p);
+
+                renderDynamicContent();
+            } catch (err) {
+                renderDynamicContent();
+            }
         }
 
-        function renderDynamicFramework() {
+        function renderDynamicContent() {
             const dNav = document.getElementById('desktop-nav-root');
             const mNav = document.getElementById('mobile-menu');
             const fPhone = document.getElementById('footer-phone-list');
             const fEmail = document.getElementById('footer-email-list');
             const fAddr = document.getElementById('footer-address-container');
 
-            dNav.innerHTML = ''; mNav.innerHTML = '';
-            
+            dNav.innerHTML = ''; mNav.innerHTML = ''; fPhone.innerHTML = ''; fEmail.innerHTML = ''; fAddr.innerHTML = '';
+
             siteData.nav.forEach(n => {
-                const isActive = n.label.toLowerCase() === 'home';
                 const uniqueTarget = `tab_sk_${n.label.replace(/[^a-zA-Z0-9]/g, '_')}`;
+                const isActive = false; 
+                
+                const isOpen = safeGetStorage(uniqueTarget) === 'true';
+                const openClass = isOpen && !isActive ? 'already-open' : '';
                 const desktopActive = isActive ? 'active' : '';
 
-                dNav.innerHTML += `<li><a href="${n.url}" class="nav-link ${desktopActive}" onclick="smartTabClick(event, this, '${uniqueTarget}', '${n.url}')">${n.label}</a></li>`;
+                // FIX: Removed target attribute from string
+                dNav.innerHTML += `<li><a href="${n.url}" class="nav-link ${desktopActive} ${openClass}" onclick="smartTabClick(event, this, '${uniqueTarget}', '${n.url}')">${n.label}</a></li>`;
                 
-                const mobileClass = isActive
-                    ? `text-2xl font-bold border-b border-black/5 pb-3 text-[var(--sk-gold)]`
-                    : `text-2xl font-bold border-b border-black/5 pb-3`;
+                const mobileClass = isActive 
+                    ? `text-2xl font-bold border-b border-black/10 dark:border-white/10 pb-3 text-[var(--sk-gold)]`
+                    : `text-2xl font-bold border-b border-black/10 dark:border-white/10 pb-3`;
 
-                mNav.innerHTML += `<a href="${n.url}" class="${mobileClass}" onclick="smartTabClick(event, this, '${uniqueTarget}', '${n.url}')">${n.label}</a>`;
+                // FIX: Removed target attribute from string
+                mNav.innerHTML += `<a href="${n.url}" class="${mobileClass} ${openClass}" onclick="smartTabClick(event, this, '${uniqueTarget}', '${n.url}')">${n.label}</a>`;
             });
 
+            // Footer Matching Logic
             fPhone.className = "flex flex-wrap items-center justify-center gap-3";
-            let phoneHTML = `<span class="footer-value !mb-0" onclick="openPhoneSmartActions('${siteData.phones[0]}')">${siteData.phones[0]}</span>`;
-            if (siteData.phones[1]) phoneHTML += `<span class="text-white opacity-70 text-sm font-bold uppercase">or</span><span class="footer-value !mb-0" onclick="openPhoneSmartActions('${siteData.phones[1]}')">${siteData.phones[1]}</span>`;
+            let phoneHTML = '';
+            if (siteData.phones.length > 0) {
+                phoneHTML = `<span class="footer-value !mb-0" onclick="openPhoneSmartActions('${siteData.phones[0]}')">${siteData.phones[0]}</span>`;
+                if (siteData.phones[1]) {
+                    phoneHTML += `<span class="text-white opacity-70 text-sm font-bold uppercase">or</span><span class="footer-value !mb-0" onclick="openPhoneSmartActions('${siteData.phones[1]}')">${siteData.phones[1]}</span>`;
+                }
+            }
             fPhone.innerHTML = phoneHTML;
 
             fEmail.innerHTML = `<span class="footer-value" onclick="openEmailSmartActions('${siteData.email}')">${siteData.email}</span>`;
-            fAddr.innerHTML = `<span class="footer-value" onclick="openMapSmartActions()">${siteData.addressStreet}, ${siteData.addressCity}</span>`;
 
-            lucide.createIcons();
-        }
+            if (siteData.addressStreet) {
+                const fullDisplay = `${siteData.addressStreet}, ${siteData.addressCity}`;
+                fAddr.innerHTML = `<span class="footer-value" onclick="openMapSmartActions()">${fullDisplay}</span>`;
+            }
 
-        function initLightbox() {
-            const overlay = document.getElementById('lightbox-overlay');
-            const overlayImg = document.getElementById('lightbox-img');
-            document.querySelectorAll('.lightbox-trigger').forEach(img => {
-                img.onclick = () => { overlayImg.src = img.src; overlay.style.display = 'flex'; };
-            });
+            if (typeof lucide !== 'undefined') lucide.createIcons();
         }
 
         function toggleSettingsPanel() {
             document.getElementById('settings-panel').classList.toggle('hidden-settings');
         }
 
+        function downloadSKContact() {
+            const PHOTO_URL = "./images/S&K-Sign-Black.png";
+            const vcard = "BEGIN:VCARD\nVERSION:3.0\nFN:Scott Robinson\nORG:S&K Venture Signs\nTEL;TYPE=WORK,VOICE:" + (siteData.phones[1] || "844-907-4450") + "\nTEL;TYPE=CELL,VOICE:" + (siteData.phones[0] || "618-708-4450") + "\nEMAIL;TYPE=PREF,INTERNET:" + siteData.email + "\nADR;TYPE=WORK:;;" + siteData.addressStreet + ";" + siteData.addressCity.split(' ')[0] + ";IL;" + siteData.addressCity.split(' ').pop() + ";USA\nURL:https://skventuresigns.com/\nPHOTO;VALUE=URI:" + PHOTO_URL + "\nEND:VCARD";
+            const blob = new Blob([vcard], { type: 'text/vcard;charset=utf-8' });
+            const url = window.URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.setAttribute('download', 'Scott_Robinson_SKVenture.vcf');
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            setTimeout(() => window.URL.revokeObjectURL(url), 100);
+        }
+
         function setTheme(mode) {
             const body = document.body;
-            const hour = new Date().getHours();
-            if (mode === 'auto') mode = (hour < 6 || hour >= 19) ? 'dark' : 'light';
-            if (mode === 'dark') {
-                document.documentElement.style.setProperty('--bg-primary', '#121212');
-                document.documentElement.style.setProperty('--text-primary', '#e0e0e0');
-                document.documentElement.style.setProperty('--card-bg', '#1e1e1e');
+            const root = document.documentElement;
+            let targetMode = mode;
+
+            if (mode === 'auto') {
+                const hour = new Date().getHours();
+                const isNightTime = (hour < 6 || hour >= 19);
+                const isSystemDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+                targetMode = (isNightTime || isSystemDark) ? 'dark' : 'light';
+            }
+            
+            if (targetMode === 'dark') {
+                root.style.setProperty('--bg-primary', '#000000');
+                root.style.setProperty('--text-primary', '#ffffff');
+                root.style.setProperty('--card-bg', '#1e1e1e');
+                root.style.setProperty('--header-bg-scrolled', '#1e1e1e');
+                root.style.setProperty('--nav-text-scrolled', '#ffffff');
+                root.style.setProperty('--mobile-menu-bg', '#1e1e1e');
+                root.style.setProperty('--mobile-menu-text', '#ffffff');
                 body.classList.add('dark-mode');
             } else {
-                document.documentElement.style.setProperty('--bg-primary', '#fcfcfc');
-                document.documentElement.style.setProperty('--text-primary', '#333333');
-                document.documentElement.style.setProperty('--card-bg', '#ffffff');
+                root.style.setProperty('--bg-primary', '#FFFFFF'); 
+                root.style.setProperty('--text-primary', '#000000'); 
+                root.style.setProperty('--card-bg', '#ffffff');
+                root.style.setProperty('--header-bg-scrolled', 'white');
+                root.style.setProperty('--nav-text-scrolled', '#222222');
+                root.style.setProperty('--mobile-menu-bg', 'white');
+                root.style.setProperty('--mobile-menu-text', 'black');
                 body.classList.remove('dark-mode');
             }
+            
+            const header = document.getElementById('main-header');
+            const logo = document.getElementById('header-logo');
+            if (header.classList.contains('header-scrolled')) {
+                logo.src = (targetMode === 'dark') ? "./images/S&K-Sign-White.png" : "./images/S&K-Sign-Black.png";
+            }
+
             document.cookie = `theme=${mode};max-age=31536000;path=/`;
-            updateHeaderVisuals();
         }
 
         function updateOutlineColor(color) {
@@ -734,10 +679,15 @@
         function openPhoneSmartActions(num) {
             const clean = num.replace(/\D/g, '');
             const container = document.getElementById('phone-options-container');
-            let html = `
-                <a href="tel:${clean}" class="smart-option" onclick="smartTabClick(event, this, 'tab_sk_tel', this.href)"><i data-lucide="phone"></i> Direct Call</a>
-            `;
+            const isMac = navigator.platform.toUpperCase().indexOf('MAC') >= 0;
+            
+            // FIX: Removed target="_blank" and added smartTabClick
+            let html = isMac 
+                ? `<a href="tel:${clean}" class="smart-option" onclick="smartTabClick(event, this, 'tab_sk_tel', this.href)"><i data-lucide="monitor"></i> FaceTime / iPhone</a>`
+                : `<a href="tel:${clean}" class="smart-option" onclick="smartTabClick(event, this, 'tab_sk_tel', this.href)"><i data-lucide="phone"></i> Direct Call</a>`;
+            
             if (num.includes('618')) html += `<a href="https://wa.me/1${clean}" class="smart-option" onclick="smartTabClick(event, this, 'tab_sk_wa', this.href)"><i data-lucide="message-circle"></i> WhatsApp Specialist</a>`;
+
             container.innerHTML = html;
             document.getElementById('phone-modal').style.display = 'flex';
             lucide.createIcons();
@@ -745,6 +695,8 @@
 
         function openEmailSmartActions(email) {
             const container = document.getElementById('email-options-container');
+            
+            // FIX: Removed target="_blank" and added smartTabClick
             container.innerHTML = `
                 <a href="mailto:${email}" class="smart-option" onclick="smartTabClick(event, this, 'tab_sk_mail_def', this.href)"><i data-lucide="mail"></i> Default Client</a>
                 <a href="https://mail.google.com/mail/?view=cm&fs=1&to=${email}" class="smart-option" onclick="smartTabClick(event, this, 'tab_sk_mail_gmail', this.href)"><i data-lucide="send"></i> Gmail Web</a>
@@ -754,7 +706,7 @@
             lucide.createIcons();
         }
 
-        function openMapSmartActions() {
+         function openMapSmartActions() {
             const addrStr = `${siteData.addressStreet} ${siteData.addressCity}`;
             const addr = encodeURIComponent(addrStr);
             
@@ -773,51 +725,68 @@
 
         function closeModals() { document.querySelectorAll('.sk-modal-overlay').forEach(m => m.style.display = 'none'); }
 
-        function updateHeaderVisuals() {
-            const header = document.getElementById('main-header');
-            const logo = document.getElementById('header-logo');
-            const isDark = document.body.classList.contains('dark-mode');
-            if (window.scrollY > 50) {
-                header.classList.add('header-scrolled');
-                logo.src = isDark ? "./images/S&K-Sign-White.png" : "./images/S&K-Sign-Black.png";
-            } else {
-                header.classList.remove('header-scrolled');
-                logo.src = "./images/S&K-Sign-White.png";
-            }
+        /* =========================================================
+           LIGHTBOX ENGINE
+        ========================================================= */
+        function initLightboxInteractions() {
+            const images = document.querySelectorAll('.lightbox-trigger');
+            images.forEach((img, idx) => {
+                lightboxGallery.push(img.src);
+                img.onclick = () => openLightbox(idx);
+            });
         }
 
-        function downloadSKContact() {
-            const PHOTO_URL = "https://skventuresigns.com/images/S&K-Sign-Black.png";
-            const vcard = "BEGIN:VCARD\n" +
-                        "VERSION:3.0\n" +
-                        "N:Robinson;Scott;;;\n" +
-                        "FN:Scott Robinson\n" +
-                        "ORG:S&K Venture Signs\n" +
-                        "TITLE:Digital Billboard Specialist\n" +
-                        "TEL;TYPE=WORK,VOICE:844-907-4450\n" +
-                        "TEL;TYPE=CELL,VOICE:618-708-4450\n" +
-                        "EMAIL;TYPE=PREF,INTERNET:" + siteData.email + "\n" +
-                        "ADR;TYPE=WORK:;;" + siteData.addressStreet + ";" + siteData.addressCity.split(' ')[0] + ";IL;" + siteData.addressCity.split(' ').pop() + ";USA\n" +
-                        "PHOTO;VALUE=URI:" + PHOTO_URL + "\n" +
-                        "END:VCARD";
-            const blob = new Blob([vcard], { type: 'text/vcard;charset=utf-8' });
-            const url = window.URL.createObjectURL(blob);
-            const link = document.createElement('a');
-            link.href = url;
-            link.setAttribute('download', 'Scott_Robinson_SKVenture.vcf');
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
+        function openLightbox(index) {
+            if (index < 0 || index >= lightboxGallery.length) return;
+            currentLightboxIndex = index;
+            const img = document.getElementById('lightbox-image');
+            img.src = lightboxGallery[index];
+            document.getElementById('lightbox-overlay').style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+            if (typeof lucide !== 'undefined') lucide.createIcons();
         }
 
-        window.addEventListener('scroll', updateHeaderVisuals);
+        function navigateLightbox(e, direction) {
+            if (e) e.stopPropagation();
+            if (lightboxGallery.length === 0) return;
+            let newIndex = currentLightboxIndex + direction;
+            if (newIndex < 0) newIndex = lightboxGallery.length - 1;
+            if (newIndex >= lightboxGallery.length) newIndex = 0;
+            openLightbox(newIndex);
+        }
 
-        document.getElementById('menu-toggle').onclick = () => {
+        function closeLightbox() {
+            document.getElementById('lightbox-overlay').style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+
+        /* =========================================================
+           INITIALIZATION
+        ========================================================= */
+        window.addEventListener('scroll', () => {
+    const header = document.getElementById('main-header');
+    const logo = document.getElementById('header-logo');
+    const isDark = document.body.classList.contains('dark-mode');
+
+    if (window.scrollY > 50) {
+        header.classList.add('header-scrolled');
+        // If dark mode: use white logo on dark background. Else: use black logo on white background.
+        logo.src = isDark ? "./images/S&K-Sign-White.png" : "./images/S&K-Sign-Black.png";
+    } 
+    
+    else {
+        header.classList.remove('header-scrolled');
+        // Unscrolled header stays maroon, so it always takes the white logo.
+        logo.src = "./images/S&K-Sign-White.png";
+    }
+});
+
+        document.getElementById('menu-toggle').addEventListener('click', () => {
             const m = document.getElementById('mobile-menu');
             m.classList.toggle('hidden'); m.classList.toggle('flex');
-        };
+        });
 
-        window.onload = () => {
+          window.onload = () => {
             loadSheetData();
             initLightbox();
             const cookies = document.cookie.split('; ').reduce((acc, curr) => {
@@ -831,6 +800,15 @@
             setTheme(cookies['theme'] || 'auto');
             lucide.createIcons();
         };
+
+        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
+            const cookies = document.cookie.split('; ').reduce((acc, curr) => {
+                const [k, v] = curr.split('='); acc[k] = v; return acc;
+            }, {});
+            if (!cookies['theme'] || cookies['theme'] === 'auto') {
+                setTheme('auto');
+            }
+        });
     </script>
 </body>
 </html>
