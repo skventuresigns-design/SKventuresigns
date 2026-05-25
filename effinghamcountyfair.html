@@ -788,7 +788,7 @@
 
           window.onload = () => {
             loadSheetData();
-            initLightbox();
+            initLightboxInteractions();
             const cookies = document.cookie.split('; ').reduce((acc, curr) => {
                 const [k, v] = curr.split('='); acc[k] = v; return acc;
             }, {});
