@@ -14,16 +14,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <link rel="icon" type="image/png" href="./favicon.png">
     
-    <!-- PWA Manifest & Service Worker -->
-    <link rel="manifest" href="./manifest.json">
-    <script>
-        if ('serviceWorker' in navigator) {
-            window.addEventListener('load', () => {
-                navigator.serviceWorker.register('./sw.js').catch(err => console.log('SW failed', err));
-            });
-        }
-    </script>
-
     <!-- Google Analytics: -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-62F8P74L0J"></script>
     <script>
@@ -152,7 +142,7 @@
         .header-scrolled .nav-link.active { color: var(--sk-gold) !important; }
         .header-scrolled #menu-toggle { color: var(--nav-text-scrolled); }
 
-        .nav-link.already-open:hover { color: #FF4500 !important; }
+        .nav-link.already-open:hover { color: var(--sk-gold) !important; }
 
         #mobile-menu { background-color: var(--mobile-menu-bg); color: var(--mobile-menu-text); z-index: 999; }
         #refresh-bar { position: absolute; bottom: 0; left: 0; height: 2px; width: 0; background-color: var(--sk-gold); transition: width 0.3s ease; z-index: 1001; }
@@ -720,7 +710,7 @@
             const addrStr = `${siteData.addressStreet} ${siteData.addressCity}`;
             const addr = encodeURIComponent(addrStr);
             
-            document.getElementById('link-gmaps').href = `https://www.google.com/maps/search/?api=1&query=${addr}`;
+            document.getElementById('link-gmaps').href = `https://maps.google.com/?q=${addr}`;
             document.getElementById('link-gmaps').setAttribute('onclick', `smartTabClick(event, this, 'tab_sk_gmaps', '${document.getElementById('link-gmaps').href}')`);
 
             document.getElementById('link-amaps').href = `http://maps.apple.com/?daddr=${addr}&dirflg=d`;
@@ -796,27 +786,19 @@
             m.classList.toggle('hidden'); m.classList.toggle('flex');
         });
 
-        window.onload = () => {
-            // V10.18: Self-Identify this specific tab globally so other tabs switch to it instead of duplicating
-            window.name = 'tab_sk_efair';
-            safeSetStorage('tab_sk_efair', 'true');
-            window.addEventListener('beforeunload', () => { safeRemoveStorage('tab_sk_efair'); });
-
+          window.onload = () => {
             loadSheetData();
             initLightbox();
-            
             const cookies = document.cookie.split('; ').reduce((acc, curr) => {
                 const [k, v] = curr.split('='); acc[k] = v; return acc;
             }, {});
-            
             if (cookies['outline-color']) {
                 updateOutlineColor(cookies['outline-color']);
             } else {
                 updateOutlineColor('transparent');
             }
-
             setTheme(cookies['theme'] || 'auto');
-            if (typeof lucide !== 'undefined') lucide.createIcons();
+            lucide.createIcons();
         };
 
         window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
