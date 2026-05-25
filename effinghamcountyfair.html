@@ -408,6 +408,62 @@
         }
     </style>
 </head>
+<body class="light-mode">
+
+    <!-- Global Image Lightbox w/ Navigation Arrows -->
+    <div id="lightbox-overlay" onclick="closeLightbox()">
+        <button id="lightbox-prev" onclick="navigateLightbox(event, -1)" class="absolute left-2 sm:left-8 top-1/2 -translate-y-1/2 text-white hover:text-[#FFC627] z-50 bg-black/60 p-3 rounded-full transition-transform hover:scale-110 focus:outline-none"><i data-lucide="chevron-left" class="w-8 h-8 sm:w-10 sm:h-10"></i></button>
+        <img id="lightbox-image" src="" alt="Enlarged Image" onclick="event.stopPropagation()">
+        <button id="lightbox-next" onclick="navigateLightbox(event, 1)" class="absolute right-2 sm:right-8 top-1/2 -translate-y-1/2 text-white hover:text-[#FFC627] z-50 bg-black/60 p-3 rounded-full transition-transform hover:scale-110 focus:outline-none"><i data-lucide="chevron-right" class="w-8 h-8 sm:w-10 sm:h-10"></i></button>
+        <button class="absolute top-8 right-8 text-white hover:text-[#FFC627] z-50 bg-black/60 p-3 rounded-full transition-transform hover:scale-110 focus:outline-none" onclick="closeLightbox()"><i data-lucide="x" class="w-6 h-6 sm:w-8 sm:h-8"></i></button>
+    </div>
+
+    <!-- Theme Settings UI (Pure Black / Pure White) -->
+    <div class="theme-toggle-wrapper">
+        <div class="settings-toggle-btn shadow-xl" onclick="toggleSettingsPanel()">
+            <i data-lucide="settings"></i>
+        </div>
+        <div class="theme-toggle-panel hidden-settings" id="settings-panel">
+            <p class="font-bold text-xs mb-2 uppercase text-gray-500">System Preferences</p>
+            <div class="flex flex-col gap-2">
+                <button onclick="setTheme('light')" class="text-[10px] bg-white border border-gray-300 p-1 rounded text-black font-bold">Pure White</button>
+                <button onclick="setTheme('dark')" class="text-[10px] bg-black text-white border border-gray-700 p-1 rounded font-bold">Pure Black</button>
+                <button onclick="setTheme('auto')" class="text-[10px] border p-1 rounded">Match System</button>
+                <hr class="my-1">
+                <div class="flex flex-col gap-1">
+                    <button onclick="updateOutlineColor('#000000')" class="text-[10px] bg-gray-200 text-black rounded p-1 font-bold">Black Outline</button>
+                    <button onclick="updateOutlineColor('#FFFFFF')" class="text-[10px] bg-gray-800 text-white rounded p-1 font-bold">White Outline</button>
+                    <button onclick="updateOutlineColor('transparent')" class="text-[8px] bg-red-100 text-red-800 rounded p-1 uppercase font-bold mt-1">No Outline</button>
+                    <label class="text-[9px]">High-Contrast Overrides</label>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MAIN HEADER -->
+    <header id="main-header" class="fixed top-0 left-0 w-full z-[1000] flex flex-col justify-center">
+        <div class="main-container flex items-center justify-between h-full px-4 lg:px-0">
+            <div class="flex-shrink-0 z-[1001]">
+                <!-- FIX: Target removed, using smartTabClick -->
+                <a href="./index.html" class="smart-tab-btn" onclick="smartTabClick(event, this, 'tab_sk_Home', this.href)">
+                    <img src="./images/S&K-Sign-White.png" alt="S&K" id="header-logo" />
+                </a>
+            </div>
+            <nav class="hidden lg:flex flex-grow items-center justify-center px-10">
+                <ul id="desktop-nav-root" class="flex items-center gap-8 xl:gap-12"></ul>
+            </nav>
+            <div class="flex items-center gap-4 z-[1001]">
+                <button onclick="downloadSKContact()" class="hidden sm:flex bg-[#FFC627] text-[#3E0100] px-6 py-3 rounded-xl font-extrabold uppercase text-xs shadow-lg hover:scale-105 transition-all">
+                    <i data-lucide="user-plus" class="w-4 h-4 mr-2"></i> 844-907-4450
+                </button>
+                <button id="menu-toggle" class="lg:hidden text-white">
+                    <i data-lucide="menu" class="w-9 h-9"></i>
+                </button>
+            </div>
+        </div>
+        <div id="refresh-bar"></div>
+        <div id="mobile-menu" class="hidden absolute top-full left-0 w-full shadow-2xl flex-col p-8 gap-6 border-t border-black/5"></div>
+    </header>
 
  <main id="home">
         
