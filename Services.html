@@ -9,16 +9,17 @@
     -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>S&K Venture Signs | Services</title>
-    
-    <!-- PWA Manifest & Service Worker -->
-    <link rel="manifest" href="./manifest.json">
+   <title>Digital Billboards & Mobile Sign Trailers | S&K Venture Signs</title>
+    <meta name="description" content="S&K Venture Signs offers premium digital billboard advertising along major Illinois thoroughfares and mobile digital sign trailers for community events and festivals.">
+    <link rel="icon" type="image/png" href="./favicon.png">
+
+    <!-- Google Analytics: Official S&K Tracking + Developer Portfolio Credit -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-62F8P74L0J"></script>
     <script>
-        if ('serviceWorker' in navigator) {
-            window.addEventListener('load', () => {
-                navigator.serviceWorker.register('./sw.js').catch(err => console.log('SW failed', err));
-            });
-        }
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-62F8P74L0J');
     </script>
 
     <!-- External Assets with Smart Cache Buster -->
@@ -266,7 +267,7 @@
         
         .services-global-wrapper {
             position: relative;
-            background-image: url(https://raw.githubusercontent.com/Werewolf3788/SKVentureSigns/bcd39125f3e66cfe95baab52771628778e15654f/images/skbackground.png);
+            background-image: url(./images/skbackground.png);
             background-size: cover;
             background-position: center top;
             background-attachment: fixed;
@@ -279,7 +280,7 @@
             padding-top: calc(var(--header-height) + 60px);
             padding-bottom: 60px;
             background-color: var(--sk-maroon);
-            background-image: url(https://raw.githubusercontent.com/Werewolf3788/SKVentureSigns/bcd39125f3e66cfe95baab52771628778e15654f/images/skbackground.png);
+            background-image: url(./images/skbackground.png);
             background-size: cover;
             background-position: center top;
             background-attachment: fixed;
@@ -670,7 +671,7 @@
         <div class="main-container flex items-center justify-between h-full px-4 lg:px-0">
             <div class="flex-shrink-0 z-[1001]">
                 <a href="./index.html" class="smart-tab-btn" onclick="smartTabClick(event, this, 'tab_sk_Home', this.href)">
-                    <img src="https://raw.githubusercontent.com/Werewolf3788/SKVentureSigns/a19e4b81ccba61d2b1359a357e91972d6a3d33e8/images/S%26K%20Sign%20White.png" alt="S&K" id="header-logo" />
+                    <img src="./images/S&K-Sign-White.png" alt="S&K" id="header-logo" />
                 </a>
             </div>
 
@@ -681,7 +682,7 @@
             </nav>
 
             <div class="flex items-center gap-4 z-[1001]">
-                <button onclick="downloadSKContact()" class="hidden sm:flex bg-[#FFC627] text-[#3E0100] px-6 py-3 rounded-xl font-extrabold uppercase text-xs shadow-lg hover:scale-105 transition-all">
+                <button onclick="downloadSKContact()" class="hidden sm:flex bg-[#FFC627] text-[#3E0100] px-6 py-3 rounded-xl font-extrabold uppercase text-xs shadow-lg hover:scale-105 transition-all border-4 border-[#3E0100]">
                     <i data-lucide="user-plus" class="w-4 h-4 mr-2"></i> 844-907-4450
                 </button>
                 <button id="menu-toggle" class="lg:hidden text-white">
@@ -722,7 +723,7 @@
                     <div class="innovative-image-card">
                         <div class="innovative-image-wrap">
                             <!-- GitHub Raw Image Link -->
-                            <img src="https://raw.githubusercontent.com/Werewolf3788/SKVentureSigns/b3ae21594b6a28420e4eb4937ff2f237b7889df0/images/signs.PNG" alt="Digital Sign Rental">
+                            <img src="./images/trailer.png" alt="Digital Sign Rental">
                         </div>
                         <div class="innovative-card-content">
                             <h3 class="innovative-card-title">Digital Sign Rental</h3>
@@ -733,7 +734,7 @@
                     <!-- Card 2 -->
                     <div class="innovative-image-card">
                         <div class="innovative-image-wrap">
-                            <img src="https://raw.githubusercontent.com/Werewolf3788/SKVentureSigns/b3ae21594b6a28420e4eb4937ff2f237b7889df0/images/signs1.PNG" alt="Sign Maintenance & Repair">
+                            <img src="./images/Repair.png" alt="Sign Maintenance & Repair">
                         </div>
                         <div class="innovative-card-content">
                             <h3 class="innovative-card-title">Sign Maintenance & Repair</h3>
@@ -744,11 +745,11 @@
                     <!-- Card 3 -->
                     <div class="innovative-image-card">
                         <div class="innovative-image-wrap">
-                            <img src="https://raw.githubusercontent.com/Werewolf3788/SKVentureSigns/b3ae21594b6a28420e4eb4937ff2f237b7889df0/images/signs2.PNG" alt="Sign Installation">
+                            <img src="./images/sales.png" alt="Sign Installation">
                         </div>
                         <div class="innovative-card-content">
-                            <h3 class="innovative-card-title">Sign Installation</h3>
-                            <p class="innovative-card-desc">Our expert installation team ensures precise setup and optimal placement of your digital signs, providing hassle-free solutions that enhance your advertising impact.</p>
+                            <h3 class="innovative-card-title">Sales and Sign Installation</h3>
+                            <p class="innovative-card-desc">We Sell Digital Signs for Your Business. Our expert installation team also ensures precise setup and optimal placement of your digital signs, providing hassle-free solutions that enhance your advertising impact.</p>
                         </div>
                     </div>
 
@@ -828,11 +829,11 @@
                 <!-- CTA Buttons properly trigger the Smart Action Modals like the footer -->
                <div class="mt-8 flex flex-col sm:flex-row justify-center gap-4">
     <a href="tel:8449074450" class="bg-[#FFC627] text-[#3E0100] font-bold uppercase text-sm py-4 px-8 rounded-full inline-flex items-center justify-center shadow-lg transition-transform hover:-translate-y-1">
-        <i data-lucide="phone" class="w-4 h-4 mr-2"></i> Call Specialist
+        <i data-lucide="phone" class="w-4 h-4 mr-2"></i> Call 844-907-4450
     </a>
 
     <a href="mailto:Scott.Robinson@skventuresigns.com?subject=Maintenance%20Service%20Inquiry" class="bg-[#3E0100] text-[#FFC627] font-bold uppercase text-sm py-4 px-8 rounded-full inline-flex items-center justify-center shadow-lg transition-transform hover:-translate-y-1 border-2 border-[#FFC627]">
-        <i data-lucide="mail" class="w-4 h-4 mr-2"></i> Email Specialist
+        <i data-lucide="mail" class="w-4 h-4 mr-2"></i> Email Us
     </a>
 </div>
             </div>
@@ -1079,7 +1080,7 @@
             const header = document.getElementById('main-header');
             const logo = document.getElementById('header-logo');
             if (header.classList.contains('header-scrolled')) {
-                logo.src = (targetMode === 'dark') ? "https://raw.githubusercontent.com/Werewolf3788/SKVentureSigns/a19e4b81ccba61d2b1359a357e91972d6a3d33e8/images/S%26K%20Sign%20White.png" : "https://raw.githubusercontent.com/Werewolf3788/SKVentureSigns/a19e4b81ccba61d2b1359a357e91972d6a3d33e8/images/S%26K%20Sign%20Black.png";
+                logo.src = (targetMode === 'dark') ? "./images/S&K-Sign-White.png" : "./images/S&K-Sign-Black.png";
             }
 
             document.cookie = `theme=${mode};max-age=31536000;path=/`;
@@ -1178,10 +1179,10 @@
 
             if (window.scrollY > 50) {
                 header.classList.add('header-scrolled');
-                logo.src = isDark ? "https://raw.githubusercontent.com/Werewolf3788/SKVentureSigns/a19e4b81ccba61d2b1359a357e91972d6a3d33e8/images/S%26K%20Sign%20White.png" : "https://raw.githubusercontent.com/Werewolf3788/SKVentureSigns/a19e4b81ccba61d2b1359a357e91972d6a3d33e8/images/S%26K%20Sign%20Black.png";
+                logo.src = isDark ? "./images/S&K-Sign-White.png" : "./images/S&K-Sign-Black";
             } else {
                 header.classList.remove('header-scrolled');
-                logo.src = "https://raw.githubusercontent.com/Werewolf3788/SKVentureSigns/a19e4b81ccba61d2b1359a357e91972d6a3d33e8/images/S%26K%20Sign%20White.png";
+                logo.src = "./images/S&K-Sign-White";
             }
         });
 
