@@ -9,17 +9,10 @@
     -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>S&K Venture Signs | Contact Specialist</title>
-    
-    <!-- PWA Manifest & Service Worker -->
-    <link rel="manifest" href="./manifest.json">
-    <script>
-        if ('serviceWorker' in navigator) {
-            window.addEventListener('load', () => {
-                navigator.serviceWorker.register('./sw.js').catch(err => console.log('SW failed', err));
-            });
-        }
-    </script>
+    <link rel="icon" type="image/png" href="./favicon.png">
+    <title>Contact S&K Venture Signs | Digital Billboard & Sign Rentals</title>
+    <meta name="description" content="Get a custom quote on digital billboards, mobile sign trailers, and event displays. Contact S&K Venture Signs today to boost your business visibility in Effingham and Clay County.">
+    <link rel="icon" type="image/png" href="./favicon.png">
 
     <!-- External Assets with Smart Cache Buster -->
     <script src="https://cdn.tailwindcss.com?v=10.19"></script>
@@ -158,7 +151,7 @@
 
         /* V10.19 Smart Tab Indicators for Nav Links */
         .nav-link.already-open:hover { 
-            color: #FF4500 !important; /* Glows Jet Orange to indicate it will switch tabs */
+            color: var(--sk-gold) !important; /* Glows Jet Orange to indicate it will switch tabs */
         }
 
         #mobile-menu {
@@ -217,9 +210,9 @@
             transition: all 0.3s ease;
         }
         .smart-tab-btn.already-open:hover {
-            background: linear-gradient(180deg, #FF6A33 0%, #FF4500 100%) !important;
+            background: linear-gradient(180deg, #FF6A33 0%, var(--sk-gold) 100%) !important;
             color: #fff !important;
-            border-color: #FF4500 !important;
+            border-color: var(--sk-gold) !important;
             box-shadow: 0 4px 15px rgba(255, 69, 0, 0.4) !important;
             text-shadow: 1px 1px 2px rgba(0,0,0,0.3) !important;
         }
