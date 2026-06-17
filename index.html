@@ -676,7 +676,7 @@
         * S&K UNIVERSAL ENGINE v10.14 (Safe ITC / Global Sync / Same Tab Forced)
         */
         const SYNC_JSON = "./navigation.json";
-        
+
         let siteData = { nav: [], phones: [], email: "", addressStreet: "", addressCity: "" };
 
         /**
@@ -715,28 +715,45 @@
             return result.map(v => v.replace(/^"|"$/g, ''));
         }
 
-        async function loadSheetData() {
-            try {
-                const response = await fetch(SYNC_CSV);
-                const text = await response.text();
-                const lines = text.split(/\r?\n/);
-                let tempNav = [];
-                lines.forEach((line, idx) => {
-                    const row = parseCSVRow(line);
-                    const rowNum = idx + 1;
-                    if (row[2]?.trim().toLowerCase() === 'header') tempNav.push({ label: row[0], url: row[1] });
-                    if (rowNum === 7) siteData.phones[0] = row[0];
-                    if (rowNum === 8) siteData.phones[1] = row[0];
-                    if (rowNum === 9) siteData.email = row[0];
-                    if (rowNum === 10) {
-                        siteData.addressStreet = row[0];
-                        siteData.addressCity = row[1];
-                    }
-                });
-                siteData.nav = tempNav;
-                renderDynamicFramework();
-            } catch (err) { console.warn("Framework Sync Fallback"); renderDynamicFramework(); }
-        }
+       async function loadSheetData() {
+    try {
+        // 1. Fetch our local JSON file instead of the CSV
+        const response = await fetch(SYNC_JSON);
+        const data = await response.json();
+        
+        let tempNav = [];
+        siteData.phones = []; // Clear old items to fill freshly
+
+        // 2. Loop through your clean JSON array objects directly
+        data.forEach((item) => {
+            const loc = item.Location?.trim().toLowerCase();
+            
+            // Map headers to the nav array
+            if (loc === 'header') {
+                tempNav.push({ label: item.Title, url: item.Url });
+            }
+            // Map phone numbers safely without worrying about row numbers
+            else if (loc === 'footer phone') {
+                siteData.phones.push(item.Title);
+            }
+            // Map email directly
+            else if (loc === 'footer email') {
+                siteData.email = item.Title;
+            }
+            // Map address elements directly
+            else if (loc === 'footer address') {
+                siteData.addressStreet = item.Title;
+                siteData.addressCity = item.Url;
+            }
+        });
+
+        siteData.nav = tempNav;
+        renderDynamicFramework();
+    } catch (err) { 
+        console.warn("Framework Sync Fallback", err); 
+        renderDynamicFramework(); 
+    }
+}
 
         function renderDynamicFramework() {
             const dNav = document.getElementById('desktop-nav-root');
