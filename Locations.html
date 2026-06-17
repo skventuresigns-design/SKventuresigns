@@ -651,8 +651,8 @@
         /**
          * S&K SMART SYNC ENGINE v10.15 & LOCATIONS LOGIC
          * V10.15 Update: Global Inter-Tab Communication (ITC) & Adaptive Dashed Boxes.
-         */
-        const SITE_DATA_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTrs2-zHEDCHZcBecOrMd_pokyGDjCR7NUl9pp1EAEb9hfUKYeZm4Di5W3fjX75NWtRbRKOHF2DeWYy/pub?output=csv";
+         
+        const SITE_DATA_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTrs2-zHEDCHZcBecOrMd_pokyGDjCR7NUl9pp1EAEb9hfUKYeZm4Di5W3fjX75NWtRbRKOHF2DeWYy/pub?output=csv";*/
         const INVENTORY_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vThA71kIjoVWZCstUInZWTjo3WcdTWd-sts-ucDmSslWgXctOv-1k78qV1Xt0Gps5ocbuJwLVDKbl-R/pub?output=csv";
         
         let siteData = { 
@@ -703,42 +703,6 @@
             }
             result.push(current.trim());
             return result.map(v => v.replace(/^"|"$/g, ''));
-        }
-
-        async function loadSheetData() {
-            try {
-                const response = await fetch(SITE_DATA_CSV_URL);
-                const text = await response.text();
-                const lines = text.split(/\r?\n/);
-                
-                let tempNav = [];
-                let tempPhones = [];
-
-                lines.forEach((line, idx) => {
-                    if (!line.trim()) return; 
-                    const row = parseCSVRow(line);
-                    const rowNum = idx + 1;
-
-                    if (row[2]?.trim().toLowerCase() === 'header') {
-                        tempNav.push({ label: row[0], url: row[1] });
-                    }
-
-                    if (rowNum === 7) tempPhones[0] = row[0];
-                    if (rowNum === 8) tempPhones[1] = row[0];
-                    if (rowNum === 9) siteData.email = row[0];
-                    if (rowNum === 10) {
-                        siteData.addressStreet = row[0];
-                        siteData.addressCity = row[1];
-                    }
-                });
-
-                if (tempNav.length > 0) siteData.nav = tempNav;
-                if (tempPhones.length > 0) siteData.phones = tempPhones.filter(p => p);
-
-                renderDynamicContent();
-            } catch (err) {
-                renderDynamicContent();
-            }
         }
 
         function renderDynamicContent() {
@@ -1228,5 +1192,6 @@
             }
         });
     </script>
+    <script src="./navigation.js"></script>
 </body>
 </html>
