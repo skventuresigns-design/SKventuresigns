@@ -1,0 +1,47 @@
+[
+  {
+    "Title": "Home",
+    "Url": "./index.html",
+    "Location": "Header"
+  },
+  {
+    "Title": "Locations",
+    "Url": "./Locations.html",
+    "Location": "Header"
+  },
+  {
+    "Title": "Services",
+    "Url": "./Services.html",
+    "Location": "Header"
+  },
+  {
+    "Title": "Clients",
+    "Url": "./Clients.html",
+    "Location": "Header"
+  },
+  {
+    "Title": "Contact Us",
+    "Url": "./Contact.html",
+    "Location": "Header"
+  },
+  {
+    "Title": "618-708-4450",
+    "Url": "",
+    "Location": "Footer Phone"
+  },
+  {
+    "Title": "844-907-4450",
+    "Url": "",
+    "Location": "Footer Phone"
+  },
+  {
+    "Title": "Scott.Robinson@skventuresigns.com",
+    "Url": "",
+    "Location": "Footer Email"
+  },
+  {
+    "Title": "607 W Clark Ave",
+    "Url": "Effingham IL 62401",
+    "Location": "Footer Address"
+  }
+]
