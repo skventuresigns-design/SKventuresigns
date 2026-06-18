@@ -891,26 +891,19 @@
         </div>
     </div>
 
-    <script>
+   <script>
         /**
-         * S&K SMART SYNC ENGINE v10.15
-         
-        const SITE_DATA_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTrs2-zHEDCHZcBecOrMd_pokyGDjCR7NUl9pp1EAEb9hfUKYeZm4Di5W3fjX75NWtRbRKOHF2DeWYy/pub?output=csv"; */
+         * S&K SMART SYNC ENGINE v10.15 - SERVICES CONFIG
+         * V10.15 Update: Integrated Global Navigation Sync Integration.
+         */
         
-        let siteData = { 
-            nav: [], 
-            phones: ["618-708-4450", "844-907-4450"], 
-            email: "Scott.Robinson@skventuresigns.com", 
-            addressStreet: "607 W Clark Ave", 
-            addressCity: "Effingham IL 62401" 
-        };
+        // Duplicate siteData variable block removed so navigation.js handles global data declarations safely.
 
         /* =========================================================
            V10.15 FIXED SAME-TAB NAVIGATION
         ========================================================= */
         window.smartTabClick = function(event, element, targetName, url) {
-            if (event) event.preventDefault(); // Stop standard link behavior
-            // Strictly assign destination URL so it loads in the exact same tab
+            if (event) event.preventDefault();
             window.location.href = url;
         };
 
@@ -938,14 +931,16 @@
             const fEmail = document.getElementById('footer-email-list');
             const fAddr = document.getElementById('footer-address-container');
 
-            dNav.innerHTML = ''; mNav.innerHTML = ''; fPhone.innerHTML = ''; fEmail.innerHTML = ''; fAddr.innerHTML = '';
+            if (!dNav || !mNav || !siteData || !siteData.nav) return;
+
+            dNav.innerHTML = ''; mNav.innerHTML = ''; 
+            if(fPhone) fPhone.innerHTML = ''; 
+            if(fEmail) fEmail.innerHTML = ''; 
+            if(fAddr) fAddr.innerHTML = '';
 
             siteData.nav.forEach(n => {
                 const isActive = n.label.toLowerCase() === 'services';
-                
-                // V10.12: Generate a unique target name derived from the link's name to prevent duplicate tabs
                 const uniqueTarget = `tab_sk_${n.label.replace(/[^a-zA-Z0-9]/g, '_')}`;
-
                 const desktopActive = isActive ? 'active' : '';
 
                 dNav.innerHTML += `<li><a href="${n.url}" class="nav-link ${desktopActive}" onclick="smartTabClick(event, this, '${uniqueTarget}', '${n.url}')">${n.label}</a></li>`;
@@ -957,21 +952,20 @@
                 mNav.innerHTML += `<a href="${n.url}" class="${mobileClass}" onclick="smartTabClick(event, this, '${uniqueTarget}', '${n.url}')">${n.label}</a>`;
             });
 
-            // Footer Matching Logic from V10.11
-            fPhone.className = "flex flex-wrap items-center justify-center gap-3";
-            let phoneHTML = '';
-            if (siteData.phones.length > 0) {
-                phoneHTML = `<span class="footer-value !mb-0" onclick="openPhoneSmartActions('${siteData.phones[0]}')">${siteData.phones[0]}</span>`;
+            if (fPhone && siteData.phones && siteData.phones.length > 0) {
+                fPhone.className = "flex flex-wrap items-center justify-center gap-3";
+                let phoneHTML = `<span class="footer-value !mb-0" onclick="openPhoneSmartActions('${siteData.phones[0]}')">${siteData.phones[0]}</span>`;
                 if (siteData.phones[1]) {
                     phoneHTML += `<span class="text-white opacity-70 text-sm font-bold uppercase">or</span><span class="footer-value !mb-0" onclick="openPhoneSmartActions('${siteData.phones[1]}')">${siteData.phones[1]}</span>`;
                 }
+                fPhone.innerHTML = phoneHTML;
             }
-            fPhone.innerHTML = phoneHTML;
 
-            fEmail.innerHTML = `<span class="footer-value" onclick="openEmailSmartActions('${siteData.email}')">${siteData.email}</span>`;
+            if (fEmail && siteData.email) {
+                fEmail.innerHTML = `<span class="footer-value" onclick="openEmailSmartActions('${siteData.email}')">${siteData.email}</span>`;
+            }
 
-            // Single line address format
-            if (siteData.addressStreet) {
+            if (fAddr && siteData.addressStreet) {
                 const fullDisplay = `${siteData.addressStreet}, ${siteData.addressCity}`;
                 fAddr.innerHTML = `<span class="footer-value" onclick="openMapSmartActions()">${fullDisplay}</span>`;
             }
@@ -981,19 +975,24 @@
 
         function toggleSettingsPanel() {
             const panel = document.getElementById('settings-panel');
-            panel.classList.toggle('hidden-settings');
+            if (panel) panel.classList.toggle('hidden-settings');
         }
 
         function downloadSKContact() {
             const PHOTO_URL = "https://skventuresigns.com/images/S&K-Sign-Black.png";
+            const currentPhones = (typeof siteData !== 'undefined' && siteData.phones) ? siteData.phones : ["618-708-4450", "844-907-4450"];
+            const currentEmail = (typeof siteData !== 'undefined' && siteData.email) ? siteData.email : "Scott.Robinson@skventuresigns.com";
+            const currentStreet = (typeof siteData !== 'undefined' && siteData.addressStreet) ? siteData.addressStreet : "607 W Clark Ave";
+            const currentCity = (typeof siteData !== 'undefined' && siteData.addressCity) ? siteData.addressCity : "Effingham IL 62401";
+
             const vcard = "BEGIN:VCARD\n" +
                         "VERSION:3.0\n" +
                         "FN:Scott Robinson\n" +
                         "ORG:S&K Venture Signs\n" +
-                        "TEL;TYPE=WORK,VOICE:" + (siteData.phones[1] || "844-907-4450") + "\n" +
-                        "TEL;TYPE=CELL,VOICE:" + (siteData.phones[0] || "618-708-4450") + "\n" +
-                        "EMAIL;TYPE=PREF,INTERNET:" + siteData.email + "\n" +
-                        "ADR;TYPE=WORK:;;" + siteData.addressStreet + ";" + siteData.addressCity.split(' ')[0] + ";IL;" + siteData.addressCity.split(' ').pop() + ";USA\n" +
+                        "TEL;TYPE=WORK,VOICE:" + (currentPhones[1] || "844-907-4450") + "\n" +
+                        "TEL;TYPE=CELL,VOICE:" + (currentPhones[0] || "618-708-4450") + "\n" +
+                        "EMAIL;TYPE=PREF,INTERNET:" + currentEmail + "\n" +
+                        "ADR;TYPE=WORK:;;" + currentStreet + ";" + currentCity.split(' ')[0] + ";IL;" + currentCity.split(' ').pop() + ";USA\n" +
                         "URL:https://skventuresigns.com/\n" +
                         "PHOTO;VALUE=URI:" + PHOTO_URL + "\n" +
                         "END:VCARD";
@@ -1043,7 +1042,7 @@
             
             const header = document.getElementById('main-header');
             const logo = document.getElementById('header-logo');
-            if (header.classList.contains('header-scrolled')) {
+            if (header && header.classList.contains('header-scrolled') && logo) {
                 logo.src = (targetMode === 'dark') ? "./images/S&K-Sign-White.png" : "./images/S&K-Sign-Black.png";
             }
 
@@ -1061,7 +1060,6 @@
             const isMac = navigator.platform.toUpperCase().indexOf('MAC') >= 0;
             
             let html = '';
-            
             if (isMac) {
                 html += `<a href="tel:${clean}" class="smart-option" onclick="smartTabClick(event, this, 'tab_sk_tel', this.href)"><i data-lucide="monitor"></i> FaceTime / iPhone</a>`;
             } else {
@@ -1072,9 +1070,11 @@
                 html += `<a href="https://wa.me/1${clean}" class="smart-option" onclick="smartTabClick(event, this, 'tab_sk_wa', this.href)"><i data-lucide="message-circle"></i> WhatsApp Specialist</a>`;
             }
 
-            container.innerHTML = html;
-            document.getElementById('phone-modal').style.display = 'flex';
-            lucide.createIcons();
+            if (container) {
+                container.innerHTML = html;
+                document.getElementById('phone-modal').style.display = 'flex';
+                lucide.createIcons();
+            }
         }
 
         function openEmailSmartActions(email, subject = "General Inquiry") {
@@ -1084,17 +1084,21 @@
             const defUrl = `mailto:${email}?subject=${encodedSubject}`;
             const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=${email}&su=${encodedSubject}`;
             
-            container.innerHTML = `
-                <a href="${defUrl}" class="smart-option" onclick="smartTabClick(event, this, 'tab_sk_mail_def', this.href)"><i data-lucide="mail"></i> Default Client</a>
-                <a href="${gmailUrl}" class="smart-option" onclick="smartTabClick(event, this, 'tab_sk_mail_gmail', this.href)"><i data-lucide="send"></i> Gmail Web</a>
-                <div onclick="navigator.clipboard.writeText('${email}');" class="smart-option"><i data-lucide="copy"></i> Copy Address</div>
-            `;
-            document.getElementById('email-modal').style.display = 'flex';
-            lucide.createIcons();
+            if (container) {
+                container.innerHTML = `
+                    <a href="${defUrl}" class="smart-option" onclick="smartTabClick(event, this, 'tab_sk_mail_def', this.href)"><i data-lucide="mail"></i> Default Client</a>
+                    <a href="${gmailUrl}" class="smart-option" onclick="smartTabClick(event, this, 'tab_sk_mail_gmail', this.href)"><i data-lucide="send"></i> Gmail Web</a>
+                    <div onclick="navigator.clipboard.writeText('${email}');" class="smart-option"><i data-lucide="copy"></i> Copy Address</div>
+                `;
+                document.getElementById('email-modal').style.display = 'flex';
+                lucide.createIcons();
+            }
         }
 
-       function openMapSmartActions() {
-            const addrStr = `${siteData.addressStreet} ${siteData.addressCity}`;
+        function openMapSmartActions() {
+            const currentStreet = (typeof siteData !== 'undefined' && siteData.addressStreet) ? siteData.addressStreet : "607 W Clark Ave";
+            const currentCity = (typeof siteData !== 'undefined' && siteData.addressCity) ? siteData.addressCity : "Effingham IL 62401";
+            const addrStr = `${currentStreet} ${currentCity}`;
             const addr = encodeURIComponent(addrStr);
             
             const gmapsUrl = `https://www.google.com/maps/search/?api=1&query=${addr}`;
@@ -1119,6 +1123,7 @@
         }
 
         const trackSectionView = () => {
+            if (typeof gtag === 'undefined') return;
             const observer = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
                     if (entry.isIntersecting) {
@@ -1137,30 +1142,39 @@
            EVENT LISTENERS & INITIALIZATION
         ========================================================= */
         window.addEventListener('scroll', () => {
-    const header = document.getElementById('main-header');
-    const logo = document.getElementById('header-logo');
-    const isDark = document.body.classList.contains('dark-mode');
+            const header = document.getElementById('main-header');
+            const logo = document.getElementById('header-logo');
+            const isDark = document.body.classList.contains('dark-mode');
 
-    if (window.scrollY > 50) {
-        header.classList.add('header-scrolled');
-        // If dark mode: use white logo on dark background. Else: use black logo on white background.
-        logo.src = isDark ? "./images/S&K-Sign-White.png" : "./images/S&K-Sign-Black.png";
-    } 
-    
-    else {
-        header.classList.remove('header-scrolled');
-        // Unscrolled header stays maroon, so it always takes the white logo.
-        logo.src = "./images/S&K-Sign-White.png";
-    }
-    });
-
-        document.getElementById('menu-toggle').addEventListener('click', () => {
-            const m = document.getElementById('mobile-menu');
-            m.classList.toggle('hidden'); m.classList.toggle('flex');
+            if (header && logo) {
+                if (window.scrollY > 50) {
+                    header.classList.add('header-scrolled');
+                    logo.src = isDark ? "./images/S&K-Sign-White.png" : "./images/S&K-Sign-Black.png";
+                } else {
+                    header.classList.remove('header-scrolled');
+                    logo.src = "./images/S&K-Sign-White.png";
+                }
+            }
         });
 
+        const menuToggle = document.getElementById('menu-toggle');
+        if (menuToggle) {
+            menuToggle.addEventListener('click', () => {
+                const m = document.getElementById('mobile-menu');
+                if (m) {
+                    m.classList.toggle('hidden'); m.classList.toggle('flex');
+                }
+            });
+        }
+
         window.onload = () => {
-            loadSheetData();
+            // Safe execution routing avoiding missing loadSheetData setups
+            if (typeof initNavigationEngine === 'function') {
+                initNavigationEngine();
+            } else if (typeof renderDynamicFramework === 'function') {
+                renderDynamicFramework();
+            }
+            
             trackSectionView();
             
             const cookies = document.cookie.split('; ').reduce((acc, curr) => {
