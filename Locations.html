@@ -651,8 +651,7 @@
         /**
          * S&K SMART SYNC ENGINE v10.15 & LOCATIONS LOGIC
          * V10.15 Update: Global Inter-Tab Communication (ITC) & Adaptive Dashed Boxes.
-         
-        const SITE_DATA_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTrs2-zHEDCHZcBecOrMd_pokyGDjCR7NUl9pp1EAEb9hfUKYeZm4Di5W3fjX75NWtRbRKOHF2DeWYy/pub?output=csv";*/
+         */
         const INVENTORY_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vThA71kIjoVWZCstUInZWTjo3WcdTWd-sts-ucDmSslWgXctOv-1k78qV1Xt0Gps5ocbuJwLVDKbl-R/pub?output=csv";
         
         let siteData = { 
@@ -851,7 +850,6 @@
             
             let html = '';
             
-            // V10.15: Smart Tab applied to modal options
             if (isMac) {
                 html += `<a href="tel:${clean}" class="smart-option" onclick="smartTabClick(event, this, 'tab_sk_tel', this.href)"><i data-lucide="monitor"></i> FaceTime / iPhone</a>`;
             } else {
@@ -874,7 +872,6 @@
             const defUrl = `mailto:${email}?subject=${encodedSubject}`;
             const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=${email}&su=${encodedSubject}`;
             
-            // V10.15: Smart Tab applied to modal options
             container.innerHTML = `
                 <a href="${defUrl}" class="smart-option" onclick="smartTabClick(event, this, 'tab_sk_mail_def', this.href)"><i data-lucide="mail"></i> Default Client</a>
                 <a href="${gmailUrl}" class="smart-option" onclick="smartTabClick(event, this, 'tab_sk_mail_gmail', this.href)"><i data-lucide="send"></i> Gmail Web</a>
@@ -884,7 +881,7 @@
             lucide.createIcons();
         }
 
-     function openMapSmartActions() {
+        function openMapSmartActions() {
             const addrStr = `${siteData.addressStreet} ${siteData.addressCity}`;
             const addr = encodeURIComponent(addrStr);
             
@@ -1132,37 +1129,24 @@
         /* =========================================================
            EVENT LISTENERS & INITIALIZATION
         ========================================================= */
-       window.addEventListener('scroll', () => {
-    const header = document.getElementById('main-header');
-    const logo = document.getElementById('header-logo');
-    const isDark = document.body.classList.contains('dark-mode');
+        window.addEventListener('scroll', () => {
+            const header = document.getElementById('main-header');
+            const logo = document.getElementById('header-logo');
+            const isDark = document.body.classList.contains('dark-mode');
 
-    if (window.scrollY > 50) {
-        header.classList.add('header-scrolled');
-        // If dark mode: use white logo on dark background. Else: use black logo on white background.
-        logo.src = isDark ? "./images/S&K-Sign-White.png" : "./images/S&K-Sign-Black.png";
-    } 
-    
-    else {
-        header.classList.remove('header-scrolled');
-        // Unscrolled header stays maroon, so it always takes the white logo.
-        logo.src = "./images/S&K-Sign-White.png";
-    }
-    });
+            if (window.scrollY > 50) {
+                header.classList.add('header-scrolled');
+                logo.src = isDark ? "./images/S&K-Sign-White.png" : "./images/S&K-Sign-Black.png";
+            } else {
+                header.classList.remove('header-scrolled');
+                logo.src = "./images/S&K-Sign-White.png";
+            }
+        });
 
         document.getElementById('menu-toggle').addEventListener('click', () => {
             const m = document.getElementById('mobile-menu');
             m.classList.toggle('hidden'); m.classList.toggle('flex');
         });
-
-       /**
-         * STRICT SAME-TAB NAVIGATION
-         * Forces all links to load inside the exact same window.
-         */
-        window.smartTabClick = function(event, element, targetName, url) {
-            if(event) event.preventDefault(); 
-            window.location.href = url;
-        };
 
         window.onload = () => {
             loadSheetData();
@@ -1191,7 +1175,7 @@
                 setTheme('auto');
             }
         });
-    </script>
-    <script src="./navigation.js"></script>
+</script>
+<script src="./navigation.js"></script>
 </body>
 </html>
