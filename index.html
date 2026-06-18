@@ -479,7 +479,7 @@
 
             <nav class="hidden lg:flex flex-grow items-center justify-center px-10">
                 <ul id="desktop-nav-root" class="flex items-center gap-8 xl:gap-12">
-                    </ul>
+                </ul>
             </nav>
 
             <div class="flex items-center gap-4 z-[1001]">
@@ -498,7 +498,7 @@
         <section class="advertising-hero">
             <div class="main-container flex flex-col lg:flex-row items-center justify-between gap-10">
                 <div class="lg:w-1/2 w-full flex justify-center">
-                    <h5 class="hero-title-precision">Transform Your Business with </br>S&K Venture Signs and Advertising</h5>
+                    <h5 class="hero-title-precision">Transform Your Business with <br>S&K Venture Signs and Advertising</h5>
                 </div>
                 <div class="lg:w-1/2 w-full flex justify-center">
                     <div class="bg-[var(--card-bg)] p-10 rounded-3xl shadow-2xl w-full max-w-[450px] text-center transition-colors">
@@ -540,12 +540,12 @@
         </section>
 
         <section id="services-grid-container" class="py-20 bg-[#3E0100]">
-    <div class="main-container">
-        <div class="flex flex-col items-center gap-6 mb-12">
-            <h2 class="sr-only">State-of-the-Art Digital Sign Advertising Solutions & Mobile Billboard Rentals in Effingham, IL</h2>
-            <img src="./images/Topline.png" alt="Engage Your Audience..." class="w-full max-w-[1080px] h-auto">
-            <img src="./images/Customize.png" alt="Customize Digital Advertising" class="w-full max-w-[1080px] h-auto">
-        </div>
+            <div class="main-container">
+                <div class="flex flex-col items-center gap-6 mb-12">
+                    <h2 class="sr-only">State-of-the-Art Digital Sign Advertising Solutions & Mobile Billboard Rentals in Effingham, IL</h2>
+                    <img src="./images/Topline.png" alt="Engage Your Audience..." class="w-full max-w-[1080px] h-auto">
+                    <img src="./images/Customize.png" alt="Customize Digital Advertising" class="w-full max-w-[1080px] h-auto">
+                </div>
 
                 <div id="services-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
                     <div class="service-card bg-[#ffffff]">
@@ -565,7 +565,7 @@
                             <h3 class="text-2xl mb-2 text-black" style="font-family:'Abril Fatface', cursive;">Rental and Leasing</h3>
                             <p class="text-sm mb-6 text-[#3E0100] font-medium">Flexible rental options tailored to fit Your Marketing needs and budget.</p>
                         </div>
-                        <a href="./Locations.html" class="block py-3 rounded-full font-black uppercase text-xs tracking-widest text-white text-center bg-[#023456] border-4 border-white hover:scale-105 transition-all shadow-lg" onclick="smartTabClick(event, this, 'tab_sk_svc_rental', './Services.html')">
+                        <a href="./Services.html" class="block py-3 rounded-full font-black uppercase text-xs tracking-widest text-white text-center bg-[#023456] border-4 border-white hover:scale-105 transition-all shadow-lg" onclick="smartTabClick(event, this, 'tab_sk_svc_rental', './Services.html')">
                             <span class="btn-text">Rental and Leasing ></span>
                         </a>
                     </div>
@@ -667,21 +667,10 @@
     </div>
 
     <script>
-        /**
-         * S&K UNIVERSAL ENGINE v10.14 (Safe ITC / Global Sync / Same Tab Forced)
-         
-        const SYNC_CSV = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTrs2-zHEDCHZcBecOrMd_pokyGDjCR7NUl9pp1EAEb9hfUKYeZm4Di5W3fjX75NWtRbRKOHF2DeWYy/pub?output=csv"; */
-        /**
-        
-        * S&K UNIVERSAL ENGINE v10.14 (Safe ITC / Global Sync / Same Tab Forced)
-        */
         const SYNC_JSON = "./navigation.json";
 
         let siteData = { nav: [], phones: [], email: "", addressStreet: "", addressCity: "" };
 
-        /**
-         * V10.14: SAFE STORAGE WRAPPERS (Retained for visual states, removed for tab jumping)
-         */
         function safeSetStorage(key, val) {
             try { localStorage.setItem(key, val); } catch (e) { console.warn('Storage blocked'); }
         }
@@ -692,12 +681,8 @@
             try { localStorage.removeItem(key); } catch (e) {}
         }
 
-        /**
-         * V10.14: FIXED SAME-TAB NAVIGATION
-         * Completely stripped window.open() jumping logic to STRICTLY force links into the same active tab.
-         */
         window.smartTabClick = function(event, element, targetName, url) {
-            if(event) event.preventDefault(); // Stop standard link behavior
+            if(event) event.preventDefault();
             window.location.href = url;
         };
 
@@ -791,7 +776,9 @@
             let html = `
                 <a href="tel:${clean}" class="smart-option" onclick="smartTabClick(event, this, 'tab_sk_tel', this.href)"><i data-lucide="phone"></i> Direct Call</a>
             `;
-            if (num.includes('618')) html += `<a href="https://wa.me/1${clean}" class="smart-option" onclick="smartTabClick(event, this, 'tab_sk_wa', this.href)"><i data-lucide="message-circle"></i> WhatsApp Specialist</a>`;
+            if (clean.includes('6187084450')) {
+                html += `<a href="https://wa.me/1${clean}" class="smart-option" onclick="smartTabClick(event, this, 'tab_sk_wa', this.href)"><i data-lucide="message-circle"></i> WhatsApp Specialist</a>`;
+            }
             container.innerHTML = html;
             document.getElementById('phone-modal').style.display = 'flex';
             lucide.createIcons();
@@ -870,6 +857,16 @@
             const m = document.getElementById('mobile-menu');
             m.classList.toggle('hidden'); m.classList.toggle('flex');
         };
+
+        function loadSheetData() {
+            fetch(SYNC_JSON)
+                .then(response => response.json())
+                .then(data => {
+                    siteData = data;
+                    renderDynamicFramework();
+                })
+                .catch(err => console.error("Error loading navigation engine:", err));
+        }
 
         window.onload = () => {
             loadSheetData();
