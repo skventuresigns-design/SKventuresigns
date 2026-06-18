@@ -1,9 +1,8 @@
 {
   "nav": [
     { "label": "Home", "url": "index.html" },
-    { "label": "Fair Info", "url": "effinghamcountyfair.html" },
-    { "label": "Services", "url": "services.html" },
     { "label": "Locations", "url": "locations.html" },
+    { "label": "Services", "url": "services.html" },
     { "label": "Contact", "url": "contact.html" }
   ],
   "phones": ["844-907-4450", "618-708-4450"],
