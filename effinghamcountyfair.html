@@ -461,149 +461,69 @@
 
     <script>
         /**
-         * S&K SMART SYNC ENGINE v10.17
+         * S&K SMART SYNC ENGINE v10.15 - EFFINGHAM COUNTY FAIR CONFIG
+         * V10.15 Update: Integrated Global Navigation Sync Integration.
          */
-        const SITE_DATA_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTrs2-zHEDCHZcBecOrMd_pokyGDjCR7NUl9pp1EAEb9hfUKYeZm4Di5W3fjX75NWtRbRKOHF2DeWYy/pub?output=csv";
         
-        let siteData = { 
-            nav: [], 
-            phones: ["618-708-4450", "844-907-4450"], 
-            email: "Scott.Robinson@skventuresigns.com", 
-            addressStreet: "607 W Clark Ave", 
-            addressCity: "Effingham IL 62401" 
-        };
+        // Site data state handled globally via navigation.js
 
         let lightboxGallery = [];
         let currentLightboxIndex = 0;
 
         /* =========================================================
-           V10.17 CROSS-TAB AWARENESS (Smart Navigation Update)
+           V10.15 FIXED SAME-TAB NAVIGATION
         ========================================================= */
-        function safeSetStorage(key, val) { try { localStorage.setItem(key, val); } catch (e) {} }
-        function safeGetStorage(key) { try { return localStorage.getItem(key); } catch (e) { return null; } }
-        function safeRemoveStorage(key) { try { localStorage.removeItem(key); } catch (e) {} }
-
         window.smartTabClick = function(event, element, targetName, url) {
-            if(event) event.preventDefault(); 
-            
-            // If we are clicking a link to the tab we are CURRENTLY on, just navigate normally
-            if (window.name === targetName) {
-                window.location.href = url;
-                return;
-            }
-
-            // Check if the tab is already open somewhere else
-            const isTabAlreadyOpen = safeGetStorage(targetName) === 'true';
-
-            if (isTabAlreadyOpen) {
-                if(element && element.classList) element.classList.add('already-open');
-                let tabWindow = window.open(url, targetName);
-                if (tabWindow) { 
-                    tabWindow.focus(); 
-                } else { 
-                    window.location.href = url; 
-                }
-            } else {
-                // Not open anywhere else? Navigate smoothly in the CURRENT tab.
-                window.location.href = url;
-            }
+            if (event) event.preventDefault();
+            window.location.href = url;
         };
 
         /* =========================================================
            FRAMEWORK SYSTEM LOGIC
         ========================================================= */
-        function parseCSVRow(text) {
-            const result = [];
-            let current = '';
-            let inQuotes = false;
-            for (let i = 0; i < text.length; i++) {
-                const char = text[i];
-                if (char === '"') { inQuotes = !inQuotes; }
-                else if (char === ',' && !inQuotes) { result.push(current.trim()); current = ''; }
-                else { current += char; }
-            }
-            result.push(current.trim());
-            return result.map(v => v.replace(/^"|"$/g, ''));
-        }
-
-        async function loadSheetData() {
-            try {
-                const response = await fetch(SITE_DATA_CSV_URL);
-                const text = await response.text();
-                const lines = text.split(/\r?\n/);
-                
-                let tempNav = [];
-                let tempPhones = [];
-
-                lines.forEach((line, idx) => {
-                    if (!line.trim()) return; 
-                    const row = parseCSVRow(line);
-                    const rowNum = idx + 1;
-
-                    if (row[2]?.trim().toLowerCase() === 'header') {
-                        tempNav.push({ label: row[0], url: row[1] });
-                    }
-
-                    if (rowNum === 7) tempPhones[0] = row[0];
-                    if (rowNum === 8) tempPhones[1] = row[0];
-                    if (rowNum === 9) siteData.email = row[0];
-                    if (rowNum === 10) {
-                        siteData.addressStreet = row[0];
-                        siteData.addressCity = row[1];
-                    }
-                });
-
-                if (tempNav.length > 0) siteData.nav = tempNav;
-                if (tempPhones.length > 0) siteData.phones = tempPhones.filter(p => p);
-
-                renderDynamicContent();
-            } catch (err) {
-                renderDynamicContent();
-            }
-        }
-
-        function renderDynamicContent() {
+        function renderDynamicFramework() {
             const dNav = document.getElementById('desktop-nav-root');
             const mNav = document.getElementById('mobile-menu');
             const fPhone = document.getElementById('footer-phone-list');
             const fEmail = document.getElementById('footer-email-list');
             const fAddr = document.getElementById('footer-address-container');
 
-            dNav.innerHTML = ''; mNav.innerHTML = ''; fPhone.innerHTML = ''; fEmail.innerHTML = ''; fAddr.innerHTML = '';
+            if (!dNav || !mNav || !siteData || !siteData.nav) return;
+
+            dNav.innerHTML = ''; mNav.innerHTML = ''; 
+            if(fPhone) fPhone.innerHTML = ''; 
+            if(fEmail) fEmail.innerHTML = ''; 
+            if(fAddr) fAddr.innerHTML = '';
 
             siteData.nav.forEach(n => {
+                // Explicitly sets the highlight active state for the fairgrounds page
+                const isActive = n.url.includes('effinghamcountyfair');
                 const uniqueTarget = `tab_sk_${n.label.replace(/[^a-zA-Z0-9]/g, '_')}`;
-                const isActive = false; 
-                
-                const isOpen = safeGetStorage(uniqueTarget) === 'true';
-                const openClass = isOpen && !isActive ? 'already-open' : '';
                 const desktopActive = isActive ? 'active' : '';
 
-                // FIX: Removed target attribute from string
-                dNav.innerHTML += `<li><a href="${n.url}" class="nav-link ${desktopActive} ${openClass}" onclick="smartTabClick(event, this, '${uniqueTarget}', '${n.url}')">${n.label}</a></li>`;
+                dNav.innerHTML += `<li><a href="${n.url}" class="nav-link ${desktopActive}" onclick="smartTabClick(event, this, '${uniqueTarget}', '${n.url}')">${n.label}</a></li>`;
                 
                 const mobileClass = isActive 
                     ? `text-2xl font-bold border-b border-black/10 dark:border-white/10 pb-3 text-[var(--sk-gold)]`
                     : `text-2xl font-bold border-b border-black/10 dark:border-white/10 pb-3`;
 
-                // FIX: Removed target attribute from string
-                mNav.innerHTML += `<a href="${n.url}" class="${mobileClass} ${openClass}" onclick="smartTabClick(event, this, '${uniqueTarget}', '${n.url}')">${n.label}</a>`;
+                mNav.innerHTML += `<a href="${n.url}" class="${mobileClass}" onclick="smartTabClick(event, this, '${uniqueTarget}', '${n.url}')">${n.label}</a>`;
             });
 
-            // Footer Matching Logic
-            fPhone.className = "flex flex-wrap items-center justify-center gap-3";
-            let phoneHTML = '';
-            if (siteData.phones.length > 0) {
-                phoneHTML = `<span class="footer-value !mb-0" onclick="openPhoneSmartActions('${siteData.phones[0]}')">${siteData.phones[0]}</span>`;
+            if (fPhone && siteData.phones && siteData.phones.length > 0) {
+                fPhone.className = "flex flex-wrap items-center justify-center gap-3";
+                let phoneHTML = `<span class="footer-value !mb-0" onclick="openPhoneSmartActions('${siteData.phones[0]}')">${siteData.phones[0]}</span>`;
                 if (siteData.phones[1]) {
                     phoneHTML += `<span class="text-white opacity-70 text-sm font-bold uppercase">or</span><span class="footer-value !mb-0" onclick="openPhoneSmartActions('${siteData.phones[1]}')">${siteData.phones[1]}</span>`;
                 }
+                fPhone.innerHTML = phoneHTML;
             }
-            fPhone.innerHTML = phoneHTML;
 
-            fEmail.innerHTML = `<span class="footer-value" onclick="openEmailSmartActions('${siteData.email}')">${siteData.email}</span>`;
+            if (fEmail && siteData.email) {
+                fEmail.innerHTML = `<span class="footer-value" onclick="openEmailSmartActions('${siteData.email}')">${siteData.email}</span>`;
+            }
 
-            if (siteData.addressStreet) {
+            if (fAddr && siteData.addressStreet) {
                 const fullDisplay = `${siteData.addressStreet}, ${siteData.addressCity}`;
                 fAddr.innerHTML = `<span class="footer-value" onclick="openMapSmartActions()">${fullDisplay}</span>`;
             }
@@ -612,12 +532,29 @@
         }
 
         function toggleSettingsPanel() {
-            document.getElementById('settings-panel').classList.toggle('hidden-settings');
+            const panel = document.getElementById('settings-panel');
+            if (panel) panel.classList.toggle('hidden-settings');
         }
 
         function downloadSKContact() {
-            const PHOTO_URL = "./images/S&K-Sign-Black.png";
-            const vcard = "BEGIN:VCARD\nVERSION:3.0\nFN:Scott Robinson\nORG:S&K Venture Signs\nTEL;TYPE=WORK,VOICE:" + (siteData.phones[1] || "844-907-4450") + "\nTEL;TYPE=CELL,VOICE:" + (siteData.phones[0] || "618-708-4450") + "\nEMAIL;TYPE=PREF,INTERNET:" + siteData.email + "\nADR;TYPE=WORK:;;" + siteData.addressStreet + ";" + siteData.addressCity.split(' ')[0] + ";IL;" + siteData.addressCity.split(' ').pop() + ";USA\nURL:https://skventuresigns.com/\nPHOTO;VALUE=URI:" + PHOTO_URL + "\nEND:VCARD";
+            const PHOTO_URL = "https://skventuresigns.com/images/S&K-Sign-Black.png";
+            const currentPhones = (typeof siteData !== 'undefined' && siteData.phones) ? siteData.phones : ["618-708-4450", "844-907-4450"];
+            const currentEmail = (typeof siteData !== 'undefined' && siteData.email) ? siteData.email : "Scott.Robinson@skventuresigns.com";
+            const currentStreet = (typeof siteData !== 'undefined' && siteData.addressStreet) ? siteData.addressStreet : "607 W Clark Ave";
+            const currentCity = (typeof siteData !== 'undefined' && siteData.addressCity) ? siteData.addressCity : "Effingham IL 62401";
+
+            const vcard = "BEGIN:VCARD\n" +
+                        "VERSION:3.0\n" +
+                        "FN:Scott Robinson\n" +
+                        "ORG:S&K Venture Signs\n" +
+                        "TEL;TYPE=WORK,VOICE:" + (currentPhones[1] || "844-907-4450") + "\n" +
+                        "TEL;TYPE=CELL,VOICE:" + (currentPhones[0] || "618-708-4450") + "\n" +
+                        "EMAIL;TYPE=PREF,INTERNET:" + currentEmail + "\n" +
+                        "ADR;TYPE=WORK:;;" + currentStreet + ";" + currentCity.split(' ')[0] + ";IL;" + currentCity.split(' ').pop() + ";USA\n" +
+                        "URL:https://skventuresigns.com/\n" +
+                        "PHOTO;VALUE=URI:" + PHOTO_URL + "\n" +
+                        "END:VCARD";
+            
             const blob = new Blob([vcard], { type: 'text/vcard;charset=utf-8' });
             const url = window.URL.createObjectURL(blob);
             const link = document.createElement('a');
@@ -642,8 +579,8 @@
             }
             
             if (targetMode === 'dark') {
-                root.style.setProperty('--bg-primary', '#000000');
-                root.style.setProperty('--text-primary', '#ffffff');
+                root.style.setProperty('--bg-primary', '#121212');
+                root.style.setProperty('--text-primary', '#e0e0e0');
                 root.style.setProperty('--card-bg', '#1e1e1e');
                 root.style.setProperty('--header-bg-scrolled', '#1e1e1e');
                 root.style.setProperty('--nav-text-scrolled', '#ffffff');
@@ -651,8 +588,8 @@
                 root.style.setProperty('--mobile-menu-text', '#ffffff');
                 body.classList.add('dark-mode');
             } else {
-                root.style.setProperty('--bg-primary', '#FFFFFF'); 
-                root.style.setProperty('--text-primary', '#000000'); 
+                root.style.setProperty('--bg-primary', '#000000'); 
+                root.style.setProperty('--text-primary', '#FFFFFF'); 
                 root.style.setProperty('--card-bg', '#ffffff');
                 root.style.setProperty('--header-bg-scrolled', 'white');
                 root.style.setProperty('--nav-text-scrolled', '#222222');
@@ -663,7 +600,7 @@
             
             const header = document.getElementById('main-header');
             const logo = document.getElementById('header-logo');
-            if (header.classList.contains('header-scrolled')) {
+            if (header && header.classList.contains('header-scrolled') && logo) {
                 logo.src = (targetMode === 'dark') ? "./images/S&K-Sign-White.png" : "./images/S&K-Sign-Black.png";
             }
 
@@ -680,55 +617,91 @@
             const container = document.getElementById('phone-options-container');
             const isMac = navigator.platform.toUpperCase().indexOf('MAC') >= 0;
             
-            // FIX: Removed target="_blank" and added smartTabClick
-            let html = isMac 
-                ? `<a href="tel:${clean}" class="smart-option" onclick="smartTabClick(event, this, 'tab_sk_tel', this.href)"><i data-lucide="monitor"></i> FaceTime / iPhone</a>`
-                : `<a href="tel:${clean}" class="smart-option" onclick="smartTabClick(event, this, 'tab_sk_tel', this.href)"><i data-lucide="phone"></i> Direct Call</a>`;
-            
-            if (num.includes('618')) html += `<a href="https://wa.me/1${clean}" class="smart-option" onclick="smartTabClick(event, this, 'tab_sk_wa', this.href)"><i data-lucide="message-circle"></i> WhatsApp Specialist</a>`;
+            let html = '';
+            if (isMac) {
+                html += `<a href="tel:${clean}" class="smart-option" onclick="smartTabClick(event, this, 'tab_sk_tel', this.href)"><i data-lucide="monitor"></i> FaceTime / iPhone</a>`;
+            } else {
+                html += `<a href="tel:${clean}" class="smart-option" onclick="smartTabClick(event, this, 'tab_sk_tel', this.href)"><i data-lucide="phone"></i> Direct Call</a>`;
+            }
 
-            container.innerHTML = html;
-            document.getElementById('phone-modal').style.display = 'flex';
-            lucide.createIcons();
+            if (num.includes('618')) {
+                html += `<a href="https://wa.me/1${clean}" class="smart-option" onclick="smartTabClick(event, this, 'tab_sk_wa', this.href)"><i data-lucide="message-circle"></i> WhatsApp Specialist</a>`;
+            }
+
+            if (container) {
+                container.innerHTML = html;
+                document.getElementById('phone-modal').style.display = 'flex';
+                lucide.createIcons();
+            }
         }
 
-        function openEmailSmartActions(email) {
+        function openEmailSmartActions(email, subject = "General Inquiry") {
+            const encodedSubject = encodeURIComponent(subject);
             const container = document.getElementById('email-options-container');
             
-            // FIX: Removed target="_blank" and added smartTabClick
-            container.innerHTML = `
-                <a href="mailto:${email}" class="smart-option" onclick="smartTabClick(event, this, 'tab_sk_mail_def', this.href)"><i data-lucide="mail"></i> Default Client</a>
-                <a href="https://mail.google.com/mail/?view=cm&fs=1&to=${email}" class="smart-option" onclick="smartTabClick(event, this, 'tab_sk_mail_gmail', this.href)"><i data-lucide="send"></i> Gmail Web</a>
-                <div onclick="navigator.clipboard.writeText('${email}'); closeModals();" class="smart-option"><i data-lucide="copy"></i> Copy Address</div>
-            `;
-            document.getElementById('email-modal').style.display = 'flex';
-            lucide.createIcons();
+            const defUrl = `mailto:${email}?subject=${encodedSubject}`;
+            const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=${email}&su=${encodedSubject}`;
+            
+            if (container) {
+                container.innerHTML = `
+                    <a href="${defUrl}" class="smart-option" onclick="smartTabClick(event, this, 'tab_sk_mail_def', this.href)"><i data-lucide="mail"></i> Default Client</a>
+                    <a href="${gmailUrl}" class="smart-option" onclick="smartTabClick(event, this, 'tab_sk_mail_gmail', this.href)"><i data-lucide="send"></i> Gmail Web</a>
+                    <div onclick="navigator.clipboard.writeText('${email}');" class="smart-option"><i data-lucide="copy"></i> Copy Address</div>
+                `;
+                document.getElementById('email-modal').style.display = 'flex';
+                lucide.createIcons();
+            }
         }
 
-         function openMapSmartActions() {
-            const addrStr = `${siteData.addressStreet} ${siteData.addressCity}`;
+        function openMapSmartActions() {
+            const currentStreet = (typeof siteData !== 'undefined' && siteData.addressStreet) ? siteData.addressStreet : "607 W Clark Ave";
+            const currentCity = (typeof siteData !== 'undefined' && siteData.addressCity) ? siteData.addressCity : "Effingham IL 62401";
+            const addrStr = `${currentStreet} ${currentCity}`;
             const addr = encodeURIComponent(addrStr);
             
-           document.getElementById('link-gmaps').href = `https://www.google.com/maps/search/?api=1&query=${addr}`;
-           document.getElementById('link-gmaps').setAttribute('onclick', `smartTabClick(event, this, 'tab_sk_gmaps', '${document.getElementById('link-gmaps').href}')`);
-
-            document.getElementById('link-amaps').href = `http://maps.apple.com/?daddr=${addr}&dirflg=d`;
-            document.getElementById('link-amaps').setAttribute('onclick', `smartTabClick(event, this, 'tab_sk_amaps', '${document.getElementById('link-amaps').href}')`);
-
-            document.getElementById('link-waze').href = `https://waze.com/ul?q=${addr}&navigate=yes`;
-            document.getElementById('link-waze').setAttribute('onclick', `smartTabClick(event, this, 'tab_sk_waze', '${document.getElementById('link-waze').href}')`);
+            const gmapsUrl = `https://www.google.com/maps/search/?api=1&query=${addr}`;
+            const amapsUrl = `http://maps.apple.com/?daddr=${addr}`;
+            const wazeUrl = `https://waze.com/ul?q=${addr}&navigate=yes`;
+            
+            document.getElementById('link-gmaps').href = gmapsUrl;
+            document.getElementById('link-gmaps').setAttribute('onclick', `smartTabClick(event, this, 'tab_sk_gmaps', '${gmapsUrl}')`);
+            
+            document.getElementById('link-amaps').href = amapsUrl;
+            document.getElementById('link-amaps').setAttribute('onclick', `smartTabClick(event, this, 'tab_sk_amaps', '${amapsUrl}')`);
+            
+            document.getElementById('link-waze').href = wazeUrl;
+            document.getElementById('link-waze').setAttribute('onclick', `smartTabClick(event, this, 'tab_sk_waze', '${wazeUrl}')`);
             
             document.getElementById('map-modal').style.display = 'flex';
-            lucide.createIcons();
+            if (typeof lucide !== 'undefined') lucide.createIcons();
         }
 
-        function closeModals() { document.querySelectorAll('.sk-modal-overlay').forEach(m => m.style.display = 'none'); }
+        function closeModals() {
+            document.querySelectorAll('.sk-modal-overlay').forEach(m => m.style.display = 'none');
+        }
+
+        const trackSectionView = () => {
+            if (typeof gtag === 'undefined') return;
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        gtag('event', 'section_view', { 'section_id': entry.target.id });
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.5 });
+
+            document.querySelectorAll('main > div, footer').forEach(section => {
+                if (section.id) observer.observe(section);
+            });
+        };
 
         /* =========================================================
            LIGHTBOX ENGINE
         ========================================================= */
         function initLightboxInteractions() {
             const images = document.querySelectorAll('.lightbox-trigger');
+            lightboxGallery = []; 
             images.forEach((img, idx) => {
                 lightboxGallery.push(img.src);
                 img.onclick = () => openLightbox(idx);
@@ -739,7 +712,7 @@
             if (index < 0 || index >= lightboxGallery.length) return;
             currentLightboxIndex = index;
             const img = document.getElementById('lightbox-image');
-            img.src = lightboxGallery[index];
+            if (img) img.src = lightboxGallery[index];
             document.getElementById('lightbox-overlay').style.display = 'flex';
             document.body.style.overflow = 'hidden';
             if (typeof lucide !== 'undefined') lucide.createIcons();
@@ -760,44 +733,56 @@
         }
 
         /* =========================================================
-           INITIALIZATION
+           EVENT LISTENERS & INITIALIZATION
         ========================================================= */
         window.addEventListener('scroll', () => {
-    const header = document.getElementById('main-header');
-    const logo = document.getElementById('header-logo');
-    const isDark = document.body.classList.contains('dark-mode');
+            const header = document.getElementById('main-header');
+            const logo = document.getElementById('header-logo');
+            const isDark = document.body.classList.contains('dark-mode');
 
-    if (window.scrollY > 50) {
-        header.classList.add('header-scrolled');
-        // If dark mode: use white logo on dark background. Else: use black logo on white background.
-        logo.src = isDark ? "./images/S&K-Sign-White.png" : "./images/S&K-Sign-Black.png";
-    } 
-    
-    else {
-        header.classList.remove('header-scrolled');
-        // Unscrolled header stays maroon, so it always takes the white logo.
-        logo.src = "./images/S&K-Sign-White.png";
-    }
-});
-
-        document.getElementById('menu-toggle').addEventListener('click', () => {
-            const m = document.getElementById('mobile-menu');
-            m.classList.toggle('hidden'); m.classList.toggle('flex');
+            if (header && logo) {
+                if (window.scrollY > 50) {
+                    header.classList.add('header-scrolled');
+                    logo.src = isDark ? "./images/S&K-Sign-White.png" : "./images/S&K-Sign-Black.png";
+                } else {
+                    header.classList.remove('header-scrolled');
+                    logo.src = "./images/S&K-Sign-White.png";
+                }
+            }
         });
 
-          window.onload = () => {
-            loadSheetData();
+        const menuToggle = document.getElementById('menu-toggle');
+        if (menuToggle) {
+            menuToggle.addEventListener('click', () => {
+                const m = document.getElementById('mobile-menu');
+                if (m) {
+                    m.classList.toggle('hidden'); m.classList.toggle('flex');
+                }
+            });
+        }
+
+        window.onload = () => {
+            if (typeof initNavigationEngine === 'function') {
+                initNavigationEngine();
+            } else if (typeof renderDynamicFramework === 'function') {
+                renderDynamicFramework();
+            }
+            
             initLightboxInteractions();
+            trackSectionView();
+            
             const cookies = document.cookie.split('; ').reduce((acc, curr) => {
                 const [k, v] = curr.split('='); acc[k] = v; return acc;
             }, {});
+            
             if (cookies['outline-color']) {
                 updateOutlineColor(cookies['outline-color']);
             } else {
                 updateOutlineColor('transparent');
             }
+
             setTheme(cookies['theme'] || 'auto');
-            lucide.createIcons();
+            if (typeof lucide !== 'undefined') lucide.createIcons();
         };
 
         window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
@@ -809,5 +794,6 @@
             }
         });
     </script>
+    <script src="./navigation.js"></script>
 </body>
 </html>
