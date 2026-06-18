@@ -667,28 +667,21 @@
     </div>
 
     <script>
-        // --- PRESERVED UI SYSTEMS & MODALS ---
-        function safeSetStorage(key, val) {
-            try { localStorage.setItem(key, val); } catch (e) { console.warn('Storage blocked'); }
-        }
-        function safeGetStorage(key) {
-            try { return localStorage.getItem(key); } catch (e) { return null; }
-        }
-        function safeRemoveStorage(key) {
-            try { localStorage.removeItem(key); } catch (e) {}
-        }
+        // --- PRESERVED LOCAL SYSTEMS & MODALS ---
+        function safeSetStorage(key, val) { try { localStorage.setItem(key, val); } catch (e) {} }
+        function safeGetStorage(key) { try { return localStorage.getItem(key); } catch (e) { return null; } }
 
         function initLightbox() {
             const overlay = document.getElementById('lightbox-overlay');
             const overlayImg = document.getElementById('lightbox-img');
-            document.querySelectorAll('.lightbox-trigger').forEach(img => {
-                img.onclick = () => { overlayImg.src = img.src; overlay.style.display = 'flex'; };
-            });
+            if (overlay && overlayImg) {
+                document.querySelectorAll('.lightbox-trigger').forEach(img => {
+                    img.onclick = () => { overlayImg.src = img.src; overlay.style.display = 'flex'; };
+                });
+            }
         }
 
-        function toggleSettingsPanel() {
-            document.getElementById('settings-panel').classList.toggle('hidden-settings');
-        }
+        function toggleSettingsPanel() { document.getElementById('settings-panel').classList.toggle('hidden-settings'); }
 
         function setTheme(mode) {
             const body = document.body;
@@ -717,30 +710,34 @@
         function openPhoneSmartActions(num) {
             const clean = num.replace(/\D/g, '');
             const container = document.getElementById('phone-options-container');
-            let html = `
-                <a href="tel:${clean}" class="smart-option" onclick="smartTabClick(event, this, 'tab_sk_tel', this.href)"><i data-lucide="phone"></i> Direct Call</a>
-            `;
+            let html = `<a href="tel:${clean}" class="smart-option" onclick="smartTabClick(event, this, 'tab_sk_tel', this.href)"><i data-lucide="phone"></i> Direct Call</a>`;
             if (clean.includes('6187084450')) {
                 html += `<a href="https://wa.me/16187084450" class="smart-option" onclick="smartTabClick(event, this, 'tab_sk_wa', this.href)"><i data-lucide="message-circle"></i> WhatsApp Specialist</a>`;
             }
-            container.innerHTML = html;
+            if (container) container.innerHTML = html;
             document.getElementById('phone-modal').style.display = 'flex';
-            lucide.createIcons();
+            if (typeof lucide !== 'undefined') { lucide.createIcons(); }
         }
 
         function openEmailSmartActions(email) {
             const container = document.getElementById('email-options-container');
-            container.innerHTML = `
-                <a href="mailto:${email}" class="smart-option" onclick="smartTabClick(event, this, 'tab_sk_mail_def', this.href)"><i data-lucide="mail"></i> Default Client</a>
-                <a href="https://mail.google.com/mail/?view=cm&fs=1&to=${email}" class="smart-option" onclick="smartTabClick(event, this, 'tab_sk_mail_gmail', this.href)"><i data-lucide="send"></i> Gmail Web</a>
-                <div onclick="navigator.clipboard.writeText('${email}'); closeModals();" class="smart-option"><i data-lucide="copy"></i> Copy Address</div>
-            `;
+            if (container) {
+                container.innerHTML = `
+                    <a href="mailto:${email}" class="smart-option" onclick="smartTabClick(event, this, 'tab_sk_mail_def', this.href)"><i data-lucide="mail"></i> Default Client</a>
+                    <a href="https://mail.google.com/mail/?view=cm&fs=1&to=${email}" class="smart-option" onclick="smartTabClick(event, this, 'tab_sk_mail_gmail', this.href)"><i data-lucide="send"></i> Gmail Web</a>
+                    <div onclick="navigator.clipboard.writeText('${email}'); closeModals();" class="smart-option"><i data-lucide="copy"></i> Copy Address</div>
+                `;
+            }
             document.getElementById('email-modal').style.display = 'flex';
-            lucide.createIcons();
+            if (typeof lucide !== 'undefined') { lucide.createIcons(); }
         }
 
         function openMapSmartActions() {
-            const addrStr = siteData.addressStreet && siteData.addressCity ? `${siteData.addressStreet} ${siteData.addressCity}` : "607 W Clark Ave Effingham IL 62401";
+            // Safe fallback lookup to the global siteData variable populated by navigation.js
+            const currentData = window.siteData || siteData || {};
+            const addrStr = currentData.addressStreet && currentData.addressCity 
+                ? `${currentData.addressStreet} ${currentData.addressCity}` 
+                : "607 W Clark Ave Effingham IL 62401";
             const addr = encodeURIComponent(addrStr);
             
             document.getElementById('link-gmaps').href = `https://maps.google.com/?q=${addr}`;
@@ -753,7 +750,7 @@
             document.getElementById('link-waze').setAttribute('onclick', `smartTabClick(event, this, 'tab_sk_waze', '${document.getElementById('link-waze').href}')`);
             
             document.getElementById('map-modal').style.display = 'flex';
-            lucide.createIcons();
+            if (typeof lucide !== 'undefined') { lucide.createIcons(); }
         }
 
         function closeModals() { document.querySelectorAll('.sk-modal-overlay').forEach(m => m.style.display = 'none'); }
@@ -772,49 +769,19 @@
             }
         }
 
-        function downloadSKContact() {
-            const PHOTO_URL = "https://skventuresigns.com/images/S&K-Sign-Black.png";
-            const currentEmail = siteData.email || "Scott.Robinson@skventuresigns.com";
-            const currentStreet = siteData.addressStreet || "607 W Clark Ave.";
-            const currentCity = siteData.addressCity || "Effingham IL 62401";
-            const vcard = "BEGIN:VCARD\n" +
-                        "VERSION:3.0\n" +
-                        "N:Robinson;Scott;;;\n" +
-                        "FN:Scott Robinson\n" +
-                        "ORG:S&K Venture Signs\n" +
-                        "TITLE:Digital Billboard Specialist\n" +
-                        "TEL;TYPE=WORK,VOICE:844-907-4450\n" +
-                        "TEL;TYPE=CELL,VOICE:618-708-4450\n" +
-                        "EMAIL;TYPE=PREF,INTERNET:" + currentEmail + "\n" +
-                        "ADR;TYPE=WORK:;;" + currentStreet + ";" + currentCity.split(' ')[0] + ";IL;" + currentCity.split(' ').pop() + ";USA\n" +
-                        "PHOTO;VALUE=URI:" + PHOTO_URL + "\n" +
-                        "END:VCARD";
-            const blob = new Blob([vcard], { type: 'text/vcard;charset=utf-8' });
-            const url = window.URL.createObjectURL(blob);
-            const link = document.createElement('a');
-            link.href = url;
-            link.setAttribute('download', 'Scott_Robinson_SKVenture.vcf');
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-        }
-
         window.addEventListener('scroll', updateHeaderVisuals);
 
-        // --- PRESERVED PAGE INITIALIZATION ---
         window.addEventListener('DOMContentLoaded', () => {
             initLightbox();
             const cookies = document.cookie.split('; ').reduce((acc, curr) => {
                 const [k, v] = curr.split('='); acc[k] = v; return acc;
             }, {});
-            if (cookies['outline-color']) {
-                updateOutlineColor(cookies['outline-color']);
-            } else {
-                updateOutlineColor('transparent');
-            }
+            updateOutlineColor(cookies['outline-color'] || 'transparent');
             setTheme(cookies['theme'] || 'auto');
         });
     </script>
+    
+    <!-- External framework layout engine call -->
     <script src="./navigation.js"></script>
 </body>
 </html>
