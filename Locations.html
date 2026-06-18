@@ -647,30 +647,21 @@
         </div>
     </div>
 
-    <script>
+   <script>
         /**
          * S&K SMART SYNC ENGINE v10.15 & LOCATIONS LOGIC
          * V10.15 Update: Global Inter-Tab Communication (ITC) & Adaptive Dashed Boxes.
          */
         const INVENTORY_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vThA71kIjoVWZCstUInZWTjo3WcdTWd-sts-ucDmSslWgXctOv-1k78qV1Xt0Gps5ocbuJwLVDKbl-R/pub?output=csv";
         
-        let siteData = { 
-            nav: [], 
-            phones: ["618-708-4450", "844-907-4450"], 
-            email: "Scott.Robinson@skventuresigns.com", 
-            addressStreet: "607 W Clark Ave", 
-            addressCity: "Effingham IL 62401" 
-        };
-
+        // Removed duplicate siteData block to allow navigation.js to handle the global variables cleanly.
         let billboards = [];
 
         /* =========================================================
            V10.15 CROSS-TAB AWARENESS & AGGRESSIVE FOCUS
         ========================================================= */
         window.smartTabClick = function(event, element, targetName, url) {
-            if(event) event.preventDefault(); // Stop standard link behavior
-            
-            // Check cross-tab global memory to see if this specific link is open somewhere
+            if(event) event.preventDefault();
             const isOpen = localStorage.getItem(targetName) === 'true';
 
             if (isOpen) {
@@ -682,7 +673,6 @@
                     window.location.href = url;
                 }
             } else {
-                // If it is NOT open anywhere else, load safely in the current tab
                 window.location.href = url;
             }
         };
@@ -711,28 +701,26 @@
             const fEmail = document.getElementById('footer-email-list');
             const fAddr = document.getElementById('footer-address-container');
 
-            dNav.innerHTML = ''; mNav.innerHTML = ''; fPhone.innerHTML = ''; fEmail.innerHTML = ''; fAddr.innerHTML = '';
+            if (!dNav || !mNav || !siteData || !siteData.nav) return;
+
+            dNav.innerHTML = ''; mNav.innerHTML = ''; 
+            if(fPhone) fPhone.innerHTML = ''; 
+            if(fEmail) fEmail.innerHTML = ''; 
+            if(fAddr) fAddr.innerHTML = '';
 
             siteData.nav.forEach(n => {
                 const isActive = n.label.toLowerCase() === 'locations';
-                
-                // V10.15: Generate a unique target name derived from the link's name to prevent duplicate tabs
                 const uniqueTarget = `tab_sk_${n.label.replace(/[^a-zA-Z0-9]/g, '_')}`;
 
                 if (isActive) {
-                    // Self-Name the Window so other tabs can find it dynamically
                     window.name = uniqueTarget;
-                    // Inform the browser's global memory that this page is alive
                     localStorage.setItem(uniqueTarget, 'true');
-                    // Clean up the memory if the user explicitly closes the tab
                     window.addEventListener('beforeunload', () => {
                         localStorage.removeItem(uniqueTarget);
                     });
                 }
 
-                // Check cross-tab global memory to see if this specific link is open somewhere
                 const isOpen = localStorage.getItem(uniqueTarget) === 'true';
-                // Only apply the 'already-open' state if it is open somewhere AND it is not the current page
                 const openClass = isOpen && !isActive ? 'already-open' : '';
                 const desktopActive = isActive ? 'active' : '';
 
@@ -745,21 +733,20 @@
                 mNav.innerHTML += `<a href="${n.url}" class="${mobileClass} ${openClass}" onclick="smartTabClick(event, this, '${uniqueTarget}', '${n.url}')">${n.label}</a>`;
             });
 
-            // V10.15 Footer Matching Logic
-            fPhone.className = "flex flex-wrap items-center justify-center gap-3";
-            let phoneHTML = '';
-            if (siteData.phones.length > 0) {
-                phoneHTML = `<span class="footer-value !mb-0" onclick="openPhoneSmartActions('${siteData.phones[0]}')">${siteData.phones[0]}</span>`;
+            if (fPhone && siteData.phones && siteData.phones.length > 0) {
+                fPhone.className = "flex flex-wrap items-center justify-center gap-3";
+                let phoneHTML = `<span class="footer-value !mb-0" onclick="openPhoneSmartActions('${siteData.phones[0]}')">${siteData.phones[0]}</span>`;
                 if (siteData.phones[1]) {
                     phoneHTML += `<span class="text-white opacity-70 text-sm font-bold uppercase">or</span><span class="footer-value !mb-0" onclick="openPhoneSmartActions('${siteData.phones[1]}')">${siteData.phones[1]}</span>`;
                 }
+                fPhone.innerHTML = phoneHTML;
             }
-            fPhone.innerHTML = phoneHTML;
 
-            fEmail.innerHTML = `<span class="footer-value" onclick="openEmailSmartActions('${siteData.email}')">${siteData.email}</span>`;
+            if (fEmail && siteData.email) {
+                fEmail.innerHTML = `<span class="footer-value" onclick="openEmailSmartActions('${siteData.email}')">${siteData.email}</span>`;
+            }
 
-            // Single line address format
-            if (siteData.addressStreet) {
+            if (fAddr && siteData.addressStreet) {
                 const fullDisplay = `${siteData.addressStreet}, ${siteData.addressCity}`;
                 fAddr.innerHTML = `<span class="footer-value" onclick="openMapSmartActions()">${fullDisplay}</span>`;
             }
@@ -769,19 +756,24 @@
 
         function toggleSettingsPanel() {
             const panel = document.getElementById('settings-panel');
-            panel.classList.toggle('hidden-settings');
+            if (panel) panel.classList.toggle('hidden-settings');
         }
 
         function downloadSKContact() {
             const PHOTO_URL = "https://www.skventuresigns.com/images/S&K-Sign-Black.png";
+            const currentPhones = (typeof siteData !== 'undefined' && siteData.phones) ? siteData.phones : ["618-708-4450", "844-907-4450"];
+            const currentEmail = (typeof siteData !== 'undefined' && siteData.email) ? siteData.email : "Scott.Robinson@skventuresigns.com";
+            const currentStreet = (typeof siteData !== 'undefined' && siteData.addressStreet) ? siteData.addressStreet : "607 W Clark Ave";
+            const currentCity = (typeof siteData !== 'undefined' && siteData.addressCity) ? siteData.addressCity : "Effingham IL 62401";
+
             const vcard = "BEGIN:VCARD\n" +
                         "VERSION:3.0\n" +
                         "FN:Scott Robinson\n" +
                         "ORG:S&K Venture Signs\n" +
-                        "TEL;TYPE=WORK,VOICE:" + (siteData.phones[1] || "844-907-4450") + "\n" +
-                        "TEL;TYPE=CELL,VOICE:" + (siteData.phones[0] || "618-708-4450") + "\n" +
-                        "EMAIL;TYPE=PREF,INTERNET:" + siteData.email + "\n" +
-                        "ADR;TYPE=WORK:;;" + siteData.addressStreet + ";" + siteData.addressCity.split(' ')[0] + ";IL;" + siteData.addressCity.split(' ').pop() + ";USA\n" +
+                        "TEL;TYPE=WORK,VOICE:" + (currentPhones[1] || "844-907-4450") + "\n" +
+                        "TEL;TYPE=CELL,VOICE:" + (currentPhones[0] || "618-708-4450") + "\n" +
+                        "EMAIL;TYPE=PREF,INTERNET:" + currentEmail + "\n" +
+                        "ADR;TYPE=WORK:;;" + currentStreet + ";" + currentCity.split(' ')[0] + ";IL;" + currentCity.split(' ').pop() + ";USA\n" +
                         "URL:https://skventuresigns.com/\n" +
                         "PHOTO;VALUE=URI:" + PHOTO_URL + "\n" +
                         "END:VCARD";
@@ -831,7 +823,7 @@
             
             const header = document.getElementById('main-header');
             const logo = document.getElementById('header-logo');
-            if (header.classList.contains('header-scrolled')) {
+            if (header && header.classList.contains('header-scrolled') && logo) {
                 logo.src = (targetMode === 'dark') ? "./images/S&K-Sign-White.png" : "./images/S&K-Sign-Black.png";
             }
 
@@ -860,9 +852,11 @@
                 html += `<a href="https://wa.me/1${clean}" class="smart-option" onclick="smartTabClick(event, this, 'tab_sk_wa', this.href)"><i data-lucide="message-circle"></i> WhatsApp Specialist</a>`;
             }
 
-            container.innerHTML = html;
-            document.getElementById('phone-modal').style.display = 'flex';
-            lucide.createIcons();
+            if (container) {
+                container.innerHTML = html;
+                document.getElementById('phone-modal').style.display = 'flex';
+                lucide.createIcons();
+            }
         }
 
         function openEmailSmartActions(email, subject = "General Inquiry") {
@@ -872,17 +866,21 @@
             const defUrl = `mailto:${email}?subject=${encodedSubject}`;
             const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=${email}&su=${encodedSubject}`;
             
-            container.innerHTML = `
-                <a href="${defUrl}" class="smart-option" onclick="smartTabClick(event, this, 'tab_sk_mail_def', this.href)"><i data-lucide="mail"></i> Default Client</a>
-                <a href="${gmailUrl}" class="smart-option" onclick="smartTabClick(event, this, 'tab_sk_mail_gmail', this.href)"><i data-lucide="send"></i> Gmail Web</a>
-                <div onclick="navigator.clipboard.writeText('${email}'); alert('Email Copied');" class="smart-option"><i data-lucide="copy"></i> Copy Address</div>
-            `;
-            document.getElementById('email-modal').style.display = 'flex';
-            lucide.createIcons();
+            if (container) {
+                container.innerHTML = `
+                    <a href="${defUrl}" class="smart-option" onclick="smartTabClick(event, this, 'tab_sk_mail_def', this.href)"><i data-lucide="mail"></i> Default Client</a>
+                    <a href="${gmailUrl}" class="smart-option" onclick="smartTabClick(event, this, 'tab_sk_mail_gmail', this.href)"><i data-lucide="send"></i> Gmail Web</a>
+                    <div onclick="navigator.clipboard.writeText('${email}'); alert('Email Copied');" class="smart-option"><i data-lucide="copy"></i> Copy Address</div>
+                `;
+                document.getElementById('email-modal').style.display = 'flex';
+                lucide.createIcons();
+            }
         }
 
         function openMapSmartActions() {
-            const addrStr = `${siteData.addressStreet} ${siteData.addressCity}`;
+            const currentStreet = (typeof siteData !== 'undefined' && siteData.addressStreet) ? siteData.addressStreet : "607 W Clark Ave";
+            const currentCity = (typeof siteData !== 'undefined' && siteData.addressCity) ? siteData.addressCity : "Effingham IL 62401";
+            const addrStr = `${currentStreet} ${currentCity}`;
             const addr = encodeURIComponent(addrStr);
             
             const gmapsUrl = `https://www.google.com/maps/search/?api=1&query=${addr}`;
@@ -920,8 +918,10 @@
             const overlay = document.getElementById('lightbox-overlay');
             const img = document.getElementById('lightbox-image');
             const modal = document.getElementById('specs-modal');
-            img.src = src; img.style.display = 'block'; modal.style.display = 'none';
-            overlay.style.display = 'flex'; document.body.style.overflow = 'hidden';
+            if (img && modal && overlay) {
+                img.src = src; img.style.display = 'block'; modal.style.display = 'none';
+                overlay.style.display = 'flex'; document.body.style.overflow = 'hidden';
+            }
         }
 
         function openSpecs(index) {
@@ -931,6 +931,7 @@
             const modal = document.getElementById('specs-modal');
             const root = document.getElementById('specs-content-root');
             
+            if (!b || !root || !img || !modal || !overlay) return;
             let html = '';
             
             if(isValidData(b.id1) || isValidData(b.img1) || isValidData(b.id2) || isValidData(b.img2)) {
@@ -1042,7 +1043,6 @@
                 let lat = parseFloat(rawLat);
                 let long = parseFloat(rawLong);
                 
-                // Coordinate Swap Safety Logic
                 if (Math.abs(lat) > 50 && Math.abs(long) < 50) [lat, long] = [long, lat];
 
                 const mapEmbedUrl = (isNaN(lat) || isNaN(long)) 
@@ -1055,7 +1055,6 @@
                     isValidData(item.viewingDistance) ? `<span><strong class="opacity-50 uppercase text-[10px] tracking-widest">Distance:</strong> ${item.viewingDistance}</span>` : ''
                 ].filter(Boolean).join('');
 
-                // V10.15: Apply ITC Smart Tab Focus to dynamic map links and PDF links inside the grid
                 const targetMapName = `tab_sk_map_${index}`;
                 const targetPdfName = `tab_sk_pdf_${index}`;
                 const mapLinkUrl = `https://www.google.com/maps/search/?api=1&query=${lat},${long}`;
@@ -1134,22 +1133,35 @@
             const logo = document.getElementById('header-logo');
             const isDark = document.body.classList.contains('dark-mode');
 
-            if (window.scrollY > 50) {
-                header.classList.add('header-scrolled');
-                logo.src = isDark ? "./images/S&K-Sign-White.png" : "./images/S&K-Sign-Black.png";
-            } else {
-                header.classList.remove('header-scrolled');
-                logo.src = "./images/S&K-Sign-White.png";
+            if (header && logo) {
+                if (window.scrollY > 50) {
+                    header.classList.add('header-scrolled');
+                    logo.src = isDark ? "./images/S&K-Sign-White.png" : "./images/S&K-Sign-Black.png";
+                } else {
+                    header.classList.remove('header-scrolled');
+                    logo.src = "./images/S&K-Sign-White.png";
+                }
             }
         });
 
-        document.getElementById('menu-toggle').addEventListener('click', () => {
-            const m = document.getElementById('mobile-menu');
-            m.classList.toggle('hidden'); m.classList.toggle('flex');
-        });
+        const menuToggle = document.getElementById('menu-toggle');
+        if (menuToggle) {
+            menuToggle.addEventListener('click', () => {
+                const m = document.getElementById('mobile-menu');
+                if (m) {
+                    m.classList.toggle('hidden'); m.classList.toggle('flex');
+                }
+            });
+        }
 
         window.onload = () => {
-            loadSheetData();
+            // Replaced missing loadSheetData call with direct navigation file loader compatibility
+            if (typeof initNavigationEngine === 'function') {
+                initNavigationEngine();
+            } else {
+                renderDynamicContent();
+            }
+            
             fetchInventoryData();
             setInterval(() => fetchInventoryData(true), 60000);
             
