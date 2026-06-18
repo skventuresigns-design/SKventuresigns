@@ -667,10 +667,7 @@
     </div>
 
     <script>
-        const SYNC_JSON = "./navigation.json";
-
-        let siteData = { nav: [], phones: [], email: "", addressStreet: "", addressCity: "" };
-
+        // --- PRESERVED UI SYSTEMS & MODALS ---
         function safeSetStorage(key, val) {
             try { localStorage.setItem(key, val); } catch (e) { console.warn('Storage blocked'); }
         }
@@ -679,59 +676,6 @@
         }
         function safeRemoveStorage(key) {
             try { localStorage.removeItem(key); } catch (e) {}
-        }
-
-        window.smartTabClick = function(event, element, targetName, url) {
-            if(event) event.preventDefault();
-            window.location.href = url;
-        };
-
-        function parseCSVRow(text) {
-            const result = [];
-            let current = '';
-            let inQuotes = false;
-            for (let i = 0; i < text.length; i++) {
-                const char = text[i];
-                if (char === '"') { inQuotes = !inQuotes; }
-                else if (char === ',' && !inQuotes) { result.push(current.trim()); current = ''; }
-                else { current += char; }
-            }
-            result.push(current.trim());
-            return result.map(v => v.replace(/^"|"$/g, ''));
-        }
-
-        function renderDynamicFramework() {
-            const dNav = document.getElementById('desktop-nav-root');
-            const mNav = document.getElementById('mobile-menu');
-            const fPhone = document.getElementById('footer-phone-list');
-            const fEmail = document.getElementById('footer-email-list');
-            const fAddr = document.getElementById('footer-address-container');
-
-            dNav.innerHTML = ''; mNav.innerHTML = '';
-            
-            siteData.nav.forEach(n => {
-                const isActive = n.label.toLowerCase() === 'home';
-                const uniqueTarget = `tab_sk_${n.label.replace(/[^a-zA-Z0-9]/g, '_')}`;
-                const desktopActive = isActive ? 'active' : '';
-
-                dNav.innerHTML += `<li><a href="${n.url}" class="nav-link ${desktopActive}" onclick="smartTabClick(event, this, '${uniqueTarget}', '${n.url}')">${n.label}</a></li>`;
-                
-                const mobileClass = isActive
-                    ? `text-2xl font-bold border-b border-black/5 pb-3 text-[var(--sk-gold)]`
-                    : `text-2xl font-bold border-b border-black/5 pb-3`;
-
-                mNav.innerHTML += `<a href="${n.url}" class="${mobileClass}" onclick="smartTabClick(event, this, '${uniqueTarget}', '${n.url}')">${n.label}</a>`;
-            });
-
-            fPhone.className = "flex flex-wrap items-center justify-center gap-3";
-            let phoneHTML = `<span class="footer-value !mb-0" onclick="openPhoneSmartActions('${siteData.phones[0]}')">${siteData.phones[0]}</span>`;
-            if (siteData.phones[1]) phoneHTML += `<span class="text-white opacity-70 text-sm font-bold uppercase">or</span><span class="footer-value !mb-0" onclick="openPhoneSmartActions('${siteData.phones[1]}')">${siteData.phones[1]}</span>`;
-            fPhone.innerHTML = phoneHTML;
-
-            fEmail.innerHTML = `<span class="footer-value" onclick="openEmailSmartActions('${siteData.email}')">${siteData.email}</span>`;
-            fAddr.innerHTML = `<span class="footer-value" onclick="openMapSmartActions()">${siteData.addressStreet}, ${siteData.addressCity}</span>`;
-
-            lucide.createIcons();
         }
 
         function initLightbox() {
@@ -777,7 +721,7 @@
                 <a href="tel:${clean}" class="smart-option" onclick="smartTabClick(event, this, 'tab_sk_tel', this.href)"><i data-lucide="phone"></i> Direct Call</a>
             `;
             if (clean.includes('6187084450')) {
-                html += `<a href="https://wa.me/1${clean}" class="smart-option" onclick="smartTabClick(event, this, 'tab_sk_wa', this.href)"><i data-lucide="message-circle"></i> WhatsApp Specialist</a>`;
+                html += `<a href="https://wa.me/16187084450" class="smart-option" onclick="smartTabClick(event, this, 'tab_sk_wa', this.href)"><i data-lucide="message-circle"></i> WhatsApp Specialist</a>`;
             }
             container.innerHTML = html;
             document.getElementById('phone-modal').style.display = 'flex';
@@ -796,7 +740,7 @@
         }
 
         function openMapSmartActions() {
-            const addrStr = `${siteData.addressStreet} ${siteData.addressCity}`;
+            const addrStr = siteData.addressStreet && siteData.addressCity ? `${siteData.addressStreet} ${siteData.addressCity}` : "607 W Clark Ave Effingham IL 62401";
             const addr = encodeURIComponent(addrStr);
             
             document.getElementById('link-gmaps').href = `https://maps.google.com/?q=${addr}`;
@@ -817,6 +761,7 @@
         function updateHeaderVisuals() {
             const header = document.getElementById('main-header');
             const logo = document.getElementById('header-logo');
+            if (!header || !logo) return;
             const isDark = document.body.classList.contains('dark-mode');
             if (window.scrollY > 50) {
                 header.classList.add('header-scrolled');
@@ -829,6 +774,9 @@
 
         function downloadSKContact() {
             const PHOTO_URL = "https://skventuresigns.com/images/S&K-Sign-Black.png";
+            const currentEmail = siteData.email || "Scott.Robinson@skventuresigns.com";
+            const currentStreet = siteData.addressStreet || "607 W Clark Ave.";
+            const currentCity = siteData.addressCity || "Effingham IL 62401";
             const vcard = "BEGIN:VCARD\n" +
                         "VERSION:3.0\n" +
                         "N:Robinson;Scott;;;\n" +
@@ -837,8 +785,8 @@
                         "TITLE:Digital Billboard Specialist\n" +
                         "TEL;TYPE=WORK,VOICE:844-907-4450\n" +
                         "TEL;TYPE=CELL,VOICE:618-708-4450\n" +
-                        "EMAIL;TYPE=PREF,INTERNET:" + siteData.email + "\n" +
-                        "ADR;TYPE=WORK:;;" + siteData.addressStreet + ";" + siteData.addressCity.split(' ')[0] + ";IL;" + siteData.addressCity.split(' ').pop() + ";USA\n" +
+                        "EMAIL;TYPE=PREF,INTERNET:" + currentEmail + "\n" +
+                        "ADR;TYPE=WORK:;;" + currentStreet + ";" + currentCity.split(' ')[0] + ";IL;" + currentCity.split(' ').pop() + ";USA\n" +
                         "PHOTO;VALUE=URI:" + PHOTO_URL + "\n" +
                         "END:VCARD";
             const blob = new Blob([vcard], { type: 'text/vcard;charset=utf-8' });
@@ -853,23 +801,8 @@
 
         window.addEventListener('scroll', updateHeaderVisuals);
 
-        document.getElementById('menu-toggle').onclick = () => {
-            const m = document.getElementById('mobile-menu');
-            m.classList.toggle('hidden'); m.classList.toggle('flex');
-        };
-
-        function loadSheetData() {
-            fetch(SYNC_JSON)
-                .then(response => response.json())
-                .then(data => {
-                    siteData = data;
-                    renderDynamicFramework();
-                })
-                .catch(err => console.error("Error loading navigation engine:", err));
-        }
-
-        window.onload = () => {
-            loadSheetData();
+        // --- PRESERVED PAGE INITIALIZATION ---
+        window.addEventListener('DOMContentLoaded', () => {
             initLightbox();
             const cookies = document.cookie.split('; ').reduce((acc, curr) => {
                 const [k, v] = curr.split('='); acc[k] = v; return acc;
@@ -880,8 +813,7 @@
                 updateOutlineColor('transparent');
             }
             setTheme(cookies['theme'] || 'auto');
-            lucide.createIcons();
-        };
+        });
     </script>
     <script src="./navigation.js"></script>
 </body>
