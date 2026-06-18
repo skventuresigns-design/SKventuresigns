@@ -479,6 +479,12 @@
 
             <nav class="hidden lg:flex flex-grow items-center justify-center px-10">
                 <ul id="desktop-nav-root" class="flex items-center gap-8 xl:gap-12">
+                    <!-- Backup menu handles immediate visibility -->
+                    <li><a href="./index.html" class="nav-link active" onclick="smartTabClick(event, this, 'tab_sk_Home', './index.html')">Home</a></li>
+                    <li><a href="./Services.html" class="nav-link" onclick="smartTabClick(event, this, 'tab_sk_Services', './Services.html')">Services</a></li>
+                    <li><a href="./Locations.html" class="nav-link" onclick="smartTabClick(event, this, 'tab_sk_Locations', './Locations.html')">Locations</a></li>
+                    <li><a href="./effinghamcountyfair.html" class="nav-link" onclick="smartTabClick(event, this, 'tab_sk_Fair', './effinghamcountyfair.html')">Fair</a></li>
+                    <li><a href="./Contact.html" class="nav-link" onclick="smartTabClick(event, this, 'tab_sk_Contact', './Contact.html')">Contact</a></li>
                 </ul>
             </nav>
 
@@ -618,15 +624,26 @@
         <div class="main-container footer-grid">
             <div class="footer-col">
                 <p class="footer-label">Give us a call</p>
-                <div id="footer-phone-list"></div>
+                <div id="footer-phone-list">
+                    <!-- Solid baseline fallback elements -->
+                    <div class="flex flex-wrap items-center justify-center gap-3">
+                        <span class="footer-value !mb-0" onclick="openPhoneSmartActions('844-907-4450')">844-907-4450</span>
+                        <span class="text-white opacity-70 text-sm font-bold uppercase">or</span>
+                        <span class="footer-value !mb-0" onclick="openPhoneSmartActions('618-708-4450')">618-708-4450</span>
+                    </div>
+                </div>
             </div>
             <div class="footer-col">
                 <p class="footer-label">Send us an Email</p>
-                <div id="footer-email-list"></div>
+                <div id="footer-email-list">
+                    <span class="footer-value" onclick="openEmailSmartActions('Scott.Robinson@skventuresigns.com')">Scott.Robinson@skventuresigns.com</span>
+                </div>
             </div>
             <div class="footer-col">
                 <p class="footer-label">Visit our office</p>
-                <div id="footer-address-container"></div>
+                <div id="footer-address-container">
+                    <span class="footer-value" onclick="openMapSmartActions()">Effingham, IL 62401</span>
+                </div>
             </div>
         </div>
         <div class="main-container mt-10 pt-6 border-t border-white/10 text-center">
@@ -669,7 +686,20 @@
     <script>
         const SYNC_JSON = "./navigation.json";
 
-        let siteData = { nav: [], phones: [], email: "", addressStreet: "", addressCity: "" };
+        // Initialized directly with live production details to avoid blank space errors
+        let siteData = { 
+            nav: [
+                { "label": "Home", "url": "./index.html" },
+                { "label": "Services", "url": "./Services.html" },
+                { "label": "Locations", "url": "./Locations.html" },
+                { "label": "Fair", "url": "./effinghamcountyfair.html" },
+                { "label": "Contact", "url": "./Contact.html" }
+            ], 
+            phones: ["844-907-4450", "618-708-4450"], 
+            email: "Scott.Robinson@skventuresigns.com", 
+            addressStreet: "Effingham", 
+            addressCity: "IL 62401" 
+        };
 
         function safeSetStorage(key, val) {
             try { localStorage.setItem(key, val); } catch (e) { console.warn('Storage blocked'); }
@@ -707,29 +737,35 @@
             const fEmail = document.getElementById('footer-email-list');
             const fAddr = document.getElementById('footer-address-container');
 
-            dNav.innerHTML = ''; mNav.innerHTML = '';
+            if (dNav) dNav.innerHTML = ''; 
+            if (mNav) mNav.innerHTML = '';
             
             siteData.nav.forEach(n => {
                 const isActive = n.label.toLowerCase() === 'home';
                 const uniqueTarget = `tab_sk_${n.label.replace(/[^a-zA-Z0-9]/g, '_')}`;
                 const desktopActive = isActive ? 'active' : '';
 
-                dNav.innerHTML += `<li><a href="${n.url}" class="nav-link ${desktopActive}" onclick="smartTabClick(event, this, '${uniqueTarget}', '${n.url}')">${n.label}</a></li>`;
+                if (dNav) {
+                    dNav.innerHTML += `<li><a href="${n.url}" class="nav-link ${desktopActive}" onclick="smartTabClick(event, this, '${uniqueTarget}', '${n.url}')">${n.label}</a></li>`;
+                }
                 
-                const mobileClass = isActive
-                    ? `text-2xl font-bold border-b border-black/5 pb-3 text-[var(--sk-gold)]`
-                    : `text-2xl font-bold border-b border-black/5 pb-3`;
-
-                mNav.innerHTML += `<a href="${n.url}" class="${mobileClass}" onclick="smartTabClick(event, this, '${uniqueTarget}', '${n.url}')">${n.label}</a>`;
+                if (mNav) {
+                    const mobileClass = isActive
+                        ? `text-2xl font-bold border-b border-black/5 pb-3 text-[var(--sk-gold)]`
+                        : `text-2xl font-bold border-b border-black/5 pb-3`;
+                    mNav.innerHTML += `<a href="${n.url}" class="${mobileClass}" onclick="smartTabClick(event, this, '${uniqueTarget}', '${n.url}')">${n.label}</a>`;
+                }
             });
 
-            fPhone.className = "flex flex-wrap items-center justify-center gap-3";
-            let phoneHTML = `<span class="footer-value !mb-0" onclick="openPhoneSmartActions('${siteData.phones[0]}')">${siteData.phones[0]}</span>`;
-            if (siteData.phones[1]) phoneHTML += `<span class="text-white opacity-70 text-sm font-bold uppercase">or</span><span class="footer-value !mb-0" onclick="openPhoneSmartActions('${siteData.phones[1]}')">${siteData.phones[1]}</span>`;
-            fPhone.innerHTML = phoneHTML;
+            if (fPhone) {
+                fPhone.className = "flex flex-wrap items-center justify-center gap-3";
+                let phoneHTML = `<span class="footer-value !mb-0" onclick="openPhoneSmartActions('${siteData.phones[0]}')">${siteData.phones[0]}</span>`;
+                if (siteData.phones[1]) phoneHTML += `<span class="text-white opacity-70 text-sm font-bold uppercase">or</span><span class="footer-value !mb-0" onclick="openPhoneSmartActions('${siteData.phones[1]}')">${siteData.phones[1]}</span>`;
+                fPhone.innerHTML = phoneHTML;
+            }
 
-            fEmail.innerHTML = `<span class="footer-value" onclick="openEmailSmartActions('${siteData.email}')">${siteData.email}</span>`;
-            fAddr.innerHTML = `<span class="footer-value" onclick="openMapSmartActions()">${siteData.addressStreet}, ${siteData.addressCity}</span>`;
+            if (fEmail) fEmail.innerHTML = `<span class="footer-value" onclick="openEmailSmartActions('${siteData.email}')">${siteData.email}</span>`;
+            if (fAddr) fAddr.innerHTML = `<span class="footer-value" onclick="openMapSmartActions()">${siteData.addressStreet}, ${siteData.addressCity}</span>`;
 
             lucide.createIcons();
         }
@@ -817,6 +853,7 @@
         function updateHeaderVisuals() {
             const header = document.getElementById('main-header');
             const logo = document.getElementById('header-logo');
+            if (!header || !logo) return;
             const isDark = document.body.classList.contains('dark-mode');
             if (window.scrollY > 50) {
                 header.classList.add('header-scrolled');
@@ -859,13 +896,22 @@
         };
 
         function loadSheetData() {
+            // First render with default data so the menu never shows blank links
+            renderDynamicFramework();
+
             fetch(SYNC_JSON)
-                .then(response => response.json())
+                .then(response => {
+                    if(!response.ok) throw new Error('Local JSON not found');
+                    return response.json();
+                })
                 .then(data => {
                     siteData = data;
                     renderDynamicFramework();
                 })
-                .catch(err => console.error("Error loading navigation engine:", err));
+                .catch(err => {
+                    console.warn("Using baseline fallback data architecture:", err);
+                    renderDynamicFramework();
+                });
         }
 
         window.onload = () => {
