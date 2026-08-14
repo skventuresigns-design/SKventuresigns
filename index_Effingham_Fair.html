@@ -1,0 +1,787 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+     <!-- 
+        PROJECT: S&K Venture Signs - Master Web Framework
+        OWNER: S&K Venture Signs, Inc.
+        STANDARDS: Responsive, Clean Layout, Dynamic Data Sync Enabled
+        LAST UPDATED: May 2026
+    -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Digital Billboards & Mobile Sign Trailers | S&K Venture Signs</title>
+    <meta name="description" content="S&K Venture Signs offers premium digital billboard advertising along major Illinois thoroughfares and mobile digital sign trailers for community events and festivals.">
+    <link rel="icon" type="image/png" href="./favicon.png">
+    <meta property="og:title" content="S&K Venture Signs | Digital Billboards & Custom Sign Displays">
+    <meta property="og:description" content="Boost your business visibility with premium mobile digital billboards and custom sign displays in Effingham and Clay County.">
+    <meta property="og:image" content="https://www.skventuresigns.com/images/S%26K-Sign-White.png">
+    <meta property="og:url" content="https://www.skventuresigns.com/">
+    <meta property="og:type" content="website">
+
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-62F8P74L0J"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-62F8P74L0J');
+    </script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "LocalBusiness",
+  "name": "S&K Venture Signs",
+  "image": "https://www.skventuresigns.com/images/S%26K-Sign-White.png",
+  "telephone": "844-907-4450",
+  "url": "https://www.skventuresigns.com/",
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "607 W Clark Ave.",
+    "addressLocality": "Effingham",
+    "addressRegion": "IL",
+    "postalCode": "62401",
+    "addressCountry": "US"
+  },
+  "geo": {
+    "@type": "GeoCoordinates",
+    "latitude": "39.11457835095375",
+    "longitude": "-88.54972547144253"
+  },
+  "openingHoursSpecification": {
+    "@type": "OpeningHoursSpecification",
+    "dayOfWeek": [
+      "Monday",
+      "Tuesday",
+      "Wednesday",
+      "Thursday",
+      "Friday"
+    ],
+    "opens": "10:00",
+    "closes": "19:00"
+  },
+  "sameAs": [
+    "https://www.facebook.com/SKVenturesInc/"
+  ]
+}
+</script>
+
+    <script src="https://cdn.tailwindcss.com?v=10.14"></script>
+    <script src="https://unpkg.com/lucide@latest?v=10.14"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Abril+Fatface&family=Poppins:wght@400;500;600;700&family=Open+Sans:wght@600;700&display=swap&v=10.14" rel="stylesheet">
+
+    <style>
+        :root {
+            /* Admin Global Settings */
+            --divi-header: 30px;
+            --divi-body: 14px;
+            --divi-section: 50px;
+            --divi-row: 30px;
+
+            /* S&K Brand Palette */
+            --sk-maroon: rgb(62, 1, 0);
+            --sk-gold: #FFC627;
+            --sk-gold-alt: rgb(255, 192, 0);
+            --sk-nav-gold: rgb(218, 164, 33);
+            --sk-separator: rgb(187, 162, 140);
+            --sk-adv-blue: rgb(33, 158, 188);
+            
+            /* Theme & Logic Colors */
+            --bg-primary: #fcfcfc;
+            --text-primary: #333333;
+            --card-bg: #ffffff;
+            
+            /* Default Outline: Transparent (No color) */
+            --outline-color: transparent;
+            --outline-width: 1.5px;
+
+            /* Precision Dimensions Locked */
+            --header-height: 125px;
+            --header-scrolled-height: 75px; 
+            --container-width: 90%;
+            --ultra-wide-max: 1800px;
+        }
+
+        /* -----------------------------------------------------------
+            GLOBAL TYPOGRAPHY & RESET
+        ----------------------------------------------------------- */
+        html, body {
+            overflow-x: hidden;
+            font-family: 'Poppins', sans-serif;
+            font-size: var(--divi-body);
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            -webkit-tap-highlight-color: transparent;
+            line-height: 1.6;
+            margin: 0;
+            padding-top: 0;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        /* GLOBAL PRECISION OUTLINE LOGIC */
+        * {
+            text-shadow: 
+                calc(var(--outline-width) * -1) calc(var(--outline-width) * -1) 0 var(--outline-color),
+                var(--outline-width) calc(var(--outline-width) * -1) 0 var(--outline-color),
+                calc(var(--outline-width) * -1) var(--outline-width) 0 var(--outline-color),
+                var(--outline-width) var(--outline-width) 0 var(--outline-color);
+        }
+
+        h1, h2, h3, h4, h5 { 
+            font-family: 'Abril Fatface', cursive; 
+            font-size: var(--divi-header); 
+            line-height: 1.2;
+        }
+
+        .main-container {
+            width: var(--container-width);
+            max-width: var(--ultra-wide-max);
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* -----------------------------------------------------------
+            HEADER & NAVIGATION
+        ----------------------------------------------------------- */
+        header#main-header {
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            border-bottom: 4px solid var(--sk-separator);
+            height: var(--header-height);
+            background-color: var(--sk-maroon);
+        }
+
+        .header-scrolled { 
+            background-color: var(--card-bg) !important; 
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2); 
+            height: var(--header-scrolled-height) !important;
+        }
+
+        #header-logo {
+            display: block;
+            width: 320px;
+            height: auto;
+            aspect-ratio: 4163 / 1391;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .header-scrolled #header-logo { width: 190px; }
+
+        .nav-link {
+            font-family: "Open Sans", Arial, sans-serif;
+            font-size: 16px; 
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #FFFFFF;
+            transition: all 0.4s ease-in-out;
+            text-decoration: none;
+        }
+        .nav-link:hover, .nav-link.active { color: var(--sk-gold) !important; }
+        .header-scrolled .nav-link { color: var(--text-primary); }
+        .header-scrolled .nav-link.active { color: var(--sk-gold) !important; }
+
+        /* V10.13 Smart Tab Indicators for Nav Links */
+        .nav-link.already-open:hover { 
+            color: var(--sk-gold) !important; /* Glows Jet Orange to indicate it will switch tabs */
+        }
+
+        /* -----------------------------------------------------------
+            PAGE CONTENT SPECIFIC (Typography Overrides)
+        ----------------------------------------------------------- */
+        .hero-title-precision {
+            font-family: Georgia, "Times New Roman", serif !important;
+            font-size: 50px !important;
+            font-weight: 500 !important;
+            line-height: 62.1px !important;
+            color: #FFFFFF !important;
+            text-align: center;
+        }
+
+        .hero-label-precision {
+            font-family: Poppins, Helvetica, Arial, sans-serif !important;
+            font-size: 14px !important;
+            font-weight: 500 !important;
+            letter-spacing: 1px !important;
+            line-height: 19.6px !important;
+            text-transform: uppercase !important;
+            color: rgb(33, 158, 188) !important;
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        .fair-heading-precision {
+            font-family: "Abril Fatface", cursive !important;
+            font-size: 48px !important;
+            font-weight: 500 !important;
+            line-height: 67.2px !important;
+            color: #FFC000 !important;
+            text-decoration: underline !important;
+        }
+
+        .fair-date-precision {
+            font-family: "Abril Fatface", cursive !important;
+            font-size: 45px !important;
+            font-weight: 500 !important;
+            line-height: 45px !important;
+            color: #FFFFFF !important;
+        }
+
+        .fair-desc-precision {
+            font-family: "Abril Fatface", cursive !important;
+            font-size: 20px !important;
+            font-weight: 500 !important;
+            line-height: 28px !important;
+            color: #FFFFFF !important;
+        }
+
+        .fair-location-precision {
+            font-family: "Abril Fatface", cursive !important;
+            font-size: 20px !important;
+            font-weight: 500 !important;
+            line-height: 28px !important;
+            color: #FFC000 !important;
+        }
+
+        /* Divider Component Styles */
+        .et_pb_divider_internal {
+            border-top: 3px solid #FFC627;
+            width: 100%;
+            display: block;
+            margin: 0 auto;
+        }
+        .et_pb_divider {
+            padding: 15px 0;
+            width: 100%;
+        }
+
+        .get-started-btn {
+            background-color: #FFFFFF;
+            color: #000000;
+            border: 2px solid #000000;
+            border-radius: 9px;
+            font-family: "Open Sans", Arial, sans-serif;
+            font-size: 20px;
+            font-weight: 500;
+            width: 149px;
+            height: 45px;
+            padding: 0;
+            margin: 0 auto;
+            transition: all 0.3s ease;
+            display: inline-block;
+            text-decoration: none;
+        }
+        .get-started-btn:hover {
+            background-color: var(--sk-maroon) !important;
+            color: var(--sk-gold) !important;
+        }
+
+        .rental-heading-precision {
+            font-family: Georgia, "Times New Roman", serif !important;
+            font-size: 42px !important;
+            font-weight: 700 !important;
+            line-height: 58.8px !important;
+            color: #FFFFFF !important;
+            text-align: center;
+        }
+
+        .advertising-hero {
+            position: relative; 
+            min-height: 625px; 
+            background-image: linear-gradient(rgba(0, 0, 0, 0.5) 0%, rgba(0, 0, 0, 0.5) 100%), 
+                              url('./images/Marble-in-city.png');
+            background-size: cover; 
+            background-position: center;
+            display: flex; 
+            align-items: center;
+            padding-top: var(--header-height);
+        }
+
+        .adventurous-divider {
+            position: relative; 
+            min-height: 600px;
+            background-image: url('./images/skbackground.png');
+            background-size: cover; 
+            background-position: center;
+            display: flex; 
+            align-items: center; 
+            padding: 4rem 0;
+        }
+
+        .service-card { 
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1); 
+            transition: transform 0.3s ease; 
+            padding: 25px; 
+            height: 100%; 
+            display: flex; 
+            box-sizing: border-box;
+            flex-direction: column; 
+            border-radius: 24px;
+            border: 1px solid rgba(0,0,0,0.05);
+        }
+        .service-card:hover { transform: translateY(-8px); }
+        .service-card img { height: 220px; object-fit: contain; margin-bottom: 15px; cursor: zoom-in; }
+
+        /* Dynamic Contrast Logic for Advertising/Sales Titles */
+        .dynamic-ad-title { 
+            color: #000000 !important; 
+            transition: color 0.3s ease;
+        }
+        .dark-mode .dynamic-ad-title { 
+            color: #FFC627 !important; 
+            }
+
+        /* -----------------------------------------------------------
+            BRANDING & THEME UI
+        ----------------------------------------------------------- */
+        .theme-toggle-wrapper {
+            position: fixed;
+            top: 140px;
+            right: 20px;
+            z-index: 1001;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 10px;
+        }
+        .theme-toggle-panel {
+            background: var(--card-bg);
+            padding: 15px;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            border: 2px solid var(--sk-gold);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transform-origin: right top;
+        }
+        .theme-toggle-panel.hidden-settings {
+            transform: scale(0) translateX(50px);
+            opacity: 0;
+            pointer-events: none;
+        }
+        .settings-toggle-btn {
+            background: var(--sk-maroon);
+            color: var(--sk-gold);
+            width: 45px;
+            height: 45px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
+        }
+
+        /* -----------------------------------------------------------
+            MODAL SYSTEM
+        ----------------------------------------------------------- */
+        .sk-modal-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(8px);
+            z-index: 9999;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        .sk-modal-content {
+            background: var(--card-bg);
+            width: 100%;
+            max-width: 450px;
+            border-radius: 24px;
+            border: 4px solid var(--sk-separator);
+            overflow: hidden;
+        }
+        .smart-option {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 16px 20px;
+            background: rgba(128,128,128,0.1);
+            border-radius: 16px;
+            margin-bottom: 10px;
+            cursor: pointer;
+            transition: 0.2s;
+            text-decoration: none;
+            color: var(--text-primary);
+            font-weight: 700;
+        }
+        .smart-option:hover { 
+            background: var(--sk-gold); 
+            color: var(--sk-maroon) !important; 
+            transform: translateX(5px); 
+        }
+
+        /* -----------------------------------------------------------
+            FOOTER SYMMETRY
+        ----------------------------------------------------------- */
+        footer#main-footer {
+            background-color: var(--sk-maroon);
+            color: white;
+            border-top: 5px solid var(--sk-separator);
+            padding: 60px 0 30px 0; 
+        }
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 40px;
+            text-align: center;
+        }
+        .footer-col { display: flex; flex-direction: column; align-items: center; }
+        .footer-label { 
+            font-family: Georgia, serif; font-size: 14px; font-weight: 500; 
+            margin-bottom: 15px; color: white; opacity: 0.8;
+        }
+        .footer-value { 
+            font-family: "Abril Fatface", display; font-size: 18px; 
+            cursor: pointer; transition: 0.3s; margin-bottom: 5px; color: #FFFFFF;
+        }
+        .footer-value:hover { color: var(--sk-gold); }
+
+        @media (max-width: 1024px) {
+            :root { --header-height: 100px; --container-width: 90%; }
+            .advertising-hero { padding-top: 100px; }
+            #header-logo { width: 220px; }
+            .footer-grid { grid-template-columns: 1fr; gap: 40px; }
+            .hero-title-precision { font-size: 35px !important; line-height: 1.2 !important; }
+            .fair-heading-precision { font-size: 32px !important; line-height: 1.2 !important; }
+        }
+    </style>
+</head>
+<body class="light-mode">
+
+    <div class="theme-toggle-wrapper">
+        <div class="settings-toggle-btn shadow-xl" onclick="toggleSettingsPanel()">
+            <i data-lucide="settings"></i>
+        </div>
+        <div class="theme-toggle-panel hidden-settings" id="settings-panel">
+            <p class="font-bold text-xs mb-2 uppercase text-gray-500">System Preferences</p>
+            <div class="flex flex-col gap-2">
+                <button onclick="setTheme('light')" class="text-[10px] bg-gray-100 p-1 rounded">Bright</button>
+                <button onclick="setTheme('dark')" class="text-[10px] bg-gray-800 text-white p-1 rounded">Dark</button>
+                <button onclick="setTheme('auto')" class="text-[10px] border p-1 rounded">Match System</button>
+                <hr class="my-1">
+                <div class="flex flex-col gap-1">
+                    <input type="color" id="outline-color-picker" onchange="updateOutlineColor(this.value)" value="#000000" class="w-full h-6 rounded cursor-pointer">
+                    <button onclick="updateOutlineColor('transparent')" class="text-[8px] bg-red-100 text-red-800 rounded p-1 uppercase font-bold">No Outline</button>
+                    <label class="text-[9px]">Outline Color</label>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <header id="main-header" class="fixed top-0 left-0 w-full z-[1000] flex flex-col justify-center">
+        <div class="main-container flex items-center justify-between h-full px-4 lg:px-0">
+            <div class="flex-shrink-0 z-[1001]">
+                <a href="./index.html" onclick="smartTabClick(event, this, 'tab_sk_Home', this.href)">
+                    <img src="./images/S&K-Sign-White.png" alt="S&K" id="header-logo" />
+                </a>
+            </div>
+
+            <nav class="hidden lg:flex flex-grow items-center justify-center px-10">
+                <ul id="desktop-nav-root" class="flex items-center gap-8 xl:gap-12">
+                </ul>
+            </nav>
+
+            <div class="flex items-center gap-4 z-[1001]">
+                <button onclick="downloadSKContact()" class="hidden sm:flex bg-[#FFC627] text-[#3E0100] px-6 py-3 rounded-xl font-extrabold uppercase text-xs shadow-lg hover:scale-105 transition-all border-2 border-[#3E0100]">
+                    <i data-lucide="user-plus" class="w-4 h-4 mr-2"></i> 844-907-4450
+                </button>
+                <button id="menu-toggle" class="lg:hidden text-white">
+                    <i data-lucide="menu" class="w-9 h-9"></i>
+                </button>
+            </div>
+        </div>
+        <div id="mobile-menu" class="hidden absolute top-full left-0 w-full bg-[var(--card-bg)] shadow-2xl flex-col p-8 gap-6 text-[var(--text-primary)] border-t border-black/5 transition-colors"></div>
+    </header>
+
+    <main>
+        <section class="advertising-hero">
+            <div class="main-container flex flex-col lg:flex-row items-center justify-between gap-10">
+                <div class="lg:w-1/2 w-full flex justify-center">
+                    <h5 class="hero-title-precision">Transform Your Business with <br>S&K Venture Signs and Advertising</h5>
+                </div>
+                <div class="lg:w-1/2 w-full flex justify-center">
+                    <div class="bg-[var(--card-bg)] p-10 rounded-3xl shadow-2xl w-full max-w-[450px] text-center transition-colors">
+                        <span class="hero-label-precision">Innovative Solutions for Modern Advertising</span>
+                        <h3 class="text-4xl mb-4 text-[var(--text-primary)]">Join the Digital Revolution</h3>
+                        <p class="text-[var(--text-primary)] opacity-70">Discover how our digital advertising solutions can drive your business forward.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="adventurous-divider">
+            <div class="main-container">
+                <div class="flex flex-col lg:flex-row items-center gap-12 mb-16">
+                    <div class="w-full lg:w-1/2">
+                        <img src="./images/EFF-fair-locations.png" class="w-full h-auto rounded-3xl shadow-2xl lightbox-trigger cursor-zoom-in">
+                    </div>
+                    <div class="w-full lg:w-1/2 text-center text-white">
+                        <h5 class="fair-heading-precision">2026 Effingham County Fair</h5>
+                        <h1 class="fair-date-precision">August 1st to August 8th</h1>
+                        
+                        <div class="et_pb_module et_pb_divider et_pb_divider_0 et_pb_divider_position_ et_pb_space">
+                            <div class="et_pb_divider_internal"></div>
+                        </div>
+
+                        <p class="fair-desc-precision mb-8">Explore our Locations below for the 2026 Effingham County Fair and Explore how we can support Your Advertising needs.</p>
+                        <div class="space-y-6 mb-10 fair-location-precision">
+                            <p>Location 1 - RT 40 - Graphic Advertising between the Entrances of the Fair Grounds</p>
+                            <p>Locations 2 & 3 - Inside the Fairgrounds above the Entrances to the Grandstands</p>
+                            <p>Locations 4 & 5 - Inside the Fairgrounds in the infield on the track</p>
+                        </div>
+                        <a href="effinghamcountyfair.html" class="get-started-btn shadow-xl text-center" onclick="smartTabClick(event, this, 'tab_sk_efair', this.href)">
+                            <span class="btn-text" style="line-height: 41px;">Get Started</span>
+                        </a>
+                    </div>
+                </div>
+                <h2 class="rental-heading-precision">Rental Opportunities still available !!</h2>
+            </div>
+        </section>
+
+        <section id="services-grid-container" class="py-20 bg-[#3E0100]">
+            <div class="main-container">
+                <div class="flex flex-col items-center gap-6 mb-12">
+                    <h2 class="sr-only">State-of-the-Art Digital Sign Advertising Solutions & Mobile Billboard Rentals in Effingham, IL</h2>
+                    <img src="./images/Topline.png" alt="Engage Your Audience..." class="w-full max-w-[1080px] h-auto">
+                    <img src="./images/Customize.png" alt="Customize Digital Advertising" class="w-full max-w-[1080px] h-auto">
+                </div>
+
+                <div id="services-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                    <div class="service-card bg-[#ffffff]">
+                        <img src="./images/S&K-Sign-in-Sky.png" class="lightbox-trigger object-contain w-full h-[220px] p-4">
+                        <div class="text-center mt-4 flex-grow px-4">
+                            <h3 class="text-2xl mb-2 text-black" style="font-family:'Abril Fatface', cursive;">Advertising</h3>
+                            <p class="text-sm mb-6 text-black opacity-70 font-medium">Ensure your message reaches the right audience at the right time.</p>
+                        </div>
+                        <a href="./Locations.html" class="block py-3 rounded-full font-black uppercase text-xs tracking-widest text-white text-center bg-[#2A0001] border-4 border-[#FFC627] hover:scale-105 transition-all shadow-lg" onclick="smartTabClick(event, this, 'tab_sk_svc_advertising', './Locations.html')">
+                            <span class="btn-text">Available Locations ></span>
+                        </a>
+                    </div>
+
+                    <div class="service-card bg-[#DAA421]">
+                        <img src="./images/trailer.png" class="lightbox-trigger object-contain w-full h-[220px] p-4">
+                        <div class="text-center mt-4 flex-grow px-4">
+                            <h3 class="text-2xl mb-2 text-black" style="font-family:'Abril Fatface', cursive;">Rental and Leasing</h3>
+                            <p class="text-sm mb-6 text-[#3E0100] font-medium">Flexible rental options tailored to fit Your Marketing needs and budget.</p>
+                        </div>
+                        <a href="./Services.html" class="block py-3 rounded-full font-black uppercase text-xs tracking-widest text-white text-center bg-[#023456] border-4 border-white hover:scale-105 transition-all shadow-lg" onclick="smartTabClick(event, this, 'tab_sk_svc_rental', './Services.html')">
+                            <span class="btn-text">Rental and Leasing ></span>
+                        </a>
+                    </div>
+
+                    <div class="service-card bg-[#ffffff]">
+                        <img src="./images/sales.png" class="lightbox-trigger object-contain w-full h-[220px] p-4">
+                        <div class="text-center mt-4 flex-grow px-4">
+                            <h3 class="text-2xl mb-2 text-black" style="font-family:'Abril Fatface', cursive;">Sales</h3>
+                            <p class="text-sm mb-6 text-black opacity-70 font-medium">Our Digital Signs will help to enhance and Promote Your Business</p>
+                        </div>
+                        <a href="./Services.html" class="block py-3 rounded-full font-black uppercase text-xs tracking-widest text-white text-center bg-[#2A0001] border-4 border-[#FFC627] hover:scale-105 transition-all shadow-lg" onclick="smartTabClick(event, this, 'tab_sk_svc_sales', './Services.html')">
+                            <span class="btn-text">Digital Sign Sales ></span>
+                        </a>
+                    </div>
+
+                    <div class="service-card bg-[#DAA421]">
+                        <img src="./images/Repair.png" class="lightbox-trigger object-contain w-full h-[220px] p-4">
+                        <div class="text-center mt-4 flex-grow px-4">
+                            <h3 class="text-2xl mb-2 text-black" style="font-family:'Abril Fatface', cursive;">Maintenance and Repair Services</h3>
+                            <p class="text-sm mb-6 text-[#3E0100] font-medium">Your Digital Signs are always in top condition with our expert services.</p>
+                        </div>
+                        <a href="./Services.html" class="block py-3 rounded-full font-black uppercase text-xs tracking-widest text-white text-center bg-[#023456] border-4 border-white hover:scale-105 transition-all shadow-lg" onclick="smartTabClick(event, this, 'tab_sk_svc_repair', './Services.html')">
+                             <span class="btn-text">Maintenance and Repair ></span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="bg-[#3E0100] pb-20 flex justify-center">
+            <div class="main-container flex justify-center">
+                <img src="./images/SK-tagline.png" class="w-full max-w-[950px] lightbox-trigger cursor-zoom-in">
+            </div>
+        </section>
+
+        <section class="py-24" style="background-color:rgb(69,123,157);">
+            <div class="main-container text-center text-white">
+                <h2 class="text-5xl md:text-7xl mb-8">Unlock Your Advertising Potential</h2>
+                <p class="text-xl md:text-2xl mb-12 max-w-4xl mx-auto leading-relaxed">
+                    Ready to elevate your brand’s visibility? Reach out to S&K Venture Signs today for tailored digital solutions that meet your unique needs.
+                </p>
+                <a href="mailto:Scott.Robinson@skventuresigns.com" class="bg-white text-blue-900 px-16 py-5 rounded-full font-black uppercase tracking-widest shadow-2xl inline-block hover:scale-105 transition-all border-4 border-blue-900" onclick="smartTabClick(event, this, 'tab_sk_mailto_quote', this.href)">
+                    <span class="btn-text">Request A Quote</span>
+                </a>
+            </div>
+        </section>
+    </main>
+
+    <footer id="main-footer">
+        <div class="main-container footer-grid">
+            <div class="footer-col">
+                <p class="footer-label">Give us a call</p>
+                <div id="footer-phone-list"></div>
+            </div>
+            <div class="footer-col">
+                <p class="footer-label">Send us an Email</p>
+                <div id="footer-email-list"></div>
+            </div>
+            <div class="footer-col">
+                <p class="footer-label">Visit our office</p>
+                <div id="footer-address-container"></div>
+            </div>
+        </div>
+        <div class="main-container mt-10 pt-6 border-t border-white/10 text-center">
+            <h5 class="font-bold opacity-50 text-sm tracking-widest uppercase text-white">© 2026 S&K VENTURE SIGNS</h5>
+        </div>
+    </footer>
+
+    <div id="lightbox-overlay" onclick="this.style.display='none'" class="fixed inset-0 bg-black/95 z-[10000] hidden items-center justify-center p-10">
+        <img id="lightbox-img" src="" class="max-w-full max-h-full object-contain rounded-xl border-4 border-white shadow-2xl">
+    </div>
+
+    <div id="phone-modal" class="sk-modal-overlay" onclick="closeModals()">
+        <div class="sk-modal-content" onclick="event.stopPropagation()">
+            <div class="bg-[#3E0100] p-8 text-[#FFC627] text-center font-serif text-2xl">Contact Specialist</div>
+            <div class="p-8" id="phone-options-container"></div>
+            <div class="p-6 text-center text-sm font-bold modal-cancel-text" onclick="closeModals()">CANCEL</div>
+        </div>
+    </div>
+
+    <div id="email-modal" class="sk-modal-overlay" onclick="closeModals()">
+        <div class="sk-modal-content" onclick="event.stopPropagation()">
+            <div class="bg-[#3E0100] p-8 text-[#FFC627] text-center font-serif text-2xl">Send Message</div>
+            <div class="p-8" id="email-options-container"></div>
+            <div class="p-6 text-center text-sm font-bold modal-cancel-text" onclick="closeModals()">CANCEL</div>
+        </div>
+    </div>
+
+    <div id="map-modal" class="sk-modal-overlay" onclick="closeModals()">
+        <div class="sk-modal-content" onclick="event.stopPropagation()">
+            <div class="bg-[#3E0100] p-8 text-[#FFC627] text-center font-serif text-2xl">Start Navigation</div>
+            <div class="p-8">
+                <a id="link-gmaps" class="smart-option"><i data-lucide="map"></i> Google Maps</a>
+                <a id="link-amaps" class="smart-option"><i data-lucide="navigation"></i> Apple Maps</a>
+                <a id="link-waze" class="smart-option"><i data-lucide="navigation-2"></i> Waze Navigation</a>
+            </div>
+            <div class="p-6 text-center text-sm font-bold modal-cancel-text" onclick="closeModals()">CANCEL</div>
+        </div>
+    </div>
+
+    <script>
+        // --- PRESERVED LOCAL SYSTEMS & MODALS ---
+        function safeSetStorage(key, val) { try { localStorage.setItem(key, val); } catch (e) {} }
+        function safeGetStorage(key) { try { return localStorage.getItem(key); } catch (e) { return null; } }
+
+        function initLightbox() {
+            const overlay = document.getElementById('lightbox-overlay');
+            const overlayImg = document.getElementById('lightbox-img');
+            if (overlay && overlayImg) {
+                document.querySelectorAll('.lightbox-trigger').forEach(img => {
+                    img.onclick = () => { overlayImg.src = img.src; overlay.style.display = 'flex'; };
+                });
+            }
+        }
+
+        function toggleSettingsPanel() { document.getElementById('settings-panel').classList.toggle('hidden-settings'); }
+
+        function setTheme(mode) {
+            const body = document.body;
+            const hour = new Date().getHours();
+            if (mode === 'auto') mode = (hour < 6 || hour >= 19) ? 'dark' : 'light';
+            if (mode === 'dark') {
+                document.documentElement.style.setProperty('--bg-primary', '#121212');
+                document.documentElement.style.setProperty('--text-primary', '#e0e0e0');
+                document.documentElement.style.setProperty('--card-bg', '#1e1e1e');
+                body.classList.add('dark-mode');
+            } else {
+                document.documentElement.style.setProperty('--bg-primary', '#fcfcfc');
+                document.documentElement.style.setProperty('--text-primary', '#333333');
+                document.documentElement.style.setProperty('--card-bg', '#ffffff');
+                body.classList.remove('dark-mode');
+            }
+            document.cookie = `theme=${mode};max-age=31536000;path=/`;
+            updateHeaderVisuals();
+        }
+
+        function updateOutlineColor(color) {
+            document.documentElement.style.setProperty('--outline-color', color);
+            document.cookie = `outline-color=${color};max-age=31536000;path=/`;
+        }
+
+        function openPhoneSmartActions(num) {
+            const clean = num.replace(/\D/g, '');
+            const container = document.getElementById('phone-options-container');
+            let html = `<a href="tel:${clean}" class="smart-option" onclick="smartTabClick(event, this, 'tab_sk_tel', this.href)"><i data-lucide="phone"></i> Direct Call</a>`;
+            if (clean.includes('6187084450')) {
+                html += `<a href="https://wa.me/16187084450" class="smart-option" onclick="smartTabClick(event, this, 'tab_sk_wa', this.href)"><i data-lucide="message-circle"></i> WhatsApp Specialist</a>`;
+            }
+            if (container) container.innerHTML = html;
+            document.getElementById('phone-modal').style.display = 'flex';
+            if (typeof lucide !== 'undefined') { lucide.createIcons(); }
+        }
+
+        function openEmailSmartActions(email) {
+            const container = document.getElementById('email-options-container');
+            if (container) {
+                container.innerHTML = `
+                    <a href="mailto:${email}" class="smart-option" onclick="smartTabClick(event, this, 'tab_sk_mail_def', this.href)"><i data-lucide="mail"></i> Default Client</a>
+                    <a href="https://mail.google.com/mail/?view=cm&fs=1&to=${email}" class="smart-option" onclick="smartTabClick(event, this, 'tab_sk_mail_gmail', this.href)"><i data-lucide="send"></i> Gmail Web</a>
+                    <div onclick="navigator.clipboard.writeText('${email}'); closeModals();" class="smart-option"><i data-lucide="copy"></i> Copy Address</div>
+                `;
+            }
+            document.getElementById('email-modal').style.display = 'flex';
+            if (typeof lucide !== 'undefined') { lucide.createIcons(); }
+        }
+
+        function openMapSmartActions() {
+            // Safe fallback lookup to the global siteData variable populated by navigation.js
+            const currentData = window.siteData || siteData || {};
+            const addrStr = currentData.addressStreet && currentData.addressCity 
+                ? `${currentData.addressStreet} ${currentData.addressCity}` 
+                : "607 W Clark Ave Effingham IL 62401";
+            const addr = encodeURIComponent(addrStr);
+            
+            document.getElementById('link-gmaps').href = `https://maps.google.com/?q=${addr}`;
+            document.getElementById('link-gmaps').setAttribute('onclick', `smartTabClick(event, this, 'tab_sk_gmaps', '${document.getElementById('link-gmaps').href}')`);
+
+            document.getElementById('link-amaps').href = `http://maps.apple.com/?daddr=${addr}&dirflg=d`;
+            document.getElementById('link-amaps').setAttribute('onclick', `smartTabClick(event, this, 'tab_sk_amaps', '${document.getElementById('link-amaps').href}')`);
+
+            document.getElementById('link-waze').href = `https://waze.com/ul?q=${addr}&navigate=yes`;
+            document.getElementById('link-waze').setAttribute('onclick', `smartTabClick(event, this, 'tab_sk_waze', '${document.getElementById('link-waze').href}')`);
+            
+            document.getElementById('map-modal').style.display = 'flex';
+            if (typeof lucide !== 'undefined') { lucide.createIcons(); }
+        }
+
+        function closeModals() { document.querySelectorAll('.sk-modal-overlay').forEach(m => m.style.display = 'none'); }
+
+        function updateHeaderVisuals() {
+            const header = document.getElementById('main-header');
+            const logo = document.getElementById('header-logo');
+            if (!header || !logo) return;
+            const isDark = document.body.classList.contains('dark-mode');
+            if (window.scrollY > 50) {
+                header.classList.add('header-scrolled');
+                logo.src = isDark ? "./images/S&K-Sign-White.png" : "./images/S&K-Sign-Black.png";
+            } else {
+                header.classList.remove('header-scrolled');
+                logo.src = "./images/S&K-Sign-White.png";
+            }
+        }
+
+        window.addEventListener('scroll', updateHeaderVisuals);
+
+        window.addEventListener('DOMContentLoaded', () => {
+            initLightbox();
+            const cookies = document.cookie.split('; ').reduce((acc, curr) => {
+                const [k, v] = curr.split('='); acc[k] = v; return acc;
+            }, {});
+            updateOutlineColor(cookies['outline-color'] || 'transparent');
+            setTheme(cookies['theme'] || 'auto');
+        });
+    </script>
+    
+    <!-- External framework layout engine call -->
+    <script src="./navigation.js"></script>
+</body>
+</html>
