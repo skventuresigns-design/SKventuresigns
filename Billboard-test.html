@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <!-- 
     PROJECT: S & K Ventures Billboard - Consolidated Engine
-    VERSION: 5.1 (20-Slot Dynamic CSV + Programmatic Bid Architecture - Fixed Syntax)
+    VERSION: 5.2 (20-Slot Dynamic CSV + Direct/Programmatic Override - Initial Boot Fix)
     STANDARDS: GitHack Compatible, No-Strip, Responsive Flex Layout
 -->
 
@@ -12,14 +12,13 @@
 <script src="https://cdn.tailwindcss.com?v=4.24"></script>
 <script src="https://unpkg.com/lucide@latest"></script>
 
-<!-- Google Analytics: Boss Tracking + Watermark Tracking -->
+<!-- Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-H6Q756MVE8"></script>
 <script>
     window.dataLayer = window.dataLayer || [];
     function gtag(){dataLayer.push(arguments);}
     gtag('js', new Date());
-    gtag('config', 'G-H6Q756MVE8', { 'page_type': 'billboard_widget_v5.1', 'layout_version': '5.1' });
-    gtag('config', 'G-L376P3NPY4');
+    gtag('config', 'G-H6Q756MVE8', { 'page_type': 'billboard_widget_v5.2', 'layout_version': '5.2' });
 </script>
 
 <div id="sk-billboard-root-container" class="light-mode" onmousemove="handleInteraction()" ontouchstart="handleInteraction()">
@@ -32,13 +31,13 @@
         </div>
     </div>
 
-    <!-- Interactive Ghost Back Button (Fades in on tap/move) -->
+    <!-- Interactive Ghost Back Button -->
     <a href="./index.html" id="ghost-back-btn">
         <i data-lucide="arrow-left" class="w-5 h-5"></i>
         <span>Back to Site</span>
     </a>
 
-    <!-- Interactive Full Screen Button (Fades in on tap/move) -->
+    <!-- Interactive Full Screen Button -->
     <button id="fullscreen-toggle-btn" onclick="toggleFullScreen()">
         <i data-lucide="maximize" class="w-5 h-5" id="fs-icon"></i>
         <span>Full Screen</span>
@@ -55,7 +54,7 @@
 
         <!-- Full-Width Bottom Bar: Branding, Weather, & Time -->
         <div id="sk-bottom-bar">
-            <!-- Brand Logo Group (Fluid Flex Item) -->
+            <!-- Brand Logo Group -->
             <div class="sk-logo-group">
                 <div class="sk-logo">
                     <img src="https://raw.githack.com/Werewolf3788/SKVentureSigns/main/images/S%26K%20Name.png" 
@@ -66,10 +65,10 @@
                 </div>
             </div>
             
-            <!-- Phone Number (Fluid Flex Item) -->
+            <!-- Phone Number -->
             <div class="sk-bottom-phone">844-907-4450</div>
             
-            <!-- Info Stack (Fluid Flex Item) -->
+            <!-- Info Stack -->
             <div class="sk-info-stack">
                 <div class="sk-weather">
                     <div id="sk-temp-val">--°</div>
@@ -363,11 +362,10 @@
 
 <script>
 (function() {
-    // Google Sheets Published CSV Feed URL
     const CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQ5VXvgVRHFKyC2S2qsav0zJCcl8if8Nbq-di3NtRLef5CIqz2-Wj8dTFbkUY_zvgnsS1wQL6Ymiunf/pub?gid=0&single=true&output=csv";
     const displayInterval = 12000; 
     let currentAdIndex = -1;
-    let adSlots = []; // Array of { name, notes, directUrl, programmaticUrl }
+    let adSlots = []; 
     let lastWeatherData = null; 
     let targetTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone; 
     let isNightTimeSolar = null; 
@@ -430,7 +428,6 @@
         if(lastWeatherData) updateWeatherUI(lastWeatherData);
     }
 
-    // CSV Fetcher: Parses 20 slots, ignores blank Column C, tracks Column D programmatic endpoints
     async function fetchAdImages(isAutoSync = false) {
         try {
             const res = await fetch(`${CSV_URL}&t=${Date.now()}`);
@@ -441,7 +438,6 @@
             lines.forEach((line, idx) => {
                 if (idx === 0) return; // Skip Header Row
                 
-                // Parse CSV columns respecting double quotes
                 const columns = [];
                 let current = '';
                 let inQuotes = false;
@@ -464,13 +460,12 @@
                 const directUrl = (columns[2] || '').replace(/^"|"$/g, '').trim();
                 const programmaticUrl = (columns[3] || '').replace(/^"|"$/g, '').trim();
 
-                // Validation: If Column C is blank, skip this line entirely
                 if (directUrl && directUrl.startsWith('http')) {
                     loadedSlots.push({
                         name: customerName,
                         notes: notes,
                         directUrl: directUrl,
-                        programmaticUrl: programmaticUrl.startsWith('http') ? programmaticUrl : null
+                        programmaticUrl: (programmaticUrl && programmaticUrl.startsWith('http')) ? programmaticUrl : null
                     });
                 }
             });
@@ -487,21 +482,20 @@
         }
     }
 
-    // Resolves whether to display a programmatic winning creative, a priority image override, or the direct fallback
     async function resolveNextAdCreative(slot) {
         if (slot.programmaticUrl) {
             const url = slot.programmaticUrl.toLowerCase();
             
-            // 1. Direct Image Override Test (Ends in .png, .jpg, .jpeg, .webp)
+            // 1. Direct Image Override (.png, .jpg, .jpeg, .webp)
             if (url.includes('.png') || url.includes('.jpg') || url.includes('.jpeg') || url.includes('.webp')) {
                 return {
                     imageUrl: slot.programmaticUrl,
                     pixelUrl: null,
-                    source: 'Column D Direct Image Override'
+                    source: 'Column D Image Override'
                 };
             }
 
-            // 2. Programmatic API Endpoint (JSON/SSP Feed)
+            // 2. Programmatic API Feed
             try {
                 const response = await fetch(slot.programmaticUrl, { signal: AbortSignal.timeout(1500) });
                 if (response.ok && response.status !== 204) {
@@ -519,7 +513,7 @@
             }
         }
 
-        // 3. Default Direct-Sold Ad / Fallback (Column C)
+        // 3. Direct-Sold Ad Fallback (Column C)
         return {
             imageUrl: slot.directUrl,
             pixelUrl: null,
@@ -527,21 +521,18 @@
         };
     }
 
-    // Rotates smoothly to the next active slot in the rotation
     async function rotateAds() {
         if (adSlots.length === 0) return;
         
         currentAdIndex = (currentAdIndex + 1) % adSlots.length;
         const currentSlot = adSlots[currentAdIndex];
 
-        // Resolve ad creative (Checks programmatic Column D if filled; otherwise Column C)
         const creative = await resolveNextAdCreative(currentSlot);
 
         const activeSlide = document.getElementById('sk-active-slide');
         const activeImg = document.getElementById('sk-active-img');
         if (!activeSlide || !activeImg) return;
 
-        // Preload image before fading in
         const preloader = new Image();
         preloader.src = creative.imageUrl;
         preloader.onload = () => {
@@ -550,7 +541,6 @@
                 activeImg.src = creative.imageUrl;
                 activeSlide.classList.remove('fade-out');
 
-                // Fire Proof of Play beacon if returned by programmatic bid
                 if (creative.pixelUrl) {
                     fetch(creative.pixelUrl, { mode: 'no-cors' }).catch(() => {});
                 }
@@ -657,7 +647,9 @@
     async function startBillboard() {
         if (typeof lucide !== 'undefined') lucide.createIcons();
         syncTimeTheme();
-        await fetchAdImages();
+        
+        // Fetch ads and immediately trigger first slide
+        await fetchAdImages(false);
         
         if ("geolocation" in navigator) {
             navigator.geolocation.getCurrentPosition(
