@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <!-- 
     PROJECT: S & K Ventures Billboard - Consolidated Engine
-    VERSION: 5.0 (20-Slot Dynamic CSV + Programmatic Bid Architecture)
+    VERSION: 5.1 (20-Slot Dynamic CSV + Programmatic Bid Architecture - Fixed Syntax)
     STANDARDS: GitHack Compatible, No-Strip, Responsive Flex Layout
 -->
 
@@ -18,7 +18,7 @@
     window.dataLayer = window.dataLayer || [];
     function gtag(){dataLayer.push(arguments);}
     gtag('js', new Date());
-    gtag('config', 'G-H6Q756MVE8', { 'page_type': 'billboard_widget_v5.0', 'layout_version': '5.0' });
+    gtag('config', 'G-H6Q756MVE8', { 'page_type': 'billboard_widget_v5.1', 'layout_version': '5.1' });
     gtag('config', 'G-L376P3NPY4');
 </script>
 
@@ -526,14 +526,6 @@
             source: 'Direct Loop'
         };
     }
-
-        // Default direct-sold ad
-        return {
-            imageUrl: slot.directUrl,
-            pixelUrl: null,
-            source: 'Direct Loop'
-        };
-    
 
     // Rotates smoothly to the next active slot in the rotation
     async function rotateAds() {
