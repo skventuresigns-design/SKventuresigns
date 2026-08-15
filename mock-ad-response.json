@@ -1,0 +1,5 @@
+{
+  "status": "bid_won",
+  "asset_url": "https://www.skventuresigns.com/images/skadvertise.png",
+  "proof_of_play_url": "https://httpbin.org/get?proof_of_play_verified=true"
+}
