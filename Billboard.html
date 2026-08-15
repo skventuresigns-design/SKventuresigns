@@ -1,707 +1,336 @@
 <!DOCTYPE html>
-<!-- 
-    PROJECT: S & K Ventures Billboard - Consolidated Engine
-    VERSION: 5.3 (20-Slot Dynamic CSV + GA4 Proof of Play Tracking + Direct/Programmatic Override)
-    STANDARDS: GitHack Compatible, No-Strip, Responsive Flex Layout
--->
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>S&K Venture Signs - Billboard Engine</title>
 
-<!-- Font Imports -->
-<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Satisfy&family=Pinyon+Script&family=Rouge+Script&family=Alex+Brush&display=swap" rel="stylesheet">
+    <!-- Google Analytics: Proof of Play Tracking -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-62F8P74L0J"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-62F8P74L0J', { 
+            'page_type': 'billboard_novastar_v1',
+            'debug_mode': true 
+        });
+    </script>
+    
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            user-select: none;
+            -webkit-user-select: none;
+        }
 
-<!-- Framework Assets scoped for the Widget -->
-<script src="https://cdn.tailwindcss.com?v=4.24"></script>
-<script src="https://unpkg.com/lucide@latest"></script>
+        html, body {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background-color: #000000;
+            font-family: 'Arial Black', Impact, sans-serif;
+        }
 
-<!-- Google Analytics: S&K Venture Signs Boss Tracking -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-62F8P74L0J"></script>
-<script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-    gtag('config', 'G-62F8P74L0J', { 'page_type': 'billboard_widget_v5.3', 'layout_version': '5.3', 'debug_mode': true }); 
-</script>
+        #billboard-container {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            background: #000000;
+        }
 
-<div id="sk-billboard-root-container" class="light-mode" onmousemove="handleInteraction()" ontouchstart="handleInteraction()">
+        #ad-stage {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: calc(100% - 100px);
+            background: #000000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            z-index: 1;
+        }
 
-    <!-- Mobile Landscape Lock Overlay -->
-    <div id="landscape-lock">
-        <div class="lock-content">
-            <i data-lucide="rotate-cw" class="w-16 h-16 mb-4 animate-bounce"></i>
-            <p>Please Rotate Your Device<br><span class="text-sm opacity-60 uppercase font-bold tracking-widest">Landscape Mode Required</span></p>
+        .slide {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 1;
+            transition: opacity 0.4s ease-in-out;
+        }
+
+        .slide.fading {
+            opacity: 0;
+        }
+
+        .slide img {
+            width: 100%;
+            height: 100%;
+            object-fit: fill;
+        }
+
+        #brand-bar {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 100px;
+            background-color: #3E0100;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 40px;
+            z-index: 10;
+            color: #FAC429;
+            box-sizing: border-box;
+        }
+
+        .bar-section {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            height: 100%;
+            transition: opacity 0.4s ease;
+        }
+
+        .sec-logo {
+            order: 1;
+            justify-content: flex-start;
+        }
+
+        .sec-phone {
+            order: 2;
+            justify-content: center;
+            color: #ffffff;
+            font-size: 42px;
+            font-weight: 900;
+            letter-spacing: 4px;
+            -webkit-text-stroke: 1.5px #000000;
+        }
+
+        .sec-info {
+            order: 3;
+            justify-content: flex-end;
+            gap: 25px;
+            color: #ffffff;
+        }
+
+        .brand-logo-img {
+            height: 140%;
+            max-height: none;
+            width: auto;
+            object-fit: contain;
+            filter: drop-shadow(2px 2px 4px rgba(0,0,0,0.5));
+        }
+
+        #temp-display {
+            font-size: 55px;
+            font-weight: 900;
+            line-height: 1;
+            -webkit-text-stroke: 1.5px #000000;
+            color: #FAC429;
+        }
+
+        #time-display {
+            font-size: 55px;
+            font-weight: 900;
+            line-height: 1;
+            font-family: 'Courier New', monospace;
+            border-left: 3px solid rgba(255, 255, 255, 0.3);
+            padding-left: 25px;
+            -webkit-text-stroke: 1.5px #000000;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="billboard-container">
+        <div id="ad-stage">
+            <div id="active-slide" class="slide">
+                <img id="active-image" src="" alt="Billboard Display" />
+            </div>
+        </div>
+
+        <div id="brand-bar">
+            <div class="bar-section sec-logo" id="logo-slot">
+                <img src="https://raw.githack.com/Werewolf3788/SKVentureSigns/main/images/S%26K%20Name.png" 
+                     alt="S&K Venture Signs" 
+                     class="brand-logo-img"
+                     onerror="this.style.display='none'; document.getElementById('logo-fallback').style.display='block';">
+                <div id="logo-fallback" style="display:none; font-size:32px; font-weight:900;">S & K VENTURE SIGNS</div>
+            </div>
+
+            <div class="bar-section sec-phone" id="phone-slot">
+                844-907-4450
+            </div>
+
+            <div class="bar-section sec-info">
+                <div id="temp-display">--°</div>
+                <div id="time-display">00:00</div>
+            </div>
         </div>
     </div>
 
-    <!-- Interactive Ghost Back Button -->
-    <a href="./index.html" id="ghost-back-btn">
-        <i data-lucide="arrow-left" class="w-5 h-5"></i>
-        <span>Back to Site</span>
-    </a>
-
-    <!-- Interactive Full Screen Button -->
-    <button id="fullscreen-toggle-btn" onclick="toggleFullScreen()">
-        <i data-lucide="maximize" class="w-5 h-5" id="fs-icon"></i>
-        <span>Full Screen</span>
-    </button>
-
-    <div id="sk-billboard-display">
+    <script>
+    (function() {
+        const CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQ5VXvgVRHFKyC2S2qsav0zJCcl8if8Nbq-di3NtRLef5CIqz2-Wj8dTFbkUY_zvgnsS1wQL6Ymiunf/pub?gid=0&single=true&output=csv";
+        const DISPLAY_INTERVAL = 12000;
         
-        <!-- Ad Stage: Edge-to-Edge Visual Mapping -->
-        <div id="sk-ad-viewport">
-            <div id="sk-active-slide" class="sk-ad-slide active">
-                <img id="sk-active-img" src="" alt="Active Advertisement" />
-            </div>
-        </div>
+        let adSlots = [];
+        let currentIndex = -1;
+        let currentQuarter = null;
 
-        <!-- Full-Width Bottom Bar: Branding, Weather, & Time -->
-        <div id="sk-bottom-bar">
-            <!-- Brand Logo Group -->
-            <div class="sk-logo-group">
-                <div class="sk-logo">
-                    <img src="https://raw.githack.com/Werewolf3788/SKVentureSigns/main/images/S%26K%20Name.png" 
-                         alt="S&K Venture Signs" 
-                         class="sk-brand-img"
-                         onerror="this.style.display='none'; document.getElementById('sk-fallback-text').style.display='block';">
-                    <div id="sk-fallback-text" style="display:none;">S & K VENTURE SIGNS</div>
-                </div>
-            </div>
-            
-            <!-- Phone Number -->
-            <div class="sk-bottom-phone">844-907-4450</div>
-            
-            <!-- Info Stack -->
-            <div class="sk-info-stack">
-                <div class="sk-weather">
-                    <div id="sk-temp-val">--°</div>
-                </div>
-                <div id="sk-time-val">00:00</div>
-            </div>
-        </div>
-
-        <!-- LED Texture Overlay & Hardware Vignette -->
-        <div class="sk-led-overlay"></div>
-    </div>
-</div>
-
-<style>
-    /* PAGE RESET FOR UNIVERSAL EMBEDDING */
-    html, body {
-        margin: 0 !important;
-        padding: 0 !important;
-        width: 100% !important;
-        height: 100% !important;
-        overflow: hidden !important;
-        background: #000;
-    }
-
-    /* THEME VARIABLES & CONTAINER QUERIES */
-    #sk-billboard-root-container {
-        --bb-bottom-bg: #3E0100;
-        --bb-text: #ffffff; 
-        --bb-border: rgba(255, 255, 255, 0.2);
-        --bar-height: clamp(75px, 11vh, 140px);
-        --sk-yellow: #FAC429;
-        
-        all: initial !important;
-        display: block !important;
-        width: 100% !important;
-        height: 100% !important;
-        position: absolute !important;
-        inset: 0 !important;
-        
-        container-type: inline-size;
-        container-name: billboard;
-
-        margin: 0 !important;
-        padding: 0 !important;
-        background: #000 !important;
-        font-family: 'Arial Black', Gadget, sans-serif !important;
-        box-sizing: border-box !important;
-        overflow: hidden !important;
-        z-index: 1 !important;
-    }
-
-    #sk-billboard-root-container.dark-mode {
-        --bb-bottom-bg: #3E0100;
-        --bb-text: #ffffff;
-        --bb-border: rgba(255, 255, 255, 0.1);
-    }
-
-    /* GHOST BACK BUTTON */
-    #ghost-back-btn {
-        position: absolute !important;
-        top: 30px !important;
-        left: 30px !important;
-        z-index: 2000 !important;
-        background: rgba(0, 0, 0, 0.8) !important;
-        color: var(--sk-yellow) !important;
-        padding: 12px 24px !important;
-        border-radius: 50px !important;
-        border: 2px solid var(--sk-yellow) !important;
-        display: flex !important;
-        align-items: center !important;
-        gap: 10px !important;
-        text-decoration: none !important;
-        font-family: 'Poppins', sans-serif !important;
-        font-weight: 800 !important;
-        font-size: 14px !important;
-        text-transform: uppercase !important;
-        opacity: 0;
-        visibility: hidden;
-        transition: opacity 0.5s ease, visibility 0.5s ease !important;
-    }
-    #ghost-back-btn.active { opacity: 1; visibility: visible; }
-
-    /* FULL SCREEN BUTTON */
-    #fullscreen-toggle-btn {
-        position: absolute !important;
-        top: 30px !important;
-        right: 30px !important;
-        z-index: 2000 !important;
-        background: rgba(0, 0, 0, 0.8) !important;
-        color: var(--sk-yellow) !important;
-        padding: 12px 24px !important;
-        border-radius: 50px !important;
-        border: 2px solid var(--sk-yellow) !important;
-        display: flex !important;
-        align-items: center !important;
-        gap: 10px !important;
-        text-decoration: none !important;
-        font-family: 'Poppins', sans-serif !important;
-        font-weight: 800 !important;
-        font-size: 14px !important;
-        text-transform: uppercase !important;
-        cursor: pointer !important;
-        opacity: 0;
-        visibility: hidden;
-        transition: opacity 0.5s ease, visibility 0.5s ease !important;
-    }
-    #fullscreen-toggle-btn.active { opacity: 1; visibility: visible; }
-
-    /* LANDSCAPE LOCK */
-    #landscape-lock {
-        position: absolute !important;
-        inset: 0 !important;
-        background: #3E0100 !important;
-        z-index: 3000 !important;
-        display: none;
-        flex-direction: column !important;
-        justify-content: center !important;
-        align-items: center !important;
-        color: var(--sk-yellow) !important;
-        text-align: center !important;
-        font-family: 'Poppins', sans-serif !important;
-    }
-    @media screen and (orientation: portrait) and (max-width: 1024px) {
-        #landscape-lock { display: flex !important; }
-    }
-
-    /* MAIN DISPLAY BOX */
-    #sk-billboard-display {
-        position: absolute !important;
-        inset: 0 !important;
-        width: 100% !important;
-        height: 100% !important;
-        background: #000 !important;
-        display: flex !important;
-        flex-direction: column !important;
-        overflow: hidden !important;
-    }
-
-    /* AD VIEWPORT */
-    #sk-ad-viewport {
-        position: absolute !important;
-        top: 0 !important;
-        left: 0 !important;
-        width: 100% !important;
-        height: calc(100% - var(--bar-height)) !important; 
-        z-index: 1 !important;
-        background: #000 !important;
-        overflow: hidden;
-    }
-
-    .sk-ad-slide {
-        display: flex !important;
-        width: 100% !important;
-        height: 100% !important;
-        justify-content: center;
-        align-items: center;
-        opacity: 1;
-        transition: opacity 0.4s ease-in-out;
-    }
-
-    .sk-ad-slide.fade-out {
-        opacity: 0;
-    }
-
-    .sk-ad-slide img {
-        width: 100% !important;
-        height: 100% !important;
-        object-fit: fill !important; 
-        filter: saturate(1.1) contrast(1.05) brightness(0.95) !important;
-        transition: filter 0.8s ease !important;
-    }
-
-    .dark-mode .sk-ad-slide img {
-        filter: saturate(1.1) contrast(1.05) brightness(0.75) !important;
-    }
-
-    /* UNIVERSAL FLUID FLEXBOX BOTTOM BAR */
-    #sk-bottom-bar {
-        position: absolute !important;
-        bottom: 0 !important;
-        left: 0 !important;
-        width: 100% !important;
-        height: var(--bar-height) !important;
-        background: var(--bb-bottom-bg) !important;
-        display: flex !important;
-        justify-content: space-between !important;
-        align-items: center !important;
-        padding: 0 clamp(15px, 3vw, 60px) !important;
-        gap: clamp(10px, 2vw, 30px) !important;
-        z-index: 10 !important;
-        flex-wrap: nowrap !important;
-        white-space: nowrap !important;
-    }
-
-    .sk-logo-group, .sk-bottom-phone, .sk-info-stack {
-        flex: 1 1 auto !important;
-        min-width: 0 !important;
-        height: 100% !important;
-        display: flex !important;
-        align-items: center !important;
-        transition: opacity 0.5s ease-in-out !important;
-    }
-
-    .sk-logo-group {
-        order: 1;
-        justify-content: flex-start; 
-    }
-
-    .sk-bottom-phone {
-        order: 2;
-        justify-content: center; 
-        color: var(--bb-text) !important;
-        font-weight: 900 !important;
-        font-size: clamp(20px, 2.5vw, 55px) !important;
-        letter-spacing: 5px !important; 
-        -webkit-text-stroke: 1.5px black !important;
-    }
-
-    .sk-info-stack {
-        order: 3;
-        justify-content: flex-end; 
-        gap: clamp(10px, 2vw, 40px) !important;
-        color: var(--bb-text) !important;
-    }
-
-    .sk-logo {
-        height: 100% !important;
-        display: flex !important;
-        align-items: center !important;
-        justify-content: center !important;
-        color: var(--sk-yellow) !important;
-        text-shadow: 2px 2px 4px rgba(0,0,0,0.5) !important;
-    }
-
-    .sk-brand-img {
-        height: 160% !important;
-        max-height: none !important;
-        max-width: 100% !important;
-        width: auto !important;
-        object-fit: contain !important;
-        display: block !important;
-        filter: drop-shadow(2px 2px 4px rgba(0,0,0,0.5)) !important;
-        margin: 0 !important;
-        padding: 0 !important;
-    }
-
-    #sk-fallback-text {
-        font-family: 'Arial Black', Gadget, sans-serif !important;
-        font-weight: 900 !important;
-        font-size: clamp(16px, 2vw, 45px) !important;
-    }
-
-    .sk-weather { display: flex !important; flex-direction: column !important; align-items: center !important; justify-content: center !important; }
-
-    #sk-temp-val { 
-        font-size: clamp(24px, 4vw, 85px) !important; 
-        font-weight: 900 !important; 
-        line-height: 1 !important;
-        -webkit-text-stroke: 1.5px black !important;
-    }
-
-    #sk-time-val { 
-        font-size: clamp(24px, 4vw, 85px) !important; 
-        font-weight: 900 !important; 
-        line-height: 1 !important; 
-        font-family: 'Courier New', monospace !important;
-        border-left: 4px solid var(--bb-border) !important;
-        padding-left: clamp(10px, 2vw, 40px) !important;
-        -webkit-text-stroke: 1.5px black !important;
-    }
-
-    .sk-led-overlay {
-        position: absolute !important;
-        inset: 0 !important;
-        background-image: radial-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px) !important;
-        background-size: 4px 4px !important;
-        box-shadow: inset 0 0 150px rgba(0,0,0,0.3) !important;
-        pointer-events: none !important;
-        z-index: 5 !important;
-    }
-
-    @media (max-width: 1024px) {
-        #fullscreen-toggle-btn { right: 15px !important; padding: 10px 18px !important; font-size: 12px !important; }
-    }
-
-    @media (max-width: 768px) {
-        #fullscreen-toggle-btn { top: 15px !important; right: 15px !important; padding: 8px 16px !important; font-size: 11px !important; }
-        #ghost-back-btn { top: 15px !important; left: 15px !important; padding: 8px 16px !important; font-size: 11px !important; }
-    }
-</style>
-
-<script>
-(function() {
-    const CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQ5VXvgVRHFKyC2S2qsav0zJCcl8if8Nbq-di3NtRLef5CIqz2-Wj8dTFbkUY_zvgnsS1wQL6Ymiunf/pub?gid=0&single=true&output=csv";
-    const displayInterval = 12000; 
-    let currentAdIndex = -1;
-    let adSlots = []; 
-    let lastWeatherData = null; 
-    let targetTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone; 
-    let isNightTimeSolar = null; 
-    let interactionTimer;
-    let currentQuarterTracker = null;
-
-    window.handleInteraction = function() {
-        const backBtn = document.getElementById('ghost-back-btn');
-        const fsBtn = document.getElementById('fullscreen-toggle-btn');
-        if(backBtn) backBtn.classList.add('active');
-        if(fsBtn) fsBtn.classList.add('active');
-        clearTimeout(interactionTimer);
-        interactionTimer = setTimeout(() => { 
-            if(backBtn) backBtn.classList.remove('active'); 
-            if(fsBtn) fsBtn.classList.remove('active'); 
-        }, 3000);
-    }
-
-    window.toggleFullScreen = function() {
-        const root = document.documentElement;
-        if (!document.fullscreenElement) { 
-            if (root.requestFullscreen) root.requestFullscreen();
-            else if (root.webkitRequestFullscreen) root.webkitRequestFullscreen();
-            else if (root.msRequestFullscreen) root.msRequestFullscreen();
-        } else { 
-            if (document.exitFullscreen) document.exitFullscreen();
-            else if (document.webkitExitFullscreen) document.webkitExitFullscreen();
-            else if (document.msExitFullscreen) document.msExitFullscreen();
-        }
-    };
-
-    ['fullscreenchange', 'webkitfullscreenchange', 'mozfullscreenchange', 'MSFullscreenChange'].forEach(
-        evt => document.addEventListener(evt, updateFsIcon)
-    );
-
-    function updateFsIcon() {
-        const fsIcon = document.getElementById('fs-icon');
-        const fsText = document.querySelector('#fullscreen-toggle-btn span');
-        if (document.fullscreenElement || document.webkitFullscreenElement || document.mozFullScreenElement || document.msFullscreenElement) {
-            if(fsIcon) fsIcon.setAttribute('data-lucide', 'minimize');
-            if(fsText) fsText.innerText = "Exit Full Screen";
-        } else {
-            if(fsIcon) fsIcon.setAttribute('data-lucide', 'maximize');
-            if(fsText) fsText.innerText = "Full Screen";
-        }
-        if (typeof lucide !== 'undefined') lucide.createIcons();
-    }
-
-    function syncTimeTheme() {
-        const root = document.getElementById('sk-billboard-root-container');
-        if (!root) return;
-        let isNightTime = (isNightTimeSolar !== null) ? isNightTimeSolar : (new Date().getHours() < 6 || new Date().getHours() >= 19);
-        if (isNightTime) {
-            root.classList.add('dark-mode');
-            root.classList.remove('light-mode');
-        } else {
-            root.classList.add('light-mode');
-            root.classList.remove('dark-mode');
-        }
-        if(lastWeatherData) updateWeatherUI(lastWeatherData);
-    }
-
-    async function fetchAdImages(isAutoSync = false) {
-        try {
-            const res = await fetch(`${CSV_URL}&t=${Date.now()}`);
-            const text = await res.text();
-            const lines = text.split(/\r?\n/).filter(line => line.trim() !== '');
-            let loadedSlots = [];
-            
-            lines.forEach((line, idx) => {
-                if (idx === 0) return; // Skip Header Row
-                
-                const columns = [];
-                let current = '';
-                let inQuotes = false;
-                
-                for (let i = 0; i < line.length; i++) {
-                    const char = line[i];
-                    if (char === '"') {
-                        inQuotes = !inQuotes;
-                    } else if (char === ',' && !inQuotes) {
-                        columns.push(current.trim());
-                        current = '';
-                    } else {
-                        current += char;
-                    }
-                }
-                columns.push(current.trim());
-
-                const customerName = (columns[0] || '').replace(/^"|"$/g, '').trim();
-                const notes = (columns[1] || '').replace(/^"|"$/g, '').trim();
-                const directUrl = (columns[2] || '').replace(/^"|"$/g, '').trim();
-                const programmaticUrl = (columns[3] || '').replace(/^"|"$/g, '').trim();
-
-                if (directUrl && directUrl.startsWith('http')) {
-                    loadedSlots.push({
-                        slotNumber: idx,
-                        name: customerName || `Slot ${idx}`,
-                        notes: notes,
-                        directUrl: directUrl,
-                        programmaticUrl: (programmaticUrl && programmaticUrl.startsWith('http')) ? programmaticUrl : null
-                    });
-                }
-            });
-
-            if (loadedSlots.length > 0) {
-                adSlots = loadedSlots;
-                if (!isAutoSync) {
-                    rotateAds();
-                }
-            }
-        } catch (e) { 
-            console.warn("Billboard Sync Engine: CSV fetch failed.", e); 
-        }
-    }
-
-    async function resolveNextAdCreative(slot) {
-        if (slot.programmaticUrl) {
-            const url = slot.programmaticUrl.toLowerCase();
-            
-            // 1. Direct Image Override Test (.png, .jpg, .jpeg, .webp)
-            if (url.includes('.png') || url.includes('.jpg') || url.includes('.jpeg') || url.includes('.webp')) {
-                return {
-                    imageUrl: slot.programmaticUrl,
-                    pixelUrl: null,
-                    source: 'Image Override'
-                };
-            }
-
-            // 2. Programmatic Auction Feed (Blip / SSP)
-            try {
-                const response = await fetch(slot.programmaticUrl, { 
-                    method: 'GET',
-                    headers: { 'Accept': 'application/json' },
-                    signal: AbortSignal.timeout(2000) 
+        function logProofOfPlay(slotName, slotIndex) {
+            if (typeof gtag === 'function') {
+                gtag('event', 'ad_impression', {
+                    ad_name: slotName,
+                    slot_index: slotIndex,
+                    debug_mode: true
                 });
+            }
+            console.log(`[Proof of Play Logged] Slot #${slotIndex}: "${slotName}"`);
+        }
 
-                if (response.ok && response.status === 200) {
-                    const blipData = await response.json();
+        async function fetchSheetData() {
+            try {
+                const response = await fetch(`${CSV_URL}&nocache=${Date.now()}`);
+                const text = await response.text();
+                const rows = text.split(/\r?\n/).filter(r => r.trim() !== '');
+                
+                let loaded = [];
+                for (let i = 1; i < rows.length; i++) {
+                    const line = rows[i];
+                    const cols = [];
+                    let cur = '';
+                    let inQuotes = false;
                     
-                    // Extracts creative image and proof-of-play beacon from Blip
-                    const adAsset = blipData.asset_url || blipData.image_url || (blipData.ad && blipData.ad.url) || null;
-                    const popPixel = blipData.proof_of_play_url || blipData.pixel_url || (blipData.ad && blipData.ad.proof_url) || null;
+                    for (let c = 0; c < line.length; c++) {
+                        const char = line[c];
+                        if (char === '"') inQuotes = !inQuotes;
+                        else if (char === ',' && !inQuotes) {
+                            cols.push(cur.trim());
+                            cur = '';
+                        } else {
+                            cur += char;
+                        }
+                    }
+                    cols.push(cur.trim());
 
-                    if (adAsset) {
-                        console.log(`[Blip Auction WON] Serving ad creative for: ${slot.name}`);
-                        return {
-                            imageUrl: adAsset,
-                            pixelUrl: popPixel,
-                            source: 'Blip Programmatic'
-                        };
+                    const name = (cols[0] || '').replace(/^"|"$/g, '').trim();
+                    const directUrl = (cols[2] || '').replace(/^"|"$/g, '').trim();
+
+                    if (directUrl && directUrl.startsWith('http')) {
+                        loaded.push({
+                            slotNumber: i,
+                            name: name || `Ad ${i}`,
+                            imageUrl: directUrl
+                        });
                     }
                 }
-            } catch (e) {
-                console.log(`[Blip Passback] No winning bid or timeout on [${slot.name}] - falling back to direct ad.`);
+
+                if (loaded.length > 0) {
+                    adSlots = loaded;
+                    if (currentIndex === -1) rotateAd();
+                }
+            } catch (err) {
+                console.warn("Sheet update error:", err);
             }
         }
 
-        // 3. Direct-Sold Ad Fallback (Column C)
-        return {
-            imageUrl: slot.directUrl,
-            pixelUrl: null,
-            source: 'Direct Loop'
-        };
-    }
+        function rotateAd() {
+            if (adSlots.length === 0) return;
 
-    // Proof of Play: Logs impressions directly to Google Analytics & third-party SSP pixels
-    function logProofOfPlay(slot, creative) {
-        // 1. Send GA4 Custom Event
-        if (typeof gtag === 'function') {
-            gtag('event', 'ad_impression', {
-                ad_name: slot.name,
-                slot_index: slot.slotNumber,
-                ad_source: creative.source,
-                image_url: creative.imageUrl,
-                debug_mode: true
-            });
+            currentIndex = (currentIndex + 1) % adSlots.length;
+            const slot = adSlots[currentIndex];
+
+            const slide = document.getElementById('active-slide');
+            const img = document.getElementById('active-image');
+
+            const preloader = new Image();
+            preloader.src = slot.imageUrl;
+            preloader.onload = () => {
+                slide.classList.add('fading');
+                setTimeout(() => {
+                    img.src = slot.imageUrl;
+                    slide.classList.remove('fading');
+                    logProofOfPlay(slot.name, slot.slotNumber);
+                }, 400);
+            };
         }
 
-        // 2. Fire 3rd-Party SSP Tracking Beacon (if present)
-        if (creative.pixelUrl) {
-            fetch(creative.pixelUrl, { mode: 'no-cors' })
-                .then(() => console.log(`[PoP Confirmed] 3rd-Party Pixel Pinged for: ${slot.name}`))
-                .catch(err => console.warn(`[PoP Pixel Error] ${slot.name}`, err));
+        async function fetchWeather() {
+            try {
+                const url = "https://api.open-meteo.com/v1/forecast?latitude=39.1243&longitude=-88.5525&current=temperature_2m&temperature_unit=fahrenheit";
+                const res = await fetch(url);
+                const data = await res.json();
+                if (data && data.current) {
+                    const temp = Math.round(data.current.temperature_2m);
+                    const tempEl = document.getElementById('temp-display');
+                    if (tempEl) {
+                        tempEl.innerText = `${temp}°`;
+                        if (temp <= 32) tempEl.style.color = "#00f2ff";
+                        else if (temp <= 50) tempEl.style.color = "#0ea5e9";
+                        else if (temp <= 75) tempEl.style.color = "#FAC429";
+                        else if (temp <= 90) tempEl.style.color = "#f97316";
+                        else tempEl.style.color = "#ef4444";
+                    }
+                }
+            } catch(e) {}
         }
 
-        console.log(`[Proof of Play Logged] Slot #${slot.slotNumber} | Client: "${slot.name}" | Source: ${creative.source}`);
-    }
-
-    async function rotateAds() {
-        if (adSlots.length === 0) return;
-        
-        currentAdIndex = (currentAdIndex + 1) % adSlots.length;
-        const currentSlot = adSlots[currentAdIndex];
-
-        const creative = await resolveNextAdCreative(currentSlot);
-
-        const activeSlide = document.getElementById('sk-active-slide');
-        const activeImg = document.getElementById('sk-active-img');
-        if (!activeSlide || !activeImg) return;
-
-        const preloader = new Image();
-        preloader.src = creative.imageUrl;
-        preloader.onload = () => {
-            activeSlide.classList.add('fade-out');
-            setTimeout(() => {
-                activeImg.src = creative.imageUrl;
-                activeSlide.classList.remove('fade-out');
-
-                // Log Proof of Play for this advertiser
-                logProofOfPlay(currentSlot, creative);
-            }, 400);
-        };
-        preloader.onerror = () => {
-            console.warn(`Failed to render graphic for: ${currentSlot.name}`);
-        };
-    }
-
-    async function fetchWeather(lat, lon) {
-        try {
-            const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,apparent_temperature,is_day&temperature_unit=fahrenheit&timezone=auto`;
-            const res = await fetch(url);
-            const data = await res.json();
-            if (data.timezone) targetTimeZone = data.timezone;
-            if (data.current.is_day !== undefined) isNightTimeSolar = (data.current.is_day === 0);
-            const weatherData = { temp: Math.round(data.current.temperature_2m), realfeel: Math.round(data.current.apparent_temperature) };
-            lastWeatherData = weatherData; 
-            return weatherData;
-        } catch(e) { return null; }
-    }
-
-    function updateWeatherUI(weather) {
-        if(!weather) return;
-        const tempDisplay = document.getElementById('sk-temp-val');
-        if(tempDisplay) {
-            tempDisplay.innerText = `${weather.temp}°`;
-            let tempColor = "#ffffff";
-            const t = weather.temp;
-            if (t <= 32) tempColor = "#00f2ff"; 
-            else if (t <= 50) tempColor = "#0ea5e9"; 
-            else if (t <= 75) tempColor = "#FAC429"; 
-            else if (t <= 90) tempColor = "#f97316"; 
-            else tempColor = "#ef4444"; 
-            tempDisplay.style.color = tempColor;
-        }
-    }
-
-    function updateQuarterlySwap(quarter) {
-        const logoGroup = document.querySelector('.sk-logo-group');
-        const phoneDiv = document.querySelector('.sk-bottom-phone');
-        if (!logoGroup || !phoneDiv) return;
-
-        logoGroup.style.opacity = '0';
-        phoneDiv.style.opacity = '0';
-        
-        setTimeout(() => {
-            if (quarter % 2 === 0) {
-                logoGroup.style.order = '1';
-                logoGroup.style.justifyContent = 'flex-start';
-                phoneDiv.style.order = '2';
-                phoneDiv.style.justifyContent = 'center';
-            } else {
-                phoneDiv.style.order = '1';
-                phoneDiv.style.justifyContent = 'flex-start';
-                logoGroup.style.order = '2';
-                logoGroup.style.justifyContent = 'center';
+        function updateClock() {
+            const now = new Date();
+            const timeEl = document.getElementById('time-display');
+            if (timeEl) {
+                timeEl.innerText = now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: true });
             }
-            logoGroup.style.opacity = '1';
-            phoneDiv.style.opacity = '1';
-        }, 500);
-    }
 
-    function updateLocalTime() {
-        const timeEl = document.getElementById('sk-time-val');
-        if(!timeEl) return;
-        
-        let currentMin = new Date().getMinutes();
+            const min = now.getMinutes();
+            const q = Math.floor(min / 15);
 
-        try {
-            const timeString = new Date().toLocaleTimeString('en-US', { timeZone: targetTimeZone, hour: '2-digit', minute:'2-digit', hour12: true });
-            timeEl.innerText = timeString;
-            const tzDate = new Date(new Date().toLocaleString('en-US', { timeZone: targetTimeZone }));
-            currentMin = tzDate.getMinutes();
-        } catch (e) {
-            timeEl.innerText = new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit', hour12: true});
-        }
-
-        let currentQuarter = Math.floor(currentMin / 15);
-
-        if (currentQuarterTracker !== currentQuarter) {
-            const isInitialLoad = (currentQuarterTracker === null);
-            currentQuarterTracker = currentQuarter;
-            
-            if(isInitialLoad) {
-                const logoGroup = document.querySelector('.sk-logo-group');
-                const phoneDiv = document.querySelector('.sk-bottom-phone');
-                if (logoGroup && phoneDiv) {
-                    if (currentQuarter % 2 === 0) {
-                        logoGroup.style.order = '1'; logoGroup.style.justifyContent = 'flex-start';
-                        phoneDiv.style.order = '2'; phoneDiv.style.justifyContent = 'center';
+            if (currentQuarter !== q) {
+                currentQuarter = q;
+                const logoSlot = document.getElementById('logo-slot');
+                const phoneSlot = document.getElementById('phone-slot');
+                if (logoSlot && phoneSlot) {
+                    if (q % 2 === 0) {
+                        logoSlot.style.order = '1';
+                        logoSlot.style.justifyContent = 'flex-start';
+                        phoneSlot.style.order = '2';
+                        phoneSlot.style.justifyContent = 'center';
                     } else {
-                        phoneDiv.style.order = '1'; phoneDiv.style.justifyContent = 'flex-start';
-                        logoGroup.style.order = '2'; logoGroup.style.justifyContent = 'center';
+                        phoneSlot.style.order = '1';
+                        phoneSlot.style.justifyContent = 'flex-start';
+                        logoSlot.style.order = '2';
+                        logoSlot.style.justifyContent = 'center';
                     }
                 }
-            } else {
-                updateQuarterlySwap(currentQuarter);
             }
         }
-    }
 
-    async function startBillboard() {
-        if (typeof lucide !== 'undefined') lucide.createIcons();
-        syncTimeTheme();
-        
-        await fetchAdImages(false);
-        
-        if ("geolocation" in navigator) {
-            navigator.geolocation.getCurrentPosition(
-                async (p) => { updateWeatherUI(await fetchWeather(p.coords.latitude, p.coords.longitude)); syncTimeTheme(); },
-                async (e) => { updateWeatherUI(await fetchWeather(39.1243, -88.5525)); syncTimeTheme(); },
-                { timeout: 5000 }
-            );
-        } else {
-            fetchWeather(39.1243, -88.5525).then(w => { updateWeatherUI(w); syncTimeTheme(); });
+        function init() {
+            fetchSheetData();
+            fetchWeather();
+            updateClock();
+
+            setInterval(updateClock, 1000);
+            setInterval(rotateAd, DISPLAY_INTERVAL);
+            setInterval(fetchWeather, 600000);
+            setInterval(fetchSheetData, 60000);
         }
-        
-        updateLocalTime();
-        
-        setTimeout(() => { setInterval(updateLocalTime, 1000); }, 500);
-        setInterval(rotateAds, displayInterval);
-        setInterval(syncTimeTheme, 300000); 
-        setInterval(() => fetchAdImages(true), 60000);
-    }
 
-    if (document.readyState === "complete" || document.readyState === "interactive") startBillboard();
-    else document.addEventListener("DOMContentLoaded", startBillboard);
-})();
-</script>
+        if (document.readyState === "complete" || document.readyState === "interactive") init();
+        else document.addEventListener("DOMContentLoaded", init);
+    })();
+    </script>
+</body>
+</html>
