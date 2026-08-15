@@ -221,56 +221,42 @@
         }
 
         function fetchSheetData() {
-            var xhr = new XMLHttpRequest();
-            xhr.open("GET", CSV_URL + "&nocache=" + new Date().getTime(), true);
-            xhr.onreadystatechange = function() {
-                if (xhr.readyState === 4 && xhr.status === 200) {
-                    var text = xhr.responseText;
-                    var rows = text.split(/\r?\n/);
-                    var loaded = [];
+    fetch('./playlist.json?t=' + new Date().getTime())
+        .then(function(response) {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(function(data) {
+            var loaded = [];
 
-                    for (var i = 1; i < rows.length; i++) {
-                        var line = rows[i].trim();
-                        if (!line) continue;
+            for (var i = 0; i < data.length; i++) {
+                var item = data[i];
+                // Matches your sheet columns (e.g. ad_name / Image_URL or first keys)
+                var name = item.ad_name || item.Name || item.name || ('Ad ' + (i + 1));
+                var directUrl = item.image_url || item.ImageUrl || item.directUrl || item.URL || Object.values(item)[2] || '';
 
-                        var cols = [];
-                        var cur = '';
-                        var inQuotes = false;
-                        
-                        for (var c = 0; c < line.length; c++) {
-                            var ch = line.charAt(c);
-                            if (ch === '"') inQuotes = !inQuotes;
-                            else if (ch === ',' && !inQuotes) {
-                                cols.push(cur.trim());
-                                cur = '';
-                            } else {
-                                cur += ch;
-                            }
-                        }
-                        cols.push(cur.trim());
-
-                        var name = (cols[0] || '').replace(/^"|"$/g, '').trim();
-                        var directUrl = (cols[2] || '').replace(/^"|"$/g, '').trim();
-
-                        if (directUrl && directUrl.indexOf('http') === 0) {
-                            loaded.push({
-                                slotNumber: i,
-                                name: name || ('Ad ' + i),
-                                imageUrl: directUrl
-                            });
-                        }
-                    }
-
-                    if (loaded.length > 0) {
-                        adSlots = loaded;
-                        if (currentIndex === -1) {
-                            rotateAd();
-                        }
-                    }
+                if (directUrl && directUrl.indexOf('http') === 0) {
+                    loaded.push({
+                        slotNumber: i + 1,
+                        name: name,
+                        imageUrl: directUrl
+                    });
                 }
-            };
-            xhr.send();
-        }
+            }
+
+            if (loaded.length > 0) {
+                adSlots = loaded;
+                if (currentIndex === -1) {
+                    rotateAd();
+                }
+            }
+        })
+        .catch(function(error) {
+            console.error('Error loading playlist JSON:', error);
+        });
+}}
 
         function fetchWeather() {
             var xhr = new XMLHttpRequest();
