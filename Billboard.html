@@ -18,7 +18,7 @@
     window.dataLayer = window.dataLayer || [];
     function gtag(){dataLayer.push(arguments);}
     gtag('js', new Date());
-    gtag('config', 'G-62F8P74L0J', { 'page_type': 'billboard_widget_v5.3', 'layout_version': '5.3' });
+    gtag('config', 'G-62F8P74L0J', { 'page_type': 'billboard_widget_v5.3', 'layout_version': '5.3', 'debug_mode': true }); 
 </script>
 
 <div id="sk-billboard-root-container" class="light-mode" onmousemove="handleInteraction()" ontouchstart="handleInteraction()">
@@ -529,7 +529,8 @@
                 ad_name: slot.name,
                 slot_index: slot.slotNumber,
                 ad_source: creative.source,
-                image_url: creative.imageUrl
+                image_url: creative.imageUrl,
+                debug_mode: true
             });
         }
 
@@ -692,11 +693,4 @@
     if (document.readyState === "complete" || document.readyState === "interactive") startBillboard();
     else document.addEventListener("DOMContentLoaded", startBillboard);
 })();
-
-gtag('config', 'G-62F8P74L0J', { 
-    'page_type': 'billboard_widget_v5.3', 
-    'layout_version': '5.3',
-    'debug_mode': true 
-});
-
 </script>
