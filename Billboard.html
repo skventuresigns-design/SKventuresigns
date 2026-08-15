@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>S&K Venture Signs - Billboard Engine</title>
 
-    <!-- Google Analytics: Proof of Play Tracking -->
+    <!-- Google Analytics: Proof of Play -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-62F8P74L0J"></script>
     <script>
         window.dataLayer = window.dataLayer || [];
@@ -36,7 +36,8 @@
 
         #billboard-container {
             position: absolute;
-            inset: 0;
+            top: 0;
+            left: 0;
             width: 100%;
             height: 100%;
             display: flex;
@@ -65,7 +66,7 @@
             justify-content: center;
             align-items: center;
             opacity: 1;
-            transition: opacity 0.4s ease-in-out;
+            transition: opacity 0.3s ease-in-out;
         }
 
         .slide.fading {
@@ -99,7 +100,6 @@
             display: flex;
             align-items: center;
             height: 100%;
-            transition: opacity 0.4s ease;
         }
 
         .sec-logo {
@@ -180,129 +180,138 @@
         </div>
     </div>
 
-   <script>
+    <script>
     (function() {
-        const CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQ5VXvgVRHFKyC2S2qsav0zJCcl8if8Nbq-di3NtRLef5CIqz2-Wj8dTFbkUY_zvgnsS1wQL6Ymiunf/pub?gid=0&single=true&output=csv";
-        const DISPLAY_INTERVAL = 12000;
+        var CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQ5VXvgVRHFKyC2S2qsav0zJCcl8if8Nbq-di3NtRLef5CIqz2-Wj8dTFbkUY_zvgnsS1wQL6Ymiunf/pub?gid=0&single=true&output=csv";
+        var DISPLAY_INTERVAL = 12000;
         
-        let adSlots = [];
-        let currentIndex = -1;
-        let currentQuarter = null;
+        var adSlots = [];
+        var currentIndex = -1;
+        var currentQuarter = null;
 
         function logProofOfPlay(slotName, slotIndex) {
-            if (typeof gtag === 'function') {
-                gtag('event', 'billboard_ad_play', {
-                    ad_name: slotName,
-                    slot_index: slotIndex
-                });
-            }
-            console.log(`[Proof of Play Logged] Slot #${slotIndex}: "${slotName}"`);
-        }
-
-        async function fetchSheetData() {
             try {
-                const response = await fetch(`${CSV_URL}&nocache=${Date.now()}`);
-                const text = await response.text();
-                const rows = text.split(/\r?\n/).filter(r => r.trim() !== '');
-                
-                let loaded = [];
-                for (let i = 1; i < rows.length; i++) {
-                    const line = rows[i];
-                    const cols = [];
-                    let cur = '';
-                    let inQuotes = false;
-                    
-                    for (let c = 0; c < line.length; c++) {
-                        const char = line[c];
-                        if (char === '"') inQuotes = !inQuotes;
-                        else if (char === ',' && !inQuotes) {
-                            cols.push(cur.trim());
-                            cur = '';
-                        } else {
-                            cur += char;
-                        }
-                    }
-                    cols.push(cur.trim());
-
-                    const name = (cols[0] || '').replace(/^"|"$/g, '').trim();
-                    const directUrl = (cols[2] || '').replace(/^"|"$/g, '').trim();
-
-                    if (directUrl && directUrl.startsWith('http')) {
-                        loaded.push({
-                            slotNumber: i,
-                            name: name || `Ad ${i}`,
-                            imageUrl: directUrl
-                        });
-                    }
-                }
-
-                if (loaded.length > 0) {
-                    adSlots = loaded;
-                    if (currentIndex === -1) rotateAd();
-                }
-            } catch (err) {
-                console.warn("Sheet update error:", err);
-            }
-        }
-
-        // Direct Display with Automatic Error-Skipping for NovaStar WebViews
-        function rotateAd() {
-            if (!adSlots || adSlots.length === 0) return;
-
-            currentIndex = (currentIndex + 1) % adSlots.length;
-            const slot = adSlots[currentIndex];
-
-            const slide = document.getElementById('active-slide');
-            const img = document.getElementById('active-image');
-
-            slide.classList.add('fading');
-            
-            setTimeout(() => {
-                img.onerror = function() {
-                    console.warn(`Failed loading image: ${slot.imageUrl}, skipping...`);
-                    rotateAd();
-                };
-                
-                img.src = slot.imageUrl;
-                slide.classList.remove('fading');
-                logProofOfPlay(slot.name, slot.slotNumber);
-            }, 300);
-        }
-
-        async function fetchWeather() {
-            try {
-                const url = "https://api.open-meteo.com/v1/forecast?latitude=39.1243&longitude=-88.5525&current=temperature_2m&temperature_unit=fahrenheit";
-                const res = await fetch(url);
-                const data = await res.json();
-                if (data && data.current) {
-                    const temp = Math.round(data.current.temperature_2m);
-                    const tempEl = document.getElementById('temp-display');
-                    if (tempEl) {
-                        tempEl.innerText = `${temp}°`;
-                        if (temp <= 32) tempEl.style.color = "#00f2ff";
-                        else if (temp <= 50) tempEl.style.color = "#0ea5e9";
-                        else if (temp <= 75) tempEl.style.color = "#FAC429";
-                        else if (temp <= 90) tempEl.style.color = "#f97316";
-                        else tempEl.style.color = "#ef4444";
-                    }
+                if (typeof gtag === 'function') {
+                    gtag('event', 'billboard_ad_play', {
+                        ad_name: slotName,
+                        slot_index: slotIndex
+                    });
                 }
             } catch(e) {}
         }
 
+        function rotateAd() {
+            if (!adSlots || adSlots.length === 0) return;
+
+            currentIndex = (currentIndex + 1) % adSlots.length;
+            var slot = adSlots[currentIndex];
+
+            var slide = document.getElementById('active-slide');
+            var img = document.getElementById('active-image');
+
+            if (!slide || !img) return;
+
+            slide.className = 'slide fading';
+            
+            setTimeout(function() {
+                img.src = slot.imageUrl;
+                slide.className = 'slide';
+                logProofOfPlay(slot.name, slot.slotNumber);
+            }, 300);
+        }
+
+        function fetchSheetData() {
+            var xhr = new XMLHttpRequest();
+            xhr.open("GET", CSV_URL + "&nocache=" + new Date().getTime(), true);
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState === 4 && xhr.status === 200) {
+                    var text = xhr.responseText;
+                    var rows = text.split(/\r?\n/);
+                    var loaded = [];
+
+                    for (var i = 1; i < rows.length; i++) {
+                        var line = rows[i].trim();
+                        if (!line) continue;
+
+                        var cols = [];
+                        var cur = '';
+                        var inQuotes = false;
+                        
+                        for (var c = 0; c < line.length; c++) {
+                            var ch = line.charAt(c);
+                            if (ch === '"') inQuotes = !inQuotes;
+                            else if (ch === ',' && !inQuotes) {
+                                cols.push(cur.trim());
+                                cur = '';
+                            } else {
+                                cur += ch;
+                            }
+                        }
+                        cols.push(cur.trim());
+
+                        var name = (cols[0] || '').replace(/^"|"$/g, '').trim();
+                        var directUrl = (cols[2] || '').replace(/^"|"$/g, '').trim();
+
+                        if (directUrl && directUrl.indexOf('http') === 0) {
+                            loaded.push({
+                                slotNumber: i,
+                                name: name || ('Ad ' + i),
+                                imageUrl: directUrl
+                            });
+                        }
+                    }
+
+                    if (loaded.length > 0) {
+                        adSlots = loaded;
+                        if (currentIndex === -1) {
+                            rotateAd();
+                        }
+                    }
+                }
+            };
+            xhr.send();
+        }
+
+        function fetchWeather() {
+            var xhr = new XMLHttpRequest();
+            var url = "https://api.open-meteo.com/v1/forecast?latitude=39.1243&longitude=-88.5525&current=temperature_2m&temperature_unit=fahrenheit";
+            xhr.open("GET", url, true);
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState === 4 && xhr.status === 200) {
+                    try {
+                        var data = JSON.parse(xhr.responseText);
+                        if (data && data.current) {
+                            var temp = Math.round(data.current.temperature_2m);
+                            var tempEl = document.getElementById('temp-display');
+                            if (tempEl) {
+                                tempEl.innerText = temp + "°";
+                                if (temp <= 32) tempEl.style.color = "#00f2ff";
+                                else if (temp <= 50) tempEl.style.color = "#0ea5e9";
+                                else if (temp <= 75) tempEl.style.color = "#FAC429";
+                                else if (temp <= 90) tempEl.style.color = "#f97316";
+                                else tempEl.style.color = "#ef4444";
+                            }
+                        }
+                    } catch(e) {}
+                }
+            };
+            xhr.send();
+        }
+
         function updateClock() {
-            const now = new Date();
-            const timeEl = document.getElementById('time-display');
+            var now = new Date();
+            var timeEl = document.getElementById('time-display');
             if (timeEl) {
                 timeEl.innerText = now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: true });
             }
 
-            const min = now.getMinutes();
-            const q = Math.floor(min / 15);
+            var min = now.getMinutes();
+            var q = Math.floor(min / 15);
 
             if (currentQuarter !== q) {
                 currentQuarter = q;
-                const logoSlot = document.getElementById('logo-slot');
-                const phoneSlot = document.getElementById('phone-slot');
+                var logoSlot = document.getElementById('logo-slot');
+                var phoneSlot = document.getElementById('phone-slot');
                 if (logoSlot && phoneSlot) {
                     if (q % 2 === 0) {
                         logoSlot.style.order = '1';
@@ -330,8 +339,11 @@
             setInterval(fetchSheetData, 60000);
         }
 
-        if (document.readyState === "complete" || document.readyState === "interactive") init();
-        else document.addEventListener("DOMContentLoaded", init);
+        if (document.readyState === "complete" || document.readyState === "interactive") {
+            init();
+        } else {
+            document.addEventListener("DOMContentLoaded", init);
+        }
     })();
     </script>
 </body>
