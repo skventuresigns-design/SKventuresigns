@@ -180,8 +180,7 @@
         </div>
     </div>
 
-    <script>
-
+   <script>
     (function() {
         const CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQ5VXvgVRHFKyC2S2qsav0zJCcl8if8Nbq-di3NtRLef5CIqz2-Wj8dTFbkUY_zvgnsS1wQL6Ymiunf/pub?gid=0&single=true&output=csv";
         const DISPLAY_INTERVAL = 12000;
@@ -194,8 +193,7 @@
             if (typeof gtag === 'function') {
                 gtag('event', 'billboard_ad_play', {
                     ad_name: slotName,
-                    slot_index: slotIndex,
-                    debug_mode: true
+                    slot_index: slotIndex
                 });
             }
             console.log(`[Proof of Play Logged] Slot #${slotIndex}: "${slotName}"`);
@@ -247,8 +245,9 @@
             }
         }
 
+        // Direct Display with Automatic Error-Skipping for NovaStar WebViews
         function rotateAd() {
-            if (adSlots.length === 0) return;
+            if (!adSlots || adSlots.length === 0) return;
 
             currentIndex = (currentIndex + 1) % adSlots.length;
             const slot = adSlots[currentIndex];
@@ -256,16 +255,18 @@
             const slide = document.getElementById('active-slide');
             const img = document.getElementById('active-image');
 
-            const preloader = new Image();
-            preloader.src = slot.imageUrl;
-            preloader.onload = () => {
-                slide.classList.add('fading');
-                setTimeout(() => {
-                    img.src = slot.imageUrl;
-                    slide.classList.remove('fading');
-                    logProofOfPlay(slot.name, slot.slotNumber);
-                }, 400);
-            };
+            slide.classList.add('fading');
+            
+            setTimeout(() => {
+                img.onerror = function() {
+                    console.warn(`Failed loading image: ${slot.imageUrl}, skipping...`);
+                    rotateAd();
+                };
+                
+                img.src = slot.imageUrl;
+                slide.classList.remove('fading');
+                logProofOfPlay(slot.name, slot.slotNumber);
+            }, 300);
         }
 
         async function fetchWeather() {
