@@ -181,6 +181,7 @@
     </div>
 
     <script>
+
     (function() {
         const CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQ5VXvgVRHFKyC2S2qsav0zJCcl8if8Nbq-di3NtRLef5CIqz2-Wj8dTFbkUY_zvgnsS1wQL6Ymiunf/pub?gid=0&single=true&output=csv";
         const DISPLAY_INTERVAL = 12000;
@@ -191,7 +192,7 @@
 
         function logProofOfPlay(slotName, slotIndex) {
             if (typeof gtag === 'function') {
-                gtag('event', 'ad_impression', {
+                gtag('event', 'billboard_ad_play', {
                     ad_name: slotName,
                     slot_index: slotIndex,
                     debug_mode: true
