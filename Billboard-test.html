@@ -488,9 +488,21 @@
         }
     }
 
-    // Resolves whether to display a programmatic winning creative or the direct image
+    // Resolves whether to display a programmatic winning creative, a priority image override, or the direct fallback
     async function resolveNextAdCreative(slot) {
         if (slot.programmaticUrl) {
+            const url = slot.programmaticUrl.toLowerCase();
+            
+            // 1. Direct Image Override Test (Ends in .png, .jpg, .jpeg, .webp)
+            if (url.includes('.png') || url.includes('.jpg') || url.includes('.jpeg') || url.includes('.webp')) {
+                return {
+                    imageUrl: slot.programmaticUrl,
+                    pixelUrl: null,
+                    source: 'Column D Direct Image Override'
+                };
+            }
+
+            // 2. Programmatic API Endpoint (JSON/SSP Feed)
             try {
                 const response = await fetch(slot.programmaticUrl, { signal: AbortSignal.timeout(1500) });
                 if (response.ok && response.status !== 204) {
@@ -507,6 +519,14 @@
                 console.log(`Programmatic bid passback on slot [${slot.name}] - falling back to direct ad.`);
             }
         }
+
+        // 3. Default Direct-Sold Ad / Fallback (Column C)
+        return {
+            imageUrl: slot.directUrl,
+            pixelUrl: null,
+            source: 'Direct Loop'
+        };
+    }
 
         // Default direct-sold ad
         return {
