@@ -220,44 +220,53 @@
         }
 
         function fetchSheetData() {
-            fetch('./playlist.json?t=' + new Date().getTime())
-                .then(function(response) {
-                    if (!response.ok) {
-                        throw new Error('Network response was not ok');
-                    }
-                    return response.json();
-                })
-                .then(function(data) {
-                    var loaded = [];
+            var xhr = new XMLHttpRequest();
+            var url = "https://skventuresigns.com/playlist.json?t=" + new Date().getTime();
+            xhr.open("GET", url, true);
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState === 4 && xhr.status === 200) {
+                    try {
+                        var data = JSON.parse(xhr.responseText);
+                        var loaded = [];
 
-                    if (Array.isArray(data)) {
-                        for (var i = 0; i < data.length; i++) {
-                            var item = data[i];
-                            var values = Object.values(item);
-                            
-                            var name = item.ad_name || item.Name || item.name || values[0] || ('Ad ' + (i + 1));
-                            var directUrl = item.image_url || item.ImageUrl || item.directUrl || item.URL || values[1] || values[2] || '';
+                        if (data && data.length) {
+                            for (var i = 0; i < data.length; i++) {
+                                var item = data[i];
+                                var name = item.ad_name || item.Name || item.name || ('Ad ' + (i + 1));
+                                
+                                // Extract image URL safely without modern ES6/ES2017 features
+                                var directUrl = item.image_url || item.ImageUrl || item.directUrl || item.URL || '';
+                                if (!directUrl) {
+                                    for (var key in item) {
+                                        if (item.hasOwnProperty(key) && typeof item[key] === 'string' && item[key].indexOf('http') === 0) {
+                                            directUrl = item[key];
+                                            break;
+                                        }
+                                    }
+                                }
 
-                            if (directUrl && typeof directUrl === 'string' && directUrl.indexOf('http') === 0) {
-                                loaded.push({
-                                    slotNumber: i + 1,
-                                    name: String(name).trim(),
-                                    imageUrl: String(directUrl).trim()
-                                });
+                                if (directUrl && directUrl.indexOf('http') === 0) {
+                                    loaded.push({
+                                        slotNumber: i + 1,
+                                        name: String(name).trim(),
+                                        imageUrl: String(directUrl).trim()
+                                    });
+                                }
                             }
                         }
-                    }
 
-                    if (loaded.length > 0) {
-                        adSlots = loaded;
-                        if (currentIndex === -1) {
-                            rotateAd();
+                        if (loaded.length > 0) {
+                            adSlots = loaded;
+                            if (currentIndex === -1) {
+                                rotateAd();
+                            }
                         }
+                    } catch(e) {
+                        console.error('Error parsing playlist JSON:', e);
                     }
-                })
-                .catch(function(error) {
-                    console.error('Error loading playlist JSON:', error);
-                });
+                }
+            };
+            xhr.send();
         }
 
         function fetchWeather() {
