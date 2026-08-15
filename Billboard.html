@@ -164,7 +164,7 @@
             <div class="bar-section sec-logo" id="logo-slot">
                 <img src="https://raw.githack.com/Werewolf3788/SKVentureSigns/main/images/S%26K%20Name.png" 
                      alt="S&K Venture Signs" 
-                     class="brand-logo-img"
+                     class="brand-logo-img" 
                      onerror="this.style.display='none'; document.getElementById('logo-fallback').style.display='block';">
                 <div id="logo-fallback" style="display:none; font-size:32px; font-weight:900;">S & K VENTURE SIGNS</div>
             </div>
@@ -182,7 +182,6 @@
 
     <script>
     (function() {
-        var CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQ5VXvgVRHFKyC2S2qsav0zJCcl8if8Nbq-di3NtRLef5CIqz2-Wj8dTFbkUY_zvgnsS1wQL6Ymiunf/pub?gid=0&single=true&output=csv";
         var DISPLAY_INTERVAL = 12000;
         
         var adSlots = [];
@@ -221,42 +220,45 @@
         }
 
         function fetchSheetData() {
-    fetch('./playlist.json?t=' + new Date().getTime())
-        .then(function(response) {
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-            return response.json();
-        })
-        .then(function(data) {
-            var loaded = [];
+            fetch('./playlist.json?t=' + new Date().getTime())
+                .then(function(response) {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then(function(data) {
+                    var loaded = [];
 
-            for (var i = 0; i < data.length; i++) {
-                var item = data[i];
-                // Matches your sheet columns (e.g. ad_name / Image_URL or first keys)
-                var name = item.ad_name || item.Name || item.name || ('Ad ' + (i + 1));
-                var directUrl = item.image_url || item.ImageUrl || item.directUrl || item.URL || Object.values(item)[2] || '';
+                    if (Array.isArray(data)) {
+                        for (var i = 0; i < data.length; i++) {
+                            var item = data[i];
+                            var values = Object.values(item);
+                            
+                            var name = item.ad_name || item.Name || item.name || values[0] || ('Ad ' + (i + 1));
+                            var directUrl = item.image_url || item.ImageUrl || item.directUrl || item.URL || values[1] || values[2] || '';
 
-                if (directUrl && directUrl.indexOf('http') === 0) {
-                    loaded.push({
-                        slotNumber: i + 1,
-                        name: name,
-                        imageUrl: directUrl
-                    });
-                }
-            }
+                            if (directUrl && typeof directUrl === 'string' && directUrl.indexOf('http') === 0) {
+                                loaded.push({
+                                    slotNumber: i + 1,
+                                    name: String(name).trim(),
+                                    imageUrl: String(directUrl).trim()
+                                });
+                            }
+                        }
+                    }
 
-            if (loaded.length > 0) {
-                adSlots = loaded;
-                if (currentIndex === -1) {
-                    rotateAd();
-                }
-            }
-        })
-        .catch(function(error) {
-            console.error('Error loading playlist JSON:', error);
-        });
-}}
+                    if (loaded.length > 0) {
+                        adSlots = loaded;
+                        if (currentIndex === -1) {
+                            rotateAd();
+                        }
+                    }
+                })
+                .catch(function(error) {
+                    console.error('Error loading playlist JSON:', error);
+                });
+        }
 
         function fetchWeather() {
             var xhr = new XMLHttpRequest();
