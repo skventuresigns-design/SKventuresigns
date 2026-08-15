@@ -442,21 +442,50 @@
         try {
             const res = await fetch(`${CSV_URL}&t=${Date.now()}`);
             const text = await res.text();
-            const lines = text.split(/\r?\n/);
+            const lines = text.split(/\r?\n/).filter(line => line.trim() !== '');
             let loadedUrls = [];
+            
             lines.forEach((line, idx) => {
-                if (idx === 0) return; 
-                const cellMatch = line.match(/(".*?"|[^,]+)/g);
-                if (cellMatch && cellMatch[2]) {
-                    let url = cellMatch[2].replace(/^"|"$|&amp;/g, '').trim();
-                    if (url.startsWith('http')) loadedUrls.push(url);
+                if (idx === 0) return; // Skip header row
+                
+                // Parse CSV row respecting quoted fields
+                const columns = [];
+                let current = '';
+                let inQuotes = false;
+                
+                for (let i = 0; i < line.length; i++) {
+                    const char = line[i];
+                    if (char === '"') {
+                        inQuotes = !inQuotes;
+                    } else if (char === ',' && !inQuotes) {
+                        columns.push(current.trim());
+                        current = '';
+                    } else {
+                        current += char;
+                    }
+                }
+                columns.push(current.trim());
+
+                // Look for the image URL (Column C / Index 2 or fallback search)
+                let url = (columns[2] || '').replace(/^"|"$/g, '').trim();
+                
+                // Fallback: if Column C isn't a URL, find any column containing http
+                if (!url.startsWith('http')) {
+                    url = columns.find(c => c.replace(/^"|"$/g, '').trim().startsWith('http')) || '';
+                }
+
+                if (url.startsWith('http')) {
+                    loadedUrls.push(url.replace(/^"|"$/g, '').trim());
                 }
             });
+
             if (loadedUrls.length > 0 && JSON.stringify(loadedUrls) !== JSON.stringify(currentImageUrls)) {
                 currentImageUrls = loadedUrls;
                 renderSlides();
             }
-        } catch (e) { console.warn("Billboard Sync Engine: fetch failed."); }
+        } catch (e) { 
+            console.warn("Billboard Sync Engine: fetch failed.", e); 
+        }
     }
 
     function renderSlides() {
