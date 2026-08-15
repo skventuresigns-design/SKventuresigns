@@ -486,7 +486,7 @@
         if (slot.programmaticUrl) {
             const url = slot.programmaticUrl.toLowerCase();
             
-            // 1. Direct Image Override (.png, .jpg, .jpeg, .webp)
+            // 1. Direct Image Override Test (.png, .jpg, .jpeg, .webp)
             if (url.includes('.png') || url.includes('.jpg') || url.includes('.jpeg') || url.includes('.webp')) {
                 return {
                     imageUrl: slot.programmaticUrl,
@@ -495,21 +495,32 @@
                 };
             }
 
-            // 2. Programmatic API Feed (Vistar / Blip / SSP)
+            // 2. Programmatic Auction Feed (Blip / SSP)
             try {
-                const response = await fetch(slot.programmaticUrl, { signal: AbortSignal.timeout(1500) });
-                if (response.ok && response.status !== 204) {
-                    const progData = await response.json();
-                    if (progData && progData.asset_url) {
+                const response = await fetch(slot.programmaticUrl, { 
+                    method: 'GET',
+                    headers: { 'Accept': 'application/json' },
+                    signal: AbortSignal.timeout(2000) 
+                });
+
+                if (response.ok && response.status === 200) {
+                    const blipData = await response.json();
+                    
+                    // Extracts creative image and proof-of-play beacon from Blip
+                    const adAsset = blipData.asset_url || blipData.image_url || (blipData.ad && blipData.ad.url) || null;
+                    const popPixel = blipData.proof_of_play_url || blipData.pixel_url || (blipData.ad && blipData.ad.proof_url) || null;
+
+                    if (adAsset) {
+                        console.log(`[Blip Auction WON] Serving ad creative for: ${slot.name}`);
                         return {
-                            imageUrl: progData.asset_url,
-                            pixelUrl: progData.proof_of_play_url || null,
-                            source: 'Programmatic Bid'
+                            imageUrl: adAsset,
+                            pixelUrl: popPixel,
+                            source: 'Blip Programmatic'
                         };
                     }
                 }
             } catch (e) {
-                console.log(`Programmatic bid passback on [${slot.name}] - falling back to direct ad.`);
+                console.log(`[Blip Passback] No winning bid or timeout on [${slot.name}] - falling back to direct ad.`);
             }
         }
 
