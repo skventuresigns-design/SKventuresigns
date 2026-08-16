@@ -2,8 +2,8 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>S&K Venture Signs - Billboard Engine</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>S&K Venture Signs Billboard - Engine</title>
 
     <!-- Google Analytics: Proof of Play -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-62F8P74L0J"></script>
@@ -16,332 +16,536 @@
             'debug_mode': true 
         });
     </script>
-    
+
     <style>
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            user-select: none;
-            -webkit-user-select: none;
-        }
-
         html, body {
-            width: 100%;
-            height: 100%;
-            overflow: hidden;
-            background-color: #000000;
-            font-family: 'Arial Black', Impact, sans-serif;
+            margin: 0 !important;
+            padding: 0 !important;
+            width: 100vw !important;
+            height: 100vh !important;
+            overflow: hidden !important;
+            background: #000000 !important;
+            user-select: none !important;
+            -webkit-user-select: none !important;
+            touch-action: none !important;
+            overscroll-behavior: none !important;
+            cursor: none !important;
         }
 
-        #billboard-container {
+        #sk-billboard-root-container {
+            --bb-bottom-bg: #3E0100;
+            --bb-text: #ffffff; 
+            --bb-border: rgba(255, 255, 255, 0.2);
+            --bar-height: clamp(70px, 11vh, 130px);
+            --sk-yellow: #FAC429;
+            
+            display: block !important;
+            width: 100% !important;
+            height: 100% !important;
+            position: absolute !important;
+            inset: 0 !important;
+            margin: 0 !important;
+            padding: 0 !important;
+            background: #000000 !important;
+            font-family: 'Arial Black', Gadget, sans-serif !important;
+            box-sizing: border-box !important;
+            overflow: hidden !important;
+            z-index: 1 !important;
+        }
+
+        #sk-billboard-display {
+            position: absolute !important;
+            inset: 0 !important;
+            width: 100% !important;
+            height: 100% !important;
+            background: #000000 !important;
+            display: flex !important;
+            flex-direction: column !important;
+            overflow: hidden !important;
+        }
+
+        #sk-ad-viewport {
+            position: absolute !important;
+            top: 0 !important;
+            left: 0 !important;
+            width: 100% !important;
+            height: calc(100% - var(--bar-height)) !important; 
+            z-index: 1 !important;
+            background: #000000 !important;
+            overflow: hidden !important;
+            transform: translateZ(0);
+            -webkit-transform: translateZ(0);
+        }
+
+        .sk-ad-slide {
+            display: none !important;
+            width: 100% !important;
+            height: 100% !important;
+            justify-content: center !important;
+            align-items: center !important;
+            background: #000000 !important;
             position: absolute;
-            top: 0;
-            left: 0;
+            inset: 0;
+        }
+
+        .sk-ad-slide.active { 
+            display: flex !important; 
+        }
+
+        .sk-ad-slide img, .sk-ad-slide video {
+            width: 100% !important;
+            height: 100% !important;
+            object-fit: fill !important; 
+        }
+
+        .sk-house-slide {
             width: 100%;
             height: 100%;
+            background: radial-gradient(circle, #3E0100 0%, #150000 100%);
             display: flex;
             flex-direction: column;
-            background: #000000;
-        }
-
-        #ad-stage {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: calc(100% - 100px);
-            background: #000000;
-            display: flex;
             justify-content: center;
             align-items: center;
-            overflow: hidden;
-            z-index: 1;
-        }
-
-        .slide {
-            width: 100%;
-            height: 100%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            opacity: 1;
-            transition: opacity 0.3s ease-in-out;
-        }
-
-        .slide.fading {
-            opacity: 0;
-        }
-
-        .slide img {
-            width: 100%;
-            height: 100%;
-            object-fit: fill;
-        }
-
-        #brand-bar {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            height: 100px;
-            background-color: #3E0100;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 0 40px;
-            z-index: 10;
-            color: #FAC429;
+            color: #ffffff;
+            text-align: center;
+            padding: 40px;
             box-sizing: border-box;
         }
 
-        .bar-section {
-            flex: 1;
-            display: flex;
-            align-items: center;
-            height: 100%;
+        .sk-house-slide h1 {
+            font-size: clamp(32px, 5vw, 90px);
+            color: var(--sk-yellow);
+            margin: 0 0 20px 0;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            -webkit-text-stroke: 2px black;
         }
 
-        .sec-logo {
-            order: 1;
-            justify-content: flex-start;
+        .sk-house-slide p {
+            font-size: clamp(20px, 3vw, 55px);
+            margin: 0;
+            font-weight: 900;
+            letter-spacing: 3px;
         }
 
-        .sec-phone {
+        #sk-bottom-bar {
+            position: absolute !important;
+            bottom: 0 !important;
+            left: 0 !important;
+            width: 100% !important;
+            height: var(--bar-height) !important;
+            background: var(--bb-bottom-bg) !important;
+            display: flex !important;
+            justify-content: space-between !important;
+            align-items: center !important;
+            padding: 0 clamp(15px, 2.5vw, 50px) !important;
+            gap: clamp(10px, 2vw, 30px) !important;
+            z-index: 10 !important;
+            flex-wrap: nowrap !important;
+            white-space: nowrap !important;
+            box-sizing: border-box !important;
+        }
+
+        .sk-logo-group, .sk-bottom-phone, .sk-info-stack {
+            flex: 1 1 auto !important;
+            min-width: 0 !important;
+            height: 100% !important;
+            display: flex !important;
+            align-items: center !important;
+            transition: opacity 0.5s ease-in-out !important;
+        }
+
+        .sk-logo-group { order: 1; justify-content: flex-start; }
+
+        .sk-logo {
+            height: 100% !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            color: var(--sk-yellow) !important;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5) !important;
+        }
+
+        .sk-brand-img {
+            height: 150%;
+            max-height: none !important;
+            max-width: 100% !important;
+            width: auto !important;
+            object-fit: contain !important;
+            display: block !important;
+            filter: drop-shadow(2px 2px 4px rgba(0,0,0,0.5)) !important;
+            margin: 0 !important;
+            padding: 0 !important;
+        }
+
+        #sk-fallback-text {
+            font-family: 'Arial Black', Gadget, sans-serif !important;
+            font-weight: 900 !important;
+            font-size: clamp(16px, 2vw, 42px) !important;
+        }
+
+        .sk-bottom-phone {
             order: 2;
-            justify-content: center;
-            color: #ffffff;
-            font-size: 42px;
-            font-weight: 900;
-            letter-spacing: 4px;
-            -webkit-text-stroke: 1.5px #000000;
+            justify-content: center; 
+            color: var(--bb-text) !important;
+            font-weight: 900 !important;
+            font-size: clamp(20px, 2.4vw, 52px) !important;
+            letter-spacing: 4px !important; 
+            -webkit-text-stroke: 1.5px black !important;
         }
 
-        .sec-info {
+        .sk-info-stack {
             order: 3;
-            justify-content: flex-end;
-            gap: 25px;
-            color: #ffffff;
+            justify-content: flex-end; 
+            gap: clamp(10px, 1.8vw, 35px) !important;
+            color: var(--bb-text) !important;
         }
 
-        .brand-logo-img {
-            height: 140%;
-            max-height: none;
-            width: auto;
-            object-fit: contain;
-            filter: drop-shadow(2px 2px 4px rgba(0,0,0,0.5));
+        .sk-weather { 
+            display: flex !important; 
+            flex-direction: column !important; 
+            align-items: center !important; 
+            justify-content: center !important; 
         }
 
-        #temp-display {
-            font-size: 55px;
-            font-weight: 900;
-            line-height: 1;
-            -webkit-text-stroke: 1.5px #000000;
-            color: #FAC429;
+        #sk-temp-val { 
+            font-size: clamp(24px, 3.8vw, 80px) !important; 
+            font-weight: 900 !important; 
+            line-height: 1 !important; 
+            color: var(--sk-yellow);
+            -webkit-text-stroke: 1.5px black !important;
         }
 
-        #time-display {
-            font-size: 55px;
-            font-weight: 900;
-            line-height: 1;
-            font-family: 'Courier New', monospace;
-            border-left: 3px solid rgba(255, 255, 255, 0.3);
-            padding-left: 25px;
-            -webkit-text-stroke: 1.5px #000000;
+        #sk-time-val {
+            font-size: clamp(24px, 3.8vw, 80px) !important; 
+            font-weight: 900 !important; 
+            line-height: 1 !important; 
+            font-family: 'Courier New', monospace !important;
+            border-left: 4px solid var(--bb-border) !important;
+            padding-left: clamp(10px, 1.8vw, 35px) !important;
+            -webkit-text-stroke: 1.5px black !important;
+        }
+
+        .sk-led-overlay {
+            position: absolute !important;
+            inset: 0 !important;
+            background-image: radial-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px) !important;
+            background-size: 4px 4px !important;
+            box-shadow: inset 0 0 120px rgba(0,0,0,0.3) !important;
+            pointer-events: none !important;
+            z-index: 5 !important;
         }
     </style>
 </head>
 <body>
 
-    <div id="billboard-container">
-        <div id="ad-stage">
-            <div id="active-slide" class="slide">
-                <img id="active-image" src="" alt="Billboard Display" />
-            </div>
-        </div>
-
-        <div id="brand-bar">
-            <div class="bar-section sec-logo" id="logo-slot">
-                <img src="https://raw.githack.com/Werewolf3788/SKVentureSigns/main/images/S%26K%20Name.png" 
-                     alt="S&K Venture Signs" 
-                     class="brand-logo-img" 
-                     onerror="this.style.display='none'; document.getElementById('logo-fallback').style.display='block';">
-                <div id="logo-fallback" style="display:none; font-size:32px; font-weight:900;">S & K VENTURE SIGNS</div>
-            </div>
-
-            <div class="bar-section sec-phone" id="phone-slot">
-                844-907-4450
-            </div>
-
-            <div class="bar-section sec-info">
-                <div id="temp-display">--°</div>
-                <div id="time-display">00:00</div>
-            </div>
-        </div>
-    </div>
-
-    <script>
-    (function() {
-        var DISPLAY_INTERVAL = 12000;
+<div id="sk-billboard-root-container">
+    <div id="sk-billboard-display">
         
-        var adSlots = [];
-        var currentIndex = -1;
-        var currentQuarter = null;
+        <div id="sk-ad-viewport"></div>
 
-        function logProofOfPlay(slotName, slotIndex) {
-            try {
-                if (typeof gtag === 'function') {
-                    gtag('event', 'billboard_ad_play', {
-                        ad_name: slotName,
-                        slot_index: slotIndex
-                    });
-                }
-            } catch(e) {}
-        }
-
-        function rotateAd() {
-            if (!adSlots || adSlots.length === 0) return;
-
-            currentIndex = (currentIndex + 1) % adSlots.length;
-            var slot = adSlots[currentIndex];
-
-            var slide = document.getElementById('active-slide');
-            var img = document.getElementById('active-image');
-
-            if (!slide || !img) return;
-
-            slide.className = 'slide fading';
+        <div id="sk-bottom-bar">
             
-            setTimeout(function() {
-                img.referrerPolicy = "no-referrer";
-                img.src = slot.imageUrl;
-                slide.className = 'slide';
-                logProofOfPlay(slot.name, slot.slotNumber);
-            }, 300);
+            <div class="sk-logo-group">
+                <div class="sk-logo">
+                    <img src="https://raw.githack.com/Werewolf3788/SKVentureSigns/main/images/S%26K%20Name.png" 
+                         alt="S&K Venture Signs" 
+                         class="sk-brand-img"
+                         onerror="this.style.display='none'; document.getElementById('sk-fallback-text').style.display='block';">
+                    <div id="sk-fallback-text" style="display:none;">S & K VENTURE SIGNS</div>
+                </div>
+            </div>
+            
+            <div class="sk-bottom-phone" id="sk-phone-display">844-907-4450</div>
+            
+            <div class="sk-info-stack">
+                <div class="sk-weather">
+                    <div id="sk-temp-val">--°</div>
+                </div>
+                <div id="sk-time-val">00:00</div>
+            </div>
+        </div>
+
+        <div class="sk-led-overlay"></div>
+    </div>
+</div>
+
+<script>
+(function() {
+    var displayInterval = 12000;
+    var currentAdIndex = 0;
+    var adSlideElements = [];
+    var currentAdQueue = [];
+    var currentTenMinTracker = null;
+
+    function logProofOfPlay(slotName, slotIndex) {
+        try {
+            if (typeof gtag === 'function') {
+                gtag('event', 'billboard_ad_play', {
+                    ad_name: slotName,
+                    slot_index: slotIndex
+                });
+            }
+        } catch(e) {}
+    }
+
+    function renderSlides(startIndex) {
+        var viewport = document.getElementById('sk-ad-viewport');
+        if (!viewport || currentAdQueue.length === 0) return;
+        
+        viewport.innerHTML = '';
+        adSlideElements = [];
+        currentAdIndex = (typeof startIndex === 'number' && startIndex < currentAdQueue.length) ? startIndex : 0;
+
+        for (var idx = 0; idx < currentAdQueue.length; idx++) {
+            var item = currentAdQueue[idx];
+            var slide = document.createElement('div');
+            slide.className = 'sk-ad-slide' + (idx === currentAdIndex ? ' active' : '');
+
+            if (item.type === 'house') {
+                var house = document.createElement('div');
+                house.className = 'sk-house-slide';
+                house.innerHTML = '<h1>' + item.headline + '</h1><p>' + item.subhead + '</p>';
+                slide.appendChild(house);
+            } else {
+                var image = document.createElement('img');
+                image.setAttribute('referrerpolicy', 'no-referrer');
+                image.src = item.url;
+                
+                (function(s, im) {
+                    im.onerror = function() {
+                        s.style.display = 'none';
+                        var sIndex = adSlideElements.indexOf(s);
+                        if (sIndex > -1) adSlideElements.splice(sIndex, 1);
+                        if (adSlideElements.length > 0 && s.classList.contains('active')) {
+                            if (currentAdIndex >= adSlideElements.length) currentAdIndex = 0;
+                            if (adSlideElements[currentAdIndex]) adSlideElements[currentAdIndex].classList.add('active');
+                        }
+                    };
+                })(slide, image);
+
+                slide.appendChild(image);
+            }
+
+            viewport.appendChild(slide);
+            adSlideElements.push(slide);
         }
 
-        function fetchSheetData() {
-            var xhr = new XMLHttpRequest();
-            var url = "https://skventuresigns.com/playlist.json?t=" + new Date().getTime();
-            xhr.open("GET", url, true);
-            xhr.onreadystatechange = function() {
-                if (xhr.readyState === 4 && xhr.status === 200) {
-                    try {
-                        var data = JSON.parse(xhr.responseText);
-                        var loaded = [];
+        var activeMedia = currentAdQueue[currentAdIndex];
+        if (activeMedia) {
+            logProofOfPlay(activeMedia.name, currentAdIndex + 1);
+        }
+    }
 
-                        if (data && data.length) {
-                            for (var i = 0; i < data.length; i++) {
-                                var item = data[i];
-                                var name = item.ad_name || item.Name || item.name || ('Ad ' + (i + 1));
-                                
-                                var directUrl = item.image_url || item.ImageUrl || item.directUrl || item.URL || '';
-                                if (!directUrl) {
-                                    for (var key in item) {
-                                        if (item.hasOwnProperty(key) && typeof item[key] === 'string' && item[key].indexOf('http') === 0) {
-                                            directUrl = item[key];
-                                            break;
-                                        }
+    function rotateAds() {
+        if (adSlideElements.length === 0) return;
+
+        if (adSlideElements[currentAdIndex]) {
+            adSlideElements[currentAdIndex].classList.remove('active');
+        }
+
+        currentAdIndex = (currentAdIndex + 1) % adSlideElements.length;
+
+        if (adSlideElements[currentAdIndex]) {
+            adSlideElements[currentAdIndex].classList.add('active');
+        }
+
+        var activeMedia = currentAdQueue[currentAdIndex];
+        if (activeMedia) {
+            logProofOfPlay(activeMedia.name, currentAdIndex + 1);
+        }
+    }
+
+    function fetchPlaylistData() {
+        var xhr = new XMLHttpRequest();
+        var url = "https://skventuresigns.com/playlist.json?t=" + new Date().getTime();
+        xhr.open("GET", url, true);
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState === 4 && xhr.status === 200) {
+                try {
+                    var data = JSON.parse(xhr.responseText);
+                    var freshQueue = [];
+
+                    if (data && data.length) {
+                        for (var i = 0; i < data.length; i++) {
+                            var item = data[i];
+                            var name = item.ad_name || item.Name || item.name || ('Ad ' + (i + 1));
+                            var directUrl = item.image_url || item.ImageUrl || item.directUrl || item.URL || '';
+                            
+                            if (!directUrl) {
+                                for (var key in item) {
+                                    if (item.hasOwnProperty(key) && typeof item[key] === 'string' && item[key].indexOf('http') === 0) {
+                                        directUrl = item[key];
+                                        break;
                                     }
                                 }
+                            }
 
-                                if (directUrl && directUrl.indexOf('http') === 0) {
-                                    loaded.push({
-                                        slotNumber: i + 1,
-                                        name: String(name).trim(),
-                                        imageUrl: String(directUrl).trim()
-                                    });
-                                }
+                            if (directUrl && directUrl.indexOf('http') === 0) {
+                                freshQueue.push({
+                                    type: 'image',
+                                    url: String(directUrl).trim(),
+                                    name: String(name).trim()
+                                });
                             }
                         }
-
-                        if (loaded.length > 0) {
-                            adSlots = loaded;
-                            if (currentIndex === -1) {
-                                rotateAd();
-                            }
-                        }
-                    } catch(e) {
-                        console.error('Error parsing playlist JSON:', e);
                     }
-                }
-            };
-            xhr.send();
-        }
 
-        function fetchWeather() {
-            var xhr = new XMLHttpRequest();
-            var url = "https://api.open-meteo.com/v1/forecast?latitude=39.1243&longitude=-88.5525&current=temperature_2m&temperature_unit=fahrenheit";
-            xhr.open("GET", url, true);
-            xhr.onreadystatechange = function() {
-                if (xhr.readyState === 4 && xhr.status === 200) {
-                    try {
-                        var data = JSON.parse(xhr.responseText);
-                        if (data && data.current) {
-                            var temp = Math.round(data.current.temperature_2m);
-                            var tempEl = document.getElementById('temp-display');
-                            if (tempEl) {
-                                tempEl.innerText = temp + "°";
-                                if (temp <= 32) tempEl.style.color = "#00f2ff";
-                                else if (temp <= 50) tempEl.style.color = "#0ea5e9";
-                                else if (temp <= 75) tempEl.style.color = "#FAC429";
-                                else if (temp <= 90) tempEl.style.color = "#f97316";
-                                else tempEl.style.color = "#ef4444";
-                            }
-                        }
-                    } catch(e) {}
-                }
-            };
-            xhr.send();
-        }
-
-        function updateClock() {
-            var now = new Date();
-            var timeEl = document.getElementById('time-display');
-            if (timeEl) {
-                timeEl.innerText = now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: true });
-            }
-
-            var min = now.getMinutes();
-            var q = Math.floor(min / 15);
-
-            if (currentQuarter !== q) {
-                currentQuarter = q;
-                var logoSlot = document.getElementById('logo-slot');
-                var phoneSlot = document.getElementById('phone-slot');
-                if (logoSlot && phoneSlot) {
-                    if (q % 2 === 0) {
-                        logoSlot.style.order = '1';
-                        logoSlot.style.justifyContent = 'flex-start';
-                        phoneSlot.style.order = '2';
-                        phoneSlot.style.justifyContent = 'center';
-                    } else {
-                        phoneSlot.style.order = '1';
-                        phoneSlot.style.justifyContent = 'flex-start';
-                        logoSlot.style.order = '2';
-                        logoSlot.style.justifyContent = 'center';
+                    if (freshQueue.length === 0) {
+                        freshQueue.push({
+                            type: 'house',
+                            headline: "ADVERTISE HERE",
+                            subhead: "CALL 844-907-4450",
+                            name: "S&K House Ad"
+                        });
                     }
+
+                    if (JSON.stringify(freshQueue) !== JSON.stringify(currentAdQueue)) {
+                        currentAdQueue = freshQueue;
+                        renderSlides(currentAdIndex);
+                    }
+                } catch(e) {
+                    console.error('Error parsing playlist JSON:', e);
                 }
             }
+        };
+        xhr.send();
+    }
+
+    function fetchWeather() {
+        var xhr = new XMLHttpRequest();
+        var url = "https://api.open-meteo.com/v1/forecast?latitude=38.6687&longitude=-88.4853&current=temperature_2m&temperature_unit=fahrenheit";
+        xhr.open("GET", url, true);
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState === 4 && xhr.status === 200) {
+                try {
+                    var data = JSON.parse(xhr.responseText);
+                    if (data && data.current) {
+                        var temp = Math.round(data.current.temperature_2m);
+                        var tempDisplay = document.getElementById('sk-temp-val');
+                        if (tempDisplay) {
+                            tempDisplay.innerText = temp + "°";
+                            if (temp <= 32) tempDisplay.style.color = "#00f2ff";
+                            else if (temp <= 50) tempDisplay.style.color = "#0ea5e9";
+                            else if (temp <= 75) tempDisplay.style.color = "#FAC429";
+                            else if (temp <= 90) tempDisplay.style.color = "#f97316";
+                            else tempDisplay.style.color = "#ef4444";
+                        }
+                    }
+                } catch(e) {}
+            }
+        };
+        xhr.send();
+    }
+
+    function updateTenMinSwap(tenMinBlock) {
+        var logoGroup = document.querySelector('.sk-logo-group');
+        var phoneDiv = document.querySelector('.sk-bottom-phone');
+        var infoStack = document.querySelector('.sk-info-stack');
+        
+        if (!logoGroup || !phoneDiv || !infoStack) return;
+
+        logoGroup.style.opacity = '0';
+        phoneDiv.style.opacity = '0';
+        infoStack.style.opacity = '0';
+        
+        setTimeout(function() {
+            var layouts = [
+                { logo: 1, phone: 2, info: 3 },
+                { logo: 2, phone: 3, info: 1 },
+                { logo: 3, phone: 1, info: 2 },
+                { logo: 3, phone: 2, info: 1 },
+                { logo: 2, phone: 1, info: 3 },
+                { logo: 1, phone: 3, info: 2 }
+            ];
+            
+            var currentLayout = layouts[tenMinBlock % 6];
+            
+            function applyLayout(el, order) {
+                el.style.order = order;
+                if (order === 1) el.style.justifyContent = 'flex-start';
+                else if (order === 2) el.style.justifyContent = 'center';
+                else if (order === 3) el.style.justifyContent = 'flex-end';
+            }
+
+            applyLayout(logoGroup, currentLayout.logo);
+            applyLayout(phoneDiv, currentLayout.phone);
+            applyLayout(infoStack, currentLayout.info);
+
+            logoGroup.style.opacity = '1';
+            phoneDiv.style.opacity = '1';
+            infoStack.style.opacity = '1';
+        }, 500);
+    }
+
+    function updateLocalTime() {
+        var now = new Date();
+        var timeEl = document.getElementById('sk-time-val');
+        if (timeEl) {
+            timeEl.innerText = now.toLocaleTimeString('en-US', { hour: '2-digit', minute:'2-digit', hour12: true });
         }
 
-        function init() {
-            fetchSheetData();
-            fetchWeather();
-            updateClock();
+        var min = now.getMinutes();
+        var currentTenMin = Math.floor(min / 10);
 
-            setInterval(updateClock, 1000);
-            setInterval(rotateAd, DISPLAY_INTERVAL);
-            setInterval(fetchWeather, 600000);
-            setInterval(fetchSheetData, 60000);
+        if (currentTenMinTracker !== currentTenMin) {
+            var isInitialLoad = (currentTenMinTracker === null);
+            currentTenMinTracker = currentTenMin;
+            
+            if (isInitialLoad) {
+                var logoGroup = document.querySelector('.sk-logo-group');
+                var phoneDiv = document.querySelector('.sk-bottom-phone');
+                var infoStack = document.querySelector('.sk-info-stack');
+                
+                if (logoGroup && phoneDiv && infoStack) {
+                    var layouts = [
+                        { logo: 1, phone: 2, info: 3 },
+                        { logo: 2, phone: 3, info: 1 },
+                        { logo: 3, phone: 1, info: 2 },
+                        { logo: 3, phone: 2, info: 1 },
+                        { logo: 2, phone: 1, info: 3 },
+                        { logo: 1, phone: 3, info: 2 }
+                    ];
+                    var currentLayout = layouts[currentTenMin % 6];
+                    
+                    function applyLayout(el, order) {
+                        el.style.order = order;
+                        if (order === 1) el.style.justifyContent = 'flex-start';
+                        else if (order === 2) el.style.justifyContent = 'center';
+                        else if (order === 3) el.style.justifyContent = 'flex-end';
+                    }
+                    applyLayout(logoGroup, currentLayout.logo);
+                    applyLayout(phoneDiv, currentLayout.phone);
+                    applyLayout(infoStack, currentLayout.info);
+                }
+            } else {
+                updateTenMinSwap(currentTenMin);
+            }
         }
+    }
 
-        if (document.readyState === "complete" || document.readyState === "interactive") {
-            init();
-        } else {
-            document.addEventListener("DOMContentLoaded", init);
-        }
-    })();
-    </script>
+    function initBillboard() {
+        fetchPlaylistData();
+        fetchWeather();
+        updateLocalTime();
+
+        setInterval(updateLocalTime, 1000);
+        setInterval(rotateAds, displayInterval);
+        setInterval(fetchWeather, 600000);
+        setInterval(fetchPlaylistData, 60000);
+        
+        // 30-minute memory refresh
+        setInterval(function() {
+            window.location.reload();
+        }, 1800000);
+    }
+
+    if (document.readyState === "complete" || document.readyState === "interactive") {
+        initBillboard();
+    } else {
+        document.addEventListener("DOMContentLoaded", initBillboard);
+    }
+})();
+</script>
 </body>
 </html>
