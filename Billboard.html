@@ -220,24 +220,29 @@
             flex-direction: column !important;
             justify-content: center !important;
             border-left: 3px solid var(--bb-border) !important;
-            padding-left: clamp(8px, 1.4vw, 20px) !important;
-            line-height: 1.1 !important;
+            padding-left: clamp(8px, 1.4vw, 18px) !important;
+            gap: 4px !important;
         }
 
         #sk-date-val {
-            font-size: clamp(11px, 1.2vw, 22px) !important;
-            font-weight: 800 !important;
+            font-size: clamp(10px, 1.1vw, 18px) !important;
+            font-weight: 900 !important;
             color: var(--sk-yellow) !important;
             text-transform: uppercase !important;
             letter-spacing: 1px !important;
-            -webkit-text-stroke: 0.8px black !important;
+            line-height: 1 !important;
+            -webkit-text-stroke: 0.6px black !important;
+            white-space: nowrap !important;
         }
 
         #sk-time-val {
-            font-size: clamp(18px, 2.4vw, 48px) !important; 
+            font-size: clamp(15px, 1.8vw, 32px) !important; 
             font-weight: 900 !important; 
-            font-family: 'Courier New', monospace !important;
-            -webkit-text-stroke: 1.2px black !important;
+            font-family: 'Arial Black', Impact, sans-serif !important;
+            line-height: 1 !important;
+            letter-spacing: 1px !important;
+            -webkit-text-stroke: 1px black !important;
+            white-space: nowrap !important;
         }
 
         .sk-led-overlay {
