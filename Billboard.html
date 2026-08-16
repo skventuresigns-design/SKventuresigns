@@ -213,6 +213,7 @@
             slide.className = 'slide fading';
             
             setTimeout(function() {
+                img.referrerPolicy = "no-referrer";
                 img.src = slot.imageUrl;
                 slide.className = 'slide';
                 logProofOfPlay(slot.name, slot.slotNumber);
@@ -234,7 +235,6 @@
                                 var item = data[i];
                                 var name = item.ad_name || item.Name || item.name || ('Ad ' + (i + 1));
                                 
-                                // Extract image URL safely without modern ES6/ES2017 features
                                 var directUrl = item.image_url || item.ImageUrl || item.directUrl || item.URL || '';
                                 if (!directUrl) {
                                     for (var key in item) {
