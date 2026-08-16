@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>S&K Venture Signs Billboard - Engine</title>
+    <title>S&K Venture Signs Billboard - Universal Engine</title>
 
     <!-- Google Analytics: Proof of Play -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-62F8P74L0J"></script>
@@ -12,7 +12,7 @@
         function gtag(){dataLayer.push(arguments);}
         gtag('js', new Date());
         gtag('config', 'G-62F8P74L0J', { 
-            'page_type': 'billboard_novastar_v1',
+            'page_type': 'billboard_novastar_universal',
             'debug_mode': true 
         });
     </script>
@@ -35,8 +35,8 @@
         #sk-billboard-root-container {
             --bb-bottom-bg: #3E0100;
             --bb-text: #ffffff; 
-            --bb-border: rgba(255, 255, 255, 0.2);
-            --bar-height: clamp(70px, 11vh, 130px);
+            --bb-border: rgba(255, 255, 255, 0.25);
+            --bar-height: clamp(65px, 10vh, 100px);
             --sk-yellow: #FAC429;
             
             display: block !important;
@@ -113,19 +113,19 @@
         }
 
         .sk-house-slide h1 {
-            font-size: clamp(32px, 5vw, 90px);
+            font-size: clamp(28px, 4.5vw, 75px);
             color: var(--sk-yellow);
-            margin: 0 0 20px 0;
+            margin: 0 0 15px 0;
             text-transform: uppercase;
             letter-spacing: 2px;
             -webkit-text-stroke: 2px black;
         }
 
         .sk-house-slide p {
-            font-size: clamp(20px, 3vw, 55px);
+            font-size: clamp(18px, 2.5vw, 45px);
             margin: 0;
             font-weight: 900;
-            letter-spacing: 3px;
+            letter-spacing: 2px;
         }
 
         #sk-bottom-bar {
@@ -138,8 +138,8 @@
             display: flex !important;
             justify-content: space-between !important;
             align-items: center !important;
-            padding: 0 clamp(15px, 2.5vw, 50px) !important;
-            gap: clamp(10px, 2vw, 30px) !important;
+            padding: 0 clamp(15px, 2.5vw, 40px) !important;
+            gap: clamp(10px, 2vw, 25px) !important;
             z-index: 10 !important;
             flex-wrap: nowrap !important;
             white-space: nowrap !important;
@@ -167,7 +167,7 @@
         }
 
         .sk-brand-img {
-            height: 150%;
+            height: 135% !important;
             max-height: none !important;
             max-width: 100% !important;
             width: auto !important;
@@ -181,7 +181,7 @@
         #sk-fallback-text {
             font-family: 'Arial Black', Gadget, sans-serif !important;
             font-weight: 900 !important;
-            font-size: clamp(16px, 2vw, 42px) !important;
+            font-size: clamp(14px, 1.8vw, 34px) !important;
         }
 
         .sk-bottom-phone {
@@ -189,41 +189,55 @@
             justify-content: center; 
             color: var(--bb-text) !important;
             font-weight: 900 !important;
-            font-size: clamp(20px, 2.4vw, 52px) !important;
-            letter-spacing: 4px !important; 
-            -webkit-text-stroke: 1.5px black !important;
+            font-size: clamp(18px, 2vw, 42px) !important;
+            letter-spacing: 3px !important; 
+            -webkit-text-stroke: 1.2px black !important;
         }
 
         .sk-info-stack {
             order: 3;
             justify-content: flex-end; 
-            gap: clamp(10px, 1.8vw, 35px) !important;
+            gap: clamp(8px, 1.4vw, 24px) !important;
             color: var(--bb-text) !important;
         }
 
         .sk-weather { 
             display: flex !important; 
-            flex-direction: column !important; 
             align-items: center !important; 
             justify-content: center !important; 
         }
 
         #sk-temp-val { 
-            font-size: clamp(24px, 3.8vw, 80px) !important; 
+            font-size: clamp(20px, 2.8vw, 56px) !important; 
             font-weight: 900 !important; 
             line-height: 1 !important; 
             color: var(--sk-yellow);
-            -webkit-text-stroke: 1.5px black !important;
+            -webkit-text-stroke: 1.2px black !important;
+        }
+
+        .sk-date-time-box {
+            display: flex !important;
+            flex-direction: column !important;
+            justify-content: center !important;
+            border-left: 3px solid var(--bb-border) !important;
+            padding-left: clamp(8px, 1.4vw, 20px) !important;
+            line-height: 1.1 !important;
+        }
+
+        #sk-date-val {
+            font-size: clamp(11px, 1.2vw, 22px) !important;
+            font-weight: 800 !important;
+            color: var(--sk-yellow) !important;
+            text-transform: uppercase !important;
+            letter-spacing: 1px !important;
+            -webkit-text-stroke: 0.8px black !important;
         }
 
         #sk-time-val {
-            font-size: clamp(24px, 3.8vw, 80px) !important; 
+            font-size: clamp(18px, 2.4vw, 48px) !important; 
             font-weight: 900 !important; 
-            line-height: 1 !important; 
             font-family: 'Courier New', monospace !important;
-            border-left: 4px solid var(--bb-border) !important;
-            padding-left: clamp(10px, 1.8vw, 35px) !important;
-            -webkit-text-stroke: 1.5px black !important;
+            -webkit-text-stroke: 1.2px black !important;
         }
 
         .sk-led-overlay {
@@ -262,7 +276,10 @@
                 <div class="sk-weather">
                     <div id="sk-temp-val">--°</div>
                 </div>
-                <div id="sk-time-val">00:00</div>
+                <div class="sk-date-time-box">
+                    <div id="sk-date-val">---, --- --</div>
+                    <div id="sk-time-val">00:00</div>
+                </div>
             </div>
         </div>
 
@@ -276,17 +293,50 @@
     var currentAdIndex = 0;
     var adSlideElements = [];
     var currentAdQueue = [];
+    var pendingAdQueue = null;
     var currentTenMinTracker = null;
 
-    function logProofOfPlay(slotName, slotIndex) {
+    // Location & Programmatic Configuration
+    var activeLocation = {
+        name: "Flora",
+        lat: 38.668700,
+        lon: -88.485300,
+        phone: "844-907-4450",
+        screen_id: "ca0e14ae-b80e-45f8-bb68-5375d9e02bbd",
+        venue_id: "34tyu3",
+        vast_tag: "", 
+        blip_tag: "https://app.blipbillboards.com/api/v1/signs/ca0e14ae-b80e-45f8-bb68-5375d9e02bbd/ad"
+    };
+
+    function logProofOfPlay(adItem, slotIndex) {
         try {
-            if (typeof gtag === 'function') {
+            if (typeof gtag === 'function' && adItem) {
+                var providerType = 'direct_local';
+                if (adItem.isProgrammatic) {
+                    providerType = (adItem.provider === 'blip') ? 'blip_programmatic' : 'vistar_programmatic';
+                } else if (adItem.type === 'house') {
+                    providerType = 'house_fallback';
+                }
+
                 gtag('event', 'billboard_ad_play', {
-                    ad_name: slotName,
-                    slot_index: slotIndex
+                    ad_name: adItem.name || 'Ad',
+                    slot_index: slotIndex,
+                    ad_provider: providerType,
+                    media_type: adItem.type || 'image',
+                    screen_location: activeLocation.name
                 });
             }
         } catch(e) {}
+    }
+
+    function fireImpressionBeacons(impressions) {
+        if (!impressions || !Array.isArray(impressions)) return;
+        impressions.forEach(function(url) {
+            if (url) {
+                var beacon = new Image();
+                beacon.src = url;
+            }
+        });
     }
 
     function renderSlides(startIndex) {
@@ -302,7 +352,16 @@
             var slide = document.createElement('div');
             slide.className = 'sk-ad-slide' + (idx === currentAdIndex ? ' active' : '');
 
-            if (item.type === 'house') {
+            if (item.type === 'video') {
+                var video = document.createElement('video');
+                video.src = item.url;
+                video.autoplay = true;
+                video.muted = true;
+                video.loop = true;
+                video.playsInline = true;
+                video.setAttribute('referrerpolicy', 'no-referrer');
+                slide.appendChild(video);
+            } else if (item.type === 'house') {
                 var house = document.createElement('div');
                 house.className = 'sk-house-slide';
                 house.innerHTML = '<h1>' + item.headline + '</h1><p>' + item.subhead + '</p>';
@@ -333,12 +392,28 @@
 
         var activeMedia = currentAdQueue[currentAdIndex];
         if (activeMedia) {
-            logProofOfPlay(activeMedia.name, currentAdIndex + 1);
+            if (activeMedia.isProgrammatic && activeMedia.impressions) {
+                fireImpressionBeacons(activeMedia.impressions);
+            }
+            logProofOfPlay(activeMedia, currentAdIndex + 1);
+
+            var vid = adSlideElements[currentAdIndex] ? adSlideElements[currentAdIndex].querySelector('video') : null;
+            if (vid) {
+                vid.currentTime = 0;
+                vid.play().catch(function(){});
+            }
         }
     }
 
     function rotateAds() {
         if (adSlideElements.length === 0) return;
+
+        if (currentAdIndex >= adSlideElements.length - 1 && pendingAdQueue) {
+            currentAdQueue = pendingAdQueue;
+            pendingAdQueue = null;
+            renderSlides(0);
+            return;
+        }
 
         if (adSlideElements[currentAdIndex]) {
             adSlideElements[currentAdIndex].classList.remove('active');
@@ -352,7 +427,16 @@
 
         var activeMedia = currentAdQueue[currentAdIndex];
         if (activeMedia) {
-            logProofOfPlay(activeMedia.name, currentAdIndex + 1);
+            if (activeMedia.isProgrammatic && activeMedia.impressions) {
+                fireImpressionBeacons(activeMedia.impressions);
+            }
+            logProofOfPlay(activeMedia, currentAdIndex + 1);
+
+            var vid = adSlideElements[currentAdIndex] ? adSlideElements[currentAdIndex].querySelector('video') : null;
+            if (vid) {
+                vid.currentTime = 0;
+                vid.play().catch(function(){});
+            }
         }
     }
 
@@ -382,10 +466,12 @@
                             }
 
                             if (directUrl && directUrl.indexOf('http') === 0) {
+                                var isVid = directUrl.match(/\.(mp4|webm|ogg)$/i);
                                 freshQueue.push({
-                                    type: 'image',
+                                    type: isVid ? 'video' : 'image',
                                     url: String(directUrl).trim(),
-                                    name: String(name).trim()
+                                    name: String(name).trim(),
+                                    isProgrammatic: false
                                 });
                             }
                         }
@@ -395,15 +481,20 @@
                         freshQueue.push({
                             type: 'house',
                             headline: "ADVERTISE HERE",
-                            subhead: "CALL 844-907-4450",
-                            name: "S&K House Ad"
+                            subhead: "CALL " + activeLocation.phone,
+                            name: "S&K House Ad",
+                            isProgrammatic: false
                         });
                     }
 
-                    if (JSON.stringify(freshQueue) !== JSON.stringify(currentAdQueue)) {
+                    if (currentAdQueue.length === 0) {
                         currentAdQueue = freshQueue;
-                        renderSlides(currentAdIndex);
+                        renderSlides(0);
+                    } else if (JSON.stringify(freshQueue) !== JSON.stringify(currentAdQueue)) {
+                        pendingAdQueue = freshQueue;
                     }
+
+                    fetchProgrammaticAds();
                 } catch(e) {
                     console.error('Error parsing playlist JSON:', e);
                 }
@@ -412,9 +503,96 @@
         xhr.send();
     }
 
+    // Programmatic Ad Handler (Blip & Vistar)
+    function buildProgrammaticUrl(endpointUrl) {
+        if (!endpointUrl) return null;
+        var ts = new Date().getTime();
+        return endpointUrl
+            .replace(/\[SCREEN_ID\]/g, encodeURIComponent(activeLocation.screen_id))
+            .replace(/\[VENUE_ID\]/g, encodeURIComponent(activeLocation.venue_id))
+            .replace(/\[TIMESTAMP\]/g, ts)
+            .replace(/\[CACHEBUSTER\]/g, ts)
+            .replace(/\[LAT\]/g, activeLocation.lat)
+            .replace(/\[LON\]/g, activeLocation.lon)
+            .replace(/\[WIDTH\]/g, window.innerWidth || 1920)
+            .replace(/\[HEIGHT\]/g, (window.innerHeight - 100) || 1080);
+    }
+
+    async function fetchProgrammaticAds() {
+        // 1. Fetch Blip
+        if (activeLocation.blip_tag) {
+            try {
+                var blipUrl = buildProgrammaticUrl(activeLocation.blip_tag);
+                if (blipUrl.indexOf("corsproxy.io") === -1) {
+                    blipUrl = "https://corsproxy.io/?" + encodeURIComponent(blipUrl);
+                }
+                var ctrl = new AbortController();
+                var tid = setTimeout(function() { ctrl.abort(); }, 3500);
+
+                var res = await fetch(blipUrl, { cache: "no-store", signal: ctrl.signal });
+                clearTimeout(tid);
+                var data = await res.json();
+
+                if (data && (data.image_url || data.media_url || data.url)) {
+                    var mediaUrl = data.image_url || data.media_url || data.url;
+                    var isVid = mediaUrl.match(/\.(mp4|webm)$/i);
+                    var blipItem = {
+                        type: isVid ? 'video' : 'image',
+                        url: mediaUrl,
+                        name: "Blip Programmatic Ad",
+                        isProgrammatic: true,
+                        provider: 'blip',
+                        impressions: data.impression_urls || (data.impression_url ? [data.impression_url] : [])
+                    };
+
+                    if (!currentAdQueue.some(function(item) { return item.url === blipItem.url; })) {
+                        if (pendingAdQueue) pendingAdQueue.push(blipItem);
+                        else pendingAdQueue = currentAdQueue.concat([blipItem]);
+                    }
+                }
+            } catch(e) {}
+        }
+
+        // 2. Fetch Vistar
+        if (activeLocation.vast_tag) {
+            try {
+                var vistarUrl = buildProgrammaticUrl(activeLocation.vast_tag);
+                var ctrl2 = new AbortController();
+                var tid2 = setTimeout(function() { ctrl2.abort(); }, 3500);
+
+                var res2 = await fetch(vistarUrl, { cache: "no-store", signal: ctrl2.signal });
+                clearTimeout(tid2);
+                var xmlText = await res2.text();
+
+                var parser = new DOMParser();
+                var xmlDoc = parser.parseFromString(xmlText, "text/xml");
+                var impressionTags = xmlDoc.getElementsByTagName("Impression");
+                var trackingUrls = [];
+                for (var i = 0; i < impressionTags.length; i++) {
+                    if (impressionTags[i].textContent) trackingUrls.push(impressionTags[i].textContent.trim());
+                }
+
+                var mediaFile = xmlDoc.getElementsByTagName("MediaFile")[0];
+                var staticResource = xmlDoc.getElementsByTagName("StaticResource")[0];
+                var vistarItem = null;
+
+                if (mediaFile && mediaFile.textContent) {
+                    vistarItem = { type: 'video', url: mediaFile.textContent.trim(), name: "Vistar Video Ad", isProgrammatic: true, provider: 'vistar', impressions: trackingUrls };
+                } else if (staticResource && staticResource.textContent) {
+                    vistarItem = { type: 'image', url: staticResource.textContent.trim(), name: "Vistar Static Ad", isProgrammatic: true, provider: 'vistar', impressions: trackingUrls };
+                }
+
+                if (vistarItem && !currentAdQueue.some(function(item) { return item.url === vistarItem.url; })) {
+                    if (pendingAdQueue) pendingAdQueue.push(vistarItem);
+                    else pendingAdQueue = currentAdQueue.concat([vistarItem]);
+                }
+            } catch(e) {}
+        }
+    }
+
     function fetchWeather() {
         var xhr = new XMLHttpRequest();
-        var url = "https://api.open-meteo.com/v1/forecast?latitude=38.6687&longitude=-88.4853&current=temperature_2m&temperature_unit=fahrenheit";
+        var url = "https://api.open-meteo.com/v1/forecast?latitude=" + activeLocation.lat + "&longitude=" + activeLocation.lon + "&current=temperature_2m&temperature_unit=fahrenheit";
         xhr.open("GET", url, true);
         xhr.onreadystatechange = function() {
             if (xhr.readyState === 4 && xhr.status === 200) {
@@ -481,8 +659,14 @@
     function updateLocalTime() {
         var now = new Date();
         var timeEl = document.getElementById('sk-time-val');
+        var dateEl = document.getElementById('sk-date-val');
+        
         if (timeEl) {
             timeEl.innerText = now.toLocaleTimeString('en-US', { hour: '2-digit', minute:'2-digit', hour12: true });
+        }
+        
+        if (dateEl) {
+            dateEl.innerText = now.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' });
         }
 
         var min = now.getMinutes();
