@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-08-27T03:19:09.688Z",
+  "lastUpdated": "2026-08-27T03:22:15.706Z",
   "locations": {
     "oliver": [
       {
@@ -438,6 +438,11 @@
       {
         "advertiser": "Fayette Little Miss",
         "imageUrl": "https://skventuresigns.com/images/Fayette-Little-Miss.png",
+        "duration": 8
+      },
+      {
+        "advertiser": "Carnival",
+        "imageUrl": "https://skventuresigns.com/images/ARM-BANDS.png",
         "duration": 8
       }
     ],
