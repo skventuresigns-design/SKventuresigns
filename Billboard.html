@@ -49,7 +49,7 @@
         
         <div id="sk-ad-viewport"></div>
 
-        <!-- BOTTOM STATUS BAR (Kevin's Exact Visual Layout) -->
+        <!-- BOTTOM STATUS BAR (Kevin's Exact Visual Layout + Date Integration) -->
         <div id="sk-bottom-bar">
             
             <div class="sk-logo-group">
@@ -69,7 +69,10 @@
                 <div class="sk-weather">
                     <div id="sk-temp-val">--°</div>
                 </div>
-                <div id="sk-time-val">00:00</div>
+                <div class="sk-time-date-group">
+                    <div id="sk-date-val">--</div>
+                    <div id="sk-time-val">00:00</div>
+                </div>
             </div>
         </div>
 
@@ -202,7 +205,7 @@
 
     .sk-ad-slide.active { display: flex !important; }
 
-    .sk-ad-slide img {
+    .sk-ad-slide img, .sk-ad-slide video {
         width: 100% !important;
         height: 100% !important;
         object-fit: fill !important; 
@@ -210,7 +213,7 @@
         transition: filter 0.8s ease !important;
     }
 
-    .dark-mode .sk-ad-slide img {
+    .dark-mode .sk-ad-slide img, .dark-mode .sk-ad-slide video {
         filter: saturate(1.08) contrast(1.02) brightness(0.75) !important;
     }
 
@@ -329,13 +332,31 @@
         -webkit-text-stroke: 1.5px black !important;
     }
 
+    .sk-time-date-group {
+        display: flex !important;
+        flex-direction: column !important;
+        justify-content: center !important;
+        align-items: flex-end !important;
+        border-left: 4px solid var(--bb-border) !important;
+        padding-left: clamp(10px, 1.8vw, 35px) !important;
+        line-height: 1.05 !important;
+    }
+
+    #sk-date-val {
+        font-size: clamp(11px, 1.3vw, 24px) !important;
+        font-weight: 900 !important;
+        color: var(--sk-yellow) !important;
+        text-transform: uppercase !important;
+        letter-spacing: 1px !important;
+        -webkit-text-stroke: 1px black !important;
+        margin-bottom: 2px !important;
+    }
+
     #sk-time-val {
-        font-size: clamp(24px, 3.8vw, 80px) !important; 
+        font-size: clamp(20px, 3.2vw, 68px) !important; 
         font-weight: 900 !important; 
         line-height: 1 !important; 
         font-family: 'Courier New', monospace !important;
-        border-left: 4px solid var(--bb-border) !important;
-        padding-left: clamp(10px, 1.8vw, 35px) !important;
         -webkit-text-stroke: 1.5px black !important;
     }
 
@@ -448,10 +469,15 @@
                 freshQueue = data;
             }
 
-            currentAdQueue = freshQueue.map(item => ({
-                url: item.imageUrl || item.url || item.image || '',
-                name: item.advertiser || item.name || 'Direct Local Ad'
-            })).filter(item => item.url !== '');
+            currentAdQueue = freshQueue.map(item => {
+                const cleanUrl = item.imageUrl || item.url || item.image || '';
+                const isVid = cleanUrl.match(/\.(mp4|webm|ogg)$/i);
+                return {
+                    url: cleanUrl,
+                    type: isVid ? 'video' : 'image',
+                    name: item.advertiser || item.name || 'Direct Local Ad'
+                };
+            }).filter(item => item.url !== '');
 
             if (currentAdQueue.length === 0) {
                 currentAdQueue.push({
@@ -480,7 +506,18 @@
             const slide = document.createElement('div');
             slide.className = `sk-ad-slide ${idx === currentAdIndex ? 'active' : ''}`;
 
-            if (item.type === 'house') {
+            if (item.type === 'video') {
+                const video = document.createElement('video');
+                video.src = item.url;
+                video.autoplay = true;
+                video.muted = true;
+                video.loop = true;
+                video.playsInline = true;
+                video.setAttribute('playsinline', '');
+                video.setAttribute('webkit-playsinline', '');
+                video.setAttribute('referrerpolicy', 'no-referrer');
+                slide.appendChild(video);
+            } else if (item.type === 'house') {
                 const house = document.createElement('div');
                 house.className = 'sk-house-slide';
                 house.innerHTML = `<h1>${item.headline}</h1><p>${item.subhead}</p>`;
@@ -497,8 +534,14 @@
             adSlideElements.push(slide);
         });
 
-        if (currentAdQueue[currentAdIndex]) {
-            logAdImpression(currentAdQueue[currentAdIndex]);
+        const activeItem = currentAdQueue[currentAdIndex];
+        if (activeItem) {
+            logAdImpression(activeItem);
+            const activeVid = adSlideElements[currentAdIndex] ? adSlideElements[currentAdIndex].querySelector('video') : null;
+            if (activeVid) {
+                activeVid.currentTime = 0;
+                activeVid.play().catch(()=>{});
+            }
         }
     }
 
@@ -515,8 +558,14 @@
             adSlideElements[currentAdIndex].classList.add('active');
         }
 
-        if (currentAdQueue[currentAdIndex]) {
-            logAdImpression(currentAdQueue[currentAdIndex]);
+        const activeItem = currentAdQueue[currentAdIndex];
+        if (activeItem) {
+            logAdImpression(activeItem);
+            const activeVid = adSlideElements[currentAdIndex] ? adSlideElements[currentAdIndex].querySelector('video') : null;
+            if (activeVid) {
+                activeVid.currentTime = 0;
+                activeVid.play().catch(()=>{});
+            }
         }
     }
 
@@ -590,6 +639,7 @@
 
     function updateLocalTime() {
         const timeEl = document.getElementById('sk-time-val');
+        const dateEl = document.getElementById('sk-date-val');
         if (!timeEl) return;
         
         let currentMin = new Date().getMinutes();
@@ -597,11 +647,19 @@
         try {
             const timeString = new Date().toLocaleTimeString('en-US', { timeZone: targetTimeZone, hour: '2-digit', minute:'2-digit', hour12: true });
             timeEl.innerText = timeString;
+
+            if (dateEl) {
+                const dateString = new Date().toLocaleDateString('en-US', { timeZone: targetTimeZone, weekday: 'short', month: 'short', day: 'numeric' });
+                dateEl.innerText = dateString;
+            }
             
             const tzDate = new Date(new Date().toLocaleString('en-US', { timeZone: targetTimeZone }));
             currentMin = tzDate.getMinutes();
         } catch (e) {
             timeEl.innerText = new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit', hour12: true});
+            if (dateEl) {
+                dateEl.innerText = new Date().toLocaleDateString([], {weekday: 'short', month: 'short', day: 'numeric'});
+            }
         }
 
         let currentTenMin = Math.floor(currentMin / 10);
