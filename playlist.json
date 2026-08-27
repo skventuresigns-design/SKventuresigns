@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-08-27T02:42:18.828Z",
+  "lastUpdated": "2026-08-27T03:19:09.688Z",
   "locations": {
     "oliver": [
       {
@@ -411,103 +411,33 @@
     ],
     "brownstown": [
       {
-        "advertiser": "AE 28",
-        "imageUrl": "https://skventuresigns.com/images/AE-28.png",
-        "duration": 8
-      },
-      {
-        "advertiser": "Maurer Storage",
-        "imageUrl": "https://skventuresigns.com/images/Maurer-Storage.jpg",
-        "duration": 8
-      },
-      {
-        "advertiser": "Rumpke Recycling",
-        "imageUrl": "https://skventuresigns.com/images/Rumpke.png",
-        "duration": 8
-      },
-      {
-        "advertiser": "Tingley Roofing",
-        "imageUrl": "https://skventuresigns.com/images/Tingley-Roofing.png",
-        "duration": 8
-      },
-      {
         "advertiser": "S&K Ventures",
         "imageUrl": "https://skventuresigns.com/images/skadvertise.png",
         "duration": 8
       },
       {
-        "advertiser": "Programmattic 1",
-        "imageUrl": "https://skventuresigns.com/images/Wanted.png",
+        "advertiser": "Fayette Fair Queen 2026",
+        "imageUrl": "https://skventuresigns.com/images/Fayette-queen.png",
         "duration": 8
       },
       {
-        "advertiser": "R & B Auctions",
-        "imageUrl": "https://skventuresigns.com/images/RandB-Ad.png",
+        "advertiser": "Special Occasion",
+        "imageUrl": "https://skventuresigns.com/images/Special-Occasion.png",
         "duration": 8
       },
       {
-        "advertiser": "Hometown Appliance",
-        "imageUrl": "https://skventuresigns.com/images/Hometown-Appliance.png",
+        "advertiser": "Fayette Jr Miss",
+        "imageUrl": "https://skventuresigns.com/images/Fayette-Jr-Miss.png",
         "duration": 8
       },
       {
-        "advertiser": "JMS Trucking & Exacvating",
-        "imageUrl": "https://skventuresigns.com/images/Jms-Trucking-and-Excavating.png",
+        "advertiser": "SK100",
+        "imageUrl": "https://skventuresigns.com/images/sk100.png",
         "duration": 8
       },
       {
-        "advertiser": "Harper Tire",
-        "imageUrl": "https://skventuresigns.com/images/Harper-Tire.png",
-        "duration": 8
-      },
-      {
-        "advertiser": "Wabash Communiations",
-        "imageUrl": "https://skventuresigns.com/images/wabash.png",
-        "duration": 8
-      },
-      {
-        "advertiser": "Clay Brook Excavating",
-        "imageUrl": "https://skventuresigns.com/images/Claybrook-Excavating.jpg",
-        "duration": 8
-      },
-      {
-        "advertiser": "Programmattic 2",
-        "imageUrl": "https://www.skventuresigns.com/images/Wanted.png",
-        "duration": 8
-      },
-      {
-        "advertiser": "Pat Burt",
-        "imageUrl": "https://www.skventuresigns.com/images/Pat-Burt.png",
-        "duration": 8
-      },
-      {
-        "advertiser": "Paula Clawson",
-        "imageUrl": "https://www.skventuresigns.com/images/Paula-Clawson.png",
-        "duration": 8
-      },
-      {
-        "advertiser": "Effingham County Chamber",
-        "imageUrl": "https://www.skventuresigns.com/images/Effingham-County-Chamber.png",
-        "duration": 8
-      },
-      {
-        "advertiser": "Altamont Lumber",
-        "imageUrl": "https://www.skventuresigns.com/images/Altamont-Lumber.png",
-        "duration": 8
-      },
-      {
-        "advertiser": "CJ Accounting",
-        "imageUrl": "https://www.skventuresigns.com/images/CJ-Accounting.png",
-        "duration": 8
-      },
-      {
-        "advertiser": "Christopher Rural Health",
-        "imageUrl": "https://www.skventuresigns.com/images/Christopher-Rural-Health.jpg",
-        "duration": 8
-      },
-      {
-        "advertiser": "Blip Slot",
-        "imageUrl": "https://www.skventuresigns.com/images/Wanted.png",
+        "advertiser": "Fayette Little Miss",
+        "imageUrl": "https://skventuresigns.com/images/Fayette-Little-Miss.png",
         "duration": 8
       }
     ],
@@ -613,7 +543,7 @@
         "duration": 8
       }
     ],
-    "flora": [
+    "flora tv": [
       {
         "advertiser": "S&K Ventures",
         "imageUrl": "https://skventuresigns.com/images/skadvertise.png",
