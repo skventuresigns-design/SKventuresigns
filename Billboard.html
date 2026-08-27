@@ -5,6 +5,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>S&K Venture Signs - Billboard Engine</title>
   
+  <!-- Premium Billboard Typography -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=Inter:wght@600;700;800;900&family=Montserrat:wght@800;900&display=swap" rel="stylesheet">
+
   <!-- Global site tag (gtag.js) - Google Analytics -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-62F8P74L0J"></script>
   <script>
@@ -28,7 +33,7 @@
       height: 100%;
       background-color: #000000;
       overflow: hidden;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      font-family: 'Inter', sans-serif;
     }
 
     #billboard-container {
@@ -45,6 +50,7 @@
       position: relative;
       flex: 1;
       width: 100%;
+      height: 82%;
       overflow: hidden;
       background-color: #000000;
     }
@@ -57,7 +63,7 @@
       height: 100%;
       object-fit: contain;
       opacity: 0;
-      transition: opacity 0.5s ease-in-out;
+      transition: opacity 0.4s ease-in-out;
       pointer-events: none;
     }
 
@@ -69,14 +75,14 @@
     /* Bottom Branding / Info Bar */
     #bottom-bar {
       height: 18%;
-      min-height: 70px;
-      max-height: 130px;
-      background-color: #3E0100;
+      min-height: 75px;
+      background: linear-gradient(180deg, #4A0201 0%, #2A0100 100%);
       border-top: 4px solid #FFC000;
+      box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.8);
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 0 24px;
+      padding: 0 30px;
       z-index: 100;
     }
 
@@ -86,24 +92,29 @@
       align-items: center;
       justify-content: center;
       height: 100%;
+      text-align: center;
     }
 
-    /* Branding Components */
+    /* Branding Typography */
     .brand-logo {
+      font-family: 'Cinzel', serif;
       font-weight: 900;
-      font-size: clamp(1.2rem, 3vw, 2.4rem);
+      font-size: clamp(1.4rem, 3.2vw, 2.6rem);
       color: #FFC000;
       text-transform: uppercase;
-      letter-spacing: 1px;
-      text-align: center;
+      letter-spacing: 2px;
+      text-shadow: 0 2px 8px rgba(0, 0, 0, 0.7);
+      white-space: nowrap;
     }
 
     .brand-phone {
-      font-weight: 800;
-      font-size: clamp(1.1rem, 2.8vw, 2.2rem);
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 900;
+      font-size: clamp(1.3rem, 3vw, 2.4rem);
       color: #FFFFFF;
-      text-align: center;
-      letter-spacing: 0.5px;
+      letter-spacing: 1.5px;
+      text-shadow: 0 2px 8px rgba(0, 0, 0, 0.7);
+      white-space: nowrap;
     }
 
     .info-stack {
@@ -111,24 +122,28 @@
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      text-align: center;
+      line-height: 1.2;
     }
 
     .info-weather {
-      font-weight: 800;
-      font-size: clamp(1rem, 2.2vw, 1.8rem);
+      font-family: 'Inter', sans-serif;
+      font-weight: 900;
+      font-size: clamp(1.1rem, 2.4vw, 2rem);
       color: #FFC000;
-      display: flex;
-      align-items: center;
-      gap: 6px;
+      letter-spacing: 0.5px;
+      text-shadow: 0 2px 6px rgba(0, 0, 0, 0.8);
+      white-space: nowrap;
     }
 
     .info-datetime {
+      font-family: 'Inter', sans-serif;
       font-weight: 700;
-      font-size: clamp(0.75rem, 1.5vw, 1.1rem);
-      color: #E2E8F0;
-      margin-top: 2px;
+      font-size: clamp(0.75rem, 1.4vw, 1.15rem);
+      color: #F8FAFC;
+      margin-top: 3px;
       letter-spacing: 0.5px;
+      text-shadow: 0 1px 4px rgba(0, 0, 0, 0.8);
+      white-space: nowrap;
     }
 
     /* House Ad SVG Fallback View */
@@ -142,7 +157,7 @@
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      background-color: #3E0100;
+      background: radial-gradient(circle, #4A0201 0%, #1A0000 100%);
       color: #FFC000;
       text-align: center;
       padding: 20px;
@@ -153,16 +168,22 @@
     }
 
     #house-ad h1 {
-      font-size: clamp(2rem, 6vw, 5rem);
+      font-family: 'Cinzel', serif;
+      font-size: clamp(2.2rem, 6.5vw, 5.5rem);
       font-weight: 900;
-      margin-bottom: 12px;
+      margin-bottom: 15px;
       text-transform: uppercase;
+      letter-spacing: 3px;
+      text-shadow: 0 4px 15px rgba(0, 0, 0, 0.8);
     }
 
     #house-ad p {
-      font-size: clamp(1.4rem, 4vw, 3rem);
-      font-weight: 800;
+      font-family: 'Montserrat', sans-serif;
+      font-size: clamp(1.5rem, 4.2vw, 3.2rem);
+      font-weight: 900;
       color: #FFFFFF;
+      letter-spacing: 2px;
+      text-shadow: 0 3px 12px rgba(0, 0, 0, 0.8);
     }
   </style>
 </head>
@@ -170,7 +191,6 @@
 
   <div id="billboard-container">
     <div id="ad-viewport">
-      <!-- Dynamic ad images render here -->
       <div id="house-ad">
         <h1>Advertise Here</h1>
         <p>Call 844-907-4450</p>
@@ -185,7 +205,7 @@
   </div>
 
   <script>
-    // TOWN COORDINATES DATABASE
+    // LOCATION COORDINATES DATABASE
     const LOCATION_COORDS = {
       'altamont': { lat: 39.0606, lon: -88.7495, name: 'Altamont' },
       'oliver': { lat: 39.490667, lon: -87.682008, name: 'Oliver' },
@@ -194,17 +214,18 @@
 
     // Parse URL parameter (?town=xyz)
     const urlParams = new URLSearchParams(window.location.search);
-    const activeTown = (urlParams.get('town') || 'altamont').trim().toLowerCase();
+    const rawTown = urlParams.get('town');
+    const activeTown = rawTown ? rawTown.trim().toLowerCase() : 'altamont';
     const activeLocation = LOCATION_COORDS[activeTown] || LOCATION_COORDS['altamont'];
 
     // STATE VARIABLES
     let playlist = [];
-    let currentAdIndex = -1;
-    let adTimeout = null;
+    let currentAdIndex = 0;
+    let adTimer = null;
     let layoutRotationIndex = 0;
-    let liveWeather = { temp: '--', condition: 'Loading...' };
+    let liveWeather = { temp: '--', condition: 'Updating...' };
 
-    // ANTI-BURN-IN ROTATION PATTERNS (Cycles every 10 min)
+    // ANTI-BURN-IN ROTATION PATTERNS (Cycles positions)
     const ROTATION_PATTERNS = [
       ['logo', 'phone', 'info'],
       ['info', 'logo', 'phone'],
@@ -214,7 +235,6 @@
       ['logo', 'info', 'phone']
     ];
 
-    // ELEMENT CREATORS
     function getLogoElement() {
       const el = document.createElement('div');
       el.className = 'brand-logo';
@@ -260,7 +280,9 @@
       const slotCenter = document.getElementById('slot-center');
       const slotRight = document.getElementById('slot-right');
 
-      [slotLeft, slotCenter, slotRight].forEach(slot => slot.innerHTML = '');
+      [slotLeft, slotCenter, slotRight].forEach(slot => {
+        if (slot) slot.innerHTML = '';
+      });
 
       const componentMap = {
         'logo': getLogoElement,
@@ -268,9 +290,9 @@
         'info': getInfoElement
       };
 
-      slotLeft.appendChild(componentMap[pattern[0]]());
-      slotCenter.appendChild(componentMap[pattern[1]]());
-      slotRight.appendChild(componentMap[pattern[2]]());
+      if (slotLeft) slotLeft.appendChild(componentMap[pattern[0]]());
+      if (slotCenter) slotCenter.appendChild(componentMap[pattern[1]]());
+      if (slotRight) slotRight.appendChild(componentMap[pattern[2]]());
 
       layoutRotationIndex++;
     }
@@ -296,7 +318,7 @@
           }
         }
       } catch (e) {
-        console.warn('Weather update bypassed:', e);
+        console.warn('Weather fetch bypassed:', e);
       }
     }
 
@@ -307,99 +329,121 @@
       if (code <= 67) return 'Rain';
       if (code <= 77) return 'Snow';
       if (code <= 82) return 'Showers';
-      if (code <= 99) return 'Thunderstorm';
+      if (code <= 99) return 'Storms';
       return 'Fair';
     }
 
-    // PLAYLIST & PRE-RENDERING ENGINE
+    // PLAYLIST & SLIDESHOW ENGINE
     async function loadPlaylist() {
       try {
         const res = await fetch(`https://skventuresigns.com/playlist.json?t=${Date.now()}`);
+        if (!res.ok) throw new Error('Network error loading playlist');
+        
         const data = await res.json();
 
-        // Handle both new multi-location format and legacy single-array format
-        if (data.locations && data.locations[activeTown]) {
+        // 1. Check nested locations object: { locations: { altamont: [...] } }
+        if (data && data.locations && Array.isArray(data.locations[activeTown])) {
           playlist = data.locations[activeTown];
-        } else if (Array.isArray(data)) {
+        } 
+        // 2. Check direct key object: { altamont: [...] }
+        else if (data && Array.isArray(data[activeTown])) {
+          playlist = data[activeTown];
+        } 
+        // 3. Check legacy flat array: [ {...}, {...} ]
+        else if (Array.isArray(data)) {
           playlist = data;
+        } 
+        // 4. Fallback: Check if any town has active ads
+        else if (data && data.locations && typeof data.locations === 'object') {
+          const firstAvailableTown = Object.keys(data.locations)[0];
+          playlist = data.locations[firstAvailableTown] || [];
         } else {
           playlist = [];
         }
 
-        renderAdSlides();
+        buildSlides();
       } catch (err) {
-        console.error('Playlist load error:', err);
-        playlist = [];
-        renderAdSlides();
+        console.warn('Playlist load warning, running current queue:', err);
+        if (playlist.length === 0) {
+          buildSlides();
+        }
       }
     }
 
-    function renderAdSlides() {
+    function buildSlides() {
       const viewport = document.getElementById('ad-viewport');
       const houseAd = document.getElementById('house-ad');
 
-      // Clear existing slides (except house ad)
-      const existingSlides = viewport.querySelectorAll('.ad-slide');
-      existingSlides.forEach(slide => slide.remove());
+      // Clear old image elements
+      const existing = viewport.querySelectorAll('.ad-slide');
+      existing.forEach(el => el.remove());
 
-      if (playlist.length === 0) {
-        houseAd.classList.add('visible');
+      if (!playlist || playlist.length === 0) {
+        if (houseAd) houseAd.classList.add('visible');
+        clearTimeout(adTimer);
         return;
       }
 
-      houseAd.classList.remove('visible');
+      if (houseAd) houseAd.classList.remove('visible');
 
-      // Pre-render slides into DOM
-      playlist.forEach((ad, idx) => {
+      // Pre-load all slides into the DOM
+      playlist.forEach((ad, index) => {
         const img = document.createElement('img');
         img.src = ad.imageUrl;
         img.className = 'ad-slide';
-        img.id = `slide-${idx}`;
+        img.id = `ad-slide-${index}`;
         img.setAttribute('referrerpolicy', 'no-referrer');
         img.setAttribute('loading', 'eager');
         viewport.appendChild(img);
       });
 
-      if (currentAdIndex === -1 || currentAdIndex >= playlist.length) {
-        currentAdIndex = 0;
-      }
-
-      showNextAd();
+      currentAdIndex = 0;
+      runSlideshow();
     }
 
-    function showNextAd() {
-      if (playlist.length === 0) return;
+    function runSlideshow() {
+      clearTimeout(adTimer);
 
-      const totalAds = playlist.length;
-      const prevIndex = (currentAdIndex - 1 + totalAds) % totalAds;
-      const currentIndex = currentAdIndex;
+      if (!playlist || playlist.length === 0) {
+        const houseAd = document.getElementById('house-ad');
+        if (houseAd) houseAd.classList.add('visible');
+        return;
+      }
 
-      const prevSlide = document.getElementById(`slide-${prevIndex}`);
-      const currentSlide = document.getElementById(`slide-${currentIndex}`);
+      const total = playlist.length;
+      if (currentAdIndex >= total) currentAdIndex = 0;
 
-      if (prevSlide) prevSlide.classList.remove('active');
-      if (currentSlide) currentSlide.classList.add('active');
+      // Update slide visibility
+      for (let i = 0; i < total; i++) {
+        const slide = document.getElementById(`ad-slide-${i}`);
+        if (slide) {
+          if (i === currentAdIndex) {
+            slide.classList.add('active');
+          } else {
+            slide.classList.remove('active');
+          }
+        }
+      }
 
-      const adData = playlist[currentIndex];
+      const currentAd = playlist[currentAdIndex];
 
-      // Send GA4 Proof-of-Play
-      if (typeof gtag === 'function') {
+      // Send GA4 Analytics
+      if (typeof gtag === 'function' && currentAd) {
         gtag('event', 'billboard_ad_play', {
-          'advertiser': adData.advertiser || 'Unknown',
+          'advertiser': currentAd.advertiser || 'Unknown',
           'location': activeTown,
-          'duration': adData.duration || 8
+          'duration': currentAd.duration || 8
         });
       }
 
-      // Schedule next ad
-      const durationMs = (adData.duration || 8) * 1000;
-      currentAdIndex = (currentAdIndex + 1) % totalAds;
+      const durationMs = ((currentAd && currentAd.duration) ? Number(currentAd.duration) : 8) * 1000;
 
-      clearTimeout(adTimeout);
-      adTimeout = setTimeout(showNextAd, durationMs);
+      // Advance index and schedule next slide
+      currentAdIndex = (currentAdIndex + 1) % total;
+      adTimer = setTimeout(runSlideshow, durationMs);
     }
 
-    // CLOCK TICK (Every second)
+    // CLOCK TICK
     setInterval(() => {
       const dateEl = document.getElementById('bar-datetime');
       if (dateEl) {
@@ -407,17 +451,17 @@
       }
     }, 1000);
 
-    // PERIODIC CYCLES
+    // REFRESH TIMERS
     setInterval(updateBottomBarLayout, 600000); // Anti-burn-in swap every 10 min
     setInterval(fetchWeather, 600000);          // Weather check every 10 min
     setInterval(loadPlaylist, 300000);          // Auto-sync playlist every 5 min
 
-    // 30-MINUTE SILENT MEMORY FLUSH (Clears WebView leak on NovaStar Android)
+    // 30-MINUTE SILENT MEMORY FLUSH (Android WebView cache reset)
     setTimeout(() => {
       window.location.reload(true);
     }, 1800000);
 
-    // INITIALIZATION
+    // INITIAL LOAD
     window.addEventListener('DOMContentLoaded', () => {
       updateBottomBarLayout();
       fetchWeather();
