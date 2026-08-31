@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-08-27T03:31:02.612Z",
+  "lastUpdated": "2026-08-31T18:22:15.972Z",
   "locations": {
     "oliver": [
       {
@@ -212,8 +212,18 @@
         "duration": 8
       },
       {
-        "advertiser": "Clay Brook Excavating",
-        "imageUrl": "https://skventuresigns.com/images/Claybrook-Excavating.jpg",
+        "advertiser": "America 250",
+        "imageUrl": "https://skventuresigns.com/images/America-250.jpg",
+        "duration": 8
+      },
+      {
+        "advertiser": "Effingham County Chamber",
+        "imageUrl": "https://skventuresigns.com/images/EffChamber2026.png",
+        "duration": 8
+      },
+      {
+        "advertiser": "S&K Ventures",
+        "imageUrl": "https://skventuresigns.com/images/skadvertise.png",
         "duration": 8
       },
       {
@@ -222,73 +232,8 @@
         "duration": 8
       },
       {
-        "advertiser": "Swan",
-        "imageUrl": "https://skventuresigns.com/images/Expo.png",
-        "duration": 8
-      },
-      {
-        "advertiser": "S&K Ventures",
-        "imageUrl": "https://skventuresigns.com/images/skadvertise.png",
-        "duration": 8
-      },
-      {
-        "advertiser": "Programmattic 1",
-        "imageUrl": "https://skventuresigns.com/images/Wanted.png",
-        "duration": 8
-      },
-      {
-        "advertiser": "R & B Auctions",
-        "imageUrl": "https://skventuresigns.com/images/RandB-Ad.png",
-        "duration": 8
-      },
-      {
-        "advertiser": "Hometown Appliance",
-        "imageUrl": "https://skventuresigns.com/images/Hometown-Appliance.png",
-        "duration": 8
-      },
-      {
-        "advertiser": "JMS Trucking & Exacvating",
-        "imageUrl": "https://skventuresigns.com/images/Jms-Trucking-and-Excavating.png",
-        "duration": 8
-      },
-      {
-        "advertiser": "Harper Tire",
-        "imageUrl": "https://skventuresigns.com/images/Harper-Tire.png",
-        "duration": 8
-      },
-      {
-        "advertiser": "S&K Ventures",
-        "imageUrl": "https://skventuresigns.com/images/skadvertise.png",
-        "duration": 8
-      },
-      {
-        "advertiser": "Clay Brook Excavating",
-        "imageUrl": "https://skventuresigns.com/images/Claybrook-Excavating.jpg",
-        "duration": 8
-      },
-      {
-        "advertiser": "Programmattic 2",
-        "imageUrl": "https://www.skventuresigns.com/images/Wanted.png",
-        "duration": 8
-      },
-      {
-        "advertiser": "Pat Burt",
-        "imageUrl": "https://www.skventuresigns.com/images/Pat-Burt.png",
-        "duration": 8
-      },
-      {
-        "advertiser": "Paula Clawson",
-        "imageUrl": "https://www.skventuresigns.com/images/Paula-Clawson.png",
-        "duration": 8
-      },
-      {
-        "advertiser": "Effingham County Chamber",
-        "imageUrl": "https://www.skventuresigns.com/images/Effingham-County-Chamber.png",
-        "duration": 8
-      },
-      {
-        "advertiser": "Altamont Lumber",
-        "imageUrl": "https://www.skventuresigns.com/images/Altamont-Lumber.png",
+        "advertiser": "Effingham Social 2026",
+        "imageUrl": "https://skventuresigns.com/images/EffSocial2026.png",
         "duration": 8
       },
       {
@@ -297,13 +242,48 @@
         "duration": 8
       },
       {
-        "advertiser": "Christopher Rural Health",
-        "imageUrl": "https://www.skventuresigns.com/images/Christopher-Rural-Health.jpg",
+        "advertiser": "Programmattic 1",
+        "imageUrl": "https://skventuresigns.com/images/Wanted.png",
         "duration": 8
       },
       {
-        "advertiser": "Blip Slot",
+        "advertiser": "Effingham Support Local",
+        "imageUrl": "https://skventuresigns.com/images/SupportLocal2026.png",
+        "duration": 8
+      },
+      {
+        "advertiser": "Rumpke Recycling",
+        "imageUrl": "https://skventuresigns.com/images/Rumpke3.png",
+        "duration": 8
+      },
+      {
+        "advertiser": "Programmattic 2",
         "imageUrl": "https://www.skventuresigns.com/images/Wanted.png",
+        "duration": 8
+      },
+      {
+        "advertiser": "Wesselman Roofing",
+        "imageUrl": "https://www.skventuresigns.com/images/Wesselman-Roofing.png",
+        "duration": 8
+      },
+      {
+        "advertiser": "Gigfire",
+        "imageUrl": "https://www.skventuresigns.com/images/Gigfire.png",
+        "duration": 8
+      },
+      {
+        "advertiser": "Swan",
+        "imageUrl": "https://skventuresigns.com/images/Expo.png",
+        "duration": 8
+      },
+      {
+        "advertiser": "Budds Contracting",
+        "imageUrl": "https://skventuresigns.com/images/Budds-Contracting.png",
+        "duration": 8
+      },
+      {
+        "advertiser": "Clay Brook Excavating",
+        "imageUrl": "https://skventuresigns.com/images/Claybrook-Excavating.jpg",
         "duration": 8
       }
     ],
