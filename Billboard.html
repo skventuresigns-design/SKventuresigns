@@ -1,0 +1,759 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>S&K Venture Signs Billboard - Kiosk Engine</title>
+
+    <!-- Favicon -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🐺</text></svg>">
+
+    <!-- Fonts & Icons -->
+    <script src="//unpkg.com/lucide@latest"></script>
+
+    <!-- Google Tag Manager & S&K Ventures GA4 Tracking -->
+    <script async src="//www.googletagmanager.com/gtag/js?id=G-62F8P74L0J"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'G-62F8P74L0J', { 
+            'page_type': 'billboard_kiosk_engine', 
+            'traffic_type': 'internal'
+        });
+    </script>
+</head>
+<body oncontextmenu="return false;">
+
+<div id="sk-billboard-root-container" class="light-mode" onmousemove="handleInteraction()" ontouchstart="handleInteraction()">
+
+    <div id="landscape-lock">
+        <div class="lock-content">
+            <i data-lucide="rotate-cw" style="width: 64px; height: 64px; margin-bottom: 16px;"></i>
+            <p style="font-size: 20px; font-weight: bold; margin: 0;">Landscape Orientation Required</p>
+        </div>
+    </div>
+
+    <a href="./index.html" id="ghost-back-btn">
+        <i data-lucide="arrow-left" style="width: 20px; height: 20px;"></i>
+        <span>Back to Site</span>
+    </a>
+
+    <button id="fullscreen-toggle-btn" onclick="toggleFullScreen()">
+        <i data-lucide="maximize" id="fs-icon" style="width: 20px; height: 20px;"></i>
+        <span>Full Screen</span>
+    </button>
+
+    <div id="sk-billboard-display">
+        
+        <div id="sk-ad-viewport"></div>
+
+        <!-- BOTTOM STATUS BAR -->
+        <div id="sk-bottom-bar">
+            
+            <div class="sk-logo-group">
+                <div class="sk-logo">
+                    <img src="//raw.githack.com/Werewolf3788/SKVentureSigns/main/images/S%26K%20Name.png" 
+                         alt="" 
+                         data-alt-text="S&K Venture Signs Official Logo"
+                         class="sk-brand-img"
+                         onerror="this.style.display='none'; document.getElementById('sk-fallback-text').style.display='block';">
+                    <div id="sk-fallback-text" style="display:none;">S & K VENTURE SIGNS</div>
+                </div>
+            </div>
+            
+            <div class="sk-bottom-phone" id="sk-phone-display">844-907-4450</div>
+            
+            <div class="sk-info-stack">
+                <div class="sk-weather">
+                    <div id="sk-temp-val">--°</div>
+                </div>
+                <div class="sk-time-date-group">
+                    <div id="sk-date-val">--</div>
+                    <div id="sk-time-val">00:00</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="sk-led-overlay"></div>
+    </div>
+</div>
+
+<style>
+    html, body {
+        margin: 0 !important;
+        padding: 0 !important;
+        width: 100vw !important;
+        height: 100vh !important;
+        overflow: hidden !important;
+        background: #000000 !important;
+        user-select: none !important;
+        -webkit-user-select: none !important;
+        touch-action: none !important;
+        overscroll-behavior: none !important;
+        cursor: none !important;
+    }
+
+    #sk-billboard-root-container {
+        --bb-bottom-bg: #3E0100;
+        --bb-text: #ffffff; 
+        --bb-border: rgba(255, 255, 255, 0.2);
+        --bar-height: clamp(70px, 11vh, 130px);
+        --sk-yellow: #FAC429;
+        
+        display: block !important;
+        width: 100% !important;
+        height: 100% !important;
+        position: absolute !important;
+        inset: 0 !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        background: #000000 !important;
+        font-family: 'Arial Black', Gadget, sans-serif !important;
+        box-sizing: border-box !important;
+        overflow: hidden !important;
+        z-index: 1 !important;
+    }
+
+    #sk-billboard-root-container.dark-mode {
+        --bb-bottom-bg: #220000;
+        --bb-text: #ffffff;
+        --bb-border: rgba(255, 255, 255, 0.1);
+    }
+
+    #ghost-back-btn, #fullscreen-toggle-btn {
+        position: absolute !important;
+        top: 25px !important;
+        z-index: 2000 !important;
+        background: rgba(0, 0, 0, 0.85) !important;
+        color: var(--sk-yellow) !important;
+        padding: 10px 22px !important;
+        border-radius: 50px !important;
+        border: 2px solid var(--sk-yellow) !important;
+        display: flex !important;
+        align-items: center !important;
+        gap: 8px !important;
+        text-decoration: none !important;
+        font-weight: 800 !important;
+        font-size: 13px !important;
+        text-transform: uppercase !important;
+        min-height: 44px !important;
+        min-width: 44px !important;
+        box-sizing: border-box !important;
+        opacity: 0;
+        visibility: hidden;
+        transition: opacity 0.4s ease, visibility 0.4s ease !important;
+        cursor: pointer !important;
+    }
+
+    #ghost-back-btn { left: 25px !important; }
+    #fullscreen-toggle-btn { right: 25px !important; }
+    #ghost-back-btn.active, #fullscreen-toggle-btn.active { opacity: 1; visibility: visible; }
+
+    #landscape-lock {
+        position: absolute !important;
+        inset: 0 !important;
+        background: #3E0100 !important;
+        z-index: 3000 !important;
+        display: none;
+        flex-direction: column !important;
+        justify-content: center !important;
+        align-items: center !important;
+        color: var(--sk-yellow) !important;
+        text-align: center !important;
+    }
+
+    @media screen and (orientation: portrait) and (max-width: 1024px) {
+        #landscape-lock { display: flex !important; }
+    }
+
+    #sk-billboard-display {
+        position: absolute !important;
+        inset: 0 !important;
+        width: 100% !important;
+        height: 100% !important;
+        background: #000000 !important;
+        display: flex !important;
+        flex-direction: column !important;
+        overflow: hidden !important;
+    }
+
+    #sk-ad-viewport {
+        position: absolute !important;
+        top: 0 !important;
+        left: 0 !important;
+        width: 100% !important;
+        height: calc(100% - var(--bar-height)) !important; 
+        z-index: 1 !important;
+        background: #000000 !important;
+        overflow: hidden !important;
+        transform: translateZ(0);
+        -webkit-transform: translateZ(0);
+    }
+
+    .sk-ad-slide {
+        display: none !important;
+        width: 100% !important;
+        height: 100% !important;
+        justify-content: center !important;
+        align-items: center !important;
+        background: #000000 !important;
+        position: absolute;
+        inset: 0;
+    }
+
+    .sk-ad-slide.active { display: flex !important; }
+
+    .sk-ad-slide img, .sk-ad-slide video {
+        width: 100% !important;
+        height: 100% !important;
+        object-fit: fill !important; 
+        filter: saturate(1.12) contrast(1.05) brightness(0.98) !important;
+        transition: filter 0.8s ease !important;
+    }
+
+    .dark-mode .sk-ad-slide img, .dark-mode .sk-ad-slide video {
+        filter: saturate(1.08) contrast(1.02) brightness(0.75) !important;
+    }
+
+    .sk-house-slide {
+        width: 100%;
+        height: 100%;
+        background: radial-gradient(circle, #3E0100 0%, #150000 100%);
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        color: #ffffff;
+        text-align: center;
+        padding: 40px;
+        box-sizing: border-box;
+    }
+    .sk-house-slide h1 {
+        font-size: clamp(32px, 5vw, 90px);
+        color: var(--sk-yellow);
+        margin: 0 0 20px 0;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        -webkit-text-stroke: 2px black;
+    }
+    .sk-house-slide p {
+        font-size: clamp(20px, 3vw, 55px);
+        margin: 0;
+        font-weight: 900;
+        letter-spacing: 3px;
+    }
+
+    #sk-bottom-bar {
+        position: absolute !important;
+        bottom: 0 !important;
+        left: 0 !important;
+        width: 100% !important;
+        height: var(--bar-height) !important;
+        background: var(--bb-bottom-bg) !important;
+        display: flex !important;
+        justify-content: space-between !important;
+        align-items: center !important;
+        padding: 0 clamp(15px, 2.5vw, 50px) !important;
+        gap: clamp(10px, 2vw, 30px) !important;
+        z-index: 10 !important;
+        flex-wrap: nowrap !important;
+        white-space: nowrap !important;
+        box-sizing: border-box !important;
+    }
+
+    .sk-logo-group, .sk-bottom-phone, .sk-info-stack {
+        flex: 1 1 auto !important;
+        min-width: 0 !important;
+        height: 100% !important;
+        display: flex !important;
+        align-items: center !important;
+        transition: opacity 0.5s ease-in-out !important;
+    }
+
+    .sk-logo-group { order: 1; justify-content: flex-start; }
+
+    .sk-logo {
+        height: 100% !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        color: var(--sk-yellow) !important;
+        text-shadow: 2px 2px 4px rgba(0,0,0,0.5) !important;
+    }
+
+    .sk-brand-img {
+        height: 150% !important;
+        max-height: none !important;
+        max-width: 100% !important;
+        width: auto !important;
+        object-fit: contain !important;
+        display: block !important;
+        filter: drop-shadow(2px 2px 4px rgba(0,0,0,0.5)) !important;
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+
+    #sk-fallback-text {
+        font-family: 'Arial Black', Gadget, sans-serif !important;
+        font-weight: 900 !important;
+        font-size: clamp(16px, 2vw, 42px) !important;
+    }
+
+    .sk-bottom-phone {
+        order: 2;
+        justify-content: center; 
+        color: var(--bb-text) !important;
+        font-weight: 900 !important;
+        font-size: clamp(20px, 2.4vw, 52px) !important;
+        letter-spacing: 4px !important; 
+        -webkit-text-stroke: 1.5px black !important;
+    }
+
+    .sk-info-stack {
+        order: 3;
+        justify-content: flex-end; 
+        gap: clamp(10px, 1.8vw, 35px) !important;
+        color: var(--bb-text) !important;
+    }
+
+    .sk-weather { 
+        display: flex !important; 
+        flex-direction: column !important; 
+        align-items: center !important; 
+        justify-content: center !important; 
+    }
+
+    #sk-temp-val { 
+        font-size: clamp(24px, 3.8vw, 80px) !important; 
+        font-weight: 900 !important; 
+        line-height: 1 !important; 
+        -webkit-text-stroke: 1.5px black !important;
+    }
+
+    .sk-time-date-group {
+        display: flex !important;
+        flex-direction: column !important;
+        justify-content: center !important;
+        align-items: flex-end !important;
+        border-left: 4px solid var(--bb-border) !important;
+        padding-left: clamp(10px, 1.8vw, 35px) !important;
+        line-height: 1.05 !important;
+    }
+
+    #sk-date-val {
+        font-size: clamp(11px, 1.3vw, 24px) !important;
+        font-weight: 900 !important;
+        color: var(--sk-yellow) !important;
+        text-transform: uppercase !important;
+        letter-spacing: 1px !important;
+        -webkit-text-stroke: 1px black !important;
+        margin-bottom: 2px !important;
+    }
+
+    #sk-time-val {
+        font-size: clamp(20px, 3.2vw, 68px) !important; 
+        font-weight: 900 !important; 
+        line-height: 1 !important; 
+        font-family: 'Courier New', monospace !important;
+        -webkit-text-stroke: 1.5px black !important;
+    }
+
+    .sk-led-overlay {
+        position: absolute !important;
+        inset: 0 !important;
+        background-image: radial-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px) !important;
+        background-size: 4px 4px !important;
+        box-shadow: inset 0 0 120px rgba(0,0,0,0.3) !important;
+        pointer-events: none !important;
+        z-index: 5 !important;
+    }
+</style>
+
+<script>
+(function() {
+    const displayInterval = 8000;
+    const memoryRefreshCycle = 1800000;
+
+    const LOCATION_COORDS = {
+        'oliver': { name: 'Oliver', lat: 39.490667, lon: -87.682008 },
+        'altamont': { name: 'Altamont', lat: 39.0606, lon: -88.7495 },
+        'claycity': { name: 'Clay City', lat: 38.6889, lon: -88.3556 },
+        'xenia': { name: 'Xenia', lat: 38.6387, lon: -88.6417 },
+        'brownstown': { name: 'Brownstown', lat: 38.9953, lon: -88.9531 },
+        'desoto': { name: 'DeSoto', lat: 37.8184, lon: -89.2273 },
+        'floratv': { name: 'Flora TV', lat: 38.6687, lon: -88.4853 }
+    };
+
+    function getTownFromUrl() {
+        const params = new URLSearchParams(window.location.search);
+        const raw = params.get('town');
+        return raw ? raw.toLowerCase().replace(/[^a-z0-9]/g, '') : 'oliver';
+    }
+
+    const activeTown = getTownFromUrl();
+    const activeLocation = LOCATION_COORDS[activeTown] || LOCATION_COORDS['oliver'];
+
+    let currentAdIndex = 0;
+    let adSlideElements = [];
+    let currentAdQueue = [];
+    let targetTimeZone = "America/Chicago";
+    let isNightTimeSolar = null;
+    let interactionTimer = null;
+    let currentTenMinTracker = null;
+
+    function logAdImpression(adItem) {
+        if (typeof gtag !== 'function' || !adItem) return;
+        gtag('event', 'billboard_ad_play', {
+            'event_category': 'Digital Billboard Impressions',
+            'advertiser': adItem.name || 'Direct Ad',
+            'location': activeTown,
+            'duration': 8
+        });
+    }
+
+    window.handleInteraction = function() {
+        const backBtn = document.getElementById('ghost-back-btn');
+        const fsBtn = document.getElementById('fullscreen-toggle-btn');
+        if (backBtn) backBtn.classList.add('active');
+        if (fsBtn) fsBtn.classList.add('active');
+        
+        clearTimeout(interactionTimer);
+        interactionTimer = setTimeout(() => { 
+            if (backBtn) backBtn.classList.remove('active'); 
+            if (fsBtn) fsBtn.classList.remove('active'); 
+        }, 3000);
+    };
+
+    window.toggleFullScreen = function() {
+        const root = document.documentElement;
+        if (!document.fullscreenElement && !document.webkitFullscreenElement && !document.mozFullScreenElement && !document.msFullscreenElement) { 
+            if (root.requestFullscreen) root.requestFullscreen();
+            else if (root.webkitRequestFullscreen) root.webkitRequestFullscreen();
+            else if (root.msRequestFullscreen) root.msRequestFullscreen();
+        } else { 
+            if (document.exitFullscreen) document.exitFullscreen();
+            else if (document.webkitExitFullscreen) document.webkitExitFullscreen();
+            else if (document.msExitFullscreen) document.msExitFullscreen();
+        }
+    };
+
+    function syncTimeTheme() {
+        const root = document.getElementById('sk-billboard-root-container');
+        if (!root) return;
+        let isNightTime = (isNightTimeSolar !== null) ? isNightTimeSolar : (new Date().getHours() < 6 || new Date().getHours() >= 19);
+        if (isNightTime) {
+            root.classList.add('dark-mode');
+            root.classList.remove('light-mode');
+        } else {
+            root.classList.add('light-mode');
+            root.classList.remove('dark-mode');
+        }
+    }
+
+    async function loadPlaylist() {
+        try {
+            const res = await fetch(`https://skventuresigns.com/playlist.json?t=${Date.now()}`);
+            if (!res.ok) throw new Error("HTTP error");
+            const data = await res.json();
+
+            let freshQueue = [];
+
+            if (data.locations && Array.isArray(data.locations[activeTown])) {
+                freshQueue = data.locations[activeTown];
+            } else if (data.locations && typeof data.locations === 'object') {
+                const availableKey = Object.keys(data.locations).find(k => k.replace(/[^a-z0-9]/g, '') === activeTown);
+                if (availableKey) freshQueue = data.locations[availableKey];
+            } else if (Array.isArray(data)) {
+                freshQueue = data;
+            }
+
+            // Get local date string YYYY-MM-DD for comparison
+            let todayStr = "";
+            try {
+                const nowTz = new Date(new Date().toLocaleString("en-US", { timeZone: targetTimeZone }));
+                const y = nowTz.getFullYear();
+                const m = String(nowTz.getMonth() + 1).padStart(2, '0');
+                const d = String(nowTz.getDate()).padStart(2, '0');
+                todayStr = `${y}-${m}-${d}`;
+            } catch (e) {
+                const now = new Date();
+                todayStr = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
+            }
+
+            currentAdQueue = freshQueue.filter(item => {
+                // If no expiration date is set, keep the ad active indefinitely
+                if (!item.expirationDate || item.expirationDate.toString().trim() === '') return true;
+
+                let exp = item.expirationDate.toString().trim();
+                if (exp.includes('/')) {
+                    const parts = exp.split('/');
+                    if (parts.length === 3) {
+                        const m = parts[0].padStart(2, '0');
+                        const d = parts[1].padStart(2, '0');
+                        const y = parts[2].length === 2 ? `20${parts[2]}` : parts[2];
+                        exp = `${y}-${m}-${d}`;
+                    }
+                }
+                
+                // Keep ad if today is on or before the expiration date (runs through 11:59:59 PM)
+                return exp >= todayStr;
+            }).map(item => {
+                const cleanUrl = item.imageUrl || item.url || item.image || '';
+                const isVid = cleanUrl.match(/\.(mp4|webm|ogg)$/i);
+                return {
+                    url: cleanUrl,
+                    type: isVid ? 'video' : 'image',
+                    name: item.advertiser || item.name || 'Direct Local Ad'
+                };
+            }).filter(item => item.url !== '');
+
+            if (currentAdQueue.length === 0) {
+                currentAdQueue.push({
+                    type: 'house',
+                    headline: "ADVERTISE HERE",
+                    subhead: "CALL 844-907-4450",
+                    name: "S&K House Ad"
+                });
+            }
+
+            renderSlides(0);
+        } catch (e) {
+            console.warn("Playlist load error:", e);
+        }
+    }
+
+    function renderSlides(startIndex = 0) {
+        const viewport = document.getElementById('sk-ad-viewport');
+        if (!viewport || currentAdQueue.length === 0) return;
+        
+        viewport.innerHTML = '';
+        adSlideElements = [];
+        currentAdIndex = (startIndex < currentAdQueue.length) ? startIndex : 0;
+
+        currentAdQueue.forEach((item, idx) => {
+            const slide = document.createElement('div');
+            slide.className = `sk-ad-slide ${idx === currentAdIndex ? 'active' : ''}`;
+
+            if (item.type === 'video') {
+                const video = document.createElement('video');
+                video.src = item.url;
+                video.autoplay = true;
+                video.muted = true;
+                video.loop = true;
+                video.playsInline = true;
+                video.setAttribute('playsinline', '');
+                video.setAttribute('webkit-playsinline', '');
+                video.setAttribute('referrerpolicy', 'no-referrer');
+                slide.appendChild(video);
+            } else if (item.type === 'house') {
+                const house = document.createElement('div');
+                house.className = 'sk-house-slide';
+                house.innerHTML = `<h1>${item.headline}</h1><p>${item.subhead}</p>`;
+                slide.appendChild(house);
+            } else {
+                const image = document.createElement('img');
+                image.src = item.url;
+                image.setAttribute('referrerpolicy', 'no-referrer');
+                image.setAttribute('loading', 'eager');
+                slide.appendChild(image);
+            }
+
+            viewport.appendChild(slide);
+            adSlideElements.push(slide);
+        });
+
+        const activeItem = currentAdQueue[currentAdIndex];
+        if (activeItem) {
+            logAdImpression(activeItem);
+            const activeVid = adSlideElements[currentAdIndex] ? adSlideElements[currentAdIndex].querySelector('video') : null;
+            if (activeVid) {
+                activeVid.currentTime = 0;
+                activeVid.play().catch(()=>{});
+            }
+        }
+    }
+
+    function rotateAds() {
+        if (adSlideElements.length === 0) return;
+
+        if (adSlideElements[currentAdIndex]) {
+            adSlideElements[currentAdIndex].classList.remove('active');
+        }
+
+        currentAdIndex = (currentAdIndex + 1) % adSlideElements.length;
+
+        if (adSlideElements[currentAdIndex]) {
+            adSlideElements[currentAdIndex].classList.add('active');
+        }
+
+        const activeItem = currentAdQueue[currentAdIndex];
+        if (activeItem) {
+            logAdImpression(activeItem);
+            const activeVid = adSlideElements[currentAdIndex] ? adSlideElements[currentAdIndex].querySelector('video') : null;
+            if (activeVid) {
+                activeVid.currentTime = 0;
+                activeVid.play().catch(()=>{});
+            }
+        }
+    }
+
+    async function fetchWeather() {
+        try {
+            const url = `https://api.open-meteo.com/v1/forecast?latitude=${activeLocation.lat}&longitude=${activeLocation.lon}&current=temperature_2m,apparent_temperature,is_day&temperature_unit=fahrenheit&timezone=auto`;
+            const res = await fetch(url);
+            const data = await res.json();
+            if (data.timezone) targetTimeZone = data.timezone;
+            if (data.current && data.current.is_day !== undefined) isNightTimeSolar = (data.current.is_day === 0);
+            
+            const tempVal = Math.round(data.current.temperature_2m);
+            updateWeatherUI(tempVal);
+            syncTimeTheme();
+        } catch(e) {}
+    }
+
+    function updateWeatherUI(temp) {
+        const tempDisplay = document.getElementById('sk-temp-val');
+        if (tempDisplay) {
+            tempDisplay.innerText = `${temp}°`;
+            let tempColor = "#ffffff";
+            if (temp <= 32) tempColor = "#00f2ff"; 
+            else if (temp <= 50) tempColor = "#0ea5e9"; 
+            else if (temp <= 75) tempColor = "#FAC429"; 
+            else if (temp <= 90) tempColor = "#f97316"; 
+            else tempColor = "#ef4444"; 
+            tempDisplay.style.color = tempColor;
+        }
+    }
+
+    function updateTenMinSwap(tenMinBlock) {
+        const logoGroup = document.querySelector('.sk-logo-group');
+        const phoneDiv = document.querySelector('.sk-bottom-phone');
+        const infoStack = document.querySelector('.sk-info-stack');
+        
+        if (!logoGroup || !phoneDiv || !infoStack) return;
+
+        logoGroup.style.opacity = '0';
+        phoneDiv.style.opacity = '0';
+        infoStack.style.opacity = '0';
+        
+        setTimeout(() => {
+            const layouts = [
+                { logo: 1, phone: 2, info: 3 },
+                { logo: 2, phone: 3, info: 1 },
+                { logo: 3, phone: 1, info: 2 },
+                { logo: 3, phone: 2, info: 1 },
+                { logo: 2, phone: 1, info: 3 },
+                { logo: 1, phone: 3, info: 2 }
+            ];
+            
+            const currentLayout = layouts[tenMinBlock % 6];
+            
+            function applyLayout(el, order) {
+                el.style.order = order;
+                if (order === 1) el.style.justifyContent = 'flex-start';
+                else if (order === 2) el.style.justifyContent = 'center';
+                else if (order === 3) el.style.justifyContent = 'flex-end';
+            }
+
+            applyLayout(logoGroup, currentLayout.logo);
+            applyLayout(phoneDiv, currentLayout.phone);
+            applyLayout(infoStack, currentLayout.info);
+
+            logoGroup.style.opacity = '1';
+            phoneDiv.style.opacity = '1';
+            infoStack.style.opacity = '1';
+        }, 500);
+    }
+
+    function updateLocalTime() {
+        const timeEl = document.getElementById('sk-time-val');
+        const dateEl = document.getElementById('sk-date-val');
+        if (!timeEl) return;
+        
+        let currentMin = new Date().getMinutes();
+
+        try {
+            const timeString = new Date().toLocaleTimeString('en-US', { timeZone: targetTimeZone, hour: '2-digit', minute:'2-digit', hour12: true });
+            timeEl.innerText = timeString;
+
+            if (dateEl) {
+                const dateString = new Date().toLocaleDateString('en-US', { timeZone: targetTimeZone, weekday: 'short', month: 'short', day: 'numeric' });
+                dateEl.innerText = dateString;
+            }
+            
+            const tzDate = new Date(new Date().toLocaleString('en-US', { timeZone: targetTimeZone }));
+            currentMin = tzDate.getMinutes();
+        } catch (e) {
+            timeEl.innerText = new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit', hour12: true});
+            if (dateEl) {
+                dateEl.innerText = new Date().toLocaleDateString([], {weekday: 'short', month: 'short', day: 'numeric'});
+            }
+        }
+
+        let currentTenMin = Math.floor(currentMin / 10);
+
+        if (currentTenMinTracker !== currentTenMin) {
+            const isInitialLoad = (currentTenMinTracker === null);
+            currentTenMinTracker = currentTenMin;
+            
+            if (isInitialLoad) {
+                const logoGroup = document.querySelector('.sk-logo-group');
+                const phoneDiv = document.querySelector('.sk-bottom-phone');
+                const infoStack = document.querySelector('.sk-info-stack');
+                
+                if (logoGroup && phoneDiv && infoStack) {
+                    const layouts = [
+                        { logo: 1, phone: 2, info: 3 },
+                        { logo: 2, phone: 3, info: 1 },
+                        { logo: 3, phone: 1, info: 2 },
+                        { logo: 3, phone: 2, info: 1 },
+                        { logo: 2, phone: 1, info: 3 },
+                        { logo: 1, phone: 3, info: 2 } 
+                    ];
+                    const currentLayout = layouts[currentTenMin % 6];
+                    
+                    function applyLayout(el, order) {
+                        el.style.order = order;
+                        if (order === 1) el.style.justifyContent = 'flex-start';
+                        else if (order === 2) el.style.justifyContent = 'center';
+                        else if (order === 3) el.style.justifyContent = 'flex-end';
+                    }
+                    applyLayout(logoGroup, currentLayout.logo);
+                    applyLayout(phoneDiv, currentLayout.phone);
+                    applyLayout(infoStack, currentLayout.info);
+                }
+            } else {
+                updateTenMinSwap(currentTenMin);
+            }
+        }
+    }
+
+    function initBillboard() {
+        if (typeof lucide !== 'undefined') lucide.createIcons();
+        syncTimeTheme();
+        fetchWeather();
+        loadPlaylist();
+
+        updateLocalTime();
+        setInterval(updateLocalTime, 1000);
+        setInterval(rotateAds, displayInterval);
+        setInterval(fetchWeather, 600000);
+        setInterval(loadPlaylist, 300000);
+        setInterval(syncTimeTheme, 300000);
+
+        setInterval(() => {
+            window.location.reload();
+        }, memoryRefreshCycle);
+    }
+
+    if (document.readyState === "complete" || document.readyState === "interactive") {
+        initBillboard();
+    } else {
+        document.addEventListener("DOMContentLoaded", initBillboard);
+    }
+})();
+</script>
+</body>
+</html>
