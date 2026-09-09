@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-09-09T16:23:01.099Z",
+  "lastUpdated": "2026-09-09T17:41:11.503Z",
   "locations": {
     "oliver": [
       {
@@ -503,8 +503,14 @@
         "expirationDate": ""
       },
       {
-        "advertiser": "Carnival",
-        "imageUrl": "https://skventuresigns.com/images/ARM-BANDS.png",
+        "advertiser": "Wesselman Roofing",
+        "imageUrl": "https://skventuresigns.com/images/Wesselman-Roofing.png",
+        "duration": 8,
+        "expirationDate": ""
+      },
+      {
+        "advertiser": "XNet",
+        "imageUrl": "https://skventuresigns.com/images/XnetWifi.png",
         "duration": 8,
         "expirationDate": ""
       }
