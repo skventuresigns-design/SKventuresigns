@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-09-14T00:51:05.761Z",
+  "lastUpdated": "2026-09-14T00:57:06.333Z",
   "locations": {
     "oliver": [
       {
@@ -842,7 +842,7 @@
         "advertiser": "Special Event",
         "imageUrl": "https://www.skventuresigns.com/images/Family-Fest.png",
         "duration": 8,
-        "expirationDate": ""
+        "expirationDate": "2026-10-02"
       },
       {
         "advertiser": "Blip Slot",
