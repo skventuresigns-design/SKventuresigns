@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-09-01T04:22:25.916Z",
+  "lastUpdated": "2026-09-13T23:51:05.577Z",
   "locations": {
     "oliver": [
       {
@@ -259,6 +259,12 @@
         "expirationDate": ""
       },
       {
+        "advertiser": "S&K Ventures",
+        "imageUrl": "https://skventuresigns.com/images/skadvertise.png",
+        "duration": 8,
+        "expirationDate": ""
+      },
+      {
         "advertiser": "Effingham County Chamber",
         "imageUrl": "https://skventuresigns.com/images/EffChamber2026.png",
         "duration": 8,
@@ -325,6 +331,12 @@
         "expirationDate": ""
       },
       {
+        "advertiser": "S&K Ventures",
+        "imageUrl": "https://skventuresigns.com/images/skadvertise.png",
+        "duration": 8,
+        "expirationDate": ""
+      },
+      {
         "advertiser": "Swan",
         "imageUrl": "https://skventuresigns.com/images/Expo.png",
         "duration": 8,
@@ -339,6 +351,18 @@
       {
         "advertiser": "Clay Brook Excavating",
         "imageUrl": "https://skventuresigns.com/images/Claybrook-Excavating.jpg",
+        "duration": 8,
+        "expirationDate": ""
+      },
+      {
+        "advertiser": "S&K Ventures",
+        "imageUrl": "https://skventuresigns.com/images/skadvertise.png",
+        "duration": 8,
+        "expirationDate": ""
+      },
+      {
+        "advertiser": "Programmattic 3",
+        "imageUrl": "https://skventuresigns.com/images/Wanted.png",
         "duration": 8,
         "expirationDate": ""
       }
@@ -503,8 +527,14 @@
         "expirationDate": ""
       },
       {
-        "advertiser": "Carnival",
-        "imageUrl": "https://skventuresigns.com/images/ARM-BANDS.png",
+        "advertiser": "Wesselman Roofing",
+        "imageUrl": "https://skventuresigns.com/images/Wesselman-Roofing.png",
+        "duration": 8,
+        "expirationDate": ""
+      },
+      {
+        "advertiser": "XNet",
+        "imageUrl": "https://skventuresigns.com/images/XnetWifi.png",
         "duration": 8,
         "expirationDate": ""
       }
@@ -572,12 +602,134 @@
       },
       {
         "advertiser": "Forget Me Knots",
-        "imageUrl": "https://skventuresigns.com/images/ForgetMeknots.png",
+        "imageUrl": "https://skventuresigns.com/images/ForgetMeKnots.png",
         "duration": 8,
         "expirationDate": ""
       }
     ],
-    "flora tv": [
+    "floratv": [
+      {
+        "advertiser": "S&K Ventures",
+        "imageUrl": "https://skventuresigns.com/images/skadvertise.png",
+        "duration": 8,
+        "expirationDate": ""
+      },
+      {
+        "advertiser": "Maurer Storage",
+        "imageUrl": "https://skventuresigns.com/images/Maurer-Storage.jpg",
+        "duration": 8,
+        "expirationDate": ""
+      },
+      {
+        "advertiser": "Rumpke Recycling",
+        "imageUrl": "https://skventuresigns.com/images/Rumpke.png",
+        "duration": 8,
+        "expirationDate": ""
+      },
+      {
+        "advertiser": "Tingley Roofing",
+        "imageUrl": "https://skventuresigns.com/images/Tingley-Roofing.png",
+        "duration": 8,
+        "expirationDate": ""
+      },
+      {
+        "advertiser": "S&K Ventures",
+        "imageUrl": "https://skventuresigns.com/images/skadvertise.png",
+        "duration": 8,
+        "expirationDate": ""
+      },
+      {
+        "advertiser": "Programmattic 1",
+        "imageUrl": "https://skventuresigns.com/images/Wanted.png",
+        "duration": 8,
+        "expirationDate": ""
+      },
+      {
+        "advertiser": "R & B Auctions",
+        "imageUrl": "https://skventuresigns.com/images/RandB-Ad.png",
+        "duration": 8,
+        "expirationDate": ""
+      },
+      {
+        "advertiser": "Hometown Appliance",
+        "imageUrl": "https://skventuresigns.com/images/Hometown-Appliance.png",
+        "duration": 8,
+        "expirationDate": ""
+      },
+      {
+        "advertiser": "JMS Trucking & Exacvating",
+        "imageUrl": "https://skventuresigns.com/images/Jms-Trucking-and-Excavating.png",
+        "duration": 8,
+        "expirationDate": ""
+      },
+      {
+        "advertiser": "Harper Tire",
+        "imageUrl": "https://skventuresigns.com/images/Harper-Tire.png",
+        "duration": 8,
+        "expirationDate": ""
+      },
+      {
+        "advertiser": "S&K Ventures",
+        "imageUrl": "https://skventuresigns.com/images/skadvertise.png",
+        "duration": 8,
+        "expirationDate": ""
+      },
+      {
+        "advertiser": "Clay Brook Excavating",
+        "imageUrl": "https://skventuresigns.com/images/Claybrook-Excavating.jpg",
+        "duration": 8,
+        "expirationDate": ""
+      },
+      {
+        "advertiser": "Programmattic 2",
+        "imageUrl": "https://www.skventuresigns.com/images/Wanted.png",
+        "duration": 8,
+        "expirationDate": ""
+      },
+      {
+        "advertiser": "Pat Burt",
+        "imageUrl": "https://www.skventuresigns.com/images/Pat-Burt.png",
+        "duration": 8,
+        "expirationDate": ""
+      },
+      {
+        "advertiser": "Paula Clawson",
+        "imageUrl": "https://www.skventuresigns.com/images/Paula-Clawson.png",
+        "duration": 8,
+        "expirationDate": ""
+      },
+      {
+        "advertiser": "Effingham County Chamber",
+        "imageUrl": "https://www.skventuresigns.com/images/Effingham-County-Chamber.png",
+        "duration": 8,
+        "expirationDate": ""
+      },
+      {
+        "advertiser": "Altamont Lumber",
+        "imageUrl": "https://www.skventuresigns.com/images/Altamont-Lumber.png",
+        "duration": 8,
+        "expirationDate": ""
+      },
+      {
+        "advertiser": "CJ Accounting",
+        "imageUrl": "https://www.skventuresigns.com/images/CJ-Accounting.png",
+        "duration": 8,
+        "expirationDate": ""
+      },
+      {
+        "advertiser": "Christopher Rural Health",
+        "imageUrl": "https://www.skventuresigns.com/images/Christopher-Rural-Health.jpg",
+        "duration": 8,
+        "expirationDate": ""
+      },
+      {
+        "advertiser": "Blip Slot",
+        "imageUrl": "https://www.skventuresigns.com/images/Wanted.png",
+        "duration": 8,
+        "expirationDate": ""
+      }
+    ],
+    "xenia tv": [
       {
         "advertiser": "S&K Ventures",
         "imageUrl": "https://skventuresigns.com/images/skadvertise.png",
