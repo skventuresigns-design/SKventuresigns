@@ -213,7 +213,7 @@
     .sk-ad-slide img, .sk-ad-slide video {
         width: 100% !important;
         height: 100% !important;
-        object-fit: fill !important; 
+        object-fit: contain !important; 
         filter: saturate(1.12) contrast(1.05) brightness(0.98) !important;
         transition: filter 0.8s ease !important;
     }
@@ -381,15 +381,26 @@
     const displayInterval = 10000;
     const memoryRefreshCycle = 1800000;
 
+    // Configurable coordinates and operating schedules per location
     const LOCATION_COORDS = {
-        'oliver': { name: 'Oliver', lat: 39.490667, lon: -87.682008 },
-        'altamont': { name: 'Altamont', lat: 39.0606, lon: -88.7495 },
-        'claycity': { name: 'Clay City', lat: 38.6889, lon: -88.3556 },
-        'xenia': { name: 'Xenia', lat: 38.6387, lon: -88.6417 },
-        'brownstown': { name: 'Brownstown', lat: 38.9953, lon: -88.9531 },
-        'desoto': { name: 'DeSoto', lat: 37.8184, lon: -89.2273 },
-        'floratv': { name: 'Flora TV', lat: 38.6687, lon: -88.4853 },
-        'xeniatv': { name: 'Xenia TV', lat: 38.6374, lon: -88.6374 }
+        'oliver':      { name: 'Oliver', lat: 39.490667, lon: -87.682008, hours: '24/7' },
+        'altamont':    { name: 'Altamont', lat: 39.0606, lon: -88.7495, hours: '24/7' },
+        'claycity':    { name: 'Clay City', lat: 38.6889, lon: -88.3556, hours: '24/7' },
+        'xenia':       { name: 'Xenia', lat: 38.6387, lon: -88.6417, hours: '24/7' },
+        'brownstown':  { name: 'Brownstown', lat: 38.9953, lon: -88.9531, hours: '24/7' },
+        'desoto':      { name: 'DeSoto', lat: 37.8184, lon: -89.2273, hours: '24/7' },
+        'floratv':     { name: 'Flora TV', lat: 38.6687, lon: -88.4853, hours: '24/7' },
+        'xeniatv':     { 
+            name: 'Xenia TV', 
+            lat: 38.6374, 
+            lon: -88.6374, 
+            hours: {
+                // Sun (0) to Thu (4): 7 AM (7) to 10 PM (22)
+                weekday: { open: 7, close: 22 },
+                // Fri (5) & Sat (6): 7 AM (7) to 1 AM next day (01:00)
+                weekend: { open: 7, close: 1 }
+            }
+        }
     };
 
     function getTownFromUrl() {
@@ -409,13 +420,48 @@
     let interactionTimer = null;
     let currentTenMinTracker = null;
 
+    // Checks whether the current location is currently open for business
+    function isLocationOpen() {
+        if (!activeLocation.hours || activeLocation.hours === '24/7') {
+            return true;
+        }
+
+        let now;
+        try {
+            now = new Date(new Date().toLocaleString("en-US", { timeZone: targetTimeZone }));
+        } catch (e) {
+            now = new Date();
+        }
+
+        const day = now.getDay(); // 0 = Sun, 1 = Mon, ..., 5 = Fri, 6 = Sat
+        const hour = now.getHours();
+        const sched = activeLocation.hours;
+
+        // Friday (5) or Saturday (6): 7 AM to 1 AM next day
+        if (day === 5 || day === 6) {
+            return (hour >= sched.weekend.open || hour < sched.weekend.close);
+        }
+
+        // Sunday morning between midnight and 1:00 AM (Saturday night rollover)
+        if (day === 0 && hour < sched.weekend.close) {
+            return true;
+        }
+
+        // Sunday through Thursday standard hours: 7 AM to 10 PM
+        return (hour >= sched.weekday.open && hour < sched.weekday.close);
+    }
+
     function logAdImpression(adItem) {
         if (typeof gtag !== 'function' || !adItem) return;
+        
+        // Suppress impression logs when indoor venues are closed
+        if (!isLocationOpen()) return;
+
         gtag('event', 'billboard_ad_play', {
             'event_category': 'Digital Billboard Impressions',
             'advertiser': adItem.name || 'Direct Ad',
             'location': activeTown,
-            'duration': 12
+            'duration': Math.round(displayInterval / 1000)
         });
     }
 
@@ -475,7 +521,6 @@
                 freshQueue = data;
             }
 
-            // Get local date string YYYY-MM-DD for comparison
             let todayStr = "";
             try {
                 const nowTz = new Date(new Date().toLocaleString("en-US", { timeZone: targetTimeZone }));
@@ -489,7 +534,6 @@
             }
 
             currentAdQueue = freshQueue.filter(item => {
-                // If no expiration date is set, keep the ad active indefinitely
                 if (!item.expirationDate || item.expirationDate.toString().trim() === '') return true;
 
                 let exp = item.expirationDate.toString().trim();
@@ -503,7 +547,6 @@
                     }
                 }
                 
-                // Keep ad if today is on or before the expiration date (runs through 11:59:59 PM)
                 return exp >= todayStr;
             }).map(item => {
                 const cleanUrl = item.imageUrl || item.url || item.image || '';
