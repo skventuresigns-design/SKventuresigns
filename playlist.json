@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-09-13T23:51:05.577Z",
+  "lastUpdated": "2026-09-14T00:31:09.692Z",
   "locations": {
     "oliver": [
       {
@@ -729,118 +729,40 @@
         "expirationDate": ""
       }
     ],
-    "xenia tv": [
+    "xeniatv": [
       {
         "advertiser": "S&K Ventures",
-        "imageUrl": "https://skventuresigns.com/images/skadvertise.png",
+        "imageUrl": "https://skventuresigns.com/images/SK-TV-Ad.png",
         "duration": 8,
         "expirationDate": ""
       },
       {
-        "advertiser": "Maurer Storage",
-        "imageUrl": "https://skventuresigns.com/images/Maurer-Storage.jpg",
+        "advertiser": "Breakfast",
+        "imageUrl": "https://skventuresigns.com/images/Stephy-Breakfast.jpg",
         "duration": 8,
         "expirationDate": ""
       },
       {
-        "advertiser": "Rumpke Recycling",
-        "imageUrl": "https://skventuresigns.com/images/Rumpke.png",
+        "advertiser": "Review",
+        "imageUrl": "https://skventuresigns.com/images/review.png",
         "duration": 8,
         "expirationDate": ""
       },
       {
-        "advertiser": "Tingley Roofing",
-        "imageUrl": "https://skventuresigns.com/images/Tingley-Roofing.png",
+        "advertiser": "Budds",
+        "imageUrl": "https://skventuresigns.com/images/Budds-Contracting.png",
         "duration": 8,
         "expirationDate": ""
       },
       {
-        "advertiser": "S&K Ventures",
-        "imageUrl": "https://skventuresigns.com/images/skadvertise.png",
+        "advertiser": "Thursday Special",
+        "imageUrl": "https://skventuresigns.com/images/Thursday-Special.jpeg",
         "duration": 8,
         "expirationDate": ""
       },
       {
-        "advertiser": "Programmattic 1",
-        "imageUrl": "https://skventuresigns.com/images/Wanted.png",
-        "duration": 8,
-        "expirationDate": ""
-      },
-      {
-        "advertiser": "R & B Auctions",
-        "imageUrl": "https://skventuresigns.com/images/RandB-Ad.png",
-        "duration": 8,
-        "expirationDate": ""
-      },
-      {
-        "advertiser": "Hometown Appliance",
-        "imageUrl": "https://skventuresigns.com/images/Hometown-Appliance.png",
-        "duration": 8,
-        "expirationDate": ""
-      },
-      {
-        "advertiser": "JMS Trucking & Exacvating",
-        "imageUrl": "https://skventuresigns.com/images/Jms-Trucking-and-Excavating.png",
-        "duration": 8,
-        "expirationDate": ""
-      },
-      {
-        "advertiser": "Harper Tire",
-        "imageUrl": "https://skventuresigns.com/images/Harper-Tire.png",
-        "duration": 8,
-        "expirationDate": ""
-      },
-      {
-        "advertiser": "S&K Ventures",
-        "imageUrl": "https://skventuresigns.com/images/skadvertise.png",
-        "duration": 8,
-        "expirationDate": ""
-      },
-      {
-        "advertiser": "Clay Brook Excavating",
-        "imageUrl": "https://skventuresigns.com/images/Claybrook-Excavating.jpg",
-        "duration": 8,
-        "expirationDate": ""
-      },
-      {
-        "advertiser": "Programmattic 2",
+        "advertiser": "Blip Slot",
         "imageUrl": "https://www.skventuresigns.com/images/Wanted.png",
-        "duration": 8,
-        "expirationDate": ""
-      },
-      {
-        "advertiser": "Pat Burt",
-        "imageUrl": "https://www.skventuresigns.com/images/Pat-Burt.png",
-        "duration": 8,
-        "expirationDate": ""
-      },
-      {
-        "advertiser": "Paula Clawson",
-        "imageUrl": "https://www.skventuresigns.com/images/Paula-Clawson.png",
-        "duration": 8,
-        "expirationDate": ""
-      },
-      {
-        "advertiser": "Effingham County Chamber",
-        "imageUrl": "https://www.skventuresigns.com/images/Effingham-County-Chamber.png",
-        "duration": 8,
-        "expirationDate": ""
-      },
-      {
-        "advertiser": "Altamont Lumber",
-        "imageUrl": "https://www.skventuresigns.com/images/Altamont-Lumber.png",
-        "duration": 8,
-        "expirationDate": ""
-      },
-      {
-        "advertiser": "CJ Accounting",
-        "imageUrl": "https://www.skventuresigns.com/images/CJ-Accounting.png",
-        "duration": 8,
-        "expirationDate": ""
-      },
-      {
-        "advertiser": "Christopher Rural Health",
-        "imageUrl": "https://www.skventuresigns.com/images/Christopher-Rural-Health.jpg",
         "duration": 8,
         "expirationDate": ""
       },
