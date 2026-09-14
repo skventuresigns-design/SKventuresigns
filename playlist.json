@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-09-14T00:31:09.692Z",
+  "lastUpdated": "2026-09-14T00:51:00.133Z",
   "locations": {
     "oliver": [
       {
@@ -761,8 +761,86 @@
         "expirationDate": ""
       },
       {
+        "advertiser": "Pool",
+        "imageUrl": "https://www.skventuresigns.com/images/Free-Pool.png",
+        "duration": 8,
+        "expirationDate": ""
+      },
+      {
+        "advertiser": "Lunch",
+        "imageUrl": "https://www.skventuresigns.com/images/Lunch-Special.png",
+        "duration": 8,
+        "expirationDate": ""
+      },
+      {
         "advertiser": "Blip Slot",
         "imageUrl": "https://www.skventuresigns.com/images/Wanted.png",
+        "duration": 8,
+        "expirationDate": ""
+      },
+      {
+        "advertiser": "Facebook",
+        "imageUrl": "https://www.skventuresigns.com/images/Facebook.png",
+        "duration": 8,
+        "expirationDate": ""
+      },
+      {
+        "advertiser": "Equity Reality",
+        "imageUrl": "https://www.skventuresigns.com/images/Equity-Reality.png",
+        "duration": 8,
+        "expirationDate": ""
+      },
+      {
+        "advertiser": "Weekend Specials",
+        "imageUrl": "https://www.skventuresigns.com/images/Weekend-Special.jpeg",
+        "duration": 8,
+        "expirationDate": ""
+      },
+      {
+        "advertiser": "Wings",
+        "imageUrl": "https://www.skventuresigns.com/images/Wings-Wednesday.png",
+        "duration": 8,
+        "expirationDate": ""
+      },
+      {
+        "advertiser": "Poker",
+        "imageUrl": "https://www.skventuresigns.com/images/Poker.png",
+        "duration": 8,
+        "expirationDate": ""
+      },
+      {
+        "advertiser": "Karoke",
+        "imageUrl": "https://www.skventuresigns.com/images/Karaoke.png",
+        "duration": 8,
+        "expirationDate": ""
+      },
+      {
+        "advertiser": "Bingo",
+        "imageUrl": "https://www.skventuresigns.com/images/Bingo.png",
+        "duration": 8,
+        "expirationDate": ""
+      },
+      {
+        "advertiser": "Pies",
+        "imageUrl": "https://www.skventuresigns.com/images/Suzie-Fried-Pies.png",
+        "duration": 8,
+        "expirationDate": ""
+      },
+      {
+        "advertiser": "Fish",
+        "imageUrl": "https://www.skventuresigns.com/images/Fish.png",
+        "duration": 8,
+        "expirationDate": ""
+      },
+      {
+        "advertiser": "Wesselman Roofing",
+        "imageUrl": "https://www.skventuresigns.com/images/Wesselman-Roofing.png",
+        "duration": 8,
+        "expirationDate": ""
+      },
+      {
+        "advertiser": "Special Event",
+        "imageUrl": "https://www.skventuresigns.com/images/Family-Fest.png",
         "duration": 8,
         "expirationDate": ""
       },
