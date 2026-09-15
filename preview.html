@@ -13,165 +13,77 @@
     body {
       width: 100vw;
       height: 100vh;
-      background-color: #220000;
-      color: #ffffff;
-      font-family: Arial, sans-serif;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
       overflow: hidden;
-      padding: 1.5vh 3vw 1.2vh 3vw;
+      background-color: #000;
+      font-family: Arial, sans-serif;
     }
 
-    /* Top Header Row: Billboard Graphic + Script Name */
-    .header-container {
+    /* Full-screen billboard container using your graphic as the base */
+    .billboard-container {
+      position: relative;
       width: 100%;
-      display: flex;
-      flex-direction: column;
+      height: 100%;
+      background: url('https://www.skeventuresigns.com/images/ad-background.jpg') no-repeat center center;
+      background-size: 100% 100%;
     }
 
-    .header-row {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 2vw;
-      width: 100%;
-    }
-
-    .billboard-icon {
-      height: 14vh;
-      max-width: 28vw;
-      object-fit: contain;
-      filter: drop-shadow(0px 4px 8px rgba(0, 0, 0, 0.8));
-    }
-
-    .script-title {
-      font-family: "Edwardian Script ITC", cursive, serif;
-      font-size: 13vh;
-      color: #ffffff;
-      line-height: 0.9;
-      white-space: nowrap;
-    }
-
-    .divider-line {
-      width: 100%;
-      height: 2px;
-      background-color: #ffffff;
-      margin-top: 0.4vh;
-    }
-
-    .tagline {
-      font-size: 1.8vh;
-      color: #fcf6de;
-      text-align: center;
-      letter-spacing: 0.04em;
-      margin-top: 0.4vh;
-      font-weight: 500;
-    }
-
-    /* Middle Core Pitch Section */
-    .pitch-section {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      flex: 1;
-      gap: 0.5vh;
-    }
-
-    .pitch-title {
-      font-family: "Georgia", "Times New Roman", serif;
-      font-size: 10vh;
-      font-weight: bold;
-      color: #ffd700;
-      line-height: 1;
-      letter-spacing: 0.02em;
-    }
-
-    .price-text {
-      font-family: "Georgia", "Times New Roman", serif;
-      font-size: 14vh;
-      font-weight: 900;
-      color: #ffffff;
-      line-height: 0.95;
-      letter-spacing: 0.01em;
-    }
-
-    .phone-text {
-      font-family: "Arial Black", Impact, sans-serif;
-      font-size: 11vh;
-      font-weight: 900;
-      color: #ffd700;
-      line-height: 1;
-      letter-spacing: 0.04em;
-    }
-
-    /* Bottom Info Bar: Date, Time, Temp */
+    /* Dynamic bottom info bar positioned right over the lower space */
     .info-bar {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 14vh;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      width: 100%;
-      border-top: 2px solid rgba(255, 215, 0, 0.5);
-      padding-top: 0.8vh;
+      padding: 0 4vw 1vh 4vw;
+      border-top: 2px solid rgba(255, 215, 0, 0.45);
+      background: linear-gradient(to top, rgba(0, 0, 0, 0.65), rgba(0, 0, 0, 0));
     }
 
     .date-display {
-      font-family: "Arial Black", Impact, sans-serif;
-      font-size: 3.8vh;
+      font-family: 'Arial Black', Impact, sans-serif;
+      font-size: 4.8vh;
       font-weight: 900;
       color: #ffd700;
       text-align: left;
       flex: 1;
       text-transform: uppercase;
+      letter-spacing: 0.04em;
     }
 
     .time-display {
       font-family: "Times New Roman", Times, serif;
-      font-size: 5.5vh;
+      font-size: 7vh;
       font-weight: bold;
       color: #ffffff;
       text-align: center;
       flex: 1;
+      letter-spacing: 0.02em;
     }
 
     .temp-display {
-      font-family: "Arial Black", Impact, sans-serif;
-      font-size: 3.8vh;
+      font-family: 'Arial Black', Impact, sans-serif;
+      font-size: 4.8vh;
       font-weight: 900;
       color: #ffd700;
       text-align: right;
       flex: 1;
       text-transform: uppercase;
+      letter-spacing: 0.04em;
     }
   </style>
 </head>
 <body>
 
-  <!-- Top Header Zone -->
-  <div class="header-container">
-    <div class="header-row">
-      <!-- Ensure snk.png is in the same folder or update src -->
-      <img class="billboard-icon" src="snk.png" alt="S&K Billboard">
-      <div class="script-title">Venture Signs</div>
+  <div class="billboard-container">
+    <!-- Live Dynamic Overlay sitting right in the lower space -->
+    <div class="info-bar">
+      <div class="date-display" id="dateDisplay">--</div>
+      <div class="time-display" id="timeDisplay">--:-- --</div>
+      <div class="temp-display" id="tempDisplay">--°F</div>
     </div>
-    <div class="divider-line"></div>
-    <div class="tagline">A Digital Sign Company with Digital Billboard and Tv Advertising Opportunities !!</div>
-  </div>
-
-  <!-- Middle Pitch & Price Zone -->
-  <div class="pitch-section">
-    <div class="pitch-title">Advertise With Us</div>
-    <div class="price-text">$100 a month</div>
-    <div class="phone-text">844-907-4450</div>
-  </div>
-
-  <!-- Bottom Dynamic Status Bar -->
-  <div class="info-bar">
-    <div class="date-display" id="dateDisplay">--</div>
-    <div class="time-display" id="timeDisplay">--:-- --</div>
-    <div class="temp-display" id="tempDisplay">72°F</div>
   </div>
 
   <script>
@@ -192,8 +104,24 @@
       document.getElementById('timeDisplay').textContent = `${hours}:${minutes} ${ampm}`;
     }
 
+    // National Weather Service / Open-Meteo local feed
+    async function fetchWeather() {
+      try {
+        // Effingham, IL coordinates: 39.12, -88.54
+        const res = await fetch('https://api.open-meteo.com/v1/forecast?latitude=39.12&longitude=-88.54&current=temperature_2m&temperature_unit=fahrenheit');
+        const data = await res.json();
+        const temp = Math.round(data.current.temperature_2m);
+        document.getElementById('tempDisplay').textContent = `${temp}°F`;
+      } catch (err) {
+        document.getElementById('tempDisplay').textContent = '72°F';
+      }
+    }
+
     updateDateTime();
     setInterval(updateDateTime, 1000);
+
+    fetchWeather();
+    setInterval(fetchWeather, 600000); // Refreshes every 10 minutes
   </script>
 
 </body>
