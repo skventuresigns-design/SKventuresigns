@@ -14,20 +14,25 @@
       width: 100vw;
       height: 100vh;
       overflow: hidden;
-      background-color: #000;
+      background-color: #000000;
       font-family: Arial, sans-serif;
     }
 
-    /* Full-screen billboard container using your graphic as the base */
     .billboard-container {
       position: relative;
-      width: 100%;
-      height: 100%;
-      background: url('https://www.skventuresigns.com/images/ad-background.png') no-repeat center center;
-      background-size: 100% 100%;
+      width: 100vw;
+      height: 100vh;
     }
 
-    /* Dynamic bottom info bar positioned right over the lower space */
+    /* Base ad image fills the entire screen */
+    .base-graphic {
+      width: 100%;
+      height: 100%;
+      object-fit: fill;
+      display: block;
+    }
+
+    /* Live bottom overlay sitting over the empty bottom area */
     .info-bar {
       position: absolute;
       bottom: 0;
@@ -39,7 +44,7 @@
       align-items: center;
       padding: 0 4vw 1vh 4vw;
       border-top: 2px solid rgba(255, 215, 0, 0.45);
-      background: linear-gradient(to top, rgba(0, 0, 0, 0.65), rgba(0, 0, 0, 0));
+      background: linear-gradient(to top, rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0));
     }
 
     .date-display {
@@ -78,7 +83,14 @@
 <body>
 
   <div class="billboard-container">
-    <!-- Live Dynamic Overlay sitting right in the lower space -->
+    <img 
+      class="base-graphic" 
+      id="adImg" 
+      src="https://www.skventuresigns.com/images/ad-background.png" 
+      alt="Ad Creative"
+    >
+
+    <!-- Live Dynamic Overlay -->
     <div class="info-bar">
       <div class="date-display" id="dateDisplay">--</div>
       <div class="time-display" id="timeDisplay">--:-- --</div>
@@ -89,12 +101,9 @@
   <script>
     function updateDateTime() {
       const now = new Date();
-
-      // Format: Tue, Sep 15
       const dateOptions = { weekday: 'short', month: 'short', day: 'numeric' };
       document.getElementById('dateDisplay').textContent = now.toLocaleDateString('en-US', dateOptions);
 
-      // Format: 12-hour AM/PM
       let hours = now.getHours();
       const minutes = String(now.getMinutes()).padStart(2, '0');
       const ampm = hours >= 12 ? 'PM' : 'AM';
@@ -104,10 +113,8 @@
       document.getElementById('timeDisplay').textContent = `${hours}:${minutes} ${ampm}`;
     }
 
-    // National Weather Service / Open-Meteo local feed
     async function fetchWeather() {
       try {
-        // Effingham, IL coordinates: 39.12, -88.54
         const res = await fetch('https://api.open-meteo.com/v1/forecast?latitude=39.12&longitude=-88.54&current=temperature_2m&temperature_unit=fahrenheit');
         const data = await res.json();
         const temp = Math.round(data.current.temperature_2m);
@@ -121,7 +128,7 @@
     setInterval(updateDateTime, 1000);
 
     fetchWeather();
-    setInterval(fetchWeather, 600000); // Refreshes every 10 minutes
+    setInterval(fetchWeather, 600000);
   </script>
 
 </body>
