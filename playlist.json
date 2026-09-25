@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-09-25T17:51:14.521Z",
+  "lastUpdated": "2026-09-25T18:51:06.461Z",
   "locations": {
     "oliver": [
       {
@@ -738,19 +738,19 @@
       },
       {
         "advertiser": "Breakfast",
-        "imageUrl": "https://skventuresigns.com/images/Stephy-Breakfast.jpg",
+        "imageUrl": "./images/Stephy-Breakfast.jpg",
         "duration": 8,
         "expirationDate": ""
       },
       {
         "advertiser": "Review",
-        "imageUrl": "https://skventuresigns.com/images/review.png",
+        "imageUrl": "./images/review.png",
         "duration": 8,
         "expirationDate": ""
       },
       {
         "advertiser": "Budds",
-        "imageUrl": "https://skventuresigns.com/images/Budds-Contracting.png",
+        "imageUrl": "./images/Budds-Contracting.png",
         "duration": 8,
         "expirationDate": ""
       },
