@@ -113,23 +113,30 @@
       document.getElementById('timeDisplay').textContent = `${hours}:${minutes} ${ampm}`;
     }
 
-    async function fetchWeather() {
+  async function fetchWeather() {
       try {
-        // Read location from URL parameter, e.g., ?location=Altamont
         const urlParams = new URLSearchParams(window.location.search);
         const locationQuery = (urlParams.get('location') || 'effingham').toLowerCase();
 
-        // Default coordinates for Effingham, IL
-        let lat = 39.1235;
-        let lon = -88.5434;
+        // Coordinate database for your service areas
+        const locations = {
+          'effingham': { lat: 39.1235, lon: -88.5434 },
+          'altamont': { lat: 39.3564, lon: -88.7498 },
+          'brownstown': { lat: 38.9969, lon: -88.9528 },
+          'clay city': { lat: 38.6858, lon: -88.3486 },
+          'oliver': { lat: 39.4839, lon: -87.6814 }
+        };
 
-        // Check if Altamont is requested
-        if (locationQuery.includes('altamont')) {
-          lat = 39.3564;
-          lon = -88.7498;
+        // Find matching town, or default to Effingham if not found
+        let coords = locations['effingham'];
+        for (const key in locations) {
+          if (locationQuery.includes(key)) {
+            coords = locations[key];
+            break;
+          }
         }
 
-        const res = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m&temperature_unit=fahrenheit`);
+        const res = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${coords.lat}&longitude=${coords.lon}&current=temperature_2m&temperature_unit=fahrenheit`);
         const data = await res.json();
         const temp = Math.round(data.current.temperature_2m);
         document.getElementById('tempDisplay').textContent = `${temp}°F`;
