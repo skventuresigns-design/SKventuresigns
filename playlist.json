@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-09-26T01:51:06.221Z",
+  "lastUpdated": "2026-09-26T02:51:05.848Z",
   "locations": {
     "oliver": [
       {
@@ -756,25 +756,25 @@
       },
       {
         "advertiser": "Thursday Special",
-        "imageUrl": "https://skventuresigns.com/images/Thursday-Special.jpeg",
+        "imageUrl": "./images/Thursday-Special.jpeg",
         "duration": 8,
         "expirationDate": ""
       },
       {
         "advertiser": "Pool",
-        "imageUrl": "https://www.skventuresigns.com/images/Free-Pool.png",
+        "imageUrl": "./images/Free-Pool.png",
         "duration": 8,
         "expirationDate": ""
       },
       {
         "advertiser": "Lunch",
-        "imageUrl": "https://www.skventuresigns.com/images/Lunch-Special.png",
+        "imageUrl": "./images/Lunch-Special.png",
         "duration": 8,
         "expirationDate": ""
       },
       {
         "advertiser": "Blip Slot",
-        "imageUrl": "https://www.skventuresigns.com/images/Wanted.png",
+        "imageUrl": "./images/Wanted.png",
         "duration": 8,
         "expirationDate": ""
       },
