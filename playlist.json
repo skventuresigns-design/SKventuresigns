@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-09-28T13:51:07.822Z",
+  "lastUpdated": "2026-09-28T14:51:08.154Z",
   "locations": {
     "oliver": [
       {
@@ -798,55 +798,55 @@
       },
       {
         "advertiser": "Wings",
-        "imageUrl": "https://www.skventuresigns.com/images/Wings-Wednesday.png",
+        "imageUrl": "./images/Wings-Wednesday.png",
         "duration": 8,
         "expirationDate": ""
       },
       {
         "advertiser": "Poker",
-        "imageUrl": "https://www.skventuresigns.com/images/Poker.png",
+        "imageUrl": "./images/Poker.png",
         "duration": 8,
         "expirationDate": ""
       },
       {
         "advertiser": "Karoke",
-        "imageUrl": "https://www.skventuresigns.com/images/Karaoke.png",
+        "imageUrl": "./images/Karaoke.png",
         "duration": 8,
         "expirationDate": ""
       },
       {
         "advertiser": "Bingo",
-        "imageUrl": "https://www.skventuresigns.com/images/Bingo.png",
+        "imageUrl": "./images/Bingo.png",
         "duration": 8,
         "expirationDate": ""
       },
       {
         "advertiser": "Pies",
-        "imageUrl": "https://www.skventuresigns.com/images/Suzie-Fried-Pies.png",
+        "imageUrl": "./images/Suzie-Fried-Pies.png",
         "duration": 8,
         "expirationDate": ""
       },
       {
         "advertiser": "Fish",
-        "imageUrl": "https://www.skventuresigns.com/images/Fish.png",
+        "imageUrl": "./images/Fish.png",
         "duration": 8,
         "expirationDate": ""
       },
       {
         "advertiser": "Wesselman Roofing",
-        "imageUrl": "https://www.skventuresigns.com/images/Wesselman-Roofing.png",
+        "imageUrl": "./images/Wesselman-Roofing.png",
         "duration": 8,
         "expirationDate": ""
       },
       {
         "advertiser": "Special Event",
-        "imageUrl": "https://www.skventuresigns.com/images/Family-Fest.png",
+        "imageUrl": "./images/Family-Fest.png",
         "duration": 8,
         "expirationDate": "2026-10-02"
       },
       {
         "advertiser": "Blip Slot",
-        "imageUrl": "https://www.skventuresigns.com/images/Wanted.png",
+        "imageUrl": "./images/Wanted.png",
         "duration": 8,
         "expirationDate": ""
       }
