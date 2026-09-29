@@ -395,7 +395,7 @@
 
 <script>
 (function() {
-    const displayInterval = 10000;
+    const displayInterval = hasNoBanner ? 12000 : 10000;
     const memoryRefreshCycle = 1800000;
 
     // Check URL parameters for full-bleed toggle
