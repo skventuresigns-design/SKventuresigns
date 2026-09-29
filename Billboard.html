@@ -395,15 +395,16 @@
 
 <script>
 (function() {
-    const displayInterval = hasNoBanner ? 12000 : 10000;
-    const memoryRefreshCycle = 1800000;
-
-    // Check URL parameters for full-bleed toggle
+    // 1. Check URL parameters for full-bleed toggle FIRST
     const urlParams = new URLSearchParams(window.location.search);
     const hasNoBanner = urlParams.get('nobanner') === 'true' || urlParams.has('nobanner');
     if (hasNoBanner) {
         document.body.classList.add('no-banner');
     }
+
+    // 2. Set interval based on banner mode (12s for signs, 10s for TVs)
+    const displayInterval = hasNoBanner ? 12000 : 10000;
+    const memoryRefreshCycle = 1800000;
 
     // Configurable coordinates and operating schedules per location
     const LOCATION_COORDS = {
