@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-09-29T23:51:06.654Z",
+  "lastUpdated": "2026-09-30T00:13:55.120Z",
   "locations": {
     "oliver": [
       {
@@ -857,8 +857,8 @@
         "expirationDate": "2026-10-02"
       },
       {
-        "advertiser": "Blip Slot",
-        "imageUrl": "./images/Wanted.png",
+        "advertiser": "Herman's Habitat",
+        "imageUrl": "./images/Hermans-Habitat.png",
         "duration": 8,
         "expirationDate": ""
       }
