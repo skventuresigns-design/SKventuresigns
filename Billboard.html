@@ -404,7 +404,11 @@
 
     // 2. Set interval based on banner mode (12s for signs, 10s for TVs)
     const displayInterval = hasNoBanner ? 12000 : 10000;
-    const memoryRefreshCycle = 1800000;
+    const memoryRefreshCycle = 1800000; // 30 minutes
+
+    // Flags to ensure seamless cycle completion
+    let pendingReload = false;
+    let nextAdQueue = null;
 
     // Configurable coordinates and operating schedules per location
     const LOCATION_COORDS = {
@@ -441,7 +445,6 @@
     let isNightTimeSolar = null;
     let interactionTimer = null;
     let currentTenMinTracker = null;
-    let rotationTimer = null;
 
     function isLocationOpen() {
         if (!activeLocation.hours || activeLocation.hours === '24/7') {
@@ -522,7 +525,7 @@
         }
     }
 
-    async function loadPlaylist() {
+    async function loadPlaylist(isInitial = false) {
         try {
             const res = await fetch(`https://skventuresigns.com/playlist.json?t=${Date.now()}`);
             if (!res.ok) throw new Error("HTTP error");
@@ -551,7 +554,7 @@
                 todayStr = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
             }
 
-            currentAdQueue = freshQueue.filter(item => {
+            const parsedQueue = freshQueue.filter(item => {
                 if (!item.expirationDate || item.expirationDate.toString().trim() === '') return true;
 
                 let exp = item.expirationDate.toString().trim();
@@ -564,7 +567,6 @@
                         exp = `${y}-${m}-${d}`;
                     }
                 }
-                
                 return exp >= todayStr;
             }).map(item => {
                 const cleanUrl = item.imageUrl || item.url || item.image || '';
@@ -576,8 +578,8 @@
                 };
             }).filter(item => item.url !== '');
 
-            if (currentAdQueue.length === 0) {
-                currentAdQueue.push({
+            if (parsedQueue.length === 0) {
+                parsedQueue.push({
                     type: 'house',
                     headline: "ADVERTISE HERE",
                     subhead: "CALL 844-907-4450",
@@ -585,7 +587,13 @@
                 });
             }
 
-            renderSlides(0);
+            if (isInitial) {
+                currentAdQueue = parsedQueue;
+                renderSlides(0);
+            } else {
+                // Queue the update for the end of the current cycle
+                nextAdQueue = parsedQueue;
+            }
         } catch (e) {
             console.warn("Playlist load error:", e);
         }
@@ -642,11 +650,29 @@
         }
     }
 
-    // Step to next slide with pre-validation
+    // Step to next slide with pre-validation and end-of-loop cycle triggers
     function rotateAds() {
         if (adSlideElements.length === 0) return;
 
         const nextIndex = (currentAdIndex + 1) % adSlideElements.length;
+
+        // If the cycle has completed and is wrapping back to the first ad:
+        if (nextIndex === 0) {
+            // Check if 30-minute memory refresh is due
+            if (pendingReload) {
+                window.location.reload();
+                return;
+            }
+
+            // Check if updated playlist was received during the loop
+            if (nextAdQueue) {
+                currentAdQueue = nextAdQueue;
+                nextAdQueue = null;
+                renderSlides(0);
+                return;
+            }
+        }
+
         const nextItem = currentAdQueue[nextIndex];
 
         // If next asset is an image, verify SSL & loading before switching
@@ -838,7 +864,7 @@
     function initBillboard() {
         if (typeof lucide !== 'undefined') lucide.createIcons();
         syncTimeTheme();
-        loadPlaylist();
+        loadPlaylist(true); // Initial load immediately creates the slides
 
         if (!hasNoBanner) {
             fetchWeather();
@@ -849,10 +875,11 @@
         }
 
         setInterval(rotateAds, displayInterval);
-        setInterval(loadPlaylist, 300000);
+        setInterval(() => loadPlaylist(false), 300000); // 5-minute poll queues cleanly
 
+        // Instead of reloading mid-slide, flag pendingReload after 30 mins
         setInterval(() => {
-            window.location.reload();
+            pendingReload = true;
         }, memoryRefreshCycle);
     }
 
