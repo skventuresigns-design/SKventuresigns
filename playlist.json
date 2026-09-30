@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-09-29T03:51:05.288Z",
+  "lastUpdated": "2026-09-29T23:51:06.654Z",
   "locations": {
     "oliver": [
       {
@@ -509,6 +509,12 @@
         "expirationDate": ""
       },
       {
+        "advertiser": "Wanted",
+        "imageUrl": "./images/Wanted.png",
+        "duration": 8,
+        "expirationDate": ""
+      },
+      {
         "advertiser": "Fayette Jr Miss",
         "imageUrl": "./images/Fayette-jr-miss.png",
         "duration": 8,
@@ -529,6 +535,12 @@
       {
         "advertiser": "Wesselman Roofing",
         "imageUrl": "./images/Wesselman-Roofing.png",
+        "duration": 8,
+        "expirationDate": ""
+      },
+      {
+        "advertiser": "Wanted",
+        "imageUrl": "./images/Wanted.png",
         "duration": 8,
         "expirationDate": ""
       },
