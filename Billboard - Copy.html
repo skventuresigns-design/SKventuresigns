@@ -9,10 +9,10 @@
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🐺</text></svg>">
 
     <!-- Fonts & Icons -->
-    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="//unpkg.com/lucide@latest"></script>
 
     <!-- Google Tag Manager & S&K Ventures GA4 Tracking -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-62F8P74L0J"></script>
+    <script async src="//www.googletagmanager.com/gtag/js?id=G-62F8P74L0J"></script>
     <script>
         window.dataLayer = window.dataLayer || [];
         function gtag(){dataLayer.push(arguments);}
@@ -189,7 +189,7 @@
         top: 0 !important;
         left: 0 !important;
         width: 100% !important;
-        height: calc(100% - var(--bar-height)) !important;
+        height: calc(100% - var(--bar-height)) !important; 
         z-index: 1 !important;
         background: #000000 !important;
         overflow: hidden !important;
@@ -568,13 +568,12 @@
                     }
                 }
                 return exp >= todayStr;
-           }).map(item => {
+            }).map(item => {
                 const cleanUrl = item.imageUrl || item.url || item.image || '';
                 const isVid = cleanUrl.match(/\.(mp4|webm|ogg)$/i);
-                const isHtml = cleanUrl.match(/\.html(\?.*)?$/i) || item.type === 'html';
                 return {
                     url: cleanUrl,
-                    type: isVid ? 'video' : (isHtml ? 'html' : 'image'),
+                    type: isVid ? 'video' : 'image',
                     name: item.advertiser || item.name || 'Direct Local Ad'
                 };
             }).filter(item => item.url !== '');
@@ -628,14 +627,6 @@
                 house.className = 'sk-house-slide';
                 house.innerHTML = `<h1>${item.headline}</h1><p>${item.subhead}</p>`;
                 slide.appendChild(house);
-            } else if (item.type === 'html') {
-                const frame = document.createElement('iframe');
-                frame.src = item.url;
-                frame.style.width = '100%';
-                frame.style.height = '100%';
-                frame.style.border = 'none';
-                frame.setAttribute('scrolling', 'no');
-                slide.appendChild(frame);
             } else {
                 const image = document.createElement('img');
                 image.src = item.url;
