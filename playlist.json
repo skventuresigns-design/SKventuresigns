@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-10-05T20:37:38.812Z",
+  "lastUpdated": "2026-10-05T20:47:49.660Z",
   "locations": {
     "oliver": [
       {
@@ -484,7 +484,7 @@
       },
       {
         "advertiser": "skadvertise",
-        "imageUrl": "./images/Wanted.png",
+        "imageUrl": "./preview.html",
         "duration": 8,
         "expirationDate": ""
       }
