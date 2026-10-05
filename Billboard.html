@@ -188,7 +188,10 @@
       try {
         const res = await fetch('./playlist.json?nocache=' + Date.now());
         const data = await res.json();
-        const townList = data[activeTown] || data['default'] || [];
+        
+        const locSource = data.locations || data;
+        const townList = locSource[activeTown] || locSource['default'] || [];
+        
         renderSlides(townList);
       } catch (err) {
         console.error('Error fetching playlist:', err);
