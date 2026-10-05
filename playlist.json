@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-10-05T17:51:06.801Z",
+  "lastUpdated": "2026-10-05T18:38:25.334Z",
   "locations": {
     "oliver": [
       {
@@ -369,122 +369,104 @@
     ],
     "xenia": [
       {
-        "advertiser": "AE 28",
-        "imageUrl": "./images/AE-28.png",
+        "advertiser": "SK Promote",
+        "imageUrl": "./images/SK-Promote.png",
         "duration": 8,
         "expirationDate": ""
       },
       {
-        "advertiser": "Maurer Storage",
-        "imageUrl": "./images/Maurer-Storage.jpg",
+        "advertiser": "Budds",
+        "imageUrl": "./images/Budds-Contracting.png",
         "duration": 8,
         "expirationDate": ""
       },
       {
-        "advertiser": "Rumpke Recycling",
-        "imageUrl": "./images/Rumpke.png",
-        "duration": 8,
-        "expirationDate": ""
-      },
-      {
-        "advertiser": "Tingley Roofing",
-        "imageUrl": "./images/Tingley-Roofing.png",
-        "duration": 8,
-        "expirationDate": ""
-      },
-      {
-        "advertiser": "S&K Ventures",
-        "imageUrl": "./images/skadvertise.png",
-        "duration": 8,
-        "expirationDate": ""
-      },
-      {
-        "advertiser": "Programmattic 1",
+        "advertiser": "skadvertise",
         "imageUrl": "./images/Wanted.png",
         "duration": 8,
         "expirationDate": ""
       },
       {
-        "advertiser": "R & B Auctions",
-        "imageUrl": "./images/RandB-Ad.png",
+        "advertiser": "Suzies Pies",
+        "imageUrl": "./images/Suzie-Fried-Pies.png",
         "duration": 8,
         "expirationDate": ""
       },
       {
-        "advertiser": "Hometown Appliance",
-        "imageUrl": "./images/Hometown-Appliance.png",
+        "advertiser": "Stephy Breakfast",
+        "imageUrl": "./images/Stephy-Breakfast.jpg",
         "duration": 8,
         "expirationDate": ""
       },
       {
-        "advertiser": "JMS Trucking & Exacvating",
-        "imageUrl": "./images/Jms-Trucking-and-Excavating.png",
+        "advertiser": "SK Fair 2",
+        "imageUrl": "./images/SKFair2.png",
         "duration": 8,
         "expirationDate": ""
       },
       {
-        "advertiser": "Harper Tire",
-        "imageUrl": "./images/Harper-Tire.png",
+        "advertiser": "Stephy Karaoke",
+        "imageUrl": "./images/Karaoke.png",
         "duration": 8,
         "expirationDate": ""
       },
       {
-        "advertiser": "Wabash Communiations",
-        "imageUrl": "./images/wabash.png",
+        "advertiser": "Sk Fair 3",
+        "imageUrl": "./images/SKFair3.png",
         "duration": 8,
         "expirationDate": ""
       },
       {
-        "advertiser": "Clay Brook Excavating",
-        "imageUrl": "./images/Claybrook-Excavating.jpg",
+        "advertiser": "Equity Realty",
+        "imageUrl": "./images/Equity-Reality.png",
         "duration": 8,
         "expirationDate": ""
       },
       {
-        "advertiser": "Programmattic 2",
-        "imageUrl": "./images/Wanted.png",
+        "advertiser": "SK 100",
+        "imageUrl": "./images/SK100.png",
         "duration": 8,
         "expirationDate": ""
       },
       {
-        "advertiser": "Pat Burt",
-        "imageUrl": "./images/Pat-Burt.png",
+        "advertiser": "Ice Cream",
+        "imageUrl": "./images/ice-cream.jpg",
         "duration": 8,
         "expirationDate": ""
       },
       {
-        "advertiser": "Paula Clawson",
-        "imageUrl": "./images/Paula-Clawson.png",
+        "advertiser": "Thursday Special",
+        "imageUrl": "./images/Thursday-Special.jpeg",
         "duration": 8,
         "expirationDate": ""
       },
       {
-        "advertiser": "Effingham County Chamber",
-        "imageUrl": "./images/Effingham-County-Chamber.png",
+        "advertiser": "Friday Special",
+        "imageUrl": "./images/Weekend-Special.jpeg",
         "duration": 8,
         "expirationDate": ""
       },
       {
-        "advertiser": "Altamont Lumber",
-        "imageUrl": "./images/Altamont-Lumber.png",
+        "advertiser": "Fish",
+        "imageUrl": "./images/Fish.png",
         "duration": 8,
         "expirationDate": ""
       },
       {
-        "advertiser": "CJ Accounting",
-        "imageUrl": "./images/CJ-Accounting.png",
+        "advertiser": "Wesselman",
+        "imageUrl": "./images/Wesselman-Roofing.png",
         "duration": 8,
         "expirationDate": ""
       },
       {
-        "advertiser": "Christopher Rural Health",
-        "imageUrl": "./images/Christopher-Rural-Health.jpg",
+        "advertiser": "Hermans-Habitat",
+        "imageUrl": "./images/Hermans-Habitat.png",
         "duration": 8,
         "expirationDate": ""
       },
       {
-        "advertiser": "Blip Slot",
-        "imageUrl": "./images/Wanted.png",
+        "advertiser": "Tad Brown Construction",
+        "imageUrl": "./images/Tad-Brown-Construction.png",
         "duration": 8,
         "expirationDate": ""
       }
