@@ -389,7 +389,7 @@
 
     body.no-banner .sk-ad-slide img,
     body.no-banner .sk-ad-slide video {
-        object-fit: fill !important;
+        object-fit: fill !important; 
     }
 </style>
 
@@ -568,7 +568,7 @@
                     }
                 }
                 return exp >= todayStr;
-           }).map(item => {
+            }).map(item => {
                 const cleanUrl = item.imageUrl || item.url || item.image || '';
                 const isVid = cleanUrl.match(/\.(mp4|webm|ogg)$/i);
                 const isHtml = cleanUrl.match(/\.html(\?.*)?$/i) || item.type === 'html';
@@ -592,7 +592,6 @@
                 currentAdQueue = parsedQueue;
                 renderSlides(0);
             } else {
-                // Queue the update for the end of the current cycle
                 nextAdQueue = parsedQueue;
             }
         } catch (e) {
@@ -659,21 +658,18 @@
         }
     }
 
-    // Step to next slide with pre-validation and end-of-loop cycle triggers
+    // Direct, failsafe slide step
     function rotateAds() {
         if (adSlideElements.length === 0) return;
 
         const nextIndex = (currentAdIndex + 1) % adSlideElements.length;
 
-        // If the cycle has completed and is wrapping back to the first ad:
+        // If cycle wrapped back to the start:
         if (nextIndex === 0) {
-            // Check if 30-minute memory refresh is due
             if (pendingReload) {
                 window.location.reload();
                 return;
             }
-
-            // Check if updated playlist was received during the loop
             if (nextAdQueue) {
                 currentAdQueue = nextAdQueue;
                 nextAdQueue = null;
@@ -682,37 +678,7 @@
             }
         }
 
-        const nextItem = currentAdQueue[nextIndex];
-
-        // If next asset is an image, verify SSL & loading before switching
-        if (nextItem && nextItem.type === 'image') {
-            let handled = false;
-            const testImg = new Image();
-
-            const advanceToSlide = () => {
-                if (handled) return;
-                handled = true;
-                clearTimeout(timeoutId);
-                applySlideSwitch(nextIndex);
-            };
-
-            const skipDefectiveSlide = () => {
-                if (handled) return;
-                handled = true;
-                clearTimeout(timeoutId);
-                console.warn("Skipping unreadable or SSL-failed asset:", nextItem.url);
-                currentAdIndex = nextIndex;
-                rotateAds();
-            };
-
-            const timeoutId = setTimeout(skipDefectiveSlide, 2500);
-
-            testImg.onload = advanceToSlide;
-            testImg.onerror = skipDefectiveSlide;
-            testImg.src = nextItem.url;
-        } else {
-            applySlideSwitch(nextIndex);
-        }
+        applySlideSwitch(nextIndex);
     }
 
     function applySlideSwitch(targetIndex) {
@@ -873,7 +839,7 @@
     function initBillboard() {
         if (typeof lucide !== 'undefined') lucide.createIcons();
         syncTimeTheme();
-        loadPlaylist(true); // Initial load immediately creates the slides
+        loadPlaylist(true);
 
         if (!hasNoBanner) {
             fetchWeather();
@@ -884,9 +850,8 @@
         }
 
         setInterval(rotateAds, displayInterval);
-        setInterval(() => loadPlaylist(false), 300000); // 5-minute poll queues cleanly
+        setInterval(() => loadPlaylist(false), 300000);
 
-        // Instead of reloading mid-slide, flag pendingReload after 30 mins
         setInterval(() => {
             pendingReload = true;
         }, memoryRefreshCycle);
