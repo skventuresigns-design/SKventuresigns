@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-10-09T15:51:04.847Z",
+  "lastUpdated": "2026-10-09T16:26:05.556Z",
   "locations": {
     "oliver": [
       {
@@ -503,8 +503,26 @@
         "expirationDate": ""
       },
       {
+        "advertiser": "Kenda Birthday",
+        "imageUrl": ".images/KendaWest.png",
+        "duration": 8,
+        "expirationDate": "2026-10-31"
+      },
+      {
+        "advertiser": "SK Fair 2",
+        "imageUrl": "./images/SKFair2.png",
+        "duration": 8,
+        "expirationDate": ""
+      },
+      {
         "advertiser": "Special Occasion",
         "imageUrl": "./images/Special-Occasion.png",
+        "duration": 8,
+        "expirationDate": ""
+      },
+      {
+        "advertiser": "Gigfire",
+        "imageUrl": "./images/GigFire.png",
         "duration": 8,
         "expirationDate": ""
       },
@@ -513,6 +531,12 @@
         "imageUrl": "./images/Wanted.png",
         "duration": 8,
         "expirationDate": ""
+      },
+      {
+        "advertiser": "Brittany Birthday",
+        "imageUrl": ".images/BrittneyHawkings.png",
+        "duration": 8,
+        "expirationDate": "2026-10-31"
       },
       {
         "advertiser": "Fayette Jr Miss",
@@ -533,16 +557,22 @@
         "expirationDate": ""
       },
       {
+        "advertiser": "Wanted",
+        "imageUrl": "./images/Wanted.png",
+        "duration": 8,
+        "expirationDate": ""
+      },
+      {
         "advertiser": "Wesselman Roofing",
         "imageUrl": "./images/Wesselman-Roofing.png",
         "duration": 8,
         "expirationDate": ""
       },
       {
-        "advertiser": "Wanted",
-        "imageUrl": "./images/Wanted.png",
+        "advertiser": "Kenda Birthday",
+        "imageUrl": ".images/KendaWest.png",
         "duration": 8,
-        "expirationDate": ""
+        "expirationDate": "2026-10-31"
       },
       {
         "advertiser": "XNet",
@@ -553,6 +583,30 @@
       {
         "advertiser": "Time and Weather",
         "imageUrl": "./preview.html",
+        "duration": 8,
+        "expirationDate": ""
+      },
+      {
+        "advertiser": "Gigfire",
+        "imageUrl": "./images/GigFire.png",
+        "duration": 8,
+        "expirationDate": ""
+      },
+      {
+        "advertiser": "Sk Fair 3",
+        "imageUrl": "./images/SKFair3.png",
+        "duration": 8,
+        "expirationDate": ""
+      },
+      {
+        "advertiser": "Brittany Birthday",
+        "imageUrl": ".images/BrittneyHawkings.png",
+        "duration": 8,
+        "expirationDate": "2026-10-31"
+      },
+      {
+        "advertiser": "SK100",
+        "imageUrl": "./images/SK100.png",
         "duration": 8,
         "expirationDate": ""
       }
