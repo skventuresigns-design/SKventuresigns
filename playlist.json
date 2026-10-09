@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-10-09T16:39:44.720Z",
+  "lastUpdated": "2026-10-09T16:48:38.687Z",
   "locations": {
     "oliver": [
       {
@@ -504,7 +504,7 @@
       },
       {
         "advertiser": "Kenda Birthday",
-        "imageUrl": ".images/KendaWest.png",
+        "imageUrl": "./images/KendaWest.png",
         "duration": 8,
         "expirationDate": "2026-10-31"
       },
@@ -534,7 +534,7 @@
       },
       {
         "advertiser": "Brittany Birthday",
-        "imageUrl": ".images/BrittnayHawkins.png",
+        "imageUrl": "./images/BrittnayHawkins.png",
         "duration": 8,
         "expirationDate": "2026-10-31"
       },
@@ -570,7 +570,7 @@
       },
       {
         "advertiser": "Kenda Birthday",
-        "imageUrl": ".images/KendaWest.png",
+        "imageUrl": "./images/KendaWest.png",
         "duration": 8,
         "expirationDate": "2026-10-31"
       },
@@ -600,7 +600,7 @@
       },
       {
         "advertiser": "Brittany Birthday",
-        "imageUrl": ".images/BrittnayHawkins.png",
+        "imageUrl": "./images/BrittnayHawkins.png",
         "duration": 8,
         "expirationDate": "2026-10-31"
       },
