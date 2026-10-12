@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-10-12T00:51:04.806Z",
+  "lastUpdated": "2026-10-12T00:52:15.131Z",
   "locations": {
     "oliver": [
       {
@@ -911,10 +911,10 @@
         "expirationDate": ""
       },
       {
-        "advertiser": "Special Event",
-        "imageUrl": "./images/Family-Fest.png",
+        "advertiser": "Blip Slot",
+        "imageUrl": "./images/Wanted.png",
         "duration": 8,
-        "expirationDate": "2026-10-02"
+        "expirationDate": ""
       },
       {
         "advertiser": "Herman's Habitat",
