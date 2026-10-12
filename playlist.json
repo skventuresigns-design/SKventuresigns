@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-10-12T00:52:15.131Z",
+  "lastUpdated": "2026-10-12T01:19:32.513Z",
   "locations": {
     "oliver": [
       {
@@ -911,8 +911,8 @@
         "expirationDate": ""
       },
       {
-        "advertiser": "Blip Slot",
-        "imageUrl": "./images/Wanted.png",
+        "advertiser": "Recycle",
+        "imageUrl": "./images/SKRecycle.png",
         "duration": 8,
         "expirationDate": ""
       },
