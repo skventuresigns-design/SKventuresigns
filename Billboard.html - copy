@@ -54,7 +54,7 @@
         
         <div id="sk-ad-viewport"></div>
 
-        <!-- BOTTOM STATUS BAR -->
+        <!-- BOTTOM STATUS BAR (TV MODE) -->
         <div id="sk-bottom-bar">
             
             <div class="sk-logo-group">
@@ -189,12 +189,20 @@
         top: 0 !important;
         left: 0 !important;
         width: 100% !important;
-        height: calc(100% - var(--bar-height)) !important; 
+        height: calc(100% - var(--bar-height)) !important;
         z-index: 1 !important;
         background: #000000 !important;
         overflow: hidden !important;
         transform: translateZ(0);
         -webkit-transform: translateZ(0);
+    }
+
+    /* FULLSCREEN BILLBOARD MODE (?nobanner=true) */
+    .nobanner-mode #sk-bottom-bar {
+        display: none !important;
+    }
+    .nobanner-mode #sk-ad-viewport {
+        height: 100% !important;
     }
 
     .sk-ad-slide {
@@ -210,15 +218,28 @@
 
     .sk-ad-slide.active { display: flex !important; }
 
-    .sk-ad-slide img, .sk-ad-slide video {
+    /* DEFAULT (TV MODE): Buffering with object-fit: contain */
+    .sk-ad-slide img, 
+    .sk-ad-slide video,
+    .sk-ad-slide object {
         width: 100% !important;
         height: 100% !important;
         object-fit: contain !important; 
+        border: none;
         filter: saturate(1.12) contrast(1.05) brightness(0.98) !important;
         transition: filter 0.8s ease !important;
     }
 
-    .dark-mode .sk-ad-slide img, .dark-mode .sk-ad-slide video {
+    /* BILLBOARD MODE: Full-edge stretch with object-fit: fill */
+    .nobanner-mode .sk-ad-slide img,
+    .nobanner-mode .sk-ad-slide video,
+    .nobanner-mode .sk-ad-slide object {
+        object-fit: fill !important;
+    }
+
+    .dark-mode .sk-ad-slide img, 
+    .dark-mode .sk-ad-slide video,
+    .dark-mode .sk-ad-slide object {
         filter: saturate(1.08) contrast(1.02) brightness(0.75) !important;
     }
 
@@ -374,52 +395,28 @@
         pointer-events: none !important;
         z-index: 5 !important;
     }
-
-    /* FULL-BLEED ROADSIDE & TRAILER OVERRIDES (Triggered by ?nobanner=true) */
-    body.no-banner #sk-bottom-bar,
-    body.no-banner #ghost-back-btn,
-    body.no-banner #fullscreen-toggle-btn {
-        display: none !important;
-    }
-
-    body.no-banner #sk-ad-viewport {
-        height: 100% !important;
-        width: 100% !important;
-    }
-
-    body.no-banner .sk-ad-slide img,
-    body.no-banner .sk-ad-slide video {
-        object-fit: fill !important;
-    }
 </style>
 
 <script>
 (function() {
-    // 1. Check URL parameters for full-bleed toggle FIRST
     const urlParams = new URLSearchParams(window.location.search);
-    const hasNoBanner = urlParams.get('nobanner') === 'true' || urlParams.has('nobanner');
+    const hasNoBanner = urlParams.get('nobanner') === 'true';
+    const displayInterval = hasNoBanner ? 12000 : 10000;
+    const memoryRefreshCycle = 1800000;
+
     if (hasNoBanner) {
-        document.body.classList.add('no-banner');
+        document.documentElement.classList.add('nobanner-mode');
     }
 
-    // 2. Set interval based on banner mode (12s for signs, 10s for TVs)
-    const displayInterval = hasNoBanner ? 12000 : 10000;
-    const memoryRefreshCycle = 1800000; // 30 minutes
-
-    // Flags to ensure seamless cycle completion
-    let pendingReload = false;
-    let nextAdQueue = null;
-
-    // Configurable coordinates and operating schedules per location
     const LOCATION_COORDS = {
-        'oliver':      { name: 'Oliver', lat: 39.490667, lon: -87.682008, hours: '24/7' },
-        'altamont':    { name: 'Altamont', lat: 39.0606, lon: -88.7495, hours: '24/7' },
-        'claycity':    { name: 'Clay City', lat: 38.6889, lon: -88.3556, hours: '24/7' },
-        'xenia':       { name: 'Xenia', lat: 38.6387, lon: -88.6417, hours: '24/7' },
-        'brownstown':  { name: 'Brownstown', lat: 38.9953, lon: -88.9531, hours: '24/7' },
-        'desoto':      { name: 'DeSoto', lat: 37.8184, lon: -89.2273, hours: '24/7' },
-        'floratv':     { name: 'Flora TV', lat: 38.6687, lon: -88.4853, hours: '24/7' },
-        'xeniatv':     { 
+        'oliver':     { name: 'Oliver', lat: 39.490667, lon: -87.682008, hours: '24/7' },
+        'altamont':   { name: 'Altamont', lat: 39.0606, lon: -88.7495, hours: '24/7' },
+        'claycity':   { name: 'Clay City', lat: 38.6889, lon: -88.3556, hours: '24/7' },
+        'xenia':      { name: 'Xenia', lat: 38.6387, lon: -88.6417, hours: '24/7' },
+        'brownstown': { name: 'Brownstown', lat: 38.9953, lon: -88.9531, hours: '24/7' },
+        'desoto':     { name: 'DeSoto', lat: 37.8184, lon: -89.2273, hours: '24/7' },
+        'floratv':    { name: 'Flora TV', lat: 38.6687, lon: -88.4853, hours: '24/7' },
+        'xeniatv':    { 
             name: 'Xenia TV', 
             lat: 38.6374, 
             lon: -88.6374, 
@@ -486,7 +483,6 @@
     }
 
     window.handleInteraction = function() {
-        if (hasNoBanner) return;
         const backBtn = document.getElementById('ghost-back-btn');
         const fsBtn = document.getElementById('fullscreen-toggle-btn');
         if (backBtn) backBtn.classList.add('active');
@@ -525,19 +521,27 @@
         }
     }
 
-    async function loadPlaylist(isInitial = false) {
+    function detectMediaType(url) {
+        const cleanUrl = (url || '').split('?')[0].trim().toLowerCase();
+        if (cleanUrl.match(/\.(mp4|webm|ogg|mov)$/)) return 'video';
+        if (cleanUrl.match(/\.(html|htm)$/)) return 'html';
+        return 'image';
+    }
+
+    async function loadPlaylist() {
         try {
             const res = await fetch(`https://skventuresigns.com/playlist.json?t=${Date.now()}`);
             if (!res.ok) throw new Error("HTTP error");
             const data = await res.json();
 
             let freshQueue = [];
+            const locSource = data.locations || data;
 
-            if (data.locations && Array.isArray(data.locations[activeTown])) {
-                freshQueue = data.locations[activeTown];
-            } else if (data.locations && typeof data.locations === 'object') {
-                const availableKey = Object.keys(data.locations).find(k => k.replace(/[^a-z0-9]/g, '') === activeTown);
-                if (availableKey) freshQueue = data.locations[availableKey];
+            if (locSource && Array.isArray(locSource[activeTown])) {
+                freshQueue = locSource[activeTown];
+            } else if (locSource && typeof locSource === 'object') {
+                const availableKey = Object.keys(locSource).find(k => k.replace(/[^a-z0-9]/g, '') === activeTown);
+                if (availableKey) freshQueue = locSource[availableKey];
             } else if (Array.isArray(data)) {
                 freshQueue = data;
             }
@@ -554,7 +558,7 @@
                 todayStr = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
             }
 
-            const parsedQueue = freshQueue.filter(item => {
+            currentAdQueue = freshQueue.filter(item => {
                 if (!item.expirationDate || item.expirationDate.toString().trim() === '') return true;
 
                 let exp = item.expirationDate.toString().trim();
@@ -567,19 +571,19 @@
                         exp = `${y}-${m}-${d}`;
                     }
                 }
+                
                 return exp >= todayStr;
             }).map(item => {
                 const cleanUrl = item.imageUrl || item.url || item.image || '';
-                const isVid = cleanUrl.match(/\.(mp4|webm|ogg)$/i);
                 return {
                     url: cleanUrl,
-                    type: isVid ? 'video' : 'image',
+                    type: detectMediaType(cleanUrl),
                     name: item.advertiser || item.name || 'Direct Local Ad'
                 };
             }).filter(item => item.url !== '');
 
-            if (parsedQueue.length === 0) {
-                parsedQueue.push({
+            if (currentAdQueue.length === 0) {
+                currentAdQueue.push({
                     type: 'house',
                     headline: "ADVERTISE HERE",
                     subhead: "CALL 844-907-4450",
@@ -587,13 +591,7 @@
                 });
             }
 
-            if (isInitial) {
-                currentAdQueue = parsedQueue;
-                renderSlides(0);
-            } else {
-                // Queue the update for the end of the current cycle
-                nextAdQueue = parsedQueue;
-            }
+            renderSlides(0);
         } catch (e) {
             console.warn("Playlist load error:", e);
         }
@@ -622,6 +620,11 @@
                 video.setAttribute('webkit-playsinline', '');
                 video.setAttribute('referrerpolicy', 'no-referrer');
                 slide.appendChild(video);
+            } else if (item.type === 'html') {
+                const obj = document.createElement('object');
+                obj.data = item.url;
+                obj.type = 'text/html';
+                slide.appendChild(obj);
             } else if (item.type === 'house') {
                 const house = document.createElement('div');
                 house.className = 'sk-house-slide';
@@ -650,68 +653,14 @@
         }
     }
 
-    // Step to next slide with pre-validation and end-of-loop cycle triggers
     function rotateAds() {
         if (adSlideElements.length === 0) return;
 
-        const nextIndex = (currentAdIndex + 1) % adSlideElements.length;
-
-        // If the cycle has completed and is wrapping back to the first ad:
-        if (nextIndex === 0) {
-            // Check if 30-minute memory refresh is due
-            if (pendingReload) {
-                window.location.reload();
-                return;
-            }
-
-            // Check if updated playlist was received during the loop
-            if (nextAdQueue) {
-                currentAdQueue = nextAdQueue;
-                nextAdQueue = null;
-                renderSlides(0);
-                return;
-            }
-        }
-
-        const nextItem = currentAdQueue[nextIndex];
-
-        // If next asset is an image, verify SSL & loading before switching
-        if (nextItem && nextItem.type === 'image') {
-            let handled = false;
-            const testImg = new Image();
-
-            const advanceToSlide = () => {
-                if (handled) return;
-                handled = true;
-                clearTimeout(timeoutId);
-                applySlideSwitch(nextIndex);
-            };
-
-            const skipDefectiveSlide = () => {
-                if (handled) return;
-                handled = true;
-                clearTimeout(timeoutId);
-                console.warn("Skipping unreadable or SSL-failed asset:", nextItem.url);
-                currentAdIndex = nextIndex;
-                rotateAds();
-            };
-
-            const timeoutId = setTimeout(skipDefectiveSlide, 2500);
-
-            testImg.onload = advanceToSlide;
-            testImg.onerror = skipDefectiveSlide;
-            testImg.src = nextItem.url;
-        } else {
-            applySlideSwitch(nextIndex);
-        }
-    }
-
-    function applySlideSwitch(targetIndex) {
         if (adSlideElements[currentAdIndex]) {
             adSlideElements[currentAdIndex].classList.remove('active');
         }
 
-        currentAdIndex = targetIndex;
+        currentAdIndex = (currentAdIndex + 1) % adSlideElements.length;
 
         if (adSlideElements[currentAdIndex]) {
             adSlideElements[currentAdIndex].classList.add('active');
@@ -729,7 +678,6 @@
     }
 
     async function fetchWeather() {
-        if (hasNoBanner) return;
         try {
             const url = `https://api.open-meteo.com/v1/forecast?latitude=${activeLocation.lat}&longitude=${activeLocation.lon}&current=temperature_2m,apparent_temperature,is_day&temperature_unit=fahrenheit&timezone=auto`;
             const res = await fetch(url);
@@ -798,7 +746,6 @@
     }
 
     function updateLocalTime() {
-        if (hasNoBanner) return;
         const timeEl = document.getElementById('sk-time-val');
         const dateEl = document.getElementById('sk-date-val');
         if (!timeEl) return;
@@ -864,22 +811,18 @@
     function initBillboard() {
         if (typeof lucide !== 'undefined') lucide.createIcons();
         syncTimeTheme();
-        loadPlaylist(true); // Initial load immediately creates the slides
+        fetchWeather();
+        loadPlaylist();
 
-        if (!hasNoBanner) {
-            fetchWeather();
-            updateLocalTime();
-            setInterval(updateLocalTime, 1000);
-            setInterval(fetchWeather, 600000);
-            setInterval(syncTimeTheme, 300000);
-        }
-
+        updateLocalTime();
+        setInterval(updateLocalTime, 1000);
         setInterval(rotateAds, displayInterval);
-        setInterval(() => loadPlaylist(false), 300000); // 5-minute poll queues cleanly
+        setInterval(fetchWeather, 600000);
+        setInterval(loadPlaylist, 300000);
+        setInterval(syncTimeTheme, 300000);
 
-        // Instead of reloading mid-slide, flag pendingReload after 30 mins
         setInterval(() => {
-            pendingReload = true;
+            window.location.reload();
         }, memoryRefreshCycle);
     }
 
