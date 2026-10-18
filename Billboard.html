@@ -442,6 +442,7 @@
     let isNightTimeSolar = null;
     let interactionTimer = null;
     let currentTenMinTracker = null;
+    let rotationTimer = null;
 
     function isLocationOpen() {
         if (!activeLocation.hours || activeLocation.hours === '24/7') {
@@ -596,7 +597,6 @@
             if (!isBackgroundUpdate) {
                 renderSlides(0);
             } else {
-                // Background update: Rebuild slides DOM seamlessly while keeping active slide in place
                 updateSlidesSilently();
             }
         } catch (e) {
@@ -610,7 +610,7 @@
             video.src = item.url;
             video.autoplay = true;
             video.muted = true;
-            video.loop = true;
+            video.loop = false;
             video.playsInline = true;
             video.setAttribute('playsinline', '');
             video.setAttribute('webkit-playsinline', '');
@@ -651,22 +651,13 @@
             adSlideElements.push(slide);
         });
 
-        const activeItem = currentAdQueue[currentAdIndex];
-        if (activeItem) {
-            logAdImpression(activeItem);
-            const activeVid = adSlideElements[currentAdIndex] ? adSlideElements[currentAdIndex].querySelector('video') : null;
-            if (activeVid) {
-                activeVid.currentTime = 0;
-                activeVid.play().catch(()=>{});
-            }
-        }
+        setupActiveSlide();
     }
 
     function updateSlidesSilently() {
         const viewport = document.getElementById('sk-ad-viewport');
         if (!viewport || currentAdQueue.length === 0) return;
 
-        // Keep current slide playing safely
         if (currentAdIndex >= currentAdQueue.length) {
             currentAdIndex = 0;
         }
@@ -683,10 +674,38 @@
         });
     }
 
+    function scheduleNextRotation() {
+        clearTimeout(rotationTimer);
+        const activeItem = currentAdQueue[currentAdIndex];
+        const activeSlide = adSlideElements[currentAdIndex];
+
+        if (!activeItem || !activeSlide) return;
+
+        if (activeItem.type === 'video') {
+            const video = activeSlide.querySelector('video');
+            if (video) {
+                video.currentTime = 0;
+                video.onended = () => {
+                    rotateAds();
+                };
+                video.play().catch(() => {
+                    rotationTimer = setTimeout(rotateAds, displayInterval);
+                });
+                return;
+            }
+        }
+
+        rotationTimer = setTimeout(rotateAds, displayInterval);
+    }
+
     function rotateAds() {
+        clearTimeout(rotationTimer);
+
         if (adSlideElements.length === 0) return;
 
         if (adSlideElements[currentAdIndex]) {
+            const prevVideo = adSlideElements[currentAdIndex].querySelector('video');
+            if (prevVideo) prevVideo.onended = null;
             adSlideElements[currentAdIndex].classList.remove('active');
         }
 
@@ -696,14 +715,14 @@
             adSlideElements[currentAdIndex].classList.add('active');
         }
 
+        setupActiveSlide();
+    }
+
+    function setupActiveSlide() {
         const activeItem = currentAdQueue[currentAdIndex];
         if (activeItem) {
             logAdImpression(activeItem);
-            const activeVid = adSlideElements[currentAdIndex] ? adSlideElements[currentAdIndex].querySelector('video') : null;
-            if (activeVid) {
-                activeVid.currentTime = 0;
-                activeVid.play().catch(()=>{});
-            }
+            scheduleNextRotation();
         }
     }
 
@@ -846,7 +865,6 @@
 
         updateLocalTime();
         setInterval(updateLocalTime, 1000);
-        setInterval(rotateAds, displayInterval);
         setInterval(fetchWeather, 600000);
         setInterval(() => loadPlaylist(true), 300000);
         setInterval(syncTimeTheme, 300000);
