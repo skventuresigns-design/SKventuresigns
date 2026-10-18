@@ -1,10 +1,10 @@
 {
-  "lastUpdated": "2026-10-17T20:51:08.202Z",
+  "lastUpdated": "2026-10-18T00:51:06.354Z",
   "locations": {
     "oliver": [
       {
-        "advertiser": "AE 28",
-        "imageUrl": "./images/AE-28.png",
+        "advertiser": "American Flag",
+        "imageUrl": "./images/AmericanFlag.mp4",
         "duration": 8,
         "expirationDate": ""
       },
@@ -682,7 +682,7 @@
     "floratv": [
       {
         "advertiser": "S&K Ventures",
-        "imageUrl": "./images/skadvertise.png",
+        "imageUrl": "./images/FloraAmericanLegionFlag.mp4",
         "duration": 8,
         "expirationDate": ""
       },
