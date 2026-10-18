@@ -528,7 +528,7 @@
         return 'image';
     }
 
-    async function loadPlaylist() {
+    async function loadPlaylist(isBackgroundUpdate = false) {
         try {
             const res = await fetch(`https://skventuresigns.com/playlist.json?t=${Date.now()}`);
             if (!res.ok) throw new Error("HTTP error");
@@ -558,7 +558,7 @@
                 todayStr = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
             }
 
-            currentAdQueue = freshQueue.filter(item => {
+            const parsedQueue = freshQueue.filter(item => {
                 if (!item.expirationDate || item.expirationDate.toString().trim() === '') return true;
 
                 let exp = item.expirationDate.toString().trim();
@@ -582,8 +582,8 @@
                 };
             }).filter(item => item.url !== '');
 
-            if (currentAdQueue.length === 0) {
-                currentAdQueue.push({
+            if (parsedQueue.length === 0) {
+                parsedQueue.push({
                     type: 'house',
                     headline: "ADVERTISE HERE",
                     subhead: "CALL 844-907-4450",
@@ -591,9 +591,47 @@
                 });
             }
 
-            renderSlides(0);
+            currentAdQueue = parsedQueue;
+
+            if (!isBackgroundUpdate) {
+                renderSlides(0);
+            } else {
+                // Background update: Rebuild slides DOM seamlessly while keeping active slide in place
+                updateSlidesSilently();
+            }
         } catch (e) {
             console.warn("Playlist load error:", e);
+        }
+    }
+
+    function createMediaNode(item) {
+        if (item.type === 'video') {
+            const video = document.createElement('video');
+            video.src = item.url;
+            video.autoplay = true;
+            video.muted = true;
+            video.loop = true;
+            video.playsInline = true;
+            video.setAttribute('playsinline', '');
+            video.setAttribute('webkit-playsinline', '');
+            video.setAttribute('referrerpolicy', 'no-referrer');
+            return video;
+        } else if (item.type === 'html') {
+            const obj = document.createElement('object');
+            obj.data = item.url;
+            obj.type = 'text/html';
+            return obj;
+        } else if (item.type === 'house') {
+            const house = document.createElement('div');
+            house.className = 'sk-house-slide';
+            house.innerHTML = `<h1>${item.headline}</h1><p>${item.subhead}</p>`;
+            return house;
+        } else {
+            const image = document.createElement('img');
+            image.src = item.url;
+            image.setAttribute('referrerpolicy', 'no-referrer');
+            image.setAttribute('loading', 'eager');
+            return image;
         }
     }
 
@@ -608,36 +646,7 @@
         currentAdQueue.forEach((item, idx) => {
             const slide = document.createElement('div');
             slide.className = `sk-ad-slide ${idx === currentAdIndex ? 'active' : ''}`;
-
-            if (item.type === 'video') {
-                const video = document.createElement('video');
-                video.src = item.url;
-                video.autoplay = true;
-                video.muted = true;
-                video.loop = true;
-                video.playsInline = true;
-                video.setAttribute('playsinline', '');
-                video.setAttribute('webkit-playsinline', '');
-                video.setAttribute('referrerpolicy', 'no-referrer');
-                slide.appendChild(video);
-            } else if (item.type === 'html') {
-                const obj = document.createElement('object');
-                obj.data = item.url;
-                obj.type = 'text/html';
-                slide.appendChild(obj);
-            } else if (item.type === 'house') {
-                const house = document.createElement('div');
-                house.className = 'sk-house-slide';
-                house.innerHTML = `<h1>${item.headline}</h1><p>${item.subhead}</p>`;
-                slide.appendChild(house);
-            } else {
-                const image = document.createElement('img');
-                image.src = item.url;
-                image.setAttribute('referrerpolicy', 'no-referrer');
-                image.setAttribute('loading', 'eager');
-                slide.appendChild(image);
-            }
-
+            slide.appendChild(createMediaNode(item));
             viewport.appendChild(slide);
             adSlideElements.push(slide);
         });
@@ -651,6 +660,27 @@
                 activeVid.play().catch(()=>{});
             }
         }
+    }
+
+    function updateSlidesSilently() {
+        const viewport = document.getElementById('sk-ad-viewport');
+        if (!viewport || currentAdQueue.length === 0) return;
+
+        // Keep current slide playing safely
+        if (currentAdIndex >= currentAdQueue.length) {
+            currentAdIndex = 0;
+        }
+
+        viewport.innerHTML = '';
+        adSlideElements = [];
+
+        currentAdQueue.forEach((item, idx) => {
+            const slide = document.createElement('div');
+            slide.className = `sk-ad-slide ${idx === currentAdIndex ? 'active' : ''}`;
+            slide.appendChild(createMediaNode(item));
+            viewport.appendChild(slide);
+            adSlideElements.push(slide);
+        });
     }
 
     function rotateAds() {
@@ -812,13 +842,13 @@
         if (typeof lucide !== 'undefined') lucide.createIcons();
         syncTimeTheme();
         fetchWeather();
-        loadPlaylist();
+        loadPlaylist(false);
 
         updateLocalTime();
         setInterval(updateLocalTime, 1000);
         setInterval(rotateAds, displayInterval);
         setInterval(fetchWeather, 600000);
-        setInterval(loadPlaylist, 300000);
+        setInterval(() => loadPlaylist(true), 300000);
         setInterval(syncTimeTheme, 300000);
 
         setInterval(() => {
