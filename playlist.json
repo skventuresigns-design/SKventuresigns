@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-10-18T00:51:06.354Z",
+  "lastUpdated": "2026-10-18T01:51:05.880Z",
   "locations": {
     "oliver": [
       {
@@ -687,118 +687,64 @@
         "expirationDate": ""
       },
       {
-        "advertiser": "Maurer Storage",
-        "imageUrl": "./images/Maurer-Storage.jpg",
+        "advertiser": "Equity Realty Group",
+        "imageUrl": "./images/Equity-Reality.png",
         "duration": 8,
         "expirationDate": ""
       },
       {
-        "advertiser": "Rumpke Recycling",
-        "imageUrl": "./images/Rumpke.png",
-        "duration": 8,
-        "expirationDate": ""
-      },
-      {
-        "advertiser": "Tingley Roofing",
-        "imageUrl": "./images/Tingley-Roofing.png",
+        "advertiser": "SK Promote",
+        "imageUrl": "./images/SK-Promote.png",
         "duration": 8,
         "expirationDate": ""
       },
       {
         "advertiser": "S&K Ventures",
-        "imageUrl": "./images/skadvertise.png",
+        "imageUrl": "./images/SK-TV-Ad.png",
         "duration": 8,
         "expirationDate": ""
       },
       {
-        "advertiser": "Programmattic 1",
-        "imageUrl": "./images/Wanted.png",
+        "advertiser": "AM-Bingo",
+        "imageUrl": "./images/AM-Bingo.jpg",
         "duration": 8,
         "expirationDate": ""
       },
       {
-        "advertiser": "R & B Auctions",
-        "imageUrl": "./images/RandB-Ad.png",
+        "advertiser": "SK Fair 4",
+        "imageUrl": "./images/SKFair4.png",
         "duration": 8,
         "expirationDate": ""
       },
       {
-        "advertiser": "Hometown Appliance",
-        "imageUrl": "./images/Hometown-Appliance.png",
+        "advertiser": "Open Mic Night",
+        "imageUrl": "./images/OpenMicNight.jpg",
         "duration": 8,
         "expirationDate": ""
       },
       {
-        "advertiser": "JMS Trucking & Exacvating",
-        "imageUrl": "./images/Jms-Trucking-and-Excavating.png",
+        "advertiser": "American Legion Events",
+        "imageUrl": "./images/AmericanLegionEvents.mp4",
         "duration": 8,
         "expirationDate": ""
       },
       {
-        "advertiser": "Harper Tire",
-        "imageUrl": "./images/Harper-Tire.png",
+        "advertiser": "Wesselman Roofing",
+        "imageUrl": "./images/Wesselman-Roofing.png",
         "duration": 8,
         "expirationDate": ""
       },
       {
-        "advertiser": "S&K Ventures",
-        "imageUrl": "./images/skadvertise.png",
+        "advertiser": "Recycle",
+        "imageUrl": "./images/SKRecycle.png",
         "duration": 8,
         "expirationDate": ""
       },
       {
-        "advertiser": "Clay Brook Excavating",
-        "imageUrl": "./images/Claybrook-Excavating.jpg",
+        "advertiser": "Halloween Party",
+        "imageUrl": "./images/HalloweenParty.jepg",
         "duration": 8,
-        "expirationDate": ""
-      },
-      {
-        "advertiser": "Programmattic 2",
-        "imageUrl": "./images/Wanted.png",
-        "duration": 8,
-        "expirationDate": ""
-      },
-      {
-        "advertiser": "Pat Burt",
-        "imageUrl": "./images/Pat-Burt.png",
-        "duration": 8,
-        "expirationDate": ""
-      },
-      {
-        "advertiser": "Paula Clawson",
-        "imageUrl": "./images/Paula-Clawson.png",
-        "duration": 8,
-        "expirationDate": ""
-      },
-      {
-        "advertiser": "Effingham County Chamber",
-        "imageUrl": "./images/Effingham-County-Chamber.png",
-        "duration": 8,
-        "expirationDate": ""
-      },
-      {
-        "advertiser": "Altamont Lumber",
-        "imageUrl": "./images/Altamont-Lumber.png",
-        "duration": 8,
-        "expirationDate": ""
-      },
-      {
-        "advertiser": "CJ Accounting",
-        "imageUrl": "./images/CJ-Accounting.png",
-        "duration": 8,
-        "expirationDate": ""
-      },
-      {
-        "advertiser": "Christopher Rural Health",
-        "imageUrl": "./images/Christopher-Rural-Health.jpg",
-        "duration": 8,
-        "expirationDate": ""
-      },
-      {
-        "advertiser": "Blip Slot",
-        "imageUrl": "./images/Wanted.png",
-        "duration": 8,
-        "expirationDate": ""
+        "expirationDate": "2026-10-31"
       }
     ],
     "xeniatv": [
