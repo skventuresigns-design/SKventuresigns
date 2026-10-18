@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-10-18T01:58:25.851Z",
+  "lastUpdated": "2026-10-18T02:51:07.743Z",
   "locations": {
     "oliver": [
       {
@@ -742,7 +742,7 @@
       },
       {
         "advertiser": "Halloween Party",
-        "imageUrl": "./images/HalloweenParty.jepg",
+        "imageUrl": "./images/HalloweenParty.jpeg",
         "duration": 8,
         "expirationDate": "2026-10-31"
       }
