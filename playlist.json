@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-10-21T18:51:07.224Z",
+  "lastUpdated": "2026-10-21T19:29:47.943Z",
   "locations": {
     "oliver": [
       {
@@ -271,8 +271,8 @@
         "expirationDate": ""
       },
       {
-        "advertiser": "S&K Ventures",
-        "imageUrl": "./images/skadvertise.png",
+        "advertiser": "Gigfire",
+        "imageUrl": "./images/GigFire.png",
         "duration": 8,
         "expirationDate": ""
       },
@@ -283,8 +283,8 @@
         "expirationDate": ""
       },
       {
-        "advertiser": "Effingham Social 2026",
-        "imageUrl": "./images/EffSocial2026.png",
+        "advertiser": "S&K Ventures",
+        "imageUrl": "./images/skadvertise.png",
         "duration": 8,
         "expirationDate": ""
       },
@@ -325,8 +325,8 @@
         "expirationDate": ""
       },
       {
-        "advertiser": "Gigfire",
-        "imageUrl": "./images/GigFire.png",
+        "advertiser": "Effingham Social 2026",
+        "imageUrl": "./images/EffSocial2026.png",
         "duration": 8,
         "expirationDate": ""
       },
@@ -337,10 +337,10 @@
         "expirationDate": ""
       },
       {
-        "advertiser": "Swan",
-        "imageUrl": "./images/Expo.png",
+        "advertiser": "Gigfire",
+        "imageUrl": "./images/GigFire.png",
         "duration": 8,
-        "expirationDate": "2026-09-14"
+        "expirationDate": ""
       },
       {
         "advertiser": "Budds Contracting",
