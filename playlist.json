@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-10-22T01:51:05.895Z",
+  "lastUpdated": "2026-10-22T02:27:00.554Z",
   "locations": {
     "oliver": [
       {
@@ -355,8 +355,8 @@
         "expirationDate": ""
       },
       {
-        "advertiser": "S&K Ventures",
-        "imageUrl": "./images/skadvertise.png",
+        "advertiser": "Time and Weather",
+        "imageUrl": "./preview.html",
         "duration": 8,
         "expirationDate": ""
       },
