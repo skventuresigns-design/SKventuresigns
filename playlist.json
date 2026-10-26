@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-10-26T03:55:34.685Z",
+  "lastUpdated": "2026-10-26T04:51:05.936Z",
   "locations": {
     "oliver": [
       {
@@ -578,7 +578,7 @@
         "advertiser": "XNet",
         "imageUrl": "./images/XnetWifi.png",
         "duration": 8,
-        "expirationDate": ""
+        "expirationDate": "2026-12-31"
       },
       {
         "advertiser": "Time and Weather",
