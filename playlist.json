@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-10-26T03:44:51.243Z",
+  "lastUpdated": "2026-10-26T03:51:06.489Z",
   "locations": {
     "oliver": [
       {
@@ -503,10 +503,10 @@
         "expirationDate": ""
       },
       {
-        "advertiser": "Kenda Birthday",
-        "imageUrl": "./images/KendaWest.png",
+        "advertiser": "Autumn Disability",
+        "imageUrl": "./images/AutumnDisability.png",
         "duration": 8,
-        "expirationDate": "2026-10-31"
+        "expirationDate": ""
       },
       {
         "advertiser": "SK Fair 2",
@@ -745,6 +745,12 @@
         "imageUrl": "./images/HalloweenParty.jpeg",
         "duration": 8,
         "expirationDate": "2026-10-31"
+      },
+      {
+        "advertiser": "Autumn Disability",
+        "imageUrl": "./images/AutumnDisability.png",
+        "duration": 8,
+        "expirationDate": ""
       }
     ],
     "xeniatv": [
