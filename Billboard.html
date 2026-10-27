@@ -474,9 +474,11 @@
     function logAdImpression(adItem) {
         if (typeof gtag !== 'function' || !adItem) return;
         if (!isLocationOpen()) return;
+        if (urlParams.get('test') === 'true' || urlParams.get('preview') === 'true') return;
 
         gtag('event', 'billboard_ad_play', {
             'event_category': 'Digital Billboard Impressions',
+            'ad_name': adItem.name || 'Direct Ad',
             'advertiser': adItem.name || 'Direct Ad',
             'location': activeTown,
             'duration': Math.round(displayInterval / 1000)
