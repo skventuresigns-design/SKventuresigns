@@ -1,0 +1,933 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- 
+        PROJECT: S&K Venture Signs - Master Web Framework
+        DIVISION: Traveling Computer Tech / Technology Division
+        STANDARDS: Responsive, Clean Layout, Dynamic Data Sync Enabled
+        LAST UPDATED: 2026
+    -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Computer &amp; IT Services | S&amp;K Venture Technology Division</title>
+    <meta name="description" content="Professional on-site computer diagnostics, hardware repairs, small business IT networking, and kiosk display setups across Effingham, Clay, Fayette, Jasper, and Richland counties.">
+    <link rel="icon" type="image/png" href="./favicon.png">
+
+    <!-- External Assets with Smart Cache Buster -->
+    <script src="https://cdn.tailwindcss.com?v=10.16"></script>
+    <script src="https://unpkg.com/lucide@latest?v=10.16"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Abril+Fatface&family=Poppins:wght@400;500;600;700;800&family=Open+Sans:wght@300;400;500;600;700;800&display=swap&v=10.16" rel="stylesheet">
+
+    <style>
+        :root {
+            /* Admin Global Settings */
+            --divi-section: 50px;
+            --divi-row: 30px;
+            --divi-body: 14px; 
+            --divi-header: 30px;
+            
+            /* S&K Brand Palette */
+            --sk-maroon: rgb(62, 1, 0);
+            --sk-gold: #FFC627;
+            --sk-gold-alt: rgb(255, 192, 0);
+            --sk-nav-gold: rgb(218, 164, 33);
+            --sk-btn-blue: rgb(2, 48, 71);
+            --sk-scott-blue: rgb(69, 123, 157);
+            --sk-separator: rgb(187, 162, 140);
+            --elevation-blue: #457B9D;
+            --sk-charcoal: rgb(17, 17, 17);
+            --sk-pricing-green: #2ecc71;
+
+            /* Theme & Logic Colors */
+            --bg-primary: #000000; 
+            --text-primary: #FFFFFF; 
+            --card-bg: #fcf6de;
+            
+            /* Default Outline: Transparent (No color) */
+            --outline-color: transparent;
+            --outline-width: 1.5px;
+
+            /* Global Brightness Variables (Nesting Sync) */
+            --header-bg-scrolled: white;
+            --nav-text-scrolled: #222222;
+            --mobile-menu-bg: white;
+            --mobile-menu-text: black;
+
+            /* Precision Dimensions Locked */
+            --header-height: 125px;
+            --header-scrolled-height: 75px; 
+            --container-width: 80%;
+            --footer-height: 237px;
+            --ultra-wide-max: 2496px;
+        }
+
+        /* -----------------------------------------------------------
+            GLOBAL TYPOGRAPHY & RESET
+        ----------------------------------------------------------- */
+        html, body {
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+            overflow-x: hidden;
+            font-family: 'Poppins', sans-serif;
+            font-size: var(--divi-body);
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            -webkit-tap-highlight-color: transparent;
+            line-height: 1.6;
+            margin: 0;
+            padding-top: 0;
+            transition: background-color 0.3s, color 0.3s;
+            overflow-wrap: break-word;
+            scroll-behavior: smooth;
+        }
+
+        ::-webkit-scrollbar { display: none; }
+
+        * {
+            text-shadow: 
+                calc(var(--outline-width) * -1) calc(var(--outline-width) * -1) 0 var(--outline-color),
+                var(--outline-width) calc(var(--outline-width) * -1) 0 var(--outline-color),
+                calc(var(--outline-width) * -1) var(--outline-width) 0 var(--outline-color),
+                var(--outline-width) var(--outline-width) 0 var(--outline-color);
+        }
+
+        h1, h2, h3, .font-display { 
+            font-family: 'Abril Fatface', cursive; 
+        }
+
+        .main-container {
+            width: var(--container-width);
+            max-width: var(--ultra-wide-max);
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* -----------------------------------------------------------
+            HEADER & NAVIGATION
+        ----------------------------------------------------------- */
+        header#main-header {
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            border-bottom: 4px solid var(--sk-separator);
+            height: var(--header-height);
+            background-color: var(--sk-maroon);
+        }
+
+        .header-scrolled { 
+            background-color: var(--header-bg-scrolled) !important; 
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1); 
+            height: var(--header-scrolled-height) !important;
+        }
+
+        #header-logo {
+            display: block;
+            width: 320px;
+            height: auto;
+            aspect-ratio: 4163 / 1391;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            -webkit-font-smoothing: antialiased;
+        }
+        .header-scrolled #header-logo { width: 190px; }
+
+        .nav-link {
+            font-family: "Open Sans", Arial, sans-serif;
+            font-size: 16px; 
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #FFFFFF;
+            transition: all 0.4s ease-in-out;
+            text-decoration: none;
+            white-space: nowrap;
+            padding: 15px 0;
+        }
+        .nav-link:hover, .nav-link.active { color: var(--sk-gold) !important; }
+        .header-scrolled .nav-link { color: var(--nav-text-scrolled); }
+        .header-scrolled .nav-link.active { color: var(--sk-gold) !important; }
+        .header-scrolled #menu-toggle { color: var(--nav-text-scrolled); }
+
+        #mobile-menu {
+            background-color: var(--mobile-menu-bg);
+            color: var(--mobile-menu-text);
+            transition: background 0.3s, color 0.3s;
+            z-index: 999;
+        }
+
+        #refresh-bar { position: absolute; bottom: 0; left: 0; height: 2px; width: 0; background-color: var(--sk-gold); transition: width 0.3s ease; z-index: 1001; }
+
+        /* THEME SETTINGS UI */
+        .theme-toggle-wrapper {
+            position: fixed;
+            top: 140px;
+            right: 20px;
+            z-index: 1001;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 10px;
+        }
+        .theme-toggle-panel {
+            background: #ffffff;
+            padding: 15px;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            border: 2px solid var(--sk-gold);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transform-origin: right top;
+        }
+        .theme-toggle-panel.hidden-settings {
+            transform: scale(0) translateX(50px);
+            opacity: 0;
+            pointer-events: none;
+        }
+        
+        .settings-toggle-btn {
+            background: var(--sk-maroon);
+            color: var(--sk-gold);
+            width: 45px;
+            height: 45px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
+        }
+        .settings-toggle-btn:hover { transform: rotate(45deg) scale(1.1); }
+
+        /* -----------------------------------------------------------
+            MODAL SYSTEM
+        ----------------------------------------------------------- */
+        .sk-modal-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(8px);
+            z-index: 9999;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        .sk-modal-content {
+            background: #ffffff;
+            width: 100%;
+            max-width: 450px;
+            border-radius: 24px;
+            border: 4px solid var(--sk-separator);
+            overflow: hidden;
+            transition: background 0.3s;
+        }
+        .smart-option {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 16px 20px;
+            background: rgba(0,0,0,0.03);
+            border-radius: 16px;
+            margin-bottom: 10px;
+            cursor: pointer;
+            transition: 0.2s;
+            text-decoration: none;
+            color: #111111;
+            font-weight: 700;
+        }
+        .smart-option:hover { 
+            background: var(--sk-gold); 
+            color: var(--sk-maroon) !important; 
+            transform: translateX(5px); 
+        }
+        .dark-mode .smart-option {
+            background: rgba(255, 255, 255, 0.05);
+            color: #ffffff;
+        }
+        .modal-cancel-text {
+            color: #111111;
+            opacity: 0.5;
+            font-weight: 700;
+            cursor: pointer;
+        }
+        .dark-mode .modal-cancel-text { color: #ffffff; }
+
+        /* ============================================================
+            SECTION: TECH SERVICES WRAPPER
+        ============================================================ */
+        .services-section {
+            position: relative;
+            margin-top: 0px; 
+            padding-top: calc(var(--header-height) + var(--divi-section));
+            padding-bottom: var(--divi-section);
+            background-image: url(./images/skbackground.png);
+            background-size: cover;
+            background-position: center top;
+            background-attachment: fixed;
+            color: #fff;
+        }
+
+        .et_pb_row {
+            max-width: 1400px; 
+            width: var(--container-width);
+            margin: 0 auto;
+            padding: var(--divi-row) 0;
+        }
+
+        .et_pb_module_heading {
+            font-family: "Abril Fatface", display;
+            font-size: 55px;
+            font-weight: 500;
+            line-height: 1.2;
+            margin-bottom: 10px;
+            padding-bottom: 10px;
+            color: rgb(255, 255, 255);
+            text-shadow: 0 4px 15px rgba(0,0,0,0.8);
+            text-decoration-line: underline;
+            text-decoration-color: rgb(255, 255, 255);
+            text-decoration-style: solid;
+        }
+
+        /* -----------------------------------------------------------
+            FOOTER SYMMETRY
+        ----------------------------------------------------------- */
+        footer#main-footer {
+            background-color: var(--sk-maroon);
+            color: white;
+            border-top: 5px solid var(--sk-separator);
+            padding: 60px 0 30px 0; 
+        }
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 40px;
+            text-align: center;
+        }
+        .footer-col { display: flex; flex-direction: column; align-items: center; }
+        .footer-label { 
+            font-family: Georgia, serif; font-size: 14px; font-weight: 500; 
+            margin-bottom: 15px; color: white; opacity: 0.8;
+        }
+        .footer-value { 
+            font-family: "Abril Fatface", display; font-size: 18px; 
+            cursor: pointer; transition: 0.3s; margin-bottom: 5px; color: #FFFFFF;
+        }
+        .footer-value:hover { color: var(--sk-gold); }
+
+        @media (max-width: 1024px) {
+            :root { --header-height: 100px; --container-width: 90%; }
+            #header-logo { width: 220px; }
+            .header-scrolled #header-logo { width: 170px; }
+            .footer-grid { grid-template-columns: 1fr; gap: 40px; }
+            .theme-toggle-wrapper { top: auto; bottom: 80px; }
+            .nav-link { padding-top: 15px; padding-bottom: 15px; font-size: 15px; }
+            .et_pb_module_heading { font-size: 38px; line-height: 1.2; }
+        }
+    </style>
+</head>
+<body class="light-mode">
+
+    <!-- Theme Settings UI -->
+    <div class="theme-toggle-wrapper">
+        <div class="settings-toggle-btn shadow-xl" onclick="toggleSettingsPanel()">
+            <i data-lucide="settings"></i>
+        </div>
+        <div class="theme-toggle-panel hidden-settings" id="settings-panel">
+            <p class="font-bold text-xs mb-2 uppercase text-gray-500">System Preferences</p>
+            <div class="flex flex-col gap-2">
+                <button onclick="setTheme('light')" class="text-[10px] bg-gray-100 p-1 rounded">Bright</button>
+                <button onclick="setTheme('dark')" class="text-[10px] bg-gray-800 text-white p-1 rounded">Dark</button>
+                <button onclick="setTheme('auto')" class="text-[10px] border p-1 rounded">Match System</button>
+                <hr class="my-1">
+                <div class="flex flex-col gap-1">
+                    <input type="color" id="outline-color-picker" onchange="updateOutlineColor(this.value)" value="#000000" class="w-full h-6 rounded cursor-pointer">
+                    <button onclick="updateOutlineColor('transparent')" class="text-[8px] bg-red-100 text-red-800 rounded p-1 uppercase font-bold">No Outline</button>
+                    <label class="text-[9px]">Outline Color</label>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MAIN HEADER -->
+    <header id="main-header" class="fixed top-0 left-0 w-full z-[1000] flex flex-col justify-center">
+        <div class="main-container flex items-center justify-between h-full px-4 lg:px-0">
+            <div class="flex-shrink-0 z-[1001]">
+                <a href="./index.html" onclick="smartTabClick(event, this, 'tab_sk_Home', this.href)">
+                    <img src="./images/S&K-Sign-White.png" alt="S&K" id="header-logo" />
+                </a>
+            </div>
+
+            <nav class="hidden lg:flex flex-grow items-center justify-center px-10">
+                <ul id="desktop-nav-root" class="flex items-center gap-8 xl:gap-12">
+                    <!-- Dynamic Navigation injected via navigation.js -->
+                </ul>
+            </nav>
+
+            <div class="flex items-center gap-4 z-[1001]">
+                <button onclick="downloadSKContact()" class="hidden sm:flex bg-[#FFC627] text-[#3E0100] px-6 py-3 rounded-xl font-extrabold uppercase text-xs shadow-lg hover:scale-105 transition-all">
+                    <i data-lucide="user-plus" class="w-4 h-4 mr-2"></i> 844-907-4450
+                </button>
+                <button id="menu-toggle" class="lg:hidden text-white">
+                    <i data-lucide="menu" class="w-9 h-9"></i>
+                </button>
+            </div>
+        </div>
+        <div id="refresh-bar"></div>
+        
+        <!-- Mobile Dropdown -->
+        <div id="mobile-menu" class="hidden absolute top-full left-0 w-full shadow-2xl flex-col p-8 gap-6 border-t border-black/5"></div>
+    </header>
+
+    <!-- MAIN CONTENT AREA -->
+    <main id="home">
+        <div class="services-section" id="section-tech-services">
+            <div class="et_pb_row">
+                
+                <!-- Hero Intro Card -->
+                <div class="bg-[rgb(62,1,0)] text-white rounded-3xl p-6 sm:p-10 lg:p-12 border-4 border-[#FFC627] shadow-2xl relative overflow-hidden mb-12 sm:mb-16 text-center">
+                    <div class="inline-flex items-center gap-2 bg-black/40 border border-[#FFC627]/50 rounded-full px-4 py-1.5 mb-5">
+                        <span class="w-2.5 h-2.5 rounded-full bg-[#FFC627] animate-pulse"></span>
+                        <span class="font-['Poppins'] text-[#FFC627] font-bold text-xs sm:text-sm uppercase tracking-wider">
+                            Traveling Computer Tech &bull; S&amp;K Ventures Technology Division
+                        </span>
+                    </div>
+
+                    <h1 class="et_pb_module_heading !no-underline !text-white !mb-4">
+                        Professional Computer &amp; IT Services
+                    </h1>
+
+                    <p class="font-['Poppins'] text-[#FFC627] text-lg sm:text-2xl font-semibold mb-4 leading-snug">
+                        We come to you so your computer doesn't have to move!
+                    </p>
+
+                    <p class="font-['Open_Sans'] text-stone-200 text-sm sm:text-base max-w-2xl mx-auto mb-8 leading-relaxed">
+                        Over 15 years of trusted on-site technical expertise providing rapid diagnostic repairs, network deployments, and system optimizations across Effingham County, Clay County, Fayette County, Jasper County, and Richland County.
+                    </p>
+
+                    <!-- Call Direct Actions -->
+                    <div class="flex flex-wrap items-center justify-center gap-4">
+                        <a href="tel:6187084450" class="font-['Poppins'] bg-[#FFC627] hover:bg-yellow-400 text-black font-extrabold px-8 py-3.5 rounded-xl text-base shadow-lg transition-all transform hover:-translate-y-0.5 flex items-center gap-2">
+                            <i data-lucide="phone-call" class="w-5 h-5"></i>
+                            Call Direct: (618) 708-4450
+                        </a>
+                        <a href="tel:8449074450" class="font-['Poppins'] bg-black/60 hover:bg-black text-[#FFC627] border-2 border-[#FFC627] font-bold px-8 py-3.5 rounded-xl text-base transition-all flex items-center gap-2">
+                            <i data-lucide="phone" class="w-5 h-5"></i>
+                            Toll-Free: (844) 907-4450
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Section Subheader -->
+                <div class="text-center mb-10 sm:mb-14">
+                    <h2 class="font-['Abril_Fatface'] text-3xl sm:text-5xl text-white tracking-wide">
+                        What We Offer
+                    </h2>
+                    <div class="h-1.5 w-20 bg-[#FFC627] mx-auto mt-3 mb-4 rounded-full"></div>
+                    <p class="font-['Poppins'] text-gray-200 text-base sm:text-lg max-w-2xl mx-auto font-medium">
+                        Complete on-site technology services built for homeowners, retail stores, and commercial facilities.
+                    </p>
+                </div>
+
+                <!-- Core 4-Card Service Grid -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-16 text-left">
+
+                    <!-- Card 1: On-Site Residential Support -->
+                    <div class="bg-[#fcf6de] border-2 border-[rgb(62,1,0)] rounded-2xl p-7 sm:p-9 shadow-md hover:shadow-xl transition-shadow flex flex-col justify-between text-black">
+                        <div>
+                            <div class="flex items-center justify-between mb-4">
+                                <span class="w-12 h-12 rounded-xl bg-[rgb(62,1,0)] text-[#FFC627] flex items-center justify-center font-['Poppins'] font-black text-xl shadow">
+                                    01
+                                </span>
+                                <span class="font-['Poppins'] text-xs uppercase tracking-wider font-bold bg-[rgb(62,1,0)]/10 text-[rgb(62,1,0)] px-3 py-1 rounded-full">
+                                    In-Home Support
+                                </span>
+                            </div>
+
+                            <h3 class="font-['Poppins'] text-2xl font-bold text-[rgb(62,1,0)] mb-3">
+                                On-Site Residential Support
+                            </h3>
+
+                            <p class="font-['Open_Sans'] text-stone-800 text-sm sm:text-base leading-relaxed mb-6">
+                                Skip the stress of crawling behind desks to unhook wires and hauling equipment into a store. We come directly to your living room or home office to troubleshoot and repair your equipment on the spot.
+                            </p>
+
+                            <ul class="font-['Open_Sans'] text-sm text-stone-700 space-y-2.5">
+                                <li class="flex items-start gap-2">
+                                    <span class="text-[#FFC627] font-bold text-base leading-none">&#10004;</span>
+                                    <span><strong>Virus &amp; Malware Removal:</strong> Eradicate trojans, adware, and invasive browser popups.</span>
+                                </li>
+                                <li class="flex items-start gap-2">
+                                    <span class="text-[#FFC627] font-bold text-base leading-none">&#10004;</span>
+                                    <span><strong>Hardware Repairs &amp; Upgrades:</strong> Solid-State Drive (SSD) swaps, RAM boosts, and power supplies.</span>
+                                </li>
+                                <li class="flex items-start gap-2">
+                                    <span class="text-[#FFC627] font-bold text-base leading-none">&#10004;</span>
+                                    <span><strong>Wi-Fi &amp; Printer Setup:</strong> Wireless mesh network syncing, printer drivers, and smart device hookups.</span>
+                                </li>
+                                <li class="flex items-start gap-2">
+                                    <span class="text-[#FFC627] font-bold text-base leading-none">&#10004;</span>
+                                    <span><strong>Data Migration &amp; Recovery:</strong> Safe file transfers from old machines to new laptops or external drives.</span>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div class="mt-8 pt-5 border-t border-[rgb(62,1,0)]/15 flex items-center justify-between">
+                            <span class="font-['Poppins'] text-xs font-semibold text-stone-600">Door-to-door convenience</span>
+                            <a href="tel:6187084450" class="font-['Poppins'] text-xs font-bold uppercase tracking-wider text-[rgb(62,1,0)] hover:text-[#FFC627] flex items-center gap-1 transition-colors">
+                                Book In-Home Tech &rarr;
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Card 2: Commercial & Small Business IT -->
+                    <div class="bg-[#fcf6de] border-2 border-[rgb(62,1,0)] rounded-2xl p-7 sm:p-9 shadow-md hover:shadow-xl transition-shadow flex flex-col justify-between text-black">
+                        <div>
+                            <div class="flex items-center justify-between mb-4">
+                                <span class="w-12 h-12 rounded-xl bg-[rgb(62,1,0)] text-[#FFC627] flex items-center justify-center font-['Poppins'] font-black text-xl shadow">
+                                    02
+                                </span>
+                                <span class="font-['Poppins'] text-xs uppercase tracking-wider font-bold bg-[rgb(62,1,0)]/10 text-[rgb(62,1,0)] px-3 py-1 rounded-full">
+                                    Business Solutions
+                                </span>
+                            </div>
+
+                            <h3 class="font-['Poppins'] text-2xl font-bold text-[rgb(62,1,0)] mb-3">
+                                Commercial &amp; Small Business IT
+                            </h3>
+
+                            <p class="font-['Open_Sans'] text-stone-800 text-sm sm:text-base leading-relaxed mb-6">
+                                Keep your business workflow uninterrupted. We design, install, and service dependable local office technology infrastructure so your employees can operate without network lag or hardware bottlenecks.
+                            </p>
+
+                            <ul class="font-['Open_Sans'] text-sm text-stone-700 space-y-2.5">
+                                <li class="flex items-start gap-2">
+                                    <span class="text-[#FFC627] font-bold text-base leading-none">&#10004;</span>
+                                    <span><strong>Office Network Cabling:</strong> Clean Cat6 ethernet runs, network patch panels, and switch installs.</span>
+                                </li>
+                                <li class="flex items-start gap-2">
+                                    <span class="text-[#FFC627] font-bold text-base leading-none">&#10004;</span>
+                                    <span><strong>Workstation Deployments:</strong> Multi-monitor business desktop setups, clean cable routing, and user profiles.</span>
+                                </li>
+                                <li class="flex items-start gap-2">
+                                    <span class="text-[#FFC627] font-bold text-base leading-none">&#10004;</span>
+                                    <span><strong>Commercial Peripherals:</strong> Network label printers, barcode scanners, and receipt printing stations.</span>
+                                </li>
+                                <li class="flex items-start gap-2">
+                                    <span class="text-[#FFC627] font-bold text-base leading-none">&#10004;</span>
+                                    <span><strong>Business Wi-Fi Access Points:</strong> High-density coverage for warehouses, retail floors, and offices.</span>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div class="mt-8 pt-5 border-t border-[rgb(62,1,0)]/15 flex items-center justify-between">
+                            <span class="font-['Poppins'] text-xs font-semibold text-stone-600">Minimal business downtime</span>
+                            <a href="tel:6187084450" class="font-['Poppins'] text-xs font-bold uppercase tracking-wider text-[rgb(62,1,0)] hover:text-[#FFC627] flex items-center gap-1 transition-colors">
+                                Schedule Site Survey &rarr;
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Card 3: Digital Signage & Dedicated Kiosk Setup -->
+                    <div class="bg-[#fcf6de] border-2 border-[rgb(62,1,0)] rounded-2xl p-7 sm:p-9 shadow-md hover:shadow-xl transition-shadow flex flex-col justify-between text-black">
+                        <div>
+                            <div class="flex items-center justify-between mb-4">
+                                <span class="w-12 h-12 rounded-xl bg-[rgb(62,1,0)] text-[#FFC627] flex items-center justify-center font-['Poppins'] font-black text-xl shadow">
+                                    03
+                                </span>
+                                <span class="font-['Poppins'] text-xs uppercase tracking-wider font-bold bg-[rgb(62,1,0)]/10 text-[rgb(62,1,0)] px-3 py-1 rounded-full">
+                                    Displays &amp; Signage
+                                </span>
+                            </div>
+
+                            <h3 class="font-['Poppins'] text-2xl font-bold text-[rgb(62,1,0)] mb-3">
+                                Digital Signage &amp; Kiosk Systems
+                            </h3>
+
+                            <p class="font-['Open_Sans'] text-stone-800 text-sm sm:text-base leading-relaxed mb-6">
+                                Say goodbye to unwanted Windows reboot updates in the middle of a business day. We build custom-tuned operating systems engineered for 24/7 reliability on digital billboards, displays, and client kiosks.
+                            </p>
+
+                            <ul class="font-['Open_Sans'] text-sm text-stone-700 space-y-2.5">
+                                <li class="flex items-start gap-2">
+                                    <span class="text-[#FFC627] font-bold text-base leading-none">&#10004;</span>
+                                    <span><strong>Linux Mint XFCE Builds:</strong> Lightweight, rock-solid operating systems tailored for media playback.</span>
+                                </li>
+                                <li class="flex items-start gap-2">
+                                    <span class="text-[#FFC627] font-bold text-base leading-none">&#10004;</span>
+                                    <span><strong>Windows Update Prevention:</strong> Lockdown policies to prevent surprise restarts and desktop popups.</span>
+                                </li>
+                                <li class="flex items-start gap-2">
+                                    <span class="text-[#FFC627] font-bold text-base leading-none">&#10004;</span>
+                                    <span><strong>NovaStar &amp; TV Pairing:</strong> Synchronized playback across LED billboard controllers and commercial screens.</span>
+                                </li>
+                                <li class="flex items-start gap-2">
+                                    <span class="text-[#FFC627] font-bold text-base leading-none">&#10004;</span>
+                                    <span><strong>Automated Reboot Schedules:</strong> Safe off-peak maintenance loops that maintain continuous uptime.</span>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div class="mt-8 pt-5 border-t border-[rgb(62,1,0)]/15 flex items-center justify-between">
+                            <span class="font-['Poppins'] text-xs font-semibold text-stone-600">Engineered for 24/7 uptime</span>
+                            <a href="tel:6187084450" class="font-['Poppins'] text-xs font-bold uppercase tracking-wider text-[rgb(62,1,0)] hover:text-[#FFC627] flex items-center gap-1 transition-colors">
+                                Configure Kiosk System &rarr;
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Card 4: Web Presence & Domain Management -->
+                    <div class="bg-[#fcf6de] border-2 border-[rgb(62,1,0)] rounded-2xl p-7 sm:p-9 shadow-md hover:shadow-xl transition-shadow flex flex-col justify-between text-black">
+                        <div>
+                            <div class="flex items-center justify-between mb-4">
+                                <span class="w-12 h-12 rounded-xl bg-[rgb(62,1,0)] text-[#FFC627] flex items-center justify-center font-['Poppins'] font-black text-xl shadow">
+                                    04
+                                </span>
+                                <span class="font-['Poppins'] text-xs uppercase tracking-wider font-bold bg-[rgb(62,1,0)]/10 text-[rgb(62,1,0)] px-3 py-1 rounded-full">
+                                    Web &amp; DNS Management
+                                </span>
+                            </div>
+
+                            <h3 class="font-['Poppins'] text-2xl font-bold text-[rgb(62,1,0)] mb-3">
+                                Web Presence &amp; Domains
+                            </h3>
+
+                            <p class="font-['Open_Sans'] text-stone-800 text-sm sm:text-base leading-relaxed mb-6">
+                                Practical, lightning-fast static websites and domain configurations that give your company a professional online footprint without confusing hosting contracts or heavy database overhead.
+                            </p>
+
+                            <ul class="font-['Open_Sans'] text-sm text-stone-700 space-y-2.5">
+                                <li class="flex items-start gap-2">
+                                    <span class="text-[#FFC627] font-bold text-base leading-none">&#10004;</span>
+                                    <span><strong>Lightweight Static Websites:</strong> Clean HTML/Tailwind pages with zero bloat and near-instant load speeds.</span>
+                                </li>
+                                <li class="flex items-start gap-2">
+                                    <span class="text-[#FFC627] font-bold text-base leading-none">&#10004;</span>
+                                    <span><strong>Domain &amp; DNS Setup:</strong> Seamless name server pointing, MX email records, and Cloudflare routing.</span>
+                                </li>
+                                <li class="flex items-start gap-2">
+                                    <span class="text-[#FFC627] font-bold text-base leading-none">&#10004;</span>
+                                    <span><strong>GitHub Pages Integration:</strong> Version-controlled deployments with automatic SSL certificates included.</span>
+                                </li>
+                                <li class="flex items-start gap-2">
+                                    <span class="text-[#FFC627] font-bold text-base leading-none">&#10004;</span>
+                                    <span><strong>Content Maintenance:</strong> Fast edits, seasonal updates, and digital signage asset sync.</span>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div class="mt-8 pt-5 border-t border-[rgb(62,1,0)]/15 flex items-center justify-between">
+                            <span class="font-['Poppins'] text-xs font-semibold text-stone-600">Zero bloat, pure speed</span>
+                            <a href="tel:6187084450" class="font-['Poppins'] text-xs font-bold uppercase tracking-wider text-[rgb(62,1,0)] hover:text-[#FFC627] flex items-center gap-1 transition-colors">
+                                Start Web Project &rarr;
+                            </a>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- Direct Contact Callout Box -->
+                <div class="bg-[rgb(62,1,0)] text-white rounded-3xl p-8 sm:p-12 border-4 border-[#FFC627] shadow-2xl relative">
+                    <div class="max-w-4xl mx-auto flex flex-col lg:flex-row items-center justify-between gap-8">
+                        
+                        <div class="text-center lg:text-left">
+                            <span class="font-['Poppins'] text-[#FFC627] font-bold text-xs sm:text-sm uppercase tracking-widest block mb-2">
+                                Local &bull; Responsive &bull; On-Site
+                            </span>
+                            <h3 class="font-['Abril_Fatface'] text-2xl sm:text-4xl text-white mb-3">
+                                Ready for Fast On-Site Support?
+                            </h3>
+                            <p class="font-['Open_Sans'] text-stone-200 text-sm sm:text-base max-w-xl leading-relaxed mb-4">
+                                Call or email Scott Robinson directly to schedule an appointment. We dispatch throughout Effingham County, Clay County, Fayette County, Jasper County, and Richland County.
+                            </p>
+                            <div class="font-['Open_Sans'] text-stone-300 text-xs sm:text-sm space-y-1">
+                                <p><strong class="text-[#FFC627]">Service Hub:</strong> 607 W Clark Ave, Effingham, IL 62401</p>
+                                <p><strong class="text-[#FFC627]">Email:</strong> <span class="cursor-pointer underline hover:text-[#FFC627]" onclick="openEmailSmartActions('Scott.Robinson@skventuresigns.com')">Scott.Robinson@skventuresigns.com</span></p>
+                            </div>
+                        </div>
+
+                        <!-- Phone Action Box -->
+                        <div class="bg-black/60 border-2 border-[#FFC627] rounded-2xl p-6 text-center w-full sm:w-auto shrink-0 shadow-lg">
+                            <span class="font-['Poppins'] text-xs uppercase tracking-wider text-[#FFC627] font-bold block mb-1">
+                                Direct &amp; Text Line
+                            </span>
+                            <span onclick="openPhoneSmartActions('618-708-4450')" class="cursor-pointer font-['Poppins'] text-2xl sm:text-3xl font-extrabold text-white hover:text-[#FFC627] block transition-colors mb-3">
+                                (618) 708-4450
+                            </span>
+                            
+                            <div class="h-px bg-[#FFC627]/30 w-3/4 mx-auto my-3"></div>
+
+                            <span class="font-['Poppins'] text-[11px] uppercase tracking-wider text-stone-400 font-semibold block mb-1">
+                                Toll-Free Line
+                            </span>
+                            <span onclick="openPhoneSmartActions('844-907-4450')" class="cursor-pointer font-['Poppins'] text-lg font-bold text-[#FFC627] hover:text-yellow-300 block transition-colors">
+                                (844) 907-4450
+                            </span>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </main>
+
+    <!-- FOOTER -->
+    <footer id="main-footer">
+        <div class="main-container footer-grid">
+            <div class="footer-col">
+                <p class="footer-label">Give us a call</p>
+                <div id="footer-phone-list"></div>
+            </div>
+            <div class="footer-col">
+                <p class="footer-label">Send us an Email</p>
+                <div id="footer-email-list"></div>
+            </div>
+            <div class="footer-col">
+                <p class="footer-label">Visit our office</p>
+                <div id="footer-address-container"></div>
+            </div>
+        </div>
+        <div class="main-container mt-10 pt-6 border-t border-white/10 text-center">
+            <h5 class="font-bold opacity-50 text-sm tracking-widest uppercase text-white">© 2026 S&amp;K VENTURE SIGNS</h5>
+        </div>
+    </footer>
+
+    <!-- MODALS -->
+    <div id="phone-modal" class="sk-modal-overlay" onclick="closeModals()">
+        <div class="sk-modal-content" onclick="event.stopPropagation()">
+            <div class="bg-[#3E0100] p-8 text-[#FFC627] text-center font-serif text-2xl">Contact Specialist</div>
+            <div class="p-8" id="phone-options-container"></div>
+            <div class="p-6 text-center text-sm font-bold modal-cancel-text" onclick="closeModals()">CANCEL</div>
+        </div>
+    </div>
+
+    <div id="email-modal" class="sk-modal-overlay" onclick="closeModals()">
+        <div class="sk-modal-content" onclick="event.stopPropagation()">
+            <div class="bg-[#3E0100] p-8 text-[#FFC627] text-center font-serif text-2xl">Send Message</div>
+            <div class="p-8" id="email-options-container"></div>
+            <div class="p-6 text-center text-sm font-bold modal-cancel-text" onclick="closeModals()">CANCEL</div>
+        </div>
+    </div>
+
+    <div id="map-modal" class="sk-modal-overlay" onclick="closeModals()">
+        <div class="sk-modal-content" onclick="event.stopPropagation()">
+            <div class="bg-[#3E0100] p-8 text-[#FFC627] text-center font-serif text-2xl">Start Navigation</div>
+            <div class="p-8">
+                <a id="link-gmaps" class="smart-option"><i data-lucide="map"></i> Google Maps</a>
+                <a id="link-amaps" class="smart-option"><i data-lucide="navigation"></i> Apple Maps</a>
+                <a id="link-waze" class="smart-option"><i data-lucide="navigation-2"></i> Waze Navigation</a>
+            </div>
+            <div class="p-6 text-center text-sm font-bold modal-cancel-text" onclick="closeModals()">CANCEL</div>
+        </div>
+    </div>
+
+    <script>
+        /**
+         * STRICT SAME-TAB NAVIGATION
+         */
+        window.smartTabClick = function(event, element, targetName, url) {
+            if(event) event.preventDefault(); 
+            window.location.href = url;
+        };
+
+        function toggleSettingsPanel() {
+            const panel = document.getElementById('settings-panel');
+            if (panel) panel.classList.toggle('hidden-settings');
+        }
+
+        function downloadSKContact() {
+            const PHOTO_URL = "./images/S&K-Sign-Black";
+            const currentPhones = (typeof siteData !== 'undefined' && siteData.phones) ? siteData.phones : ["618-708-4450", "844-907-4450"];
+            const currentEmail = (typeof siteData !== 'undefined' && siteData.email) ? siteData.email : "Scott.Robinson@skventuresigns.com";
+            const currentStreet = (typeof siteData !== 'undefined' && siteData.addressStreet) ? siteData.addressStreet : "607 W Clark Ave";
+            const currentCity = (typeof siteData !== 'undefined' && siteData.addressCity) ? siteData.addressCity : "Effingham IL 62401";
+
+            const vcard = "BEGIN:VCARD\n" +
+                          "VERSION:3.0\n" +
+                          "FN:Scott Robinson\n" +
+                          "ORG:S&K Venture Signs\n" +
+                          "TEL;TYPE=WORK,VOICE:" + (currentPhones[1] || "844-907-4450") + "\n" +
+                          "TEL;TYPE=CELL,VOICE:" + (currentPhones[0] || "618-708-4450") + "\n" +
+                          "EMAIL;TYPE=PREF,INTERNET:" + currentEmail + "\n" +
+                          "ADR;TYPE=WORK:;;" + currentStreet + ";" + currentCity.split(' ')[0] + ";IL;" + currentCity.split(' ').pop() + ";USA\n" +
+                          "URL:https://skventuresigns.com/\n" +
+                          "PHOTO;VALUE=URI:" + PHOTO_URL + "\n" +
+                          "END:VCARD";
+            
+            const blob = new Blob([vcard], { type: 'text/vcard;charset=utf-8' });
+            const url = window.URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.setAttribute('download', 'Scott_Robinson_SKVenture.vcf');
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            setTimeout(() => window.URL.revokeObjectURL(url), 100);
+        }
+
+        function setTheme(mode) {
+            const body = document.body;
+            const root = document.documentElement;
+            let targetMode = mode;
+
+            if (mode === 'auto') {
+                const hour = new Date().getHours();
+                const isNightTime = (hour < 6 || hour >= 19);
+                const isSystemDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+                targetMode = (isNightTime || isSystemDark) ? 'dark' : 'light';
+            }
+            
+            if (targetMode === 'dark') {
+                root.style.setProperty('--bg-primary', '#121212');
+                root.style.setProperty('--text-primary', '#e0e0e0');
+                root.style.setProperty('--header-bg-scrolled', '#1e1e1e');
+                root.style.setProperty('--nav-text-scrolled', '#ffffff');
+                root.style.setProperty('--mobile-menu-bg', '#1e1e1e');
+                root.style.setProperty('--mobile-menu-text', '#ffffff');
+                body.classList.add('dark-mode');
+            } else {
+                root.style.setProperty('--bg-primary', '#000000'); 
+                root.style.setProperty('--text-primary', '#FFFFFF'); 
+                root.style.setProperty('--header-bg-scrolled', 'white');
+                root.style.setProperty('--nav-text-scrolled', '#222222');
+                root.style.setProperty('--mobile-menu-bg', 'white');
+                root.style.setProperty('--mobile-menu-text', 'black');
+                body.classList.remove('dark-mode');
+            }
+            
+            const header = document.getElementById('main-header');
+            const logo = document.getElementById('header-logo');
+            if (header && header.classList.contains('header-scrolled') && logo) {
+                logo.src = (targetMode === 'dark') ? "./images/S&K-Sign-White.png" : "./images/S&K-Sign-Black.png";
+            }
+
+            document.cookie = `theme=${mode};max-age=31536000;path=/`;
+        }
+
+        function updateOutlineColor(color) {
+            document.documentElement.style.setProperty('--outline-color', color);
+            document.cookie = `outline-color=${color};max-age=31536000;path=/`;
+        }
+
+        function openPhoneSmartActions(num) {
+            const clean = num.replace(/\D/g, '');
+            const container = document.getElementById('phone-options-container');
+            const isMac = navigator.platform.toUpperCase().indexOf('MAC') >= 0;
+            
+            let html = '';
+            if (isMac) {
+                html += `<a href="tel:${clean}" class="smart-option" onclick="smartTabClick(event, this, 'tab_sk_tel', this.href)"><i data-lucide="monitor"></i> FaceTime / iPhone</a>`;
+            } else {
+                html += `<a href="tel:${clean}" class="smart-option" onclick="smartTabClick(event, this, 'tab_sk_tel', this.href)"><i data-lucide="phone"></i> Direct Call</a>`;
+            }
+            
+            if (num.includes('618')) {
+                html += `<a href="https://wa.me/1${clean}" class="smart-option" onclick="smartTabClick(event, this, 'tab_sk_wa', this.href)"><i data-lucide="message-circle"></i> WhatsApp Specialist</a>`;
+            }
+
+            if (container) {
+                container.innerHTML = html;
+                document.getElementById('phone-modal').style.display = 'flex';
+                lucide.createIcons();
+            }
+        }
+
+        function openEmailSmartActions(email) {
+            const container = document.getElementById('email-options-container');
+            if (container) {
+                container.innerHTML = `
+                    <a href="mailto:${email}" class="smart-option" onclick="smartTabClick(event, this, 'tab_sk_mail_def', this.href)"><i data-lucide="mail"></i> Default Client</a>
+                    <a href="https://mail.google.com/mail/?view=cm&fs=1&to=${email}" class="smart-option" onclick="smartTabClick(event, this, 'tab_sk_mail_gmail', this.href)"><i data-lucide="send"></i> Gmail Web</a>
+                    <div onclick="navigator.clipboard.writeText('${email}');" class="smart-option"><i data-lucide="copy"></i> Copy Address</div>
+                `;
+                document.getElementById('email-modal').style.display = 'flex';
+                lucide.createIcons();
+            }
+        }
+
+        function openMapSmartActions() {
+            const currentStreet = (typeof siteData !== 'undefined' && siteData.addressStreet) ? siteData.addressStreet : "607 W Clark Ave";
+            const currentCity = (typeof siteData !== 'undefined' && siteData.addressCity) ? siteData.addressCity : "Effingham IL 62401";
+            const addrStr = `${currentStreet} ${currentCity}`;
+            const addr = encodeURIComponent(addrStr);
+            
+            const gmapsUrl = `https://maps.google.com/?q=${addr}`;
+            const amapsUrl = `http://maps.apple.com/?daddr=${addr}`;
+            const wazeUrl = `https://waze.com/ul?q=${addr}&navigate=yes`;
+            
+            document.getElementById('link-gmaps').href = gmapsUrl;
+            document.getElementById('link-gmaps').setAttribute('onclick', `smartTabClick(event, this, 'tab_sk_gmaps', '${gmapsUrl}')`);
+            
+            document.getElementById('link-amaps').href = amapsUrl;
+            document.getElementById('link-amaps').setAttribute('onclick', `smartTabClick(event, this, 'tab_sk_amaps', '${amapsUrl}')`);
+            
+            document.getElementById('link-waze').href = wazeUrl;
+            document.getElementById('link-waze').setAttribute('onclick', `smartTabClick(event, this, 'tab_sk_waze', '${wazeUrl}')`);
+            
+            document.getElementById('map-modal').style.display = 'flex';
+            if (typeof lucide !== 'undefined') lucide.createIcons();
+        }
+
+        function closeModals() {
+            document.querySelectorAll('.sk-modal-overlay').forEach(m => m.style.display = 'none');
+        }
+
+        /* =========================================================
+            HEADER SCROLL & MOBILE MENU
+        ========================================================= */
+        window.addEventListener('scroll', () => {
+            const header = document.getElementById('main-header');
+            const logo = document.getElementById('header-logo');
+            const isDark = document.body.classList.contains('dark-mode');
+
+            if (header && logo) {
+                if (window.scrollY > 50) {
+                    header.classList.add('header-scrolled');
+                    logo.src = isDark ? "./images/S&K-Sign-White.png" : "./images/S&K-Sign-Black.png";
+                } else {
+                    header.classList.remove('header-scrolled');
+                    logo.src = "./images/S&K-Sign-White.png";
+                }
+            }
+        });
+
+        const menuToggle = document.getElementById('menu-toggle');
+        if (menuToggle) {
+            menuToggle.addEventListener('click', () => {
+                const m = document.getElementById('mobile-menu');
+                if (m) {
+                    m.classList.toggle('hidden'); m.classList.toggle('flex');
+                }
+            });
+        }
+
+        window.onload = () => {
+            if (typeof initNavigationEngine === 'function') {
+                initNavigationEngine();
+            } else if (typeof loadSheetData === 'function') {
+                loadSheetData();
+            }
+            
+            const cookies = document.cookie.split('; ').reduce((acc, curr) => {
+                const [k, v] = curr.split('='); acc[k] = v; return acc;
+            }, {});
+            
+            if (cookies['outline-color']) {
+                updateOutlineColor(cookies['outline-color']);
+            } else {
+                updateOutlineColor('transparent');
+            }
+
+            setTheme(cookies['theme'] || 'auto');
+            if (typeof lucide !== 'undefined') lucide.createIcons();
+        };
+
+        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
+            const cookies = document.cookie.split('; ').reduce((acc, curr) => {
+                const [k, v] = curr.split('='); acc[k] = v; return acc;
+            }, {});
+            if (!cookies['theme'] || cookies['theme'] === 'auto') {
+                setTheme('auto');
+            }
+        });
+    </script>
+    <script src="./navigation.js"></script>
+</body>
+</html>
