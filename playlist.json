@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-10-29T21:52:03.755Z",
+  "lastUpdated": "2026-10-29T21:56:55.944Z",
   "locations": {
     "oliver": [
       {
@@ -484,7 +484,7 @@
       },
       {
         "advertiser": "Scripture",
-        "imageUrl": "./images/Scripture.png",
+        "imageUrl": "./images/Scripture.jpg",
         "duration": 8,
         "expirationDate": ""
       }
