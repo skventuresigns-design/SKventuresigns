@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-10-29T20:51:07.884Z",
+  "lastUpdated": "2026-10-29T21:44:51.898Z",
   "locations": {
     "oliver": [
       {
@@ -411,14 +411,8 @@
         "expirationDate": ""
       },
       {
-        "advertiser": "Sk Fair 3",
-        "imageUrl": "./images/SKFair3.png",
-        "duration": 8,
-        "expirationDate": ""
-      },
-      {
-        "advertiser": "skadvertise",
-        "imageUrl": "./images/Wanted.png",
+        "advertiser": "Autumn Disability",
+        "imageUrl": "./images/AutumnDisability.png",
         "duration": 8,
         "expirationDate": ""
       },
@@ -435,12 +429,6 @@
         "expirationDate": ""
       },
       {
-        "advertiser": "Ice Cream",
-        "imageUrl": "./images/ice-cream.jpg",
-        "duration": 8,
-        "expirationDate": ""
-      },
-      {
         "advertiser": "Thursday Special",
         "imageUrl": "./images/Thursday-Special.jpeg",
         "duration": 8,
@@ -448,7 +436,7 @@
       },
       {
         "advertiser": "skadvertise",
-        "imageUrl": "./images/Wanted.png",
+        "imageUrl": "./preview.html",
         "duration": 8,
         "expirationDate": ""
       },
@@ -461,6 +449,12 @@
       {
         "advertiser": "Fish",
         "imageUrl": "./images/Fish.png",
+        "duration": 8,
+        "expirationDate": ""
+      },
+      {
+        "advertiser": "skadvertise",
+        "imageUrl": "./images/Wanted.png",
         "duration": 8,
         "expirationDate": ""
       },
@@ -485,6 +479,12 @@
       {
         "advertiser": "skadvertise",
         "imageUrl": "./preview.html",
+        "duration": 8,
+        "expirationDate": ""
+      },
+      {
+        "advertiser": "Scripture",
+        "imageUrl": "./images/Scripture.png",
         "duration": 8,
         "expirationDate": ""
       }
