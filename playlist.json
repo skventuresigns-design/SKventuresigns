@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-10-31T22:51:06.703Z",
+  "lastUpdated": "2026-10-31T23:20:20.854Z",
   "locations": {
     "oliver": [
       {
@@ -593,10 +593,10 @@
         "expirationDate": ""
       },
       {
-        "advertiser": "Sk Fair 3",
-        "imageUrl": "./images/SKFair3.png",
+        "advertiser": "Happy Thanksgiving",
+        "imageUrl": "./images/HappyThanksgiving.png",
         "duration": 8,
-        "expirationDate": ""
+        "expirationDate": "2026-11-30"
       },
       {
         "advertiser": "Brittany Birthday",
