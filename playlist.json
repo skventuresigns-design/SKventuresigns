@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-10-31T20:51:04.570Z",
+  "lastUpdated": "2026-10-31T21:50:07.849Z",
   "locations": {
     "oliver": [
       {
@@ -839,8 +839,8 @@
         "expirationDate": ""
       },
       {
-        "advertiser": "Bingo",
-        "imageUrl": "./images/Bingo.png",
+        "advertiser": "Heartland Craft",
+        "imageUrl": "./images/HeartlandCraft.png",
         "duration": 8,
         "expirationDate": ""
       },
@@ -857,14 +857,14 @@
         "expirationDate": ""
       },
       {
-        "advertiser": "Wesselman Roofing",
-        "imageUrl": "./images/Wesselman-Roofing.png",
+        "advertiser": "Bike-n-Hike",
+        "imageUrl": "./images/Bike-n-Hike.png",
         "duration": 8,
         "expirationDate": ""
       },
       {
-        "advertiser": "Recycle",
-        "imageUrl": "./images/SKRecycle.png",
+        "advertiser": "Bingo",
+        "imageUrl": "./images/Bingo.png",
         "duration": 8,
         "expirationDate": ""
       },
