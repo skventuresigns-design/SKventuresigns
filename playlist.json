@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-10-31T23:20:20.854Z",
+  "lastUpdated": "2026-10-31T23:31:56.773Z",
   "locations": {
     "oliver": [
       {
@@ -283,10 +283,10 @@
         "expirationDate": ""
       },
       {
-        "advertiser": "S&K Ventures",
-        "imageUrl": "./images/skadvertise.png",
+        "advertiser": "Bike-n-Hike",
+        "imageUrl": "./images/Bike-n-Hike.png",
         "duration": 8,
-        "expirationDate": ""
+        "expirationDate": "2027-05-01"
       },
       {
         "advertiser": "CJ Accounting",
@@ -331,10 +331,10 @@
         "expirationDate": ""
       },
       {
-        "advertiser": "S&K Ventures",
-        "imageUrl": "./images/skadvertise.png",
+        "advertiser": "Heartland Craft",
+        "imageUrl": "./images/HeartlandCraft.png",
         "duration": 8,
-        "expirationDate": ""
+        "expirationDate": "2026-12-31"
       },
       {
         "advertiser": "Gigfire",
@@ -560,7 +560,7 @@
         "advertiser": "Bike-n-Hike",
         "imageUrl": "./images/Bike-n-Hike.png",
         "duration": 8,
-        "expirationDate": "2026-05-01"
+        "expirationDate": "2027-05-01"
       },
       {
         "advertiser": "Wesselman Roofing",
@@ -860,7 +860,7 @@
         "advertiser": "Bike-n-Hike",
         "imageUrl": "./images/Bike-n-Hike.png",
         "duration": 8,
-        "expirationDate": "2026-05-01"
+        "expirationDate": "2027-05-01"
       },
       {
         "advertiser": "Bingo",
