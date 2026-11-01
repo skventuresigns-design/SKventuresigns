@@ -38,20 +38,25 @@ function renderDynamicFramework() {
         }
     });
 
+       const telHref = p => 'tel:+1' + p.replace(/\D/g, '');
+    const linkStyle = 'style="text-decoration:none;color:inherit;"';
+
     if (fPhone && siteData.phones.length > 0) {
         fPhone.className = "flex flex-wrap items-center justify-center gap-3";
-        let phoneHTML = `<span class="footer-value !mb-0" onclick="openPhoneSmartActions('${siteData.phones[0]}')">${siteData.phones[0]}</span>`;
+        let phoneHTML = `<a href="${telHref(siteData.phones[0])}" ${linkStyle} class="footer-value !mb-0" onclick="event.preventDefault(); openPhoneSmartActions('${siteData.phones[0]}')">${siteData.phones[0]}</a>`;
         if (siteData.phones[1]) {
-            phoneHTML += `<span class="text-white opacity-70 text-sm font-bold uppercase">or</span><span class="footer-value !mb-0" onclick="openPhoneSmartActions('${siteData.phones[1]}')">${siteData.phones[1]}</span>`;
+            phoneHTML += `<span class="text-white opacity-70 text-sm font-bold uppercase">or</span><a href="${telHref(siteData.phones[1])}" ${linkStyle} class="footer-value !mb-0" onclick="event.preventDefault(); openPhoneSmartActions('${siteData.phones[1]}')">${siteData.phones[1]}</a>`;
         }
         fPhone.innerHTML = phoneHTML;
     }
 
     if (fEmail) {
-        fEmail.innerHTML = `<span class="footer-value" onclick="openEmailSmartActions('${siteData.email}')">${siteData.email}</span>`;
+        fEmail.innerHTML = `<a href="mailto:${siteData.email}" ${linkStyle} class="footer-value" onclick="event.preventDefault(); openEmailSmartActions('${siteData.email}')">${siteData.email}</a>`;
     }
+
     if (fAddr) {
-        fAddr.innerHTML = `<span class="footer-value" onclick="openMapSmartActions()">${siteData.addressStreet}, ${siteData.addressCity}</span>`;
+        const mapQuery = encodeURIComponent(`${siteData.addressStreet} ${siteData.addressCity}`);
+        fAddr.innerHTML = `<a href="https://maps.google.com/?q=${mapQuery}" ${linkStyle} class="footer-value" onclick="event.preventDefault(); openMapSmartActions()">${siteData.addressStreet}, ${siteData.addressCity}</a>`;
     }
 
     if (typeof lucide !== 'undefined') {
