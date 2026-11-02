@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- TEST PAGE: remove the robots line below and add a canonical tag when you rename this file -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Digital Sign Sales, Advertising &amp; Trailer Rentals | S&amp;K Venture Signs</title>
+    <meta name="description" content="S&K Venture Signs in Effingham, IL offers digital billboard advertising, mobile sign trailer rentals, NovaStar LED sign sales, and sign repair across Effingham County and surrounding Illinois counties.">
+    <link rel="icon" type="image/png" href="./favicon.png">
+    <script src="https://cdn.tailwindcss.com?v=10.14"></script>
+    <script src="https://unpkg.com/lucide@latest?v=10.14"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Abril+Fatface&family=Poppins:wght@400;500;600;700&family=Open+Sans:wght@600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --sk-maroon: rgb(62, 1, 0);
+            --sk-gold: #FFC627;
+            --sk-nav-gold: rgb(218, 164, 33);
+            --sk-separator: rgb(187, 162, 140);
+            --bg-primary: #fcfcfc;
+            --text-primary: #333333;
+            --card-bg: #ffffff;
+            --header-height: 125px;
+            --header-scrolled-height: 75px;
+        }
+        html, body { overflow-x: hidden; font-family: 'Poppins', sans-serif; font-size: 14px; background: var(--bg-primary); color: var(--text-primary); line-height: 1.6; margin: 0; }
+        h1, h2, h3, h4, h5 { font-family: 'Abril Fatface', cursive; line-height: 1.2; }
+        .main-container { width: 90%; max-width: 1800px; margin: 0 auto; }
+
+        /* Header */
+        #main-header { transition: all .4s ease; border-bottom: 4px solid var(--sk-separator); height: var(--header-height); background: var(--sk-maroon); }
+        .header-scrolled { background: var(--card-bg) !important; box-shadow: 0 10px 30px rgba(0,0,0,.2); height: var(--header-scrolled-height) !important; }
+        #header-logo { display: block; width: 320px; height: auto; aspect-ratio: 4163 / 1391; transition: width .4s ease; }
+        .header-scrolled #header-logo { width: 190px; }
+        .nav-link { font-family: "Open Sans", Arial, sans-serif; font-size: 16px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: #fff; text-decoration: none; transition: color .3s; }
+        .nav-link:hover, .nav-link.active { color: var(--sk-gold) !important; }
+        .header-scrolled .nav-link { color: var(--text-primary); }
+
+        /* Headline (moved out of the old hero) */
+        .hero-title { font-family: Georgia, "Times New Roman", serif; font-size: 38px; font-weight: 500; line-height: 1.25; color: var(--sk-maroon); text-align: center; }
+        .dark-mode .hero-title { color: var(--sk-gold); }
+        .hero-label { font-weight: 500; letter-spacing: 1px; color: rgb(33,158,188); display: block; margin-bottom: 10px; }
+        .rev-box { background: var(--card-bg); border: 3px solid var(--sk-gold); border-radius: 24px; padding: 32px; text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,.15); }
+
+        /* Intro: photo + story */
+        .intro-photo { position: relative; height: 100%; min-height: 320px; }
+        .intro-photo::before { content: ""; position: absolute; inset: 18px -18px -18px 18px; background: var(--sk-maroon); border-radius: 24px; z-index: 0; }
+        .intro-photo img { position: relative; z-index: 1; width: 100%; height: 100%; object-fit: cover; border-radius: 24px; border: 5px solid var(--sk-gold); background: var(--card-bg); display: block; }
+        .red-rule { border: 0; border-top: 4px solid #C8102E; margin: 0 0 40px; }
+        .gold-rule { width: 140px; border-top: 3px solid var(--sk-gold); margin: 14px 0 22px; }
+        .intro-title { color: var(--sk-maroon); font-size: 34px; }
+        .dark-mode .intro-title { color: var(--sk-gold); }
+        .btn-gold { display: inline-block; padding: 12px 28px; border-radius: 9999px; font-weight: 700; text-decoration: none; background: var(--sk-gold); color: var(--sk-maroon); border: 3px solid var(--sk-maroon); transition: transform .2s; }
+        .btn-gold:hover { transform: scale(1.04); }
+        .btn-outline { display: inline-block; padding: 12px 28px; border-radius: 9999px; font-weight: 700; text-decoration: none; color: var(--sk-maroon); border: 3px solid var(--sk-maroon); }
+        .dark-mode .btn-outline { color: var(--sk-gold); border-color: var(--sk-gold); }
+
+        /* Service teaser cards (your white / gold pattern) */
+        .svc-grid > .svc { display: flex; flex-direction: column; padding: 28px; border-radius: 24px; box-shadow: 0 4px 20px rgba(0,0,0,.2); background: #fff; color: #000; }
+        .svc-grid > .svc:nth-child(even) { background: #DAA421; }
+        .svc img { height: 200px; width: 100%; object-fit: contain; margin-bottom: 14px; }
+        .svc h3 { font-size: 24px; margin-bottom: 8px; }
+        .svc p { flex-grow: 1; font-size: 14px; margin-bottom: 20px; }
+        .svc a.more { display: block; text-align: center; padding: 12px; border-radius: 9999px; font-weight: 800; font-size: 12px; letter-spacing: .08em; text-transform: uppercase; text-decoration: none; color: #fff; background: #2A0001; border: 4px solid var(--sk-gold); }
+        .svc:nth-child(even) a.more { background: #023456; border-color: #fff; }
+
+        /* Footer + modals */
+        footer#main-footer { background: var(--sk-maroon); color: #fff; border-top: 5px solid var(--sk-separator); padding: 60px 0 30px; }
+        .footer-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 40px; text-align: center; }
+        .footer-col { display: flex; flex-direction: column; align-items: center; }
+        .footer-label { font-family: Georgia, serif; margin-bottom: 15px; opacity: .8; }
+        .footer-value { font-family: "Abril Fatface", display; font-size: 18px; cursor: pointer; transition: color .3s; margin-bottom: 5px; }
+        .footer-value:hover { color: var(--sk-gold); }
+        .sk-modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,.85); z-index: 9999; align-items: center; justify-content: center; padding: 20px; }
+        .sk-modal-content { background: var(--card-bg); width: 100%; max-width: 450px; border-radius: 24px; border: 4px solid var(--sk-separator); overflow: hidden; }
+        .smart-option { display: flex; align-items: center; gap: 15px; padding: 16px 20px; background: rgba(128,128,128,.1); border-radius: 16px; margin-bottom: 10px; cursor: pointer; text-decoration: none; color: var(--text-primary); font-weight: 700; }
+        .smart-option:hover { background: var(--sk-gold); color: var(--sk-maroon); }
+
+        @media (max-width: 1024px) {
+            :root { --header-height: 100px; }
+            #header-logo { width: 220px; }
+            .hero-title { font-size: 28px; }
+            .footer-grid { grid-template-columns: 1fr; }
+            .intro-photo::before { inset: 12px -8px -12px 8px; }
+        }
+    </style>
+</head>
+<body>
+
+<header id="main-header" class="fixed top-0 left-0 w-full z-[1000] flex flex-col justify-center">
+    <div class="main-container flex items-center justify-between h-full">
+        <a href="./index.html"><img src="./images/S&K-Sign-White.png" alt="S&K Venture Signs" id="header-logo"></a>
+        <nav class="hidden lg:flex flex-grow items-center justify-center px-10"><ul id="desktop-nav-root" class="flex items-center gap-8 xl:gap-12"></ul></nav>
+        <div class="flex items-center gap-4">
+            <a href="tel:+18449074450" class="hidden sm:flex items-center bg-[#FFC627] text-[#3E0100] px-6 py-3 rounded-xl font-extrabold text-xs shadow-lg border-2 border-[#3E0100]" style="text-decoration:none;"><i data-lucide="phone" class="w-4 h-4 mr-2"></i> 844-907-4450</a>
+            <button id="menu-toggle" class="lg:hidden text-white" aria-label="Open menu"><i data-lucide="menu" class="w-9 h-9"></i></button>
+        </div>
+    </div>
+    <div id="mobile-menu" class="hidden absolute top-full left-0 w-full bg-[var(--card-bg)] shadow-2xl flex-col p-8 gap-6 text-[var(--text-primary)]"></div>
+</header>
+
+<main>
+    <!-- 1. INTRO (the old hero and intro combined): headline, photo, "Join the Digital Revolution" box, and story.
+         To change the photo, edit the src and alt on the first img below. -->
+    <section class="pb-20" style="padding-top: calc(var(--header-height) + 50px);">
+        <div class="main-container">
+            <h1 class="hero-title mb-12">Transform Your Business with Digital Sign Sales, Indoor &amp; Outdoor Advertising, and Trailer Rentals</h1>
+            <hr class="red-rule">
+            <div class="grid lg:grid-cols-2 gap-14 items-stretch">
+                <div>
+                    <div class="intro-photo">
+                        <img src="./images/S&K-Sign-in-Sky.png" alt="Outdoor digital sign from S&K Venture Signs">
+                    </div>
+                </div>
+                <div>
+                    <h2 class="intro-title">Digital Signs, Advertising, and Rentals in Effingham and Surrounding Illinois Counties</h2>
+                    <div class="gold-rule"></div>
+                    <p class="mb-4 text-base leading-relaxed">S&amp;K Venture Signs, based in Effingham, Illinois, helps businesses and organizations get noticed with digital signs. We offer digital billboard advertising along major Illinois thoroughfares, indoor and outdoor advertising, mobile digital sign trailer rentals for events and festivals, and LED digital sign sales with NovaStar control systems.</p>
+                    <p class="mb-4 text-base leading-relaxed">If you're buying a sign, we help you choose it, set it up, and learn to run it, with operator training included, in person or remotely. Installation can be arranged through local contractors. If you already have a sign that isn't working, we repair and maintain digital signs, including NovaStar-controlled LED displays.</p>
+                    <p class="mb-8 text-base leading-relaxed">We serve Effingham County and surrounding counties, and our advertising reaches drivers along busy Illinois roads. Call <a href="tel:+18449074450" class="font-bold underline">844-907-4450</a> or request a quote to get started.</p>
+                    <div class="flex flex-wrap gap-4">
+                        <a href="mailto:Scott.Robinson@skventuresigns.com" class="btn-gold">Request a Quote</a>
+                        <a href="./Contact.html" class="btn-outline">Contact Us</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 3. SERVICE TEASERS: each links to its own page or section (see anchors below) -->
+    <section class="py-20 bg-[#3E0100]">
+        <div class="main-container">
+            <!-- Tagline image now sits above the cards -->
+            <img src="./images/SK-tagline.png" alt="Digital sign advertising, rentals, sales, and repair" class="w-full max-w-[950px] mx-auto mb-12">
+            <div class="svc-grid grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <div class="svc">
+                    <!-- PHOTO PLACEHOLDER: swap the src for your own picture -->
+                    <img src="./images/S&K-Sign-in-Sky.png" alt="S&K Venture Signs digital billboard advertising display">
+                    <h3>Advertising</h3>
+                    <p>Put your message in front of drivers on digital billboards along major Illinois roads, with indoor and outdoor options. We show you where your ad can run and help you get started.</p>
+                    <a class="more" href="./Locations.html">See Available Locations</a>
+                </div>
+                <div class="svc">
+                    <!-- PHOTO PLACEHOLDER: swap the src for your own picture -->
+                    <img src="./images/trailer.png" alt="Mobile digital sign trailer available for rental and leasing">
+                    <h3>Rental and Leasing</h3>
+                    <p>Mobile digital sign trailers for community events, festivals, and special promotions. Flexible rental and leasing options to fit your marketing needs and budget.</p>
+                    <a class="more" href="./Services.html#rental">Rent a Sign Trailer</a>
+                </div>
+                <div class="svc">
+                    <!-- PHOTO PLACEHOLDER: swap the src for your own picture -->
+                    <img src="./images/sales.png" alt="LED digital sign for sale from S&K Venture Signs">
+                    <h3>Sales</h3>
+                    <p>Complete LED digital signs with NovaStar control systems. We help you choose, set up, and learn to run your sign, with operator training included, in person or remotely.</p>
+                    <a class="more" href="./Services.html#sales">Shop Digital Signs</a>
+                </div>
+                <div class="svc">
+                    <!-- PHOTO PLACEHOLDER: swap the src for your own picture -->
+                    <img src="./images/Repair.png" alt="Digital sign maintenance and repair service">
+                    <h3>Maintenance and Repair</h3>
+                    <p>Sign not working? We repair and maintain digital signs, including NovaStar-controlled LED displays, so your message keeps running.</p>
+                    <a class="more" href="./Services.html#repair">Get Sign Repair</a>
+                </div>
+            </div>
+            <h2 class="text-4xl md:text-5xl text-center mt-16 mb-3" style="color:#FFC627;">What We Do</h2>
+            <div class="gold-rule" style="margin: 0 auto 16px;"></div>
+            <p class="text-center text-white text-lg lg:whitespace-nowrap">Four ways S&amp;K Venture Signs helps you reach customers. Choose one to see the details.</p>
+        </div>
+    </section>
+
+    <!-- 4. CALL TO ACTION -->
+    <section class="py-20 text-center text-white" style="background-color: rgb(69,123,157);">
+        <div class="main-container">
+            <h2 class="text-4xl md:text-6xl mb-6">Unlock Your Advertising Potential</h2>
+            <p class="text-xl mb-10 max-w-3xl mx-auto">Ready to elevate your brand's visibility? Reach out to S&amp;K Venture Signs today for tailored digital solutions that meet your unique needs.</p>
+            <a href="mailto:Scott.Robinson@skventuresigns.com" class="inline-block bg-white text-blue-900 px-14 py-4 rounded-full font-black uppercase tracking-widest shadow-2xl border-4 border-blue-900">Request A Quote</a>
+        </div>
+    </section>
+</main>
+
+<footer id="main-footer">
+    <div class="main-container footer-grid">
+        <div class="footer-col"><p class="footer-label">Give us a call</p><div id="footer-phone-list"></div></div>
+        <div class="footer-col"><p class="footer-label">Send us an Email</p><div id="footer-email-list"></div></div>
+        <div class="footer-col"><p class="footer-label">Visit our office</p><div id="footer-address-container"></div></div>
+    </div>
+    <div class="main-container mt-10 pt-6 border-t border-white/10 text-center"><h5 class="font-bold opacity-50 text-sm tracking-widest uppercase text-white">&copy; 2026 S&amp;K VENTURE SIGNS</h5></div>
+</footer>
+
+<div id="phone-modal" class="sk-modal-overlay" onclick="closeModals()"><div class="sk-modal-content" onclick="event.stopPropagation()"><div class="bg-[#3E0100] p-8 text-[#FFC627] text-center font-serif text-2xl">Contact Specialist</div><div class="p-8" id="phone-options-container"></div><div class="p-6 text-center text-sm font-bold cursor-pointer" onclick="closeModals()">CANCEL</div></div></div>
+<div id="email-modal" class="sk-modal-overlay" onclick="closeModals()"><div class="sk-modal-content" onclick="event.stopPropagation()"><div class="bg-[#3E0100] p-8 text-[#FFC627] text-center font-serif text-2xl">Send Message</div><div class="p-8" id="email-options-container"></div><div class="p-6 text-center text-sm font-bold cursor-pointer" onclick="closeModals()">CANCEL</div></div></div>
+<div id="map-modal" class="sk-modal-overlay" onclick="closeModals()"><div class="sk-modal-content" onclick="event.stopPropagation()"><div class="bg-[#3E0100] p-8 text-[#FFC627] text-center font-serif text-2xl">Start Navigation</div><div class="p-8"><a id="link-gmaps" class="smart-option"><i data-lucide="map"></i> Google Maps</a><a id="link-amaps" class="smart-option"><i data-lucide="navigation"></i> Apple Maps</a><a id="link-waze" class="smart-option"><i data-lucide="navigation-2"></i> Waze Navigation</a></div><div class="p-6 text-center text-sm font-bold cursor-pointer" onclick="closeModals()">CANCEL</div></div></div>
+
+<script>
+    // Day/night theme (same auto rule as your current site)
+    function applyTheme() {
+        const h = new Date().getHours(), q = new URLSearchParams(location.search).get('theme'), dark = q ? (q === 'dark') : (h < 6 || h >= 19), r = document.documentElement.style;
+        document.body.classList.toggle('dark-mode', dark);
+        r.setProperty('--bg-primary', dark ? '#121212' : '#fcfcfc');
+        r.setProperty('--text-primary', dark ? '#e0e0e0' : '#333333');
+        r.setProperty('--card-bg', dark ? '#1e1e1e' : '#ffffff');
+        updateHeader();
+    }
+    function updateHeader() {
+        const header = document.getElementById('main-header'), logo = document.getElementById('header-logo');
+        const dark = document.body.classList.contains('dark-mode');
+        if (window.scrollY > 50) { header.classList.add('header-scrolled'); logo.src = dark ? "./images/S&K-Sign-White.png" : "./images/S&K-Sign-Black.png"; }
+        else { header.classList.remove('header-scrolled'); logo.src = "./images/S&K-Sign-White.png"; }
+    }
+    window.addEventListener('scroll', updateHeader);
+    window.addEventListener('DOMContentLoaded', () => { applyTheme(); if (typeof lucide !== 'undefined') lucide.createIcons(); });
+
+    // Contact popups (called by navigation.js footer links)
+    function closeModals() { document.querySelectorAll('.sk-modal-overlay').forEach(m => m.style.display = 'none'); }
+    function openPhoneSmartActions(num) {
+        const clean = num.replace(/\D/g, '');
+        document.getElementById('phone-options-container').innerHTML = `<a href="tel:${clean}" class="smart-option"><i data-lucide="phone"></i> Direct Call</a>`;
+        document.getElementById('phone-modal').style.display = 'flex'; lucide.createIcons();
+    }
+    function openEmailSmartActions(email) {
+        document.getElementById('email-options-container').innerHTML = `
+            <a href="mailto:${email}" class="smart-option"><i data-lucide="mail"></i> Default Client</a>
+            <a href="https://mail.google.com/mail/?view=cm&fs=1&to=${email}" class="smart-option"><i data-lucide="send"></i> Gmail Web</a>
+            <div onclick="navigator.clipboard.writeText('${email}'); closeModals();" class="smart-option"><i data-lucide="copy"></i> Copy Address</div>`;
+        document.getElementById('email-modal').style.display = 'flex'; lucide.createIcons();
+    }
+    function openMapSmartActions() {
+        const addr = encodeURIComponent(`${siteData.addressStreet} ${siteData.addressCity}`);
+        document.getElementById('link-gmaps').href = `https://maps.google.com/?q=${addr}`;
+        document.getElementById('link-amaps').href = `http://maps.apple.com/?daddr=${addr}&dirflg=d`;
+        document.getElementById('link-waze').href = `https://waze.com/ul?q=${addr}&navigate=yes`;
+        document.getElementById('map-modal').style.display = 'flex'; lucide.createIcons();
+    }
+</script>
+<script src="./navigation.js"></script>
+
+<noscript>
+    <nav aria-label="Site pages"><a href="index.html">Home</a> | <a href="Locations.html">Locations</a> | <a href="Services.html">Services</a> | <a href="Clients.html">Clients</a> | <a href="Contact.html">Contact Us</a></nav>
+    <p>S&amp;K Venture Signs, 607 W Clark Ave., Effingham, IL 62401</p>
+    <p>Phone: <a href="tel:+18449074450">844-907-4450</a> or <a href="tel:+16187084450">618-708-4450</a><br>Email: <a href="mailto:Scott.Robinson@skventuresigns.com">Scott.Robinson@skventuresigns.com</a></p>
+</noscript>
+</body>
+</html>
