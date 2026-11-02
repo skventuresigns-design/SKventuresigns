@@ -86,6 +86,8 @@
             --card-bg: #ffffff;
             --header-height: 125px;
             --header-scrolled-height: 75px;
+            --outline-color: transparent;
+            --outline-width: 1.5px;
         }
         html, body { overflow-x: hidden; font-family: 'Poppins', sans-serif; font-size: 14px; background: var(--bg-primary); color: var(--text-primary); line-height: 1.6; margin: 0; }
         h1, h2, h3, h4, h5 { font-family: 'Abril Fatface', cursive; line-height: 1.2; }
@@ -138,6 +140,15 @@
         .faq-item summary::after { content: "+"; position: absolute; right: 22px; top: 50%; transform: translateY(-50%); font-size: 26px; font-weight: 700; color: var(--sk-nav-gold); }
         .faq-item[open] summary::after { content: "\2212"; }
         .faq-item p { padding: 0 22px 20px; margin: 0; font-size: 15px; line-height: 1.7; }
+
+        /* Settings panel (Bright / Dark / outline) */
+        .theme-toggle-wrapper { position: fixed; top: 140px; right: 20px; z-index: 1001; display: flex; flex-direction: column; align-items: flex-end; gap: 10px; }
+        .theme-toggle-panel { background: var(--card-bg); padding: 15px; border-radius: 15px; box-shadow: 0 5px 15px rgba(0,0,0,.2); border: 2px solid var(--sk-gold); transition: all .4s cubic-bezier(.175,.885,.32,1.275); transform-origin: right top; }
+        .theme-toggle-panel.hidden-settings { transform: scale(0) translateX(50px); opacity: 0; pointer-events: none; }
+        .settings-toggle-btn { background: var(--sk-maroon); color: var(--sk-gold); width: 45px; height: 45px; border-radius: 12px; display: flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: 0 4px 10px rgba(0,0,0,.2); transition: all .3s ease; }
+        .settings-toggle-btn:hover { transform: rotate(45deg) scale(1.1); }
+        * { text-shadow: calc(var(--outline-width) * -1) calc(var(--outline-width) * -1) 0 var(--outline-color), var(--outline-width) calc(var(--outline-width) * -1) 0 var(--outline-color), calc(var(--outline-width) * -1) var(--outline-width) 0 var(--outline-color), var(--outline-width) var(--outline-width) 0 var(--outline-color); }
+        @media (max-width: 1024px) { .theme-toggle-wrapper { top: auto; bottom: 80px; } }
 
         /* Footer + modals */
         footer#main-footer { background: var(--sk-maroon); color: #fff; border-top: 5px solid var(--sk-separator); padding: 60px 0 30px; }
@@ -274,12 +285,32 @@
 </head>
 <body>
 
+<!-- Settings panel -->
+<div class="theme-toggle-wrapper">
+    <div class="settings-toggle-btn shadow-xl" onclick="toggleSettingsPanel()"><i data-lucide="settings"></i></div>
+    <div class="theme-toggle-panel hidden-settings" id="settings-panel">
+        <p class="font-bold text-xs mb-2 uppercase text-gray-500">System Preferences</p>
+        <div class="flex flex-col gap-2">
+            <button onclick="setTheme('light')" class="text-[10px] bg-gray-100 p-1 rounded" style="color:#333;">Bright</button>
+            <button onclick="setTheme('dark')" class="text-[10px] bg-gray-800 text-white p-1 rounded">Dark</button>
+            <button onclick="setTheme('auto')" class="text-[10px] border p-1 rounded">Match System</button>
+            <hr class="my-1">
+            <div class="flex flex-col gap-1">
+                <input type="color" id="outline-color-picker" onchange="updateOutlineColor(this.value)" value="#000000" class="w-full h-6 rounded cursor-pointer">
+                <button onclick="updateOutlineColor('transparent')" class="text-[8px] bg-red-100 text-red-800 rounded p-1 uppercase font-bold">No Outline</button>
+                <label class="text-[9px]">Outline Color</label>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 <header id="main-header" class="fixed top-0 left-0 w-full z-[1000] flex flex-col justify-center">
     <div class="main-container flex items-center justify-between h-full">
         <a href="./index.html"><img src="./images/S&K-Sign-White.png" alt="S&K Venture Signs" id="header-logo"></a>
         <nav class="hidden lg:flex flex-grow items-center justify-center px-10"><ul id="desktop-nav-root" class="flex items-center gap-8 xl:gap-12"></ul></nav>
         <div class="flex items-center gap-4">
-            <a href="tel:+18449074450" class="hidden sm:flex items-center bg-[#FFC627] text-[#3E0100] px-6 py-3 rounded-xl font-extrabold text-xs shadow-lg border-2 border-[#3E0100]" style="text-decoration:none;"><i data-lucide="phone" class="w-4 h-4 mr-2"></i> 844-907-4450</a>
+            <a href="tel:+18449074450" onclick="headerPhoneClick(event)" class="flex items-center bg-[#FFC627] text-[#3E0100] px-3 sm:px-6 py-3 rounded-xl font-extrabold uppercase text-xs shadow-lg hover:scale-105 transition-all border-2 border-[#3E0100]" style="text-decoration:none;" aria-label="Call S&amp;K Venture Signs or save our contact card"><i data-lucide="user-plus" class="w-4 h-4 sm:mr-2"></i><span class="hidden sm:inline">844-907-4450</span></a>
             <button id="menu-toggle" class="lg:hidden text-white" aria-label="Open menu"><i data-lucide="menu" class="w-9 h-9"></i></button>
         </div>
     </div>
@@ -449,15 +480,28 @@
 <div id="map-modal" class="sk-modal-overlay" onclick="closeModals()"><div class="sk-modal-content" onclick="event.stopPropagation()"><div class="bg-[#3E0100] p-8 text-[#FFC627] text-center font-serif text-2xl">Start Navigation</div><div class="p-8"><a id="link-gmaps" class="smart-option"><i data-lucide="map"></i> Google Maps</a><a id="link-amaps" class="smart-option"><i data-lucide="navigation"></i> Apple Maps</a><a id="link-waze" class="smart-option"><i data-lucide="navigation-2"></i> Waze Navigation</a></div><div class="p-6 text-center text-sm font-bold cursor-pointer" onclick="closeModals()">CANCEL</div></div></div>
 
 <script>
-    // Day/night theme (same auto rule as your current site)
-    function applyTheme() {
-        const h = new Date().getHours(), q = new URLSearchParams(location.search).get('theme'), dark = q ? (q === 'dark') : (h < 6 || h >= 19), r = document.documentElement.style;
+    // Theme + outline settings, remembered in cookies (same as your other pages)
+    function readCookies() { return document.cookie.split('; ').reduce((a, c) => { const [k, v] = c.split('='); a[k] = v; return a; }, {}); }
+    function setTheme(mode) {
+        const q = new URLSearchParams(location.search).get('theme');   // ?theme=light or ?theme=dark overrides, for testing
+        let target = (q === 'light' || q === 'dark') ? q : mode;
+        if (target === 'auto') {
+            const h = new Date().getHours();
+            target = (h < 6 || h >= 19 || window.matchMedia('(prefers-color-scheme: dark)').matches) ? 'dark' : 'light';
+        }
+        const dark = target === 'dark', r = document.documentElement.style;
         document.body.classList.toggle('dark-mode', dark);
         r.setProperty('--bg-primary', dark ? '#121212' : '#fcfcfc');
         r.setProperty('--text-primary', dark ? '#e0e0e0' : '#333333');
         r.setProperty('--card-bg', dark ? '#1e1e1e' : '#ffffff');
+        if (!q) document.cookie = `theme=${mode};max-age=31536000;path=/`;
         updateHeader();
     }
+    function updateOutlineColor(color) {
+        document.documentElement.style.setProperty('--outline-color', color);
+        document.cookie = `outline-color=${color};max-age=31536000;path=/`;
+    }
+    function toggleSettingsPanel() { document.getElementById('settings-panel').classList.toggle('hidden-settings'); }
     function updateHeader() {
         const header = document.getElementById('main-header'), logo = document.getElementById('header-logo');
         const dark = document.body.classList.contains('dark-mode');
@@ -465,7 +509,42 @@
         else { header.classList.remove('header-scrolled'); logo.src = "./images/S&K-Sign-White.png"; }
     }
     window.addEventListener('scroll', updateHeader);
-    window.addEventListener('DOMContentLoaded', () => { applyTheme(); if (typeof lucide !== 'undefined') lucide.createIcons(); });
+    window.addEventListener('DOMContentLoaded', () => {
+        const c = readCookies();
+        updateOutlineColor(c['outline-color'] || 'transparent');
+        setTheme(c['theme'] || 'auto');
+        if (typeof lucide !== 'undefined') lucide.createIcons();
+    });
+
+    // Header button: saves the S&K contact card (uses the phone, email and address from your Google Sheet)
+    function downloadSKContact() {
+        const d = (typeof siteData !== 'undefined') ? siteData : {};
+        const phones = (d.phones && d.phones.length) ? d.phones : ["844-907-4450", "618-708-4450"];
+        const work = phones.find(p => p.startsWith('844')) || phones[0];
+        const cell = phones.find(p => p.startsWith('618')) || phones[1] || phones[0];
+        const email = d.email || "Scott.Robinson@skventuresigns.com";
+        const street = d.addressStreet || "607 W Clark Ave.";
+        const parts = (d.addressCity || "Effingham, IL 62401").replace(',', '').split(' ');
+        const zip = parts.pop(), state = parts.pop(), city = parts.join(' ');
+        const vcard = ["BEGIN:VCARD", "VERSION:3.0", "FN:Scott Robinson", "ORG:S&K Venture Signs",
+            "TEL;TYPE=WORK,VOICE:" + work, "TEL;TYPE=CELL,VOICE:" + cell,
+            "EMAIL;TYPE=PREF,INTERNET:" + email,
+            "ADR;TYPE=WORK:;;" + street + ";" + city + ";" + state + ";" + zip + ";USA",
+            "URL:https://skventuresigns.com/",
+            "PHOTO;VALUE=URI:https://skventuresigns.com/images/S%26K-Sign-Black.png",
+            "END:VCARD"].join("\r\n");
+        const url = URL.createObjectURL(new Blob([vcard], { type: 'text/vcard;charset=utf-8' }));
+        const a = document.createElement('a');
+        a.href = url; a.download = 'Scott_Robinson_SKVenture.vcf';
+        document.body.appendChild(a); a.click(); document.body.removeChild(a);
+        setTimeout(() => URL.revokeObjectURL(url), 100);
+    }
+
+    // Header button: on a phone or tablet it saves the contact card; on a computer it opens the calling app
+    function headerPhoneClick(event) {
+        const touch = /Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent) || (navigator.maxTouchPoints > 1 && /Mac/.test(navigator.platform));
+        if (touch) { event.preventDefault(); downloadSKContact(); }
+    }
 
     // Contact popups (called by navigation.js footer links)
     function closeModals() { document.querySelectorAll('.sk-modal-overlay').forEach(m => m.style.display = 'none'); }
