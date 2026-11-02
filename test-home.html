@@ -66,6 +66,15 @@
         .svc a.more { display: block; text-align: center; padding: 12px; border-radius: 9999px; font-weight: 800; font-size: 12px; letter-spacing: .08em; text-transform: uppercase; text-decoration: none; color: #fff; background: #2A0001; border: 4px solid var(--sk-gold); }
         .svc:nth-child(even) a.more { background: #023456; border-color: #fff; }
 
+        /* FAQ */
+        .faq-item { background: var(--card-bg); border: 2px solid var(--sk-gold); border-left: 8px solid var(--sk-maroon); border-radius: 16px; margin-bottom: 14px; box-shadow: 0 4px 14px rgba(0,0,0,.08); }
+        .faq-item summary { cursor: pointer; padding: 18px 56px 18px 22px; font-weight: 600; font-size: 17px; list-style: none; position: relative; color: var(--sk-maroon); }
+        .dark-mode .faq-item summary { color: var(--sk-gold); }
+        .faq-item summary::-webkit-details-marker { display: none; }
+        .faq-item summary::after { content: "+"; position: absolute; right: 22px; top: 50%; transform: translateY(-50%); font-size: 26px; font-weight: 700; color: var(--sk-nav-gold); }
+        .faq-item[open] summary::after { content: "\2212"; }
+        .faq-item p { padding: 0 22px 20px; margin: 0; font-size: 15px; line-height: 1.7; }
+
         /* Footer + modals */
         footer#main-footer { background: var(--sk-maroon); color: #fff; border-top: 5px solid var(--sk-separator); padding: 60px 0 30px; }
         .footer-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 40px; text-align: center; }
@@ -86,6 +95,118 @@
             .intro-photo::before { inset: 12px -8px -12px 8px; }
         }
     </style>
+    <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "What does S&K Venture Signs do?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "We sell and support indoor and outdoor LED digital signs, run digital billboard advertising along major Illinois roads, rent mobile digital sign trailers for events and festivals, and repair digital signs. We're based in Effingham, Illinois."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What areas do you serve?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "We currently serve Effingham County and the surrounding Illinois counties, and we're always looking to expand our reach. If you're outside that area, call us to talk about your project."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How do I advertise on one of your digital billboards?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Look at our Locations page to see where ads can run, then call or request a quote. We'll help you get your message on the sign."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Can I rent a mobile digital sign trailer for an event?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. Anyone can rent one of our mobile digital sign trailers for an event, festival, or promotion. The only limit is availability, so call or request a quote with your date and location. We're willing to travel to your event, and a trip charge is added for the distance."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Do you sell complete LED digital signs?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. We sell complete indoor and outdoor LED signs, built as complete systems with NovaStar controls. Your sign will be fully working before we call the project complete."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is training included when I buy a sign?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. Operator training is included, in person or remotely depending on what you need. We show you how to run the sign and upload your own ads."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Do you install the sign?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "You can install the sign yourself or have S&K install it for you. We support the local community by using local contractors whenever possible. The frame, concrete, electrical work, and permits can be quoted together with the sign as a package, or separately if you're handling the installation yourself."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Do you design the ads for my sign?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "We don't design ads ourselves, but we can point you to a designer who offers packages for businesses. We'll show you how to upload your finished design to the sign."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Do you repair signs I didn't buy from you?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "We repair all digital signs to the best of our ability, as long as replacement parts and, when needed, technical support from the manufacturer are available. Technical support isn't always required, but parts availability is. Call us and describe what's wrong, and we'll tell you whether we can help."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What warranty comes with a sign?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "S&K provides a five-year labor warranty that runs at the same time as the manufacturer's five-year parts warranty."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What does a digital sign cost?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Every project is different. The price depends on the size of the sign, the pixel pitch, whether electrical work is needed, the frame design and where the sign is placed (one post, two posts, or a base), the concrete, and government permits and ordinances. Call or request a quote based on your project."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How do I get a quote?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Call 844-907-4450, email Scott.Robinson@skventuresigns.com, or use the Request a Quote button on this page."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What are your hours?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Our office hours are Monday through Friday, 10 AM to 7 PM, and Saturday by appointment."
+      }
+    }
+  ]
+}
+    </script>
 </head>
 <body>
 
@@ -175,6 +296,68 @@
             <h2 class="text-4xl md:text-5xl text-center mt-16 mb-3" style="color:#FFC627;">What We Do</h2>
             <div class="gold-rule" style="margin: 0 auto 16px;"></div>
             <p class="text-center text-white text-lg lg:whitespace-nowrap">Four ways S&amp;K Venture Signs helps you reach customers. Choose one to see the details.</p>
+        </div>
+    </section>
+
+    <!-- FAQ: the same questions and answers are repeated in the FAQPage code in the head. Edit both together. -->
+    <section class="py-20">
+        <div class="main-container">
+            <h2 class="intro-title text-center mb-3" style="font-size: 38px;">Frequently Asked Questions</h2>
+            <div class="gold-rule" style="margin: 0 auto 36px;"></div>
+            <div class="max-w-5xl mx-auto">
+                <details class="faq-item">
+                    <summary>What does S&amp;K Venture Signs do?</summary>
+                    <p>We sell and support indoor and outdoor LED digital signs, run digital billboard advertising along major Illinois roads, rent mobile digital sign trailers for events and festivals, and repair digital signs. We're based in Effingham, Illinois.</p>
+                </details>
+                <details class="faq-item">
+                    <summary>What areas do you serve?</summary>
+                    <p>We currently serve Effingham County and the surrounding Illinois counties, and we're always looking to expand our reach. If you're outside that area, call us to talk about your project.</p>
+                </details>
+                <details class="faq-item">
+                    <summary>How do I advertise on one of your digital billboards?</summary>
+                    <p>Look at our Locations page to see where ads can run, then call or request a quote. We'll help you get your message on the sign.</p>
+                </details>
+                <details class="faq-item">
+                    <summary>Can I rent a mobile digital sign trailer for an event?</summary>
+                    <p>Yes. Anyone can rent one of our mobile digital sign trailers for an event, festival, or promotion. The only limit is availability, so call or request a quote with your date and location. We're willing to travel to your event, and a trip charge is added for the distance.</p>
+                </details>
+                <details class="faq-item">
+                    <summary>Do you sell complete LED digital signs?</summary>
+                    <p>Yes. We sell complete indoor and outdoor LED signs, built as complete systems with NovaStar controls. Your sign will be fully working before we call the project complete.</p>
+                </details>
+                <details class="faq-item">
+                    <summary>Is training included when I buy a sign?</summary>
+                    <p>Yes. Operator training is included, in person or remotely depending on what you need. We show you how to run the sign and upload your own ads.</p>
+                </details>
+                <details class="faq-item">
+                    <summary>Do you install the sign?</summary>
+                    <p>You can install the sign yourself or have S&amp;K install it for you. We support the local community by using local contractors whenever possible. The frame, concrete, electrical work, and permits can be quoted together with the sign as a package, or separately if you're handling the installation yourself.</p>
+                </details>
+                <details class="faq-item">
+                    <summary>Do you design the ads for my sign?</summary>
+                    <p>We don't design ads ourselves, but we can point you to a designer who offers packages for businesses. We'll show you how to upload your finished design to the sign.</p>
+                </details>
+                <details class="faq-item">
+                    <summary>Do you repair signs I didn't buy from you?</summary>
+                    <p>We repair all digital signs to the best of our ability, as long as replacement parts and, when needed, technical support from the manufacturer are available. Technical support isn't always required, but parts availability is. Call us and describe what's wrong, and we'll tell you whether we can help.</p>
+                </details>
+                <details class="faq-item">
+                    <summary>What warranty comes with a sign?</summary>
+                    <p>S&amp;K provides a five-year labor warranty that runs at the same time as the manufacturer's five-year parts warranty.</p>
+                </details>
+                <details class="faq-item">
+                    <summary>What does a digital sign cost?</summary>
+                    <p>Every project is different. The price depends on the size of the sign, the pixel pitch, whether electrical work is needed, the frame design and where the sign is placed (one post, two posts, or a base), the concrete, and government permits and ordinances. Call or request a quote based on your project.</p>
+                </details>
+                <details class="faq-item">
+                    <summary>How do I get a quote?</summary>
+                    <p>Call 844-907-4450, email Scott.Robinson@skventuresigns.com, or use the Request a Quote button on this page.</p>
+                </details>
+                <details class="faq-item">
+                    <summary>What are your hours?</summary>
+                    <p>Our office hours are Monday through Friday, 10 AM to 7 PM, and Saturday by appointment.</p>
+                </details>
+            </div>
         </div>
     </section>
 
