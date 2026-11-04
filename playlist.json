@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-11-03T01:51:06.112Z",
+  "lastUpdated": "2026-11-04T21:51:05.748Z",
   "locations": {
     "oliver": [
       {
@@ -313,8 +313,8 @@
         "expirationDate": ""
       },
       {
-        "advertiser": "Programmattic 2",
-        "imageUrl": "./images/Wanted.png",
+        "advertiser": "KW McWilliams",
+        "imageUrl": "./images/McWilliams.jpg",
         "duration": 8,
         "expirationDate": ""
       },
@@ -352,7 +352,7 @@
         "advertiser": "Clay Brook Excavating",
         "imageUrl": "./images/Claybrook-Excavating.jpg",
         "duration": 8,
-        "expirationDate": "2026-11-15"
+        "expirationDate": ""
       },
       {
         "advertiser": "Time and Weather",
