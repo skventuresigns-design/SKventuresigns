@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-11-03T23:51:06.519Z",
+  "lastUpdated": "2026-11-04T00:51:06.156Z",
   "locations": {
     "oliver": [
       {
@@ -352,7 +352,7 @@
         "advertiser": "Clay Brook Excavating",
         "imageUrl": "./images/Claybrook-Excavating.jpg",
         "duration": 8,
-        "expirationDate": "2026-11-15"
+        "expirationDate": ""
       },
       {
         "advertiser": "Time and Weather",
