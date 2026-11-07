@@ -443,6 +443,7 @@
     let interactionTimer = null;
     let currentTenMinTracker = null;
     let rotationTimer = null;
+    let reportingEnabled = false;
 
     function isLocationOpen() {
         if (!activeLocation.hours || activeLocation.hours === '24/7') {
@@ -475,6 +476,7 @@
         if (typeof gtag !== 'function' || !adItem) return;
         if (!isLocationOpen()) return;
         if (urlParams.get('test') === 'true' || urlParams.get('preview') === 'true') return;
+        if (!reportingEnabled) return;
 
         gtag('event', 'billboard_ad_play', {
             'event_category': 'Digital Billboard Impressions',
@@ -541,6 +543,19 @@ async function loadPlaylist(isBackgroundUpdate = false) {
         if (!res.ok) throw new Error("HTTP error");
 
         const data = await res.json();
+
+         // Read this location's reporting permission from playlist-test.json.
+        const locationSetting =
+            data.locationSettings && data.locationSettings[activeTown];
+
+        reportingEnabled = !!(
+            locationSetting && locationSetting.reportingEnabled === true
+        );
+
+        console.log(
+            'Reporting Enabled for ' + activeTown + ': ' + reportingEnabled
+        );
+
         const locSource = data.locations || data;
 
         let freshQueue = [];
