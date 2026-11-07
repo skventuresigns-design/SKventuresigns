@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-11-07T04:38:55.605Z",
+  "lastUpdated": "2026-11-07T04:57:37.162Z",
   "locations": {
     "xenia": [
       {
@@ -15,13 +15,6 @@
         "imageUrl": "./images/Budds-Contracting.png",
         "activeDate": "",
         "expirationDate": ""
-      },
-      {
-        "position": 3,
-        "advertiser": "skadvertise",
-        "imageUrl": "./images/Wanted.png",
-        "activeDate": "",
-        "expirationDate": "2026-11-15"
       },
       {
         "position": 3,
@@ -75,15 +68,8 @@
       {
         "position": 10,
         "advertiser": "SK 100",
-        "imageUrl": "./images/SK100.png",
-        "activeDate": "",
-        "expirationDate": "2027-07-20"
-      },
-      {
-        "position": 10,
-        "advertiser": "SK 100",
         "imageUrl": "./images/Wanted.png",
-        "activeDate": "2027-07-21",
+        "activeDate": "",
         "expirationDate": ""
       },
       {
@@ -123,16 +109,9 @@
       },
       {
         "position": 16,
-        "advertiser": "Wesselman",
-        "imageUrl": "./images/Wesselman-Roofing.png",
-        "activeDate": "",
-        "expirationDate": "2027-05-31"
-      },
-      {
-        "position": 16,
         "advertiser": "S&K Ventures",
         "imageUrl": "./images/SKRecycle.png",
-        "activeDate": "2027-06-01",
+        "activeDate": "",
         "expirationDate": ""
       },
       {
