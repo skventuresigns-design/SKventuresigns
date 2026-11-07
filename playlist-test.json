@@ -1,0 +1,168 @@
+{
+  "lastUpdated": "2026-11-07T04:38:55.605Z",
+  "locations": {
+    "xenia": [
+      {
+        "position": 1,
+        "advertiser": "SK Promote",
+        "imageUrl": "./images/SK-Promote.png",
+        "activeDate": "",
+        "expirationDate": ""
+      },
+      {
+        "position": 2,
+        "advertiser": "Budds",
+        "imageUrl": "./images/Budds-Contracting.png",
+        "activeDate": "",
+        "expirationDate": ""
+      },
+      {
+        "position": 3,
+        "advertiser": "skadvertise",
+        "imageUrl": "./images/Wanted.png",
+        "activeDate": "",
+        "expirationDate": "2026-11-15"
+      },
+      {
+        "position": 3,
+        "advertiser": "SK Fair 4",
+        "imageUrl": "./images/SKFair4.png",
+        "activeDate": "2026-11-16",
+        "expirationDate": ""
+      },
+      {
+        "position": 4,
+        "advertiser": "Suzies Pies",
+        "imageUrl": "./images/Suzie-Fried-Pies.png",
+        "activeDate": "",
+        "expirationDate": ""
+      },
+      {
+        "position": 5,
+        "advertiser": "Stephy Breakfast",
+        "imageUrl": "./images/Stephy-Breakfast.jpg",
+        "activeDate": "",
+        "expirationDate": ""
+      },
+      {
+        "position": 6,
+        "advertiser": "SK Fair 2",
+        "imageUrl": "./images/SKFair2.png",
+        "activeDate": "",
+        "expirationDate": ""
+      },
+      {
+        "position": 7,
+        "advertiser": "Stephy Karaoke",
+        "imageUrl": "./images/Karaoke.png",
+        "activeDate": "",
+        "expirationDate": ""
+      },
+      {
+        "position": 8,
+        "advertiser": "Autumn Disability",
+        "imageUrl": "./images/AutumnDisability.png",
+        "activeDate": "",
+        "expirationDate": ""
+      },
+      {
+        "position": 9,
+        "advertiser": "Equity Realty",
+        "imageUrl": "./images/Equity-Reality.png",
+        "activeDate": "",
+        "expirationDate": ""
+      },
+      {
+        "position": 10,
+        "advertiser": "SK 100",
+        "imageUrl": "./images/SK100.png",
+        "activeDate": "",
+        "expirationDate": "2027-07-20"
+      },
+      {
+        "position": 10,
+        "advertiser": "SK 100",
+        "imageUrl": "./images/Wanted.png",
+        "activeDate": "2027-07-21",
+        "expirationDate": ""
+      },
+      {
+        "position": 11,
+        "advertiser": "Thursday Special",
+        "imageUrl": "./images/Thursday-Special.jpeg",
+        "activeDate": "",
+        "expirationDate": ""
+      },
+      {
+        "position": 12,
+        "advertiser": "Bike-n-Hike",
+        "imageUrl": "./images/Bike-n-Hike.png",
+        "activeDate": "",
+        "expirationDate": "2027-05-01"
+      },
+      {
+        "position": 13,
+        "advertiser": "Friday Special",
+        "imageUrl": "./images/Weekend-Special.jpeg",
+        "activeDate": "",
+        "expirationDate": ""
+      },
+      {
+        "position": 14,
+        "advertiser": "Fish",
+        "imageUrl": "./images/Fish.png",
+        "activeDate": "",
+        "expirationDate": ""
+      },
+      {
+        "position": 15,
+        "advertiser": "skadvertise",
+        "imageUrl": "./images/Wanted.png",
+        "activeDate": "",
+        "expirationDate": ""
+      },
+      {
+        "position": 16,
+        "advertiser": "Wesselman",
+        "imageUrl": "./images/Wesselman-Roofing.png",
+        "activeDate": "",
+        "expirationDate": "2027-05-31"
+      },
+      {
+        "position": 16,
+        "advertiser": "S&K Ventures",
+        "imageUrl": "./images/SKRecycle.png",
+        "activeDate": "2027-06-01",
+        "expirationDate": ""
+      },
+      {
+        "position": 17,
+        "advertiser": "Hermans-Habitat",
+        "imageUrl": "./images/Hermans-Habitat.png",
+        "activeDate": "",
+        "expirationDate": ""
+      },
+      {
+        "position": 18,
+        "advertiser": "Tad Brown Construction",
+        "imageUrl": "./images/Tad-Brown-Construction.jpeg",
+        "activeDate": "",
+        "expirationDate": ""
+      },
+      {
+        "position": 19,
+        "advertiser": "skadvertise",
+        "imageUrl": "./preview.html",
+        "activeDate": "",
+        "expirationDate": ""
+      },
+      {
+        "position": 20,
+        "advertiser": "Scripture",
+        "imageUrl": "./images/Scripture.jpg",
+        "activeDate": "",
+        "expirationDate": ""
+      }
+    ]
+  }
+}
