@@ -531,111 +531,160 @@
         return 'image';
     }
 
-    async function loadPlaylist(isBackgroundUpdate = false) {
+   
+async function loadPlaylist(isBackgroundUpdate = false) {
+    try {
+        const res = await fetch(
+            `https://skventuresigns.com/playlist-test.json?t=${Date.now()}`
+        );
+
+        if (!res.ok) throw new Error("HTTP error");
+
+        const data = await res.json();
+        const locSource = data.locations || data;
+
+        let freshQueue = [];
+
+        if (locSource && Array.isArray(locSource[activeTown])) {
+            freshQueue = locSource[activeTown];
+        } else if (locSource && typeof locSource === 'object') {
+            const availableKey = Object.keys(locSource).find(
+                k => k.replace(/[^a-z0-9]/g, '') === activeTown
+            );
+
+            if (availableKey) freshQueue = locSource[availableKey];
+        } else if (Array.isArray(data)) {
+            freshQueue = data;
+        }
+
+        // Get today's date using this billboard's local time zone.
+        let todayStr = '';
+
         try {
-            const res = await fetch(`https://skventuresigns.com/playlist.json?t=${Date.now()}`);
-            if (!res.ok) throw new Error("HTTP error");
-            const data = await res.json();
+            const nowTz = new Date(
+                new Date().toLocaleString('en-US', {
+                    timeZone: targetTimeZone
+                })
+            );
 
-            let freshQueue = [];
-            const locSource = data.locations || data;
-
-            if (locSource && Array.isArray(locSource[activeTown])) {
-                freshQueue = locSource[activeTown];
-            } else if (locSource && typeof locSource === 'object') {
-                const availableKey = Object.keys(locSource).find(k => k.replace(/[^a-z0-9]/g, '') === activeTown);
-                if (availableKey) freshQueue = locSource[availableKey];
-            } else if (Array.isArray(data)) {
-                freshQueue = data;
-            }
-
-            let todayStr = "";
-            try {
-                const nowTz = new Date(new Date().toLocaleString("en-US", { timeZone: targetTimeZone }));
-                const y = nowTz.getFullYear();
-                const m = String(nowTz.getMonth() + 1).padStart(2, '0');
-                const d = String(nowTz.getDate()).padStart(2, '0');
-                todayStr = `${y}-${m}-${d}`;
-            } catch (e) {
-                const now = new Date();
-                todayStr = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
-            }
-
-            const parsedQueue = freshQueue.filter(item => {
-                if (!item.expirationDate || item.expirationDate.toString().trim() === '') return true;
-
-                let exp = item.expirationDate.toString().trim();
-                if (exp.includes('/')) {
-                    const parts = exp.split('/');
-                    if (parts.length === 3) {
-                        const m = parts[0].padStart(2, '0');
-                        const d = parts[1].padStart(2, '0');
-                        const y = parts[2].length === 2 ? `20${parts[2]}` : parts[2];
-                        exp = `${y}-${m}-${d}`;
-                    }
-                }
-                
-                return exp >= todayStr;
-            }).map(item => {
-                const cleanUrl = item.imageUrl || item.url || item.image || '';
-                return {
-                    url: cleanUrl,
-                    type: detectMediaType(cleanUrl),
-                    name: item.advertiser || item.name || 'Direct Local Ad'
-                };
-            }).filter(item => item.url !== '');
-
-            if (parsedQueue.length === 0) {
-                parsedQueue.push({
-                    type: 'house',
-                    headline: "ADVERTISE HERE",
-                    subhead: "CALL 844-907-4450",
-                    name: "S&K House Ad"
-                });
-            }
-
-            currentAdQueue = parsedQueue;
-
-            if (!isBackgroundUpdate) {
-                renderSlides(0);
-            } else {
-                updateSlidesSilently();
-            }
+            todayStr =
+                `${nowTz.getFullYear()}-` +
+                `${String(nowTz.getMonth() + 1).padStart(2, '0')}-` +
+                `${String(nowTz.getDate()).padStart(2, '0')}`;
         } catch (e) {
-            console.warn("Playlist load error:", e);
-        }
-    }
+            const now = new Date();
 
-    function createMediaNode(item) {
-        if (item.type === 'video') {
-            const video = document.createElement('video');
-            video.src = item.url;
-            video.autoplay = true;
-            video.muted = true;
-            video.loop = false;
-            video.playsInline = true;
-            video.setAttribute('playsinline', '');
-            video.setAttribute('webkit-playsinline', '');
-            video.setAttribute('referrerpolicy', 'no-referrer');
-            return video;
-        } else if (item.type === 'html') {
-            const obj = document.createElement('object');
-            obj.data = item.url;
-            obj.type = 'text/html';
-            return obj;
-        } else if (item.type === 'house') {
-            const house = document.createElement('div');
-            house.className = 'sk-house-slide';
-            house.innerHTML = `<h1>${item.headline}</h1><p>${item.subhead}</p>`;
-            return house;
-        } else {
-            const image = document.createElement('img');
-            image.src = item.url;
-            image.setAttribute('referrerpolicy', 'no-referrer');
-            image.setAttribute('loading', 'eager');
-            return image;
+            todayStr =
+                `${now.getFullYear()}-` +
+                `${String(now.getMonth() + 1).padStart(2, '0')}-` +
+                `${String(now.getDate()).padStart(2, '0')}`;
         }
+
+        // Select the currently valid ad for each of the 20 positions.
+        const parsedQueue = [];
+
+        for (let position = 1; position <= 20; position++) {
+            const candidates = freshQueue
+                .filter(item => Number(item.position) === position)
+                .filter(item => {
+                    const start = String(item.activeDate || '').trim();
+                    const end = String(item.expirationDate || '').trim();
+
+                    const hasStarted = !start || start <= todayStr;
+                    const hasNotExpired = !end || end >= todayStr;
+
+                    return hasStarted && hasNotExpired;
+                })
+                // If records overlap, prefer the one with the latest start date.
+                .sort((a, b) =>
+                    String(b.activeDate || '').localeCompare(
+                        String(a.activeDate || '')
+                    )
+                );
+
+            if (candidates.length > 0) {
+                const item = candidates[0];
+                const cleanUrl =
+                    item.imageUrl || item.url || item.image || '';
+
+                if (cleanUrl) {
+                    parsedQueue.push({
+                        position: position,
+                        url: cleanUrl,
+                        type: detectMediaType(cleanUrl),
+                        name: item.advertiser || item.name || 'Direct Local Ad'
+                    });
+
+                    continue;
+                }
+            }
+
+            // No currently active ad for this position: show the default page.
+            parsedQueue.push({
+                position: position,
+                url: './preview.html',
+                type: 'html',
+                name: 'S&K Default Display'
+            });
+        }
+
+        currentAdQueue = parsedQueue;
+
+        if (!isBackgroundUpdate) {
+            renderSlides(0);
+        } else {
+            updateSlidesSilently();
+        }
+
+    } catch (e) {
+        console.warn('Playlist load error:', e);
     }
+}
+ 
+
+   
+function createMediaNode(item) {
+    if (item.type === 'video') {
+        const video = document.createElement('video');
+        video.src = item.url;
+        video.autoplay = true;
+        video.muted = true;
+        video.loop = false;
+        video.playsInline = true;
+        video.setAttribute('playsinline', '');
+        video.setAttribute('webkit-playsinline', '');
+        video.setAttribute('referrerpolicy', 'no-referrer');
+        return video;
+
+    } else if (item.type === 'html') {
+        const obj = document.createElement('object');
+
+        // Automatically pass this billboard's location to preview.html.
+        const htmlUrl = new URL(item.url, window.location.href);
+
+        if (htmlUrl.pathname.toLowerCase().endsWith('/preview.html')) {
+            htmlUrl.searchParams.set('location', activeTown);
+        }
+
+        obj.data = htmlUrl.toString();
+        obj.type = 'text/html';
+        return obj;
+
+    } else if (item.type === 'house') {
+        const house = document.createElement('div');
+        house.className = 'sk-house-slide';
+        house.innerHTML = `<h1>${item.headline}</h1><p>${item.subhead}</p>`;
+        return house;
+
+    } else {
+        const image = document.createElement('img');
+        image.src = item.url;
+        image.setAttribute('referrerpolicy', 'no-referrer');
+        image.setAttribute('loading', 'eager');
+        return image;
+    }
+}
+
 
     function renderSlides(startIndex = 0) {
         const viewport = document.getElementById('sk-ad-viewport');
