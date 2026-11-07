@@ -1,5 +1,10 @@
 {
-  "lastUpdated": "2026-11-07T20:46:29.471Z",
+  "lastUpdated": "2026-11-07T21:33:36.126Z",
+  "locationSettings": {
+    "xenia": {
+      "reportingEnabled": true
+    }
+  },
   "locations": {
     "xenia": [
       {
