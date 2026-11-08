@@ -1,11 +1,317 @@
 {
-  "lastUpdated": "2026-11-07T21:33:36.126Z",
+  "lastUpdated": "2026-11-08T00:28:15.652Z",
   "locationSettings": {
+    "oliver": {
+      "reportingEnabled": false
+    },
+    "altamont": {
+      "reportingEnabled": false
+    },
+    "claycity": {
+      "reportingEnabled": false
+    },
     "xenia": {
       "reportingEnabled": true
+    },
+    "brownstown": {
+      "reportingEnabled": false
+    },
+    "desoto": {
+      "reportingEnabled": false
+    },
+    "floratv": {
+      "reportingEnabled": false
+    },
+    "xeniatv": {
+      "reportingEnabled": false
     }
   },
   "locations": {
+    "oliver": [
+      {
+        "position": 1,
+        "advertiser": "American Flag",
+        "imageUrl": "./images/AmericanFlag.mp4",
+        "activeDate": "",
+        "expirationDate": ""
+      },
+      {
+        "position": 2,
+        "advertiser": "Maurer Storage",
+        "imageUrl": "./images/Maurer-Storage.jpg",
+        "activeDate": "",
+        "expirationDate": ""
+      },
+      {
+        "position": 3,
+        "advertiser": "Rumpke Recycling",
+        "imageUrl": "./images/Rumpke.png",
+        "activeDate": "",
+        "expirationDate": ""
+      },
+      {
+        "position": 4,
+        "advertiser": "Tingley Roofing",
+        "imageUrl": "./images/Tingley-Roofing.png",
+        "activeDate": "",
+        "expirationDate": ""
+      },
+      {
+        "position": 5,
+        "advertiser": "S&K Ventures",
+        "imageUrl": "./images/skadvertise.png",
+        "activeDate": "",
+        "expirationDate": ""
+      },
+      {
+        "position": 6,
+        "advertiser": "Programmattic 1",
+        "imageUrl": "./images/Wanted.png",
+        "activeDate": "",
+        "expirationDate": ""
+      },
+      {
+        "position": 7,
+        "advertiser": "R & B Auctions",
+        "imageUrl": "./images/RandB-Ad.png",
+        "activeDate": "",
+        "expirationDate": ""
+      },
+      {
+        "position": 8,
+        "advertiser": "Hometown Appliance",
+        "imageUrl": "./images/Hometown-Appliance.png",
+        "activeDate": "",
+        "expirationDate": ""
+      },
+      {
+        "position": 9,
+        "advertiser": "JMS Trucking & Exacvating",
+        "imageUrl": "./images/Jms-Trucking-and-Excavating.png",
+        "activeDate": "",
+        "expirationDate": ""
+      },
+      {
+        "position": 10,
+        "advertiser": "Harper Tire",
+        "imageUrl": "./images/Harper-Tire.png",
+        "activeDate": "",
+        "expirationDate": ""
+      },
+      {
+        "position": 11,
+        "advertiser": "Wabash Communiations",
+        "imageUrl": "./images/wabash.png",
+        "activeDate": "",
+        "expirationDate": ""
+      },
+      {
+        "position": 12,
+        "advertiser": "Clay Brook Excavating",
+        "imageUrl": "./images/Claybrook-Excavating.jpg",
+        "activeDate": "",
+        "expirationDate": ""
+      },
+      {
+        "position": 13,
+        "advertiser": "Programmattic 2",
+        "imageUrl": "./images/Wanted.png",
+        "activeDate": "",
+        "expirationDate": ""
+      },
+      {
+        "position": 14,
+        "advertiser": "Pat Burt",
+        "imageUrl": "./images/Pat-Burt.png",
+        "activeDate": "",
+        "expirationDate": ""
+      },
+      {
+        "position": 15,
+        "advertiser": "Paula Clawson",
+        "imageUrl": "./images/Paula-Clawson.png",
+        "activeDate": "",
+        "expirationDate": ""
+      },
+      {
+        "position": 16,
+        "advertiser": "Effingham County Chamber",
+        "imageUrl": "./images/Effingham-County-Chamber.png",
+        "activeDate": "",
+        "expirationDate": ""
+      },
+      {
+        "position": 17,
+        "advertiser": "Altamont Lumber",
+        "imageUrl": "./images/Altamont-Lumber.png",
+        "activeDate": "",
+        "expirationDate": ""
+      },
+      {
+        "position": 18,
+        "advertiser": "CJ Accounting",
+        "imageUrl": "./images/CJ-Accounting.png",
+        "activeDate": "",
+        "expirationDate": ""
+      },
+      {
+        "position": 19,
+        "advertiser": "Christopher Rural Health",
+        "imageUrl": "./images/Christopher-Rural-Health.jpg",
+        "activeDate": "",
+        "expirationDate": ""
+      },
+      {
+        "position": 20,
+        "advertiser": "Blip Slot",
+        "imageUrl": "./images/Wanted.png",
+        "activeDate": "",
+        "expirationDate": ""
+      }
+    ],
+    "altamont": [
+      {
+        "position": 1,
+        "advertiser": "American Flag",
+        "imageUrl": "./images/AmericanFlag.mp4",
+        "activeDate": "",
+        "expirationDate": ""
+      },
+      {
+        "position": 2,
+        "advertiser": "America 250",
+        "imageUrl": "./images/America-250.jpg",
+        "activeDate": "",
+        "expirationDate": ""
+      },
+      {
+        "position": 3,
+        "advertiser": "S&K Ventures",
+        "imageUrl": "./images/skadvertise.png",
+        "activeDate": "",
+        "expirationDate": ""
+      },
+      {
+        "position": 4,
+        "advertiser": "Effingham County Chamber",
+        "imageUrl": "./images/EffChamber2026.png",
+        "activeDate": "",
+        "expirationDate": ""
+      },
+      {
+        "position": 5,
+        "advertiser": "Gigfire",
+        "imageUrl": "./images/GigFire.png",
+        "activeDate": "",
+        "expirationDate": ""
+      },
+      {
+        "position": 6,
+        "advertiser": "Rumpke Recycling",
+        "imageUrl": "./images/Rumpke.png",
+        "activeDate": "",
+        "expirationDate": ""
+      },
+      {
+        "position": 7,
+        "advertiser": "Bike-n-Hike",
+        "imageUrl": "./images/Bike-n-Hike.png",
+        "activeDate": "",
+        "expirationDate": "2027-05-01"
+      },
+      {
+        "position": 8,
+        "advertiser": "CJ Accounting",
+        "imageUrl": "./images/CJ-Accounting.png",
+        "activeDate": "",
+        "expirationDate": ""
+      },
+      {
+        "position": 9,
+        "advertiser": "Programmattic 1",
+        "imageUrl": "./images/Wanted.png",
+        "activeDate": "",
+        "expirationDate": ""
+      },
+      {
+        "position": 10,
+        "advertiser": "Effingham Support Local",
+        "imageUrl": "./images/SupportLocal2026.png",
+        "activeDate": "",
+        "expirationDate": ""
+      },
+      {
+        "position": 11,
+        "advertiser": "Rumpke Recycling",
+        "imageUrl": "./images/Rumpke3.jpg",
+        "activeDate": "",
+        "expirationDate": ""
+      },
+      {
+        "position": 12,
+        "advertiser": "KW McWilliams",
+        "imageUrl": "./images/McWilliams.jpg",
+        "activeDate": "",
+        "expirationDate": ""
+      },
+      {
+        "position": 13,
+        "advertiser": "Wesselman Roofing",
+        "imageUrl": "./images/Wesselman-Roofing.png",
+        "activeDate": "",
+        "expirationDate": ""
+      },
+      {
+        "position": 14,
+        "advertiser": "Effingham Social 2026",
+        "imageUrl": "./images/EffSocial2026.png",
+        "activeDate": "",
+        "expirationDate": ""
+      },
+      {
+        "position": 15,
+        "advertiser": "Heartland Craft",
+        "imageUrl": "./images/HeartlandCraft.png",
+        "activeDate": "",
+        "expirationDate": "2026-12-31"
+      },
+      {
+        "position": 16,
+        "advertiser": "Gigfire",
+        "imageUrl": "./images/GigFire.png",
+        "activeDate": "",
+        "expirationDate": ""
+      },
+      {
+        "position": 17,
+        "advertiser": "Budds Contracting",
+        "imageUrl": "./images/Budds-Contracting.png",
+        "activeDate": "",
+        "expirationDate": ""
+      },
+      {
+        "position": 18,
+        "advertiser": "Clay Brook Excavating",
+        "imageUrl": "./images/Claybrook-Excavating.jpg",
+        "activeDate": "",
+        "expirationDate": ""
+      },
+      {
+        "position": 19,
+        "advertiser": "Time and Weather",
+        "imageUrl": "./preview.html",
+        "activeDate": "",
+        "expirationDate": ""
+      },
+      {
+        "position": 20,
+        "advertiser": "Autumn Disability",
+        "imageUrl": "./images/AutumnDisability.png",
+        "activeDate": "",
+        "expirationDate": ""
+      }
+    ],
+    "claycity": [],
     "xenia": [
       {
         "position": 1,
@@ -25,7 +331,7 @@
         "position": 3,
         "advertiser": "SK Fair 4",
         "imageUrl": "./images/SKFair4.png",
-        "activeDate": "2026-11-16",
+        "activeDate": "",
         "expirationDate": ""
       },
       {
@@ -144,6 +450,574 @@
         "position": 20,
         "advertiser": "Scripture",
         "imageUrl": "./images/Scripture.jpg",
+        "activeDate": "",
+        "expirationDate": ""
+      }
+    ],
+    "brownstown": [
+      {
+        "position": 1,
+        "advertiser": "S&K Ventures",
+        "imageUrl": "./images/skadvertise.png",
+        "activeDate": "",
+        "expirationDate": ""
+      },
+      {
+        "position": 2,
+        "advertiser": "Fayette Fair Queen 2026",
+        "imageUrl": "./images/Fayette-queen.png",
+        "activeDate": "",
+        "expirationDate": ""
+      },
+      {
+        "position": 3,
+        "advertiser": "Autumn Disability",
+        "imageUrl": "./images/AutumnDisability.png",
+        "activeDate": "",
+        "expirationDate": ""
+      },
+      {
+        "position": 4,
+        "advertiser": "SK Fair 2",
+        "imageUrl": "./images/SKFair2.png",
+        "activeDate": "",
+        "expirationDate": ""
+      },
+      {
+        "position": 5,
+        "advertiser": "Special Occasion",
+        "imageUrl": "./images/Special-Occasion.png",
+        "activeDate": "",
+        "expirationDate": ""
+      },
+      {
+        "position": 6,
+        "advertiser": "Gigfire",
+        "imageUrl": "./images/GigFire.png",
+        "activeDate": "",
+        "expirationDate": ""
+      },
+      {
+        "position": 7,
+        "advertiser": "Wanted",
+        "imageUrl": "./images/Wanted.png",
+        "activeDate": "",
+        "expirationDate": ""
+      },
+      {
+        "position": 8,
+        "advertiser": "Lifewave X39",
+        "imageUrl": "./images/SasseLifewaveX39.png",
+        "activeDate": "",
+        "expirationDate": "0206-12-31"
+      },
+      {
+        "position": 9,
+        "advertiser": "Fayette Jr Miss",
+        "imageUrl": "./images/Fayette-jr-miss.png",
+        "activeDate": "",
+        "expirationDate": ""
+      },
+      {
+        "position": 10,
+        "advertiser": "SK100",
+        "imageUrl": "./images/SK100.png",
+        "activeDate": "",
+        "expirationDate": ""
+      },
+      {
+        "position": 11,
+        "advertiser": "Fayette Little Miss",
+        "imageUrl": "./images/Fayette-Little-Miss.png",
+        "activeDate": "",
+        "expirationDate": ""
+      },
+      {
+        "position": 12,
+        "advertiser": "Bike-n-Hike",
+        "imageUrl": "./images/Bike-n-Hike.png",
+        "activeDate": "",
+        "expirationDate": "2027-05-01"
+      },
+      {
+        "position": 13,
+        "advertiser": "Wesselman Roofing",
+        "imageUrl": "./images/Wesselman-Roofing.png",
+        "activeDate": "",
+        "expirationDate": ""
+      },
+      {
+        "position": 14,
+        "advertiser": "Mandy Birthday",
+        "imageUrl": "./images/MandyMiller.png",
+        "activeDate": "",
+        "expirationDate": "2026-11-30"
+      },
+      {
+        "position": 15,
+        "advertiser": "XNet",
+        "imageUrl": "./images/XnetWifi.png",
+        "activeDate": "",
+        "expirationDate": "2026-12-31"
+      },
+      {
+        "position": 16,
+        "advertiser": "Time and Weather",
+        "imageUrl": "./preview.html",
+        "activeDate": "",
+        "expirationDate": ""
+      },
+      {
+        "position": 17,
+        "advertiser": "Gigfire",
+        "imageUrl": "./images/GigFire.png",
+        "activeDate": "",
+        "expirationDate": ""
+      },
+      {
+        "position": 18,
+        "advertiser": "Happy Thanksgiving",
+        "imageUrl": "./images/HappyThanksgiving.png",
+        "activeDate": "",
+        "expirationDate": "2026-11-30"
+      },
+      {
+        "position": 19,
+        "advertiser": "Grant Birthday",
+        "imageUrl": "./images/GrantWest.png",
+        "activeDate": "",
+        "expirationDate": "2026-11-30"
+      },
+      {
+        "position": 20,
+        "advertiser": "SK100",
+        "imageUrl": "./images/SK100.png",
+        "activeDate": "",
+        "expirationDate": ""
+      }
+    ],
+    "desoto": [
+      {
+        "position": 1,
+        "advertiser": "SK Promote",
+        "imageUrl": "./images/SK-Promote.png",
+        "activeDate": "",
+        "expirationDate": ""
+      },
+      {
+        "position": 2,
+        "advertiser": "Christopher Rural Health",
+        "imageUrl": "./images/CRH-Healthier.jpg",
+        "activeDate": "",
+        "expirationDate": ""
+      },
+      {
+        "position": 3,
+        "advertiser": "Time and Weather",
+        "imageUrl": "./preview.html",
+        "activeDate": "",
+        "expirationDate": ""
+      },
+      {
+        "position": 4,
+        "advertiser": "5770",
+        "imageUrl": "./images/5770-Task-Force.jpg",
+        "activeDate": "",
+        "expirationDate": ""
+      },
+      {
+        "position": 5,
+        "advertiser": "SK Fair 2",
+        "imageUrl": "./images/SKFair2.png",
+        "activeDate": "",
+        "expirationDate": ""
+      },
+      {
+        "position": 6,
+        "advertiser": "JBs Place",
+        "imageUrl": "./images/JBsPlace.jpg",
+        "activeDate": "",
+        "expirationDate": ""
+      },
+      {
+        "position": 7,
+        "advertiser": "SK Fair 4",
+        "imageUrl": "./images/SKFair4.png",
+        "activeDate": "",
+        "expirationDate": ""
+      },
+      {
+        "position": 8,
+        "advertiser": "Autumn Disability",
+        "imageUrl": "./images/AutumnDisability.png",
+        "activeDate": "",
+        "expirationDate": ""
+      },
+      {
+        "position": 9,
+        "advertiser": "Wanted",
+        "imageUrl": "./images/Wanted.png",
+        "activeDate": "",
+        "expirationDate": ""
+      },
+      {
+        "position": 10,
+        "advertiser": "Wesselman Roofing",
+        "imageUrl": "./images/Wesselman-Roofing.png",
+        "activeDate": "",
+        "expirationDate": ""
+      },
+      {
+        "position": 11,
+        "advertiser": "SK Promote",
+        "imageUrl": "./images/SK-Promote.png",
+        "activeDate": "",
+        "expirationDate": ""
+      },
+      {
+        "position": 12,
+        "advertiser": "Christopher Rural Health",
+        "imageUrl": "./images/CRH-Locations.jpg",
+        "activeDate": "",
+        "expirationDate": ""
+      },
+      {
+        "position": 13,
+        "advertiser": "Time and Weather",
+        "imageUrl": "./preview.html",
+        "activeDate": "",
+        "expirationDate": ""
+      },
+      {
+        "position": 14,
+        "advertiser": "Live Gaming",
+        "imageUrl": "./images/Live-Gaming.png",
+        "activeDate": "",
+        "expirationDate": ""
+      },
+      {
+        "position": 15,
+        "advertiser": "SK Fair 2",
+        "imageUrl": "./images/SKFair2.png",
+        "activeDate": "",
+        "expirationDate": ""
+      },
+      {
+        "position": 16,
+        "advertiser": "Andy - Vogler Ford",
+        "imageUrl": "./images/Andy-Vogler.png",
+        "activeDate": "",
+        "expirationDate": ""
+      },
+      {
+        "position": 17,
+        "advertiser": "SK Fair 4",
+        "imageUrl": "./images/SKFair4.png",
+        "activeDate": "",
+        "expirationDate": ""
+      },
+      {
+        "position": 18,
+        "advertiser": "Christopher Rural Health",
+        "imageUrl": "./images/CRH-Family.jpg",
+        "activeDate": "",
+        "expirationDate": ""
+      },
+      {
+        "position": 19,
+        "advertiser": "Autumn Disability",
+        "imageUrl": "./images/AutumnDisability.png",
+        "activeDate": "",
+        "expirationDate": ""
+      },
+      {
+        "position": 20,
+        "advertiser": "Forget Me Knots",
+        "imageUrl": "./images/ForgetMeKnots.png",
+        "activeDate": "",
+        "expirationDate": ""
+      }
+    ],
+    "floratv": [
+      {
+        "position": 1,
+        "advertiser": "Flag",
+        "imageUrl": "./images/FloraAmericanLegionFlag.mp4",
+        "activeDate": "",
+        "expirationDate": ""
+      },
+      {
+        "position": 2,
+        "advertiser": "Equity Realty Group",
+        "imageUrl": "./images/Equity-Reality.png",
+        "activeDate": "",
+        "expirationDate": ""
+      },
+      {
+        "position": 3,
+        "advertiser": "SK Promote",
+        "imageUrl": "./images/SK-Promote.png",
+        "activeDate": "",
+        "expirationDate": ""
+      },
+      {
+        "position": 4,
+        "advertiser": "AM-Bingo",
+        "imageUrl": "./images/AM-Bingo.jpg",
+        "activeDate": "",
+        "expirationDate": ""
+      },
+      {
+        "position": 5,
+        "advertiser": "SK Fair 4",
+        "imageUrl": "./images/SKFair4.png",
+        "activeDate": "",
+        "expirationDate": ""
+      },
+      {
+        "position": 6,
+        "advertiser": "Open Mic Night",
+        "imageUrl": "./images/OpenMicNight.jpg",
+        "activeDate": "",
+        "expirationDate": ""
+      },
+      {
+        "position": 7,
+        "advertiser": "American Legion Events",
+        "imageUrl": "./images/AmericanLegionEvents.mp4",
+        "activeDate": "",
+        "expirationDate": ""
+      },
+      {
+        "position": 8,
+        "advertiser": "Recycle",
+        "imageUrl": "./images/SKRecycle.png",
+        "activeDate": "",
+        "expirationDate": ""
+      },
+      {
+        "position": 9,
+        "advertiser": "Wesselman Roofing",
+        "imageUrl": "./images/Wesselman-Roofing.png",
+        "activeDate": "",
+        "expirationDate": ""
+      },
+      {
+        "position": 10,
+        "advertiser": "Autumn Disability",
+        "imageUrl": "./images/AutumnDisability.png",
+        "activeDate": "",
+        "expirationDate": ""
+      },
+      {
+        "position": 11,
+        "advertiser": "S&K",
+        "imageUrl": "./images/SK-TV-Ad.png",
+        "activeDate": "",
+        "expirationDate": ""
+      },
+      {
+        "position": 12,
+        "advertiser": "Equity Realty Group",
+        "imageUrl": "./images/Equity-Reality.png",
+        "activeDate": "",
+        "expirationDate": ""
+      },
+      {
+        "position": 13,
+        "advertiser": "SK Promote",
+        "imageUrl": "./images/SK-Promote.png",
+        "activeDate": "",
+        "expirationDate": ""
+      },
+      {
+        "position": 14,
+        "advertiser": "AM-Bingo",
+        "imageUrl": "./images/AM-Bingo.jpg",
+        "activeDate": "",
+        "expirationDate": ""
+      },
+      {
+        "position": 15,
+        "advertiser": "SK Fair 4",
+        "imageUrl": "./images/SKFair4.png",
+        "activeDate": "",
+        "expirationDate": ""
+      },
+      {
+        "position": 16,
+        "advertiser": "Open Mic Night",
+        "imageUrl": "./images/OpenMicNight.jpg",
+        "activeDate": "",
+        "expirationDate": ""
+      },
+      {
+        "position": 17,
+        "advertiser": "American Legion Events",
+        "imageUrl": "./images/AmericanLegionEvents.mp4",
+        "activeDate": "",
+        "expirationDate": ""
+      },
+      {
+        "position": 18,
+        "advertiser": "Recycle",
+        "imageUrl": "./images/SKRecycle.png",
+        "activeDate": "",
+        "expirationDate": ""
+      },
+      {
+        "position": 19,
+        "advertiser": "Wesselman Roofing",
+        "imageUrl": "./images/Wesselman-Roofing.png",
+        "activeDate": "",
+        "expirationDate": ""
+      },
+      {
+        "position": 20,
+        "advertiser": "Autumn Disability",
+        "imageUrl": "./images/AutumnDisability.png",
+        "activeDate": "",
+        "expirationDate": ""
+      }
+    ],
+    "xeniatv": [
+      {
+        "position": 1,
+        "advertiser": "Autumn Disability",
+        "imageUrl": "./images/AutumnDisability.png",
+        "activeDate": "",
+        "expirationDate": ""
+      },
+      {
+        "position": 2,
+        "advertiser": "Breakfast",
+        "imageUrl": "./images/Stephy-Breakfast.jpg",
+        "activeDate": "",
+        "expirationDate": ""
+      },
+      {
+        "position": 3,
+        "advertiser": "Review",
+        "imageUrl": "./images/review.png",
+        "activeDate": "",
+        "expirationDate": ""
+      },
+      {
+        "position": 4,
+        "advertiser": "Budds",
+        "imageUrl": "./images/Budds-Contracting.png",
+        "activeDate": "",
+        "expirationDate": ""
+      },
+      {
+        "position": 5,
+        "advertiser": "Thursday Special",
+        "imageUrl": "./images/Thursday-Special.jpeg",
+        "activeDate": "",
+        "expirationDate": ""
+      },
+      {
+        "position": 6,
+        "advertiser": "Pool",
+        "imageUrl": "./images/Free-Pool.png",
+        "activeDate": "",
+        "expirationDate": ""
+      },
+      {
+        "position": 7,
+        "advertiser": "Lunch",
+        "imageUrl": "./images/Lunch-Special.png",
+        "activeDate": "",
+        "expirationDate": ""
+      },
+      {
+        "position": 8,
+        "advertiser": "European Skull Mounts",
+        "imageUrl": "./images/EuropeMounts.png",
+        "activeDate": "",
+        "expirationDate": ""
+      },
+      {
+        "position": 9,
+        "advertiser": "Facebook",
+        "imageUrl": "./images/Facebook.png",
+        "activeDate": "",
+        "expirationDate": ""
+      },
+      {
+        "position": 10,
+        "advertiser": "Equity Reality",
+        "imageUrl": "./images/Equity-Reality.png",
+        "activeDate": "",
+        "expirationDate": ""
+      },
+      {
+        "position": 11,
+        "advertiser": "Weekend Specials",
+        "imageUrl": "./images/Weekend-Special.jpeg",
+        "activeDate": "",
+        "expirationDate": ""
+      },
+      {
+        "position": 12,
+        "advertiser": "Wings",
+        "imageUrl": "./images/Wings-Wednesday.png",
+        "activeDate": "",
+        "expirationDate": ""
+      },
+      {
+        "position": 13,
+        "advertiser": "Poker",
+        "imageUrl": "./images/Poker.png",
+        "activeDate": "",
+        "expirationDate": ""
+      },
+      {
+        "position": 14,
+        "advertiser": "Karoke",
+        "imageUrl": "./images/Karaoke.png",
+        "activeDate": "",
+        "expirationDate": ""
+      },
+      {
+        "position": 15,
+        "advertiser": "Heartland Craft",
+        "imageUrl": "./images/HeartlandCraft.png",
+        "activeDate": "",
+        "expirationDate": "2026-12-31"
+      },
+      {
+        "position": 16,
+        "advertiser": "Pies",
+        "imageUrl": "./images/Suzie-Fried-Pies.png",
+        "activeDate": "",
+        "expirationDate": ""
+      },
+      {
+        "position": 17,
+        "advertiser": "Fish",
+        "imageUrl": "./images/Fish.png",
+        "activeDate": "",
+        "expirationDate": ""
+      },
+      {
+        "position": 18,
+        "advertiser": "Bike-n-Hike",
+        "imageUrl": "./images/Bike-n-Hike.png",
+        "activeDate": "",
+        "expirationDate": "2027-05-01"
+      },
+      {
+        "position": 19,
+        "advertiser": "Bingo",
+        "imageUrl": "./images/Bingo.png",
+        "activeDate": "",
+        "expirationDate": ""
+      },
+      {
+        "position": 20,
+        "advertiser": "Herman's Habitat",
+        "imageUrl": "./images/Hermans-Habitat.png",
         "activeDate": "",
         "expirationDate": ""
       }
