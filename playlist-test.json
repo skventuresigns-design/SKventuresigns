@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-11-08T00:28:15.652Z",
+  "lastUpdated": "2026-11-08T00:29:28.753Z",
   "locationSettings": {
     "oliver": {
       "reportingEnabled": false
@@ -311,7 +311,148 @@
         "expirationDate": ""
       }
     ],
-    "claycity": [],
+    "claycity": [
+      {
+        "position": 1,
+        "advertiser": "American Flag",
+        "imageUrl": "./images/AmericanFlag.mp4",
+        "activeDate": "",
+        "expirationDate": ""
+      },
+      {
+        "position": 2,
+        "advertiser": "Maurer Storage",
+        "imageUrl": "./images/Maurer-Storage.jpg",
+        "activeDate": "",
+        "expirationDate": ""
+      },
+      {
+        "position": 3,
+        "advertiser": "Rumpke Recycling",
+        "imageUrl": "./images/Rumpke.png",
+        "activeDate": "",
+        "expirationDate": ""
+      },
+      {
+        "position": 4,
+        "advertiser": "Tingley Roofing",
+        "imageUrl": "./images/Tingley-Roofing.png",
+        "activeDate": "",
+        "expirationDate": ""
+      },
+      {
+        "position": 5,
+        "advertiser": "S&K Ventures",
+        "imageUrl": "./images/skadvertise.png",
+        "activeDate": "",
+        "expirationDate": ""
+      },
+      {
+        "position": 6,
+        "advertiser": "Programmattic 1",
+        "imageUrl": "./images/Wanted.png",
+        "activeDate": "",
+        "expirationDate": ""
+      },
+      {
+        "position": 7,
+        "advertiser": "R & B Auctions",
+        "imageUrl": "./images/RandB-Ad.png",
+        "activeDate": "",
+        "expirationDate": ""
+      },
+      {
+        "position": 8,
+        "advertiser": "Hometown Appliance",
+        "imageUrl": "./images/Hometown-Appliance.png",
+        "activeDate": "",
+        "expirationDate": ""
+      },
+      {
+        "position": 9,
+        "advertiser": "JMS Trucking & Exacvating",
+        "imageUrl": "./images/Jms-Trucking-and-Excavating.png",
+        "activeDate": "",
+        "expirationDate": ""
+      },
+      {
+        "position": 10,
+        "advertiser": "Harper Tire",
+        "imageUrl": "./images/Harper-Tire.png",
+        "activeDate": "",
+        "expirationDate": ""
+      },
+      {
+        "position": 11,
+        "advertiser": "Wabash Communiations",
+        "imageUrl": "./images/wabash.png",
+        "activeDate": "",
+        "expirationDate": ""
+      },
+      {
+        "position": 12,
+        "advertiser": "Clay Brook Excavating",
+        "imageUrl": "./images/Claybrook-Excavating.jpg",
+        "activeDate": "",
+        "expirationDate": ""
+      },
+      {
+        "position": 13,
+        "advertiser": "Programmattic 2",
+        "imageUrl": "./images/Wanted.png",
+        "activeDate": "",
+        "expirationDate": ""
+      },
+      {
+        "position": 14,
+        "advertiser": "Pat Burt",
+        "imageUrl": "./images/Pat-Burt.png",
+        "activeDate": "",
+        "expirationDate": ""
+      },
+      {
+        "position": 15,
+        "advertiser": "Paula Clawson",
+        "imageUrl": "./images/Paula-Clawson.png",
+        "activeDate": "",
+        "expirationDate": ""
+      },
+      {
+        "position": 16,
+        "advertiser": "Effingham County Chamber",
+        "imageUrl": "./images/Effingham-County-Chamber.png",
+        "activeDate": "",
+        "expirationDate": ""
+      },
+      {
+        "position": 17,
+        "advertiser": "Altamont Lumber",
+        "imageUrl": "./images/Altamont-Lumber.png",
+        "activeDate": "",
+        "expirationDate": ""
+      },
+      {
+        "position": 18,
+        "advertiser": "CJ Accounting",
+        "imageUrl": "./images/CJ-Accounting.png",
+        "activeDate": "",
+        "expirationDate": ""
+      },
+      {
+        "position": 19,
+        "advertiser": "Christopher Rural Health",
+        "imageUrl": "./images/Christopher-Rural-Health.jpg",
+        "activeDate": "",
+        "expirationDate": ""
+      },
+      {
+        "position": 20,
+        "advertiser": "Blip Slot",
+        "imageUrl": "./images/Wanted.png",
+        "activeDate": "",
+        "expirationDate": ""
+      }
+    ],
     "xenia": [
       {
         "position": 1,
