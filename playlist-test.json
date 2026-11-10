@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-11-10T04:03:04.702Z",
+  "lastUpdated": "2026-11-10T05:09:09.866Z",
   "locationSettings": {
     "oliver": {
       "reportingEnabled": false
@@ -465,13 +465,6 @@
         "position": 2,
         "advertiser": "Budds",
         "imageUrl": "./images/Budds-Contracting.png",
-        "activeDate": "",
-        "expirationDate": ""
-      },
-      {
-        "position": 3,
-        "advertiser": "SK Fair 4",
-        "imageUrl": "./images/SKFair4.png",
         "activeDate": "",
         "expirationDate": ""
       },
