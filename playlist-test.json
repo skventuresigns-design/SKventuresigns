@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-11-08T01:02:34.944Z",
+  "lastUpdated": "2026-11-10T04:03:04.702Z",
   "locationSettings": {
     "oliver": {
       "reportingEnabled": false
@@ -547,7 +547,7 @@
       },
       {
         "position": 14,
-        "advertiser": "Fish",
+        "advertiser": "Fish-test",
         "imageUrl": "./images/Fish.png",
         "activeDate": "",
         "expirationDate": ""
@@ -791,13 +791,6 @@
         "position": 8,
         "advertiser": "Autumn Disability",
         "imageUrl": "./images/AutumnDisability.png",
-        "activeDate": "",
-        "expirationDate": ""
-      },
-      {
-        "position": 9,
-        "advertiser": "Wanted",
-        "imageUrl": "./images/Wanted.png",
         "activeDate": "",
         "expirationDate": ""
       },
