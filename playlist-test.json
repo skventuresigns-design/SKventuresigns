@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-11-10T05:18:26.616Z",
+  "lastUpdated": "2026-11-11T18:55:58.909Z",
   "locationSettings": {
     "oliver": {
       "reportingEnabled": false
@@ -1037,17 +1037,17 @@
         "expirationDate": ""
       },
       {
-        "position": 4,
-        "advertiser": "Budds",
-        "imageUrl": "./images/Budds-Contracting.png",
-        "activeDate": "",
-        "expirationDate": ""
-      },
-      {
         "position": 5,
         "advertiser": "Thursday Special",
         "imageUrl": "./images/Thursday-Special.jpeg",
         "activeDate": "",
+        "expirationDate": "2026-11-11"
+      },
+      {
+        "position": 5,
+        "advertiser": "Thursday Special",
+        "imageUrl": "./images/veterans-day.jpg",
+        "activeDate": "2026-11-12",
         "expirationDate": ""
       },
       {
