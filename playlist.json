@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-11-11T17:51:09.392Z",
+  "lastUpdated": "2026-11-11T18:25:57.599Z",
   "locations": {
     "oliver": [
       {
@@ -545,10 +545,10 @@
         "expirationDate": ""
       },
       {
-        "advertiser": "SK100",
-        "imageUrl": "./images/SK100.png",
+        "advertiser": "Veterans Day",
+        "imageUrl": "./images/veterans-day.jpg",
         "duration": 8,
-        "expirationDate": ""
+        "expirationDate": "2026-11-11"
       },
       {
         "advertiser": "Fayette Little Miss",
@@ -741,10 +741,10 @@
         "expirationDate": ""
       },
       {
-        "advertiser": "Halloween Party",
-        "imageUrl": "./images/HalloweenParty.jpeg",
+        "advertiser": "Veterans Day",
+        "imageUrl": "./images/veterans-day.jpg",
         "duration": 8,
-        "expirationDate": "2026-10-31"
+        "expirationDate": "2026-11-11"
       },
       {
         "advertiser": "Autumn Disability",
