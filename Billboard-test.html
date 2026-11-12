@@ -651,6 +651,7 @@ async function loadPlaylist(isBackgroundUpdate = false) {
             parsedQueue.push({
                 position: position,
                 url: './preview.html',
+                offlineUrl: './images/Wanted.png',
                 type: 'html',
                 name: 'S&K Default Display'
             });
@@ -672,6 +673,14 @@ async function loadPlaylist(isBackgroundUpdate = false) {
 
    
 function createMediaNode(item) {
+    if (item.offlineUrl && navigator.onLine === false) {
+        const image = document.createElement('img');
+        image.src = item.offlineUrl;
+        image.setAttribute('referrerpolicy', 'no-referrer');
+        image.setAttribute('loading', 'eager');
+        return image;
+    }
+
     if (item.type === 'video') {
         const video = document.createElement('video');
         video.src = item.url;
@@ -751,6 +760,18 @@ function createMediaNode(item) {
             viewport.appendChild(slide);
             adSlideElements.push(slide);
         });
+    }
+
+    function refreshDefaultSlidesForConnection() {
+        currentAdQueue.forEach((item, idx) => {
+        if (!item.offlineUrl) return;
+
+        const slide = adSlideElements[idx];
+        if (!slide) return;
+
+        slide.innerHTML = '';
+        slide.appendChild(createMediaNode(item));
+    });
     }
 
     function scheduleNextRotation() {
@@ -937,6 +958,9 @@ function createMediaNode(item) {
     }
 
     function initBillboard() {
+        window.addEventListener('offline', refreshDefaultSlidesForConnection);
+        window.addEventListener('online', refreshDefaultSlidesForConnection);
+
         if (typeof lucide !== 'undefined') lucide.createIcons();
         syncTimeTheme();
         fetchWeather();
