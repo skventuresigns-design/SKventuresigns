@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-11-12T21:51:07.076Z",
+  "lastUpdated": "2026-11-12T22:12:17.411Z",
   "locations": {
     "oliver": [
       {
@@ -295,10 +295,10 @@
         "expirationDate": ""
       },
       {
-        "advertiser": "Veterans Day",
-        "imageUrl": "./images/veterans-day.jpg",
+        "advertiser": "Time and Weather",
+        "imageUrl": "./preview.html",
         "duration": 8,
-        "expirationDate": "2026-11-11"
+        "expirationDate": ""
       },
       {
         "advertiser": "Effingham Support Local",
@@ -545,10 +545,10 @@
         "expirationDate": ""
       },
       {
-        "advertiser": "Veterans Day",
-        "imageUrl": "./images/veterans-day.jpg",
+        "advertiser": "Time and Weather",
+        "imageUrl": "./preview.html",
         "duration": 8,
-        "expirationDate": "2026-11-11"
+        "expirationDate": ""
       },
       {
         "advertiser": "Fayette Little Miss",
@@ -741,10 +741,10 @@
         "expirationDate": ""
       },
       {
-        "advertiser": "Veterans Day",
-        "imageUrl": "./images/veterans-day.jpg",
+        "advertiser": "Time and Weather",
+        "imageUrl": "./preview.html",
         "duration": 8,
-        "expirationDate": "2026-11-11"
+        "expirationDate": ""
       },
       {
         "advertiser": "Autumn Disability",
