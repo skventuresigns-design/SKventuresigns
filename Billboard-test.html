@@ -402,8 +402,7 @@
     const urlParams = new URLSearchParams(window.location.search);
     const hasNoBanner = urlParams.get('nobanner') === 'true';
     const displayInterval = hasNoBanner ? 12000 : 10000;
-    const memoryRefreshCycle = 1800000;
-
+    
     if (hasNoBanner) {
         document.documentElement.classList.add('nobanner-mode');
     }
@@ -535,26 +534,40 @@
 
    
 async function loadPlaylist(isBackgroundUpdate = false) {
-    try {
-        const res = await fetch(
-            `https://skventuresigns.com/playlist-test.json?t=${Date.now()}`
-        );
+   try {
+        // NEW: Keep a separate last-known-good playlist for each location.
+        const playlistCacheKey = `skBillboardPlaylist_test_${activeTown}`;
+        let data;
+        let loadedFromCache = false;
 
-        if (!res.ok) throw new Error("HTTP error");
+        try {
+            const res = await fetch(
+                `https://skventuresigns.com/playlist-test.json?t=${Date.now()}`
+            );
+            if (!res.ok) throw new Error(`HTTP ${res.status}`);
 
-        const data = await res.json();
+            data = await res.json();
 
-         // Read this location's reporting permission from playlist-test.json.
-        const locationSetting =
-            data.locationSettings && data.locationSettings[activeTown];
+            // NEW: Cache only a valid object/array response after JSON parsing.
+            if (!data || (typeof data !== 'object')) {
+                throw new Error('Playlist response was not valid JSON data');
+            }
 
-        reportingEnabled = !!(
-            locationSetting && locationSetting.reportingEnabled === true
-        );
+            // A storage failure must not stop a valid online playlist from playing.
+            try {
+                localStorage.setItem(playlistCacheKey, JSON.stringify(data));
+            } catch (storageError) {
+                console.warn('Could not save offline playlist copy:', storageError);
+            }
+        } catch (networkError) {
+            // NEW: Fall back to the last successful playlist if the network fails.
+            const savedPlaylist = localStorage.getItem(playlistCacheKey);
+            if (!savedPlaylist) throw networkError;
 
-        console.log(
-            'Reporting Enabled for ' + activeTown + ': ' + reportingEnabled
-        );
+            data = JSON.parse(savedPlaylist);
+            loadedFromCache = true;
+            console.warn('Using saved offline playlist:', networkError);
+        }
 
         const locSource = data.locations || data;
 
@@ -935,9 +948,6 @@ function createMediaNode(item) {
         setInterval(() => loadPlaylist(true), 300000);
         setInterval(syncTimeTheme, 300000);
 
-        setInterval(() => {
-            window.location.reload();
-        }, memoryRefreshCycle);
     }
 
     if (document.readyState === "complete" || document.readyState === "interactive") {
