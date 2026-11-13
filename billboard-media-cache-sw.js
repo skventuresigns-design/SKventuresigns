@@ -1,110 +1,172 @@
 
-/* S&K Billboard test media cache service worker.
-   Caches image assets for offline playback.
-   Video caching is not enabled in this first test build. */
+/* S&K Billboard TEST offline cache.
+   Caches the test player, playlist, and advertising images.
+   Video caching is not enabled yet.
+*/
 
 const MEDIA_CACHE = 'sk-billboard-media-test-v1';
+const APP_CACHE = 'sk-billboard-app-test-v1';
 
-// Install the service worker
 self.addEventListener('install', (event) => {
-  self.skipWaiting();
+    self.skipWaiting();
 });
 
-// Activate the service worker
 self.addEventListener('activate', (event) => {
-  event.waitUntil((async () => {
-    const names = await caches.keys();
+    event.waitUntil((async () => {
+        const names = await caches.keys();
 
-    await Promise.all(names
-      .filter((name) =>
-        name.startsWith('sk-billboard-media-test-') &&
-        name !== MEDIA_CACHE
-      )
-      .map((name) => caches.delete(name)));
+        await Promise.all(names
+            .filter(name =>
+                name.startsWith('sk-billboard-media-test-') &&
+                name !== MEDIA_CACHE
+            )
+            .map(name => caches.delete(name)));
 
-    await self.clients.claim();
-  })());
+        await self.clients.claim();
+    })());
 });
 
-// Receive the list of advertising images to cache
+// Receive requests to cache advertising images.
 self.addEventListener('message', (event) => {
-  if (!event.data ||
-      event.data.type !== 'PRECACHE_BILLBOARD_IMAGES') return;
+    if (!event.data ||
+        event.data.type !== 'PRECACHE_BILLBOARD_IMAGES') return;
 
-  const urls = Array.isArray(event.data.urls)
-    ? event.data.urls : [];
+    const urls = Array.isArray(event.data.urls)
+        ? event.data.urls : [];
 
-  event.waitUntil((async () => {
-    const cache = await caches.open(MEDIA_CACHE);
+    event.waitUntil((async () => {
+        const cache = await caches.open(MEDIA_CACHE);
 
-    for (const rawUrl of urls) {
-      try {
-        const url = new URL(rawUrl, self.location.href);
+        for (const rawUrl of urls) {
+            try {
+                const url = new URL(rawUrl, self.location.href);
 
-        if (!/^https?:$/.test(url.protocol)) continue;
+                if (!/^https?:$/.test(url.protocol)) continue;
 
-        const request = new Request(url.href, {
-          mode: 'no-cors',
-          credentials: 'omit'
-        });
+                const request = new Request(url.href, {
+                    mode: 'no-cors',
+                    credentials: 'omit'
+                });
 
-        if (await cache.match(request)) continue;
+                if (await cache.match(request)) continue;
 
-        const response = await fetch(request);
+                const response = await fetch(request);
 
-        if (response.ok || response.type === 'opaque') {
-          await cache.put(request, response);
+                if (response.ok || response.type === 'opaque') {
+                    await cache.put(request, response);
+                }
+            } catch (error) {
+                console.warn('Image cache failed:', rawUrl, error);
+            }
         }
 
-      } catch (error) {
-        console.warn(
-          'Billboard image cache failed:',
-          rawUrl,
-          error
-        );
-      }
-    }
+        const clients = await self.clients.matchAll({
+            type: 'window',
+            includeUncontrolled: true
+        });
 
-    const clients = await self.clients.matchAll({
-      type: 'window',
-      includeUncontrolled: true
-    });
-
-    for (const client of clients) {
-      client.postMessage({
-        type: 'BILLBOARD_IMAGE_CACHE_COMPLETE'
-      });
-    }
-  })());
+        for (const client of clients) {
+            client.postMessage({
+                type: 'BILLBOARD_IMAGE_CACHE_COMPLETE'
+            });
+        }
+    })());
 });
 
-// Intercept image requests and serve cached images when available
+// Handle billboard page, playlist, and image requests.
 self.addEventListener('fetch', (event) => {
-  const request = event.request;
+    const request = event.request;
 
-  if (request.method !== 'GET' ||
-      request.destination !== 'image') return;
+    if (request.method !== 'GET') return;
 
-  event.respondWith((async () => {
-    const cache = await caches.open(MEDIA_CACHE);
-    const cached = await cache.match(request);
+    const url = new URL(request.url);
+    const path = url.pathname.toLowerCase();
 
-    if (cached) return cached;
+    // Offline startup for the TEST billboard page.
+    if (request.mode === 'navigate' &&
+        path.endsWith('/billboard-test.html')) {
 
-    const response = await fetch(request);
+        event.respondWith((async () => {
+            const cache = await caches.open(APP_CACHE);
+            const pageKey = new URL(
+                '/Billboard-test.html',
+                self.location.origin
+            ).href;
 
-    if (response.ok || response.type === 'opaque') {
-      try {
-        await cache.put(request, response.clone());
-      } catch (error) {
-        console.warn(
-          'Could not store billboard image:',
-          request.url,
-          error
-        );
-      }
+            try {
+                const response = await fetch(request);
+
+                if (response.ok) {
+                    await cache.put(pageKey, response.clone());
+                }
+
+                return response;
+            } catch (error) {
+                const savedPage = await cache.match(pageKey);
+
+                if (savedPage) return savedPage;
+
+                return new Response(
+                    'Billboard test page has not been cached yet.',
+                    { status: 503 }
+                );
+            }
+        })());
+
+        return;
     }
 
-    return response;
-  })());
+    // Save the TEST playlist as an additional offline backup.
+    if (path.endsWith('/playlist-test.json')) {
+        event.respondWith((async () => {
+            const cache = await caches.open(APP_CACHE);
+            const playlistKey = new URL(
+                '/playlist-test.json',
+                self.location.origin
+            ).href;
+
+            try {
+                const response = await fetch(request);
+
+                if (response.ok) {
+                    await cache.put(playlistKey, response.clone());
+                }
+
+                return response;
+            } catch (error) {
+                const savedPlaylist = await cache.match(playlistKey);
+
+                if (savedPlaylist) return savedPlaylist;
+
+                return new Response(
+                    'No saved test playlist is available.',
+                    { status: 503 }
+                );
+            }
+        })());
+
+        return;
+    }
+
+    // Serve cached advertising images when available.
+    if (request.destination === 'image') {
+        event.respondWith((async () => {
+            const cache = await caches.open(MEDIA_CACHE);
+            const cached = await cache.match(request);
+
+            if (cached) return cached;
+
+            const response = await fetch(request);
+
+            if (response.ok || response.type === 'opaque') {
+                try {
+                    await cache.put(request, response.clone());
+                } catch (error) {
+                    console.warn('Image storage failed:', error);
+                }
+            }
+
+            return response;
+        })());
+    }
 });
