@@ -532,6 +532,43 @@
         return 'image';
     }
 
+
+// Register the test media cache and send it this location's image ads.
+async function registerBillboardMediaCache(queue) {
+    if (!('serviceWorker' in navigator)) {
+        console.warn('Service workers are not supported.');
+        return;
+    }
+
+    try {
+        const registration = await navigator.serviceWorker.register(
+            './billboard-media-cache-sw.js'
+        );
+
+        await navigator.serviceWorker.ready;
+
+        const imageUrls = [...new Set((queue || [])
+            .filter(item => item && item.type === 'image' && item.url)
+            .map(item => new URL(item.url, window.location.href).href)
+        )];
+
+        const worker = registration.active;
+
+        if (worker && imageUrls.length) {
+            worker.postMessage({
+                type: 'PRECACHE_BILLBOARD_IMAGES',
+                urls: imageUrls
+            });
+
+            console.log(
+                `Requested offline caching for ${imageUrls.length} billboard images.`
+            );
+        }
+    } catch (error) {
+        console.warn('Billboard media cache registration failed:', error);
+    }
+}
+
    
 async function loadPlaylist(isBackgroundUpdate = false) {
    try {
@@ -658,6 +695,9 @@ async function loadPlaylist(isBackgroundUpdate = false) {
         }
 
         currentAdQueue = parsedQueue;
+
+        // Cache this location's image ads for offline playback.
+        registerBillboardMediaCache(currentAdQueue);
 
         if (!isBackgroundUpdate) {
             renderSlides(0);
