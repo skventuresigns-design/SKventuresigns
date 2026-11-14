@@ -727,28 +727,25 @@ async function loadPlaylist(isBackgroundUpdate = false) {
 }
  
 
+
 function createMediaNode(item) {
     if (item.offlineUrl) {
         const container = document.createElement('div');
         container.style.width = '100%';
         container.style.height = '100%';
 
-        const fallbackImage = document.createElement('img');
-        fallbackImage.src = './images/ad-background.png';
-        fallbackImage.style.width = '100%';
-        fallbackImage.style.height = '100%';
-        fallbackImage.style.objectFit = 'fill';
-        fallbackImage.style.display = 'block';
-
         const showFallback = () => {
             container.innerHTML = '';
+
+            const fallbackImage = document.createElement('img');
+            fallbackImage.src = './images/ad-background.png';
+            fallbackImage.style.width = '100%';
+            fallbackImage.style.height = '100%';
+            fallbackImage.style.objectFit = 'fill';
+            fallbackImage.style.display = 'block';
+
             container.appendChild(fallbackImage);
         };
-
-        if (!navigator.onLine) {
-            showFallback();
-            return container;
-        }
 
         const htmlUrl = new URL(item.url, window.location.href);
         htmlUrl.searchParams.set('location', activeTown);
@@ -761,11 +758,11 @@ function createMediaNode(item) {
             cache: 'no-store'
         })
         .then(response => {
-            clearTimeout(timeout);
-
             if (!response.ok) {
                 throw new Error('Preview unavailable: ' + response.status);
             }
+
+            clearTimeout(timeout);
 
             const obj = document.createElement('object');
             obj.data = htmlUrl.toString();
@@ -780,7 +777,7 @@ function createMediaNode(item) {
         })
         .catch(error => {
             clearTimeout(timeout);
-            console.warn('Preview unavailable; using background image:', error);
+            console.warn('Preview unavailable; showing offline background:', error);
             showFallback();
         });
 
@@ -818,6 +815,7 @@ function createMediaNode(item) {
         return img;
     }
 }
+
 
 
     function renderSlides(startIndex = 0) {
