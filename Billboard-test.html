@@ -727,6 +727,7 @@ async function loadPlaylist(isBackgroundUpdate = false) {
 
    
 
+
 function createMediaNode(item) {
     if (item.offlineUrl) {
         const fallbackImage = () => {
@@ -734,44 +735,61 @@ function createMediaNode(item) {
             image.src = new URL(item.offlineUrl, window.location.href).href;
             image.setAttribute('referrerpolicy', 'no-referrer');
             image.setAttribute('loading', 'eager');
+            image.style.width = '100%';
+            image.style.height = '100%';
+            image.style.objectFit = 'contain';
             return image;
         };
 
-        // Use the cached default image immediately when offline.
-        if (!navigator.onLine) {
-            return fallbackImage();
-        }
-
-        // Try the normal preview page first.
         const container = document.createElement('div');
         container.style.width = '100%';
         container.style.height = '100%';
 
-        const obj = document.createElement('object');
+        // Show the cached default immediately while offline.
+        if (!navigator.onLine) {
+            container.appendChild(fallbackImage());
+            return container;
+        }
+
+        // Verify that the preview page is actually reachable.
         const htmlUrl = new URL(item.url, window.location.href);
         htmlUrl.searchParams.set('location', activeTown);
-        obj.data = htmlUrl.toString();
-        obj.type = 'text/html';
 
-        let finished = false;
+        const controller = new AbortController();
+        const timeout = setTimeout(() => controller.abort(), 5000);
 
-        const showFallback = () => {
-            if (finished) return;
-            finished = true;
+        fetch(htmlUrl.toString(), {
+            signal: controller.signal,
+            cache: 'no-store'
+        })
+        .then(response => {
+            clearTimeout(timeout);
+
+            if (!response.ok) {
+                throw new Error('Preview unavailable: ' + response.status);
+            }
+
+            const obj = document.createElement('object');
+            obj.data = htmlUrl.toString();
+            obj.type = 'text/html';
+            obj.style.width = '100%';
+            obj.style.height = '100%';
+
+            obj.onerror = () => {
+                container.innerHTML = '';
+                container.appendChild(fallbackImage());
+            };
+
+            container.innerHTML = '';
+            container.appendChild(obj);
+        })
+        .catch(error => {
+            clearTimeout(timeout);
+            console.warn('Preview unavailable; using default image:', error);
             container.innerHTML = '';
             container.appendChild(fallbackImage());
-        };
+        });
 
-        obj.onerror = showFallback;
-
-        // If the preview cannot load, show the cached default image.
-        const fallbackTimer = setTimeout(showFallback, 5000);
-
-        obj.onload = () => {
-            if (!finished) clearTimeout(fallbackTimer);
-        };
-
-        container.appendChild(obj);
         return container;
     }
 
@@ -799,20 +817,14 @@ function createMediaNode(item) {
         obj.type = 'text/html';
         return obj;
 
-    } else if (item.type === 'house') {
-        const house = document.createElement('div');
-        house.className = 'sk-house-slide';
-        house.innerHTML = `<h1>${item.headline}</h1><p>${item.subhead}</p>`;
-        return house;
-
     } else {
-        const image = document.createElement('img');
-        image.src = item.url;
-        image.setAttribute('referrerpolicy', 'no-referrer');
-        image.setAttribute('loading', 'eager');
-        return image;
+        const img = document.createElement('img');
+        img.src = item.url;
+        img.setAttribute('referrerpolicy', 'no-referrer');
+        return img;
     }
 }
+
 
 
     function renderSlides(startIndex = 0) {
