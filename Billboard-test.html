@@ -548,9 +548,23 @@ async function registerBillboardMediaCache(queue) {
         await navigator.serviceWorker.ready;
 
         const imageUrls = [...new Set((queue || [])
-            .filter(item => item && item.type === 'image' && item.url)
-            .map(item => new URL(item.url, window.location.href).href)
-        )];
+    .flatMap(item => {
+        if (!item) return [];
+
+        const urls = [];
+
+        if (item.type === 'image' && item.url) {
+            urls.push(item.url);
+        }
+
+        if (item.offlineUrl) {
+            urls.push(item.offlineUrl);
+        }
+
+        return urls;
+    })
+    .map(url => new URL(url, window.location.href).href)
+)];
 
         const worker = registration.active;
 
