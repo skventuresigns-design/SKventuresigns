@@ -1,13 +1,13 @@
 
 /* S&K Billboard TEST offline cache.
    Caches the test player, playlist, and advertising images.
-   Online image requests refresh the cache.
-   Offline image requests use the last cached copy.
-   Video caching is not enabled yet.
+   Network requests have time limits so cached images can be
+   displayed promptly when internet access is unavailable.
 */
 
 const MEDIA_CACHE = 'sk-billboard-media-test-v1';
 const APP_CACHE = 'sk-billboard-app-test-v1';
+const NETWORK_TIMEOUT = 4000;
 
 self.addEventListener('install', (event) => {
     self.skipWaiting();
@@ -27,6 +27,17 @@ self.addEventListener('activate', (event) => {
         await self.clients.claim();
     })());
 });
+
+async function fetchWithTimeout(request, timeout = NETWORK_TIMEOUT) {
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), timeout);
+
+    try {
+        return await fetch(request, { signal: controller.signal });
+    } finally {
+        clearTimeout(timer);
+    }
+}
 
 // Receive requests to refresh and cache advertising images.
 self.addEventListener('message', (event) => {
@@ -50,15 +61,17 @@ self.addEventListener('message', (event) => {
                     credentials: 'omit'
                 });
 
-                // Always try to get the newest image.
-                // A failed request leaves the old cached image intact.
-                const response = await fetch(request);
+                const response = await fetchWithTimeout(request);
 
                 if (response.ok || response.type === 'opaque') {
-                    await cache.put(request, response.clone());
+                    await cache.put(url.href, response.clone());
                 }
             } catch (error) {
-                console.warn('Image cache refresh failed:', rawUrl, error);
+                console.warn(
+                    'Image cache refresh failed or timed out:',
+                    rawUrl,
+                    error
+                );
             }
         }
 
@@ -96,7 +109,7 @@ self.addEventListener('fetch', (event) => {
             ).href;
 
             try {
-                const response = await fetch(request);
+                const response = await fetchWithTimeout(request, 6000);
 
                 if (response.ok) {
                     await cache.put(pageKey, response.clone());
@@ -128,7 +141,7 @@ self.addEventListener('fetch', (event) => {
             ).href;
 
             try {
-                const response = await fetch(request);
+                const response = await fetchWithTimeout(request, 6000);
 
                 if (response.ok) {
                     await cache.put(playlistKey, response.clone());
@@ -150,25 +163,25 @@ self.addEventListener('fetch', (event) => {
         return;
     }
 
-    // Online: use the newest image and update the cache.
-    // Offline: use the last successfully cached image.
+    // Online: use the newest image and refresh its cache.
+    // Offline or timed out: use the last cached image.
     if (request.destination === 'image') {
         event.respondWith((async () => {
             const cache = await caches.open(MEDIA_CACHE);
 
             try {
-                const response = await fetch(request);
+                const response = await fetchWithTimeout(request);
 
                 if (response.ok || response.type === 'opaque') {
-                    await cache.put(request, response.clone());
+                    await cache.put(request.url, response.clone());
                     return response;
                 }
 
-                const cached = await cache.match(request);
+                const cached = await cache.match(request.url);
                 return cached || response;
 
             } catch (error) {
-                const cached = await cache.match(request);
+                const cached = await cache.match(request.url);
 
                 if (cached) return cached;
 

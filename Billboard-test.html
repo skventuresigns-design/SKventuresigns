@@ -893,6 +893,59 @@ function createMediaNode(item) {
         rotationTimer = setTimeout(rotateAds, displayInterval);
     }
 
+
+let billboardInternetAvailable = null;
+
+function startBillboardConnectionMonitor() {
+    async function checkConnection() {
+        let isAvailable = false;
+
+        try {
+            // This is a normal fetch request, not a page navigation.
+            // The service worker will let it reach the actual website.
+            const response = await fetch(
+                './Billboard-test.html?connectionCheck=' + Date.now(),
+                {
+                    method: 'GET',
+                    cache: 'no-store'
+                }
+            );
+
+            isAvailable = response.ok;
+        } catch (error) {
+            isAvailable = false;
+        }
+
+        if (isAvailable !== billboardInternetAvailable) {
+            billboardInternetAvailable = isAvailable;
+
+            console.log(
+                isAvailable
+                    ? 'Internet connection restored.'
+                    : 'Internet connection unavailable. Using offline display.'
+            );
+
+            refreshDefaultSlidesForConnection();
+        }
+    }
+
+    // React immediately to the browser's connection signals.
+    window.addEventListener('offline', () => {
+        if (billboardInternetAvailable !== false) {
+            billboardInternetAvailable = false;
+            console.log('Computer reports offline. Using offline display.');
+            refreshDefaultSlidesForConnection();
+        }
+    });
+
+    window.addEventListener('online', checkConnection);
+
+    // Check now, then continue checking every 15 seconds.
+    checkConnection();
+    setInterval(checkConnection, 15000);
+}
+
+
     function rotateAds() {
         clearTimeout(rotationTimer);
 
@@ -1053,8 +1106,7 @@ function createMediaNode(item) {
     }
 
     function initBillboard() {
-        window.addEventListener('offline', refreshDefaultSlidesForConnection);
-        window.addEventListener('online', refreshDefaultSlidesForConnection);
+        startBillboardConnectionMonitor();
 
         if (typeof lucide !== 'undefined') lucide.createIcons();
         syncTimeTheme();
