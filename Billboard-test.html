@@ -712,13 +712,53 @@ async function loadPlaylist(isBackgroundUpdate = false) {
  
 
    
+
 function createMediaNode(item) {
-    if (item.offlineUrl && navigator.onLine === false) {
-        const image = document.createElement('img');
-        image.src = item.offlineUrl;
-        image.setAttribute('referrerpolicy', 'no-referrer');
-        image.setAttribute('loading', 'eager');
-        return image;
+    if (item.offlineUrl) {
+        const fallbackImage = () => {
+            const image = document.createElement('img');
+            image.src = new URL(item.offlineUrl, window.location.href).href;
+            image.setAttribute('referrerpolicy', 'no-referrer');
+            image.setAttribute('loading', 'eager');
+            return image;
+        };
+
+        // Use the cached default image immediately when offline.
+        if (!navigator.onLine) {
+            return fallbackImage();
+        }
+
+        // Try the normal preview page first.
+        const container = document.createElement('div');
+        container.style.width = '100%';
+        container.style.height = '100%';
+
+        const obj = document.createElement('object');
+        const htmlUrl = new URL(item.url, window.location.href);
+        htmlUrl.searchParams.set('location', activeTown);
+        obj.data = htmlUrl.toString();
+        obj.type = 'text/html';
+
+        let finished = false;
+
+        const showFallback = () => {
+            if (finished) return;
+            finished = true;
+            container.innerHTML = '';
+            container.appendChild(fallbackImage());
+        };
+
+        obj.onerror = showFallback;
+
+        // If the preview cannot load, show the cached default image.
+        const fallbackTimer = setTimeout(showFallback, 5000);
+
+        obj.onload = () => {
+            if (!finished) clearTimeout(fallbackTimer);
+        };
+
+        container.appendChild(obj);
+        return container;
     }
 
     if (item.type === 'video') {
@@ -735,8 +775,6 @@ function createMediaNode(item) {
 
     } else if (item.type === 'html') {
         const obj = document.createElement('object');
-
-        // Automatically pass this billboard's location to preview.html.
         const htmlUrl = new URL(item.url, window.location.href);
 
         if (htmlUrl.pathname.toLowerCase().endsWith('/preview.html')) {
