@@ -534,6 +534,7 @@
 
 
 // Register the test media cache and send it this location's image ads.
+
 async function registerBillboardMediaCache(queue) {
     if (!('serviceWorker' in navigator)) {
         console.warn('Service workers are not supported.');
@@ -547,24 +548,24 @@ async function registerBillboardMediaCache(queue) {
 
         await navigator.serviceWorker.ready;
 
-        const imageUrls = [...new Set((queue || [])
-    .flatMap(item => {
-        if (!item) return [];
+        const imageUrls = [...new Set([
+            './images/ad-background.png',
+            ...(queue || []).flatMap(item => {
+                if (!item) return [];
 
-        const urls = [];
+                const urls = [];
 
-        if (item.type === 'image' && item.url) {
-            urls.push(item.url);
-        }
+                if (item.type === 'image' && item.url) {
+                    urls.push(item.url);
+                }
 
-        if (item.offlineUrl) {
-            urls.push(item.offlineUrl);
-        }
+                if (item.offlineUrl) {
+                    urls.push(item.offlineUrl);
+                }
 
-        return urls;
-    })
-    .map(url => new URL(url, window.location.href).href)
-)];
+                return urls;
+            })
+        ].map(url => new URL(url, window.location.href).href))];
 
         const worker = registration.active;
 
@@ -582,6 +583,7 @@ async function registerBillboardMediaCache(queue) {
         console.warn('Billboard media cache registration failed:', error);
     }
 }
+
 
    
 async function loadPlaylist(isBackgroundUpdate = false) {
@@ -725,33 +727,29 @@ async function loadPlaylist(isBackgroundUpdate = false) {
 }
  
 
-   
-
-
 function createMediaNode(item) {
     if (item.offlineUrl) {
-        const fallbackImage = () => {
-            const image = document.createElement('img');
-            image.src = new URL(item.offlineUrl, window.location.href).href;
-            image.setAttribute('referrerpolicy', 'no-referrer');
-            image.setAttribute('loading', 'eager');
-            image.style.width = '100%';
-            image.style.height = '100%';
-            image.style.objectFit = 'contain';
-            return image;
-        };
-
         const container = document.createElement('div');
         container.style.width = '100%';
         container.style.height = '100%';
 
-        // Show the cached default immediately while offline.
+        const fallbackImage = document.createElement('img');
+        fallbackImage.src = './images/ad-background.png';
+        fallbackImage.style.width = '100%';
+        fallbackImage.style.height = '100%';
+        fallbackImage.style.objectFit = 'fill';
+        fallbackImage.style.display = 'block';
+
+        const showFallback = () => {
+            container.innerHTML = '';
+            container.appendChild(fallbackImage);
+        };
+
         if (!navigator.onLine) {
-            container.appendChild(fallbackImage());
+            showFallback();
             return container;
         }
 
-        // Verify that the preview page is actually reachable.
         const htmlUrl = new URL(item.url, window.location.href);
         htmlUrl.searchParams.set('location', activeTown);
 
@@ -775,19 +773,15 @@ function createMediaNode(item) {
             obj.style.width = '100%';
             obj.style.height = '100%';
 
-            obj.onerror = () => {
-                container.innerHTML = '';
-                container.appendChild(fallbackImage());
-            };
+            obj.onerror = showFallback;
 
             container.innerHTML = '';
             container.appendChild(obj);
         })
         .catch(error => {
             clearTimeout(timeout);
-            console.warn('Preview unavailable; using default image:', error);
-            container.innerHTML = '';
-            container.appendChild(fallbackImage());
+            console.warn('Preview unavailable; using background image:', error);
+            showFallback();
         });
 
         return container;
@@ -824,7 +818,6 @@ function createMediaNode(item) {
         return img;
     }
 }
-
 
 
     function renderSlides(startIndex = 0) {
