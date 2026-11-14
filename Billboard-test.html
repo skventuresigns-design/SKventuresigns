@@ -728,17 +728,37 @@ async function loadPlaylist(isBackgroundUpdate = false) {
  
 
 
+
+function isPreviewItem(item) {
+    if (!item || !item.url) return false;
+
+    try {
+        const url = new URL(item.url, window.location.href);
+        return url.pathname.toLowerCase().endsWith('/preview.html');
+    } catch (error) {
+        return false;
+    }
+}
+
 function createMediaNode(item) {
-    if (item.offlineUrl) {
+
+    // All preview.html slides use the same online/offline display.
+    if (isPreviewItem(item) || item.offlineUrl) {
         const container = document.createElement('div');
         container.style.width = '100%';
         container.style.height = '100%';
 
+        let fallbackShown = false;
+
         const showFallback = () => {
+            if (fallbackShown) return;
+            fallbackShown = true;
+
             container.innerHTML = '';
 
             const fallbackImage = document.createElement('img');
             fallbackImage.src = './images/ad-background.png';
+            fallbackImage.alt = 'S&K offline background';
             fallbackImage.style.width = '100%';
             fallbackImage.style.height = '100%';
             fallbackImage.style.objectFit = 'fill';
@@ -747,11 +767,21 @@ function createMediaNode(item) {
             container.appendChild(fallbackImage);
         };
 
+        // If the monitor already knows the internet is unavailable,
+        // show the cached background immediately.
+        if (billboardInternetAvailable === false) {
+            showFallback();
+            return container;
+        }
+
         const htmlUrl = new URL(item.url, window.location.href);
-        htmlUrl.searchParams.set('location', activeTown);
+
+        if (htmlUrl.pathname.toLowerCase().endsWith('/preview.html')) {
+            htmlUrl.searchParams.set('location', activeTown);
+        }
 
         const controller = new AbortController();
-        const timeout = setTimeout(() => controller.abort(), 5000);
+        const timeout = setTimeout(() => controller.abort(), 4000);
 
         fetch(htmlUrl.toString(), {
             signal: controller.signal,
@@ -763,6 +793,11 @@ function createMediaNode(item) {
             }
 
             clearTimeout(timeout);
+
+            if (billboardInternetAvailable === false) {
+                showFallback();
+                return;
+            }
 
             const obj = document.createElement('object');
             obj.data = htmlUrl.toString();
@@ -818,6 +853,7 @@ function createMediaNode(item) {
 
 
 
+
     function renderSlides(startIndex = 0) {
         const viewport = document.getElementById('sk-ad-viewport');
         if (!viewport || currentAdQueue.length === 0) return;
@@ -857,9 +893,11 @@ function createMediaNode(item) {
         });
     }
 
-    function refreshDefaultSlidesForConnection() {
-        currentAdQueue.forEach((item, idx) => {
-        if (!item.offlineUrl) return;
+    
+function refreshDefaultSlidesForConnection() {
+    currentAdQueue.forEach((item, idx) => {
+        // Refresh every preview slide, not just generated default slots.
+        if (!isPreviewItem(item) && !item.offlineUrl) return;
 
         const slide = adSlideElements[idx];
         if (!slide) return;
@@ -867,7 +905,8 @@ function createMediaNode(item) {
         slide.innerHTML = '';
         slide.appendChild(createMediaNode(item));
     });
-    }
+}
+
 
     function scheduleNextRotation() {
         clearTimeout(rotationTimer);
