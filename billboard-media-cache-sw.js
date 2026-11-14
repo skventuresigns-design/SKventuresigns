@@ -1,6 +1,8 @@
 
 /* S&K Billboard TEST offline cache.
    Caches the test player, playlist, and advertising images.
+   Online image requests refresh the cache.
+   Offline image requests use the last cached copy.
    Video caching is not enabled yet.
 */
 
@@ -26,7 +28,7 @@ self.addEventListener('activate', (event) => {
     })());
 });
 
-// Receive requests to cache advertising images.
+// Receive requests to refresh and cache advertising images.
 self.addEventListener('message', (event) => {
     if (!event.data ||
         event.data.type !== 'PRECACHE_BILLBOARD_IMAGES') return;
@@ -48,15 +50,15 @@ self.addEventListener('message', (event) => {
                     credentials: 'omit'
                 });
 
-                if (await cache.match(request)) continue;
-
+                // Always try to get the newest image.
+                // A failed request leaves the old cached image intact.
                 const response = await fetch(request);
 
                 if (response.ok || response.type === 'opaque') {
-                    await cache.put(request, response);
+                    await cache.put(request, response.clone());
                 }
             } catch (error) {
-                console.warn('Image cache failed:', rawUrl, error);
+                console.warn('Image cache refresh failed:', rawUrl, error);
             }
         }
 
@@ -148,25 +150,33 @@ self.addEventListener('fetch', (event) => {
         return;
     }
 
-    // Serve cached advertising images when available.
+    // Online: use the newest image and update the cache.
+    // Offline: use the last successfully cached image.
     if (request.destination === 'image') {
         event.respondWith((async () => {
             const cache = await caches.open(MEDIA_CACHE);
-            const cached = await cache.match(request);
 
-            if (cached) return cached;
+            try {
+                const response = await fetch(request);
 
-            const response = await fetch(request);
-
-            if (response.ok || response.type === 'opaque') {
-                try {
+                if (response.ok || response.type === 'opaque') {
                     await cache.put(request, response.clone());
-                } catch (error) {
-                    console.warn('Image storage failed:', error);
+                    return response;
                 }
-            }
 
-            return response;
+                const cached = await cache.match(request);
+                return cached || response;
+
+            } catch (error) {
+                const cached = await cache.match(request);
+
+                if (cached) return cached;
+
+                return new Response(
+                    'Image is not available offline.',
+                    { status: 503 }
+                );
+            }
         })());
     }
 });
