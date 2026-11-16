@@ -587,6 +587,7 @@ async function registerBillboardMediaCache(queue) {
 
    
 async function loadPlaylist(isBackgroundUpdate = false) {
+    console.log('loadPlaylist started for:', activeTown);
    try {
         // NEW: Keep a separate last-known-good playlist for each location.
         const playlistCacheKey = `skBillboardPlaylist_test_${activeTown}`;
