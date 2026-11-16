@@ -624,6 +624,9 @@ async function loadPlaylist(isBackgroundUpdate = false) {
 
         const locSource = data.locations || data;
 
+       reportingEnabled =
+            data.locationSettings?.[activeTown]?.reportingEnabled === true;
+
         let freshQueue = [];
 
         if (locSource && Array.isArray(locSource[activeTown])) {
