@@ -1,29 +1,37 @@
 {
-  "lastUpdated": "2026-11-14T03:33:59.310Z",
+  "lastUpdated": "2026-11-16T03:08:25.370Z",
   "locationSettings": {
     "oliver": {
-      "reportingEnabled": false
+      "reportingEnabled": false,
+      "playerId": ""
     },
     "altamont": {
-      "reportingEnabled": false
+      "reportingEnabled": false,
+      "playerId": ""
     },
     "claycity": {
-      "reportingEnabled": false
+      "reportingEnabled": false,
+      "playerId": ""
     },
     "xenia": {
-      "reportingEnabled": true
+      "reportingEnabled": true,
+      "playerId": ""
     },
     "brownstown": {
-      "reportingEnabled": false
+      "reportingEnabled": false,
+      "playerId": ""
     },
     "desoto": {
-      "reportingEnabled": false
+      "reportingEnabled": false,
+      "playerId": ""
     },
     "floratv": {
-      "reportingEnabled": false
+      "reportingEnabled": false,
+      "playerId": ""
     },
     "xeniatv": {
-      "reportingEnabled": false
+      "reportingEnabled": false,
+      "playerId": ""
     }
   },
   "locations": {
@@ -459,140 +467,180 @@
         "advertiser": "SK Promote",
         "imageUrl": "./images/SK-Promote.png",
         "activeDate": "",
-        "expirationDate": ""
+        "expirationDate": "",
+        "adId": "",
+        "contractId": ""
       },
       {
         "position": 2,
         "advertiser": "Budds",
         "imageUrl": "./images/Budds-Contracting.png",
         "activeDate": "",
-        "expirationDate": ""
+        "expirationDate": "",
+        "adId": "AD-000009",
+        "contractId": "CT-000001"
       },
       {
         "position": 3,
         "advertiser": "SK Fair 4",
         "imageUrl": "./images/SKFair4.png",
         "activeDate": "",
-        "expirationDate": "2026-11-15"
+        "expirationDate": "2026-11-15",
+        "adId": "AD-000008",
+        "contractId": ""
       },
       {
         "position": 4,
         "advertiser": "Suzies Pies",
         "imageUrl": "./images/Suzie-Fried-Pies.png",
         "activeDate": "",
-        "expirationDate": ""
+        "expirationDate": "",
+        "adId": "",
+        "contractId": ""
       },
       {
         "position": 5,
         "advertiser": "Stephy Breakfast",
         "imageUrl": "./images/Stephy-Breakfast.jpg",
         "activeDate": "",
-        "expirationDate": ""
+        "expirationDate": "",
+        "adId": "",
+        "contractId": ""
       },
       {
         "position": 6,
         "advertiser": "SK Fair 2",
         "imageUrl": "./images/SKFair2.png",
         "activeDate": "",
-        "expirationDate": ""
+        "expirationDate": "",
+        "adId": "",
+        "contractId": ""
       },
       {
         "position": 7,
         "advertiser": "Stephy Karaoke",
         "imageUrl": "./images/Karaoke.png",
         "activeDate": "",
-        "expirationDate": ""
+        "expirationDate": "",
+        "adId": "",
+        "contractId": ""
       },
       {
         "position": 8,
         "advertiser": "Autumn Disability",
         "imageUrl": "./images/AutumnDisability.png",
         "activeDate": "",
-        "expirationDate": ""
+        "expirationDate": "",
+        "adId": "",
+        "contractId": ""
       },
       {
         "position": 9,
         "advertiser": "Equity Realty",
         "imageUrl": "./images/Equity-Reality.png",
         "activeDate": "",
-        "expirationDate": ""
+        "expirationDate": "",
+        "adId": "",
+        "contractId": ""
       },
       {
         "position": 10,
         "advertiser": "SK 100",
         "imageUrl": "./images/Wanted.png",
         "activeDate": "",
-        "expirationDate": ""
+        "expirationDate": "",
+        "adId": "",
+        "contractId": ""
       },
       {
         "position": 11,
         "advertiser": "Thursday Special",
         "imageUrl": "./images/Thursday-Special.jpeg",
         "activeDate": "",
-        "expirationDate": ""
+        "expirationDate": "",
+        "adId": "",
+        "contractId": ""
       },
       {
         "position": 12,
         "advertiser": "Bike-n-Hike",
         "imageUrl": "./images/Bike-n-Hike.png",
         "activeDate": "",
-        "expirationDate": "2027-05-01"
+        "expirationDate": "2027-05-01",
+        "adId": "",
+        "contractId": ""
       },
       {
         "position": 13,
         "advertiser": "Friday Special",
         "imageUrl": "./images/Weekend-Special.jpeg",
         "activeDate": "",
-        "expirationDate": ""
+        "expirationDate": "",
+        "adId": "",
+        "contractId": ""
       },
       {
         "position": 14,
         "advertiser": "Fish-test",
         "imageUrl": "./images/Fish.png",
         "activeDate": "",
-        "expirationDate": ""
+        "expirationDate": "",
+        "adId": "",
+        "contractId": ""
       },
       {
         "position": 15,
         "advertiser": "skadvertise",
         "imageUrl": "./images/Wanted.png",
         "activeDate": "",
-        "expirationDate": ""
+        "expirationDate": "",
+        "adId": "",
+        "contractId": ""
       },
       {
         "position": 16,
         "advertiser": "S&K Ventures",
         "imageUrl": "./images/SKRecycle.png",
         "activeDate": "",
-        "expirationDate": ""
+        "expirationDate": "",
+        "adId": "",
+        "contractId": ""
       },
       {
         "position": 17,
         "advertiser": "Hermans-Habitat",
         "imageUrl": "./images/Hermans-Habitat.png",
         "activeDate": "",
-        "expirationDate": ""
+        "expirationDate": "",
+        "adId": "",
+        "contractId": ""
       },
       {
         "position": 18,
         "advertiser": "Tad Brown Construction",
         "imageUrl": "./images/Tad-Brown-Construction.jpeg",
         "activeDate": "",
-        "expirationDate": ""
+        "expirationDate": "",
+        "adId": "",
+        "contractId": ""
       },
       {
         "position": 19,
         "advertiser": "skadvertise",
         "imageUrl": "./preview.html",
         "activeDate": "",
-        "expirationDate": ""
+        "expirationDate": "",
+        "adId": "",
+        "contractId": ""
       },
       {
         "position": 20,
         "advertiser": "Scripture",
         "imageUrl": "./images/Scripture.jpg",
         "activeDate": "",
-        "expirationDate": ""
+        "expirationDate": "",
+        "adId": "",
+        "contractId": ""
       }
     ],
     "brownstown": [
