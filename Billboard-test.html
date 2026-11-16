@@ -690,11 +690,13 @@ async function loadPlaylist(isBackgroundUpdate = false) {
 
                 if (cleanUrl) {
                     parsedQueue.push({
-                        position: position,
-                        url: cleanUrl,
-                        type: detectMediaType(cleanUrl),
-                        name: item.advertiser || item.name || 'Direct Local Ad'
-                    });
+                       position: position,
+                       url: cleanUrl,
+                       type: detectMediaType(cleanUrl),
+                       name: item.advertiser || item.name || 'Direct Local Ad',
+                        adId: item.adId || '',
+                        contractId: item.contractId || ''
+            });
 
                     continue;
                 }
