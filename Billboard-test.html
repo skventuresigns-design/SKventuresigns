@@ -626,6 +626,7 @@ async function loadPlaylist(isBackgroundUpdate = false) {
 
        reportingEnabled =
             data.locationSettings?.[activeTown]?.reportingEnabled === true;
+       console.log('Reporting enabled for', activeTown, ':', reportingEnabled);
 
         let freshQueue = [];
 
