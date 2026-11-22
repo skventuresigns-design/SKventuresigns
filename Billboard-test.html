@@ -584,6 +584,130 @@ async function registerBillboardMediaCache(queue) {
     }
 }
 
+// ===== PROOF OF PLAY (hourly counts) =====
+// Stays inactive until POP_ENDPOINT is filled in and the page is opened with &popkey=...
+const POP_ENDPOINT = '';
+const POP_KEY = urlParams.get('popkey') || '';
+const POP_STORE_KEY = `skPopPending_${activeTown}`;
+const POP_BATCH_SIZE = 300;
+let popSending = false;
+
+function popEnabled() {
+    return !!POP_ENDPOINT && !!POP_KEY && urlParams.get('preview') !== 'true';
+}
+
+function popLoad() {
+    try {
+        const saved = JSON.parse(localStorage.getItem(POP_STORE_KEY) || 'null');
+        if (saved && typeof saved === 'object') {
+            return { entries: saved.entries || {}, inFlight: saved.inFlight || null };
+        }
+    } catch (e) {}
+    return { entries: {}, inFlight: null };
+}
+
+function popSave(state) {
+    try {
+        localStorage.setItem(POP_STORE_KEY, JSON.stringify(state));
+    } catch (e) {
+        console.warn('Could not save proof-of-play counts:', e);
+    }
+}
+
+function countPlayForProof(item) {
+    if (!popEnabled() || !reportingEnabled) return;
+    if (!item || !item.adId || !item.contractId) return;
+    if (!isLocationOpen()) return;
+
+    // Count only if the picture really loaded on screen.
+    const slide = adSlideElements[currentAdIndex];
+    const img = slide ? slide.querySelector('img') : null;
+    if (!img || !img.complete || img.naturalWidth === 0) return;
+
+    const hour = new Date().toISOString().slice(0, 13);
+    const key = hour + '|' + item.adId + '|' + item.contractId;
+    const seconds = Math.round(displayInterval / 1000);
+
+    const state = popLoad();
+    const entry = state.entries[key] || {
+        hour: hour,
+        adId: item.adId,
+        contractId: item.contractId,
+        plays: 0,
+        seconds: 0
+    };
+    entry.plays += 1;
+    entry.seconds += seconds;
+    state.entries[key] = entry;
+    popSave(state);
+}
+
+async function popSendOne(batch) {
+    const res = await fetch(POP_ENDPOINT, {
+        method: 'POST',
+        body: JSON.stringify({
+            batchId: batch.batchId,
+            locationId: activeTown,
+            key: POP_KEY,
+            entries: batch.entries
+        })
+    });
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+
+    const result = await res.json();
+    if (!result || result.success !== true) {
+        throw new Error('Not accepted: ' + (result && result.error));
+    }
+}
+
+async function sendProofOfPlayBatches() {
+    if (!popEnabled() || popSending) return;
+    if (navigator.onLine === false) return;
+    popSending = true;
+
+    try {
+        for (let round = 0; round < 10; round++) {
+            const state = popLoad();
+
+            // Drop counts older than the server will accept (13 days).
+            const cutoff = new Date(Date.now() - 13 * 24 * 3600 * 1000).toISOString().slice(0, 13);
+            Object.keys(state.entries).forEach(k => {
+                if (state.entries[k].hour < cutoff) delete state.entries[k];
+            });
+
+            if (!state.inFlight) {
+                const keys = Object.keys(state.entries).sort();
+                if (keys.length === 0) { popSave(state); break; }
+
+                const chunk = keys.slice(0, POP_BATCH_SIZE);
+                state.inFlight = {
+                    batchId: activeTown + '-' + Date.now().toString(36) + '-' + Math.random().toString(36).slice(2, 8),
+                    entries: chunk.map(k => state.entries[k])
+                };
+                chunk.forEach(k => delete state.entries[k]);
+            }
+
+            popSave(state);
+            await popSendOne(state.inFlight);
+
+            // Accepted. Re-read, in case plays were counted while sending.
+            const latest = popLoad();
+            latest.inFlight = null;
+            popSave(latest);
+        }
+    } catch (e) {
+        console.warn('Proof-of-play send failed; will retry later:', e);
+    } finally {
+        popSending = false;
+    }
+}
+
+function startProofOfPlaySender() {
+    if (!popEnabled()) return;
+    setTimeout(sendProofOfPlayBatches, 60 * 1000);
+    setInterval(sendProofOfPlayBatches, 10 * 60 * 1000);
+    window.addEventListener('online', () => setTimeout(sendProofOfPlayBatches, 5000));
+}
 
 async function fetchFirestorePlaylist(town) {
     const url =
@@ -1046,6 +1170,7 @@ function startBillboardConnectionMonitor() {
         const activeItem = currentAdQueue[currentAdIndex];
         if (activeItem) {
             logAdImpression(activeItem);
+            countPlayForProof(activeItem);
             scheduleNextRotation();
         }
     }
@@ -1193,6 +1318,7 @@ function startBillboardConnectionMonitor() {
         setInterval(updateLocalTime, 1000);
         setInterval(fetchWeather, 600000);
         setInterval(() => loadPlaylist(true), 300000);
+        startProofOfPlaySender();
         setInterval(syncTimeTheme, 300000);
 
     }
