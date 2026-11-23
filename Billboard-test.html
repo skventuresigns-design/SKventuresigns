@@ -586,7 +586,7 @@ async function registerBillboardMediaCache(queue) {
 
 // ===== PROOF OF PLAY (hourly counts) =====
 // Stays inactive until POP_ENDPOINT is filled in and the page is opened with &popkey=...
-const POP_ENDPOINT = '';
+const POP_ENDPOINT = 'https://script.google.com/macros/s/AKfycbw2gPAgfE_wUVOO0kC9R2OJpECSl6Xg_Rqs9nMpx42OSyS7pmmh-dMzuXv0Qk1RhWg-/exec';
 const POP_KEY = urlParams.get('popkey') || '';
 const POP_STORE_KEY = `skPopPending_${activeTown}`;
 const POP_BATCH_SIZE = 300;
