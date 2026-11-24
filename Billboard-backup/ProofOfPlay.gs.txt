@@ -1,0 +1,387 @@
+/**
+ * Receives proof-of-play batches from the kiosks (web app entry point).
+ * Passes each batch to processProofOfPlayBatch_, which checks the
+ * location's secret key and counts the plays.
+ */
+function doPost(e) {
+  try {
+    if (!e || !e.postData || !e.postData.contents) {
+      return proofResponse_({ success: false, error: 'Missing request data' });
+    }
+
+    const batch = JSON.parse(e.postData.contents);
+    return proofResponse_(processProofOfPlayBatch_(batch));
+
+  } catch (error) {
+    return proofResponse_({ success: false, error: 'Request could not be processed' });
+  }
+}
+
+
+function proofResponse_(result) {
+  return ContentService
+    .createTextOutput(JSON.stringify(result))
+    .setMimeType(ContentService.MimeType.JSON);
+}
+
+
+// ======================================================
+// PROOF OF PLAY: HOURLY COUNTS (batch design)
+// A kiosk sends counts per ad per hour. This code validates them and
+// adds them to Firestore. doPost (above) passes each batch to it.
+// Collections: proofOfPlayHourly (the counts), proofOfPlayBatches
+// (marks batches that were already counted).
+// ======================================================
+
+const POP_MAX_ENTRIES = 400;
+const POP_MAX_AGE_HOURS = 14 * 24;
+
+function proofFirestoreBase_() {
+  return 'https://firestore.googleapis.com/v1/projects/' +
+    FIREBASE_PROJECT_ID + '/databases/(default)';
+}
+
+function proofGetDoc_(collection, id) {
+  const response = UrlFetchApp.fetch(
+    proofFirestoreBase_() + '/documents/' + collection + '/' + encodeURIComponent(id),
+    {
+      method: 'get',
+      headers: { Authorization: 'Bearer ' + ScriptApp.getOAuthToken() },
+      muteHttpExceptions: true
+    }
+  );
+  const code = response.getResponseCode();
+  if (code === 404) return null;
+  if (code !== 200) {
+    throw new Error('Could not read ' + collection + '/' + id +
+      '. HTTP ' + code + ': ' + response.getContentText());
+  }
+  return JSON.parse(response.getContentText());
+}
+
+function getOrCreatePlayerKey_(locationId) {
+  const props = PropertiesService.getScriptProperties();
+  const name = 'PLAYER_KEY_' + locationId;
+  let key = props.getProperty(name);
+  if (!key) {
+    key = Utilities.getUuid().replace(/-/g, '') + Utilities.getUuid().replace(/-/g, '');
+    props.setProperty(name, key);
+  }
+  return key;
+}
+
+function proofKeysMatch_(a, b) {
+  a = String(a || '');
+  b = String(b || '');
+  if (!a || !b || a.length !== b.length) return false;
+  let diff = 0;
+  for (let i = 0; i < a.length; i++) {
+    diff |= a.charCodeAt(i) ^ b.charCodeAt(i);
+  }
+  return diff === 0;
+}
+
+/**
+ * Creates a secret key for each location (if it has none) and logs them.
+ * Not needed until the kiosk step. Keep the log private.
+ */
+function createPlayerKeys() {
+  const lm = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('Location Management');
+  if (!lm) throw new Error('Missing Location Management tab.');
+
+  const lines = [];
+  lm.getDataRange().getValues().slice(1).forEach(function(r) {
+    const id = String(r[0] || '').trim().toLowerCase();
+    if (!id || !/^[a-z0-9_-]+$/.test(id)) return;
+    lines.push(id + ' : ' + getOrCreatePlayerKey_(id));
+  });
+
+  Logger.log('PLAYER KEYS (private, do not share):\n' + lines.join('\n'));
+}
+
+/**
+ * Validates one batch of hourly counts and adds them to Firestore.
+ * Returns a plain object; it never throws for bad input.
+ */
+function processProofOfPlayBatch_(batch) {
+  if (!batch || typeof batch !== 'object') {
+    return { success: false, error: 'Missing batch data' };
+  }
+
+  const batchId = String(batch.batchId || '').trim();
+  const locationId = String(batch.locationId || '').trim().toLowerCase();
+  const entries = Array.isArray(batch.entries) ? batch.entries : null;
+
+  if (!/^[A-Za-z0-9_-]{8,120}$/.test(batchId)) {
+    return { success: false, error: 'Invalid batch ID' };
+  }
+  if (!/^[a-z0-9_-]{1,40}$/.test(locationId)) {
+    return { success: false, error: 'Invalid location' };
+  }
+  if (!entries || entries.length === 0 || entries.length > POP_MAX_ENTRIES) {
+    return { success: false, error: 'Invalid number of entries' };
+  }
+
+  // 1. Secret key for this location.
+  const storedKey = PropertiesService.getScriptProperties()
+    .getProperty('PLAYER_KEY_' + locationId);
+  if (!proofKeysMatch_(storedKey, batch.key)) {
+    return { success: false, error: 'Not authorized' };
+  }
+
+  // 2. The location must exist and have reporting turned on.
+  const location = proofGetDoc_('locations', locationId);
+  if (!location) {
+    return { success: false, error: 'Location record not found' };
+  }
+  if ((location.fields || {}).reportingEnabled?.booleanValue !== true) {
+    return { success: false, error: 'Reporting is disabled for this location' };
+  }
+
+  // 3. Has this exact batch already been counted?
+  if (proofGetDoc_('proofOfPlayBatches', batchId)) {
+    return { success: true, duplicate: true, batchId: batchId, counted: 0, skipped: [] };
+  }
+
+  // 4. Check every entry and add up the valid ones.
+  const now = Date.now();
+  const adCache = {};
+  const contractCache = {};
+  const totals = {};
+  const skipped = [];
+
+  entries.forEach(function(e, i) {
+    const label = 'entry ' + (i + 1);
+    const adId = String((e && e.adId) || '').trim();
+    const contractId = String((e && e.contractId) || '').trim();
+    const hourText = String((e && e.hour) || '').trim();
+    const plays = Number(e && e.plays);
+    const seconds = Number(e && e.seconds);
+
+    if (!/^AD-\d{6}$/.test(adId) || !/^CT-\d{6}$/.test(contractId)) {
+      skipped.push({ entry: label, reason: 'Invalid ad or contract ID' });
+      return;
+    }
+
+    if (!/^\d{4}-\d{2}-\d{2}T\d{2}$/.test(hourText)) {
+      skipped.push({ entry: label, reason: 'Invalid hour' });
+      return;
+    }
+
+    const hourStart = new Date(hourText + ':00:00Z');
+    if (isNaN(hourStart.getTime())) {
+      skipped.push({ entry: label, reason: 'Invalid hour' });
+      return;
+    }
+
+    const ageHours = (now - hourStart.getTime()) / 3600000;
+    if (ageHours < -1 || ageHours > POP_MAX_AGE_HOURS) {
+      skipped.push({ entry: label, reason: 'Hour outside the accepted time window' });
+      return;
+    }
+
+    if (!Number.isInteger(plays) || plays < 1 || plays > 720 ||
+        !Number.isInteger(seconds) || seconds < 1 || seconds > 3600) {
+      skipped.push({ entry: label, reason: 'Implausible counts' });
+      return;
+    }
+
+    if (!(adId in adCache)) adCache[adId] = proofGetDoc_('ads', adId);
+    if (!(contractId in contractCache)) contractCache[contractId] = proofGetDoc_('contracts', contractId);
+
+    const ad = adCache[adId];
+    const contract = contractCache[contractId];
+
+    if (!ad) {
+      skipped.push({ entry: label, reason: 'Ad record not found' });
+      return;
+    }
+    if (!contract) {
+      skipped.push({ entry: label, reason: 'Contract record not found' });
+      return;
+    }
+
+    const contractFields = contract.fields || {};
+    if (contractFields.playbackAuthorized?.booleanValue !== true) {
+      skipped.push({ entry: label, reason: 'Contract is not authorized' });
+      return;
+    }
+
+    const adName = String((ad.fields || {}).advertiserName?.stringValue || '').trim();
+    const contractName = String(contractFields.advertiserName?.stringValue || '').trim();
+    if (!adName || !contractName ||
+        adName.toLowerCase() !== contractName.toLowerCase()) {
+      skipped.push({ entry: label, reason: 'Advertiser does not match the contract' });
+      return;
+    }
+
+    const hourKey = hourText.replace(/[^0-9]/g, '');
+    const docId = locationId + '_' + contractId + '_' + adId + '_' + hourKey;
+
+    if (!totals[docId]) {
+      totals[docId] = {
+        adId: adId,
+        contractId: contractId,
+        advertiserName: contractName,
+        hourStart: hourStart,
+        plays: 0,
+        seconds: 0
+      };
+    }
+    totals[docId].plays += plays;
+    totals[docId].seconds += seconds;
+  });
+
+  // 5. Save everything in one all-or-nothing request.
+  const docRoot = 'projects/' + FIREBASE_PROJECT_ID + '/databases/(default)/documents/';
+
+  const writes = [{
+    update: {
+      name: docRoot + 'proofOfPlayBatches/' + batchId,
+      fields: {
+        batchId: { stringValue: batchId },
+        locationId: { stringValue: locationId },
+        entryCount: { integerValue: String(entries.length) },
+        skippedCount: { integerValue: String(skipped.length) },
+        receivedAt: { timestampValue: new Date().toISOString() }
+      }
+    },
+    currentDocument: { exists: false }
+  }];
+
+  let playsCounted = 0;
+
+  Object.keys(totals).forEach(function(docId) {
+    const t = totals[docId];
+    playsCounted += t.plays;
+
+    writes.push({
+      update: {
+        name: docRoot + 'proofOfPlayHourly/' + docId,
+        fields: {
+          locationId: { stringValue: locationId },
+          contractId: { stringValue: t.contractId },
+          adId: { stringValue: t.adId },
+          advertiserName: { stringValue: t.advertiserName },
+          hourStart: { timestampValue: t.hourStart.toISOString() }
+        }
+      },
+      updateMask: {
+        fieldPaths: ['locationId', 'contractId', 'adId', 'advertiserName', 'hourStart']
+      },
+      updateTransforms: [
+        { fieldPath: 'plays', increment: { integerValue: String(t.plays) } },
+        { fieldPath: 'seconds', increment: { integerValue: String(t.seconds) } },
+        { fieldPath: 'updatedAt', setToServerValue: 'REQUEST_TIME' }
+      ]
+    });
+  });
+
+  const response = UrlFetchApp.fetch(proofFirestoreBase_() + '/documents:commit', {
+    method: 'post',
+    contentType: 'application/json',
+    headers: { Authorization: 'Bearer ' + ScriptApp.getOAuthToken() },
+    payload: JSON.stringify({ writes: writes }),
+    muteHttpExceptions: true
+  });
+
+  const code = response.getResponseCode();
+
+  if (code === 200) {
+    return {
+      success: true,
+      batchId: batchId,
+      counted: Object.keys(totals).length,
+      playsCounted: playsCounted,
+      skipped: skipped
+    };
+  }
+
+  // If it failed, another copy of this same batch may have just been counted.
+  if (proofGetDoc_('proofOfPlayBatches', batchId)) {
+    return { success: true, duplicate: true, batchId: batchId, counted: 0, skipped: [] };
+  }
+
+  return {
+    success: false,
+    error: 'Firestore save failed',
+    status: code,
+    details: response.getContentText()
+  };
+}
+
+
+/**
+ * SAFE TEST: runs inside Apps Script only, no web address involved.
+ * Uses a time two days ago and deletes every test record afterward.
+ */
+function testProofOfPlayBatchRules() {
+  const hourText = Utilities.formatDate(
+    new Date(Date.now() - 48 * 3600000), 'UTC', "yyyy-MM-dd'T'HH");
+  const hourKey = hourText.replace(/[^0-9]/g, '');
+  const stamp = Utilities.getUuid().replace(/-/g, '').slice(0, 10);
+  const xeniaKey = getOrCreatePlayerKey_('xenia');
+  const clayKey = getOrCreatePlayerKey_('claycity');
+
+  const ids = ['a', 'c', 'd', 'e', 'f', 'g'].map(function(s) {
+    return 'TEST-' + stamp + '-' + s;
+  });
+
+  function show(label, r) {
+    let text;
+    if (!r.success) text = 'REJECTED: ' + r.error;
+    else if (r.duplicate) text = 'DUPLICATE (not counted again)';
+    else text = 'COUNTED ' + r.counted + ' hourly record(s), ' + r.playsCounted +
+      ' plays; skipped: ' + JSON.stringify(r.skipped);
+    Logger.log(label + ' → ' + text);
+  }
+
+  const budds = { adId: 'AD-000009', contractId: 'CT-000001', hour: hourText };
+
+  try {
+    show('1. Valid batch, Budds at Xenia, 5 plays',
+      processProofOfPlayBatch_({ batchId: ids[0], locationId: 'xenia', key: xeniaKey,
+        entries: [Object.assign({ plays: 5, seconds: 50 }, budds)] }));
+
+    show('2. Same batch sent again',
+      processProofOfPlayBatch_({ batchId: ids[0], locationId: 'xenia', key: xeniaKey,
+        entries: [Object.assign({ plays: 5, seconds: 50 }, budds)] }));
+
+    show('3. Mixed: Budds 3 plays, Autumn Disability (not approved)',
+      processProofOfPlayBatch_({ batchId: ids[1], locationId: 'xenia', key: xeniaKey,
+        entries: [
+          Object.assign({ plays: 3, seconds: 30 }, budds),
+          { adId: 'AD-000010', contractId: 'CT-000002', hour: hourText, plays: 4, seconds: 40 }
+        ] }));
+
+    show('4. Wrong secret key',
+      processProofOfPlayBatch_({ batchId: ids[2], locationId: 'xenia', key: 'wrong-key',
+        entries: [Object.assign({ plays: 1, seconds: 10 }, budds)] }));
+
+    show('5. Clay City (reporting is off)',
+      processProofOfPlayBatch_({ batchId: ids[3], locationId: 'claycity', key: clayKey,
+        entries: [Object.assign({ plays: 1, seconds: 10 }, budds)] }));
+
+    show('6. Ad belongs to a different advertiser than the contract',
+      processProofOfPlayBatch_({ batchId: ids[4], locationId: 'xenia', key: xeniaKey,
+        entries: [{ adId: 'AD-000010', contractId: 'CT-000001', hour: hourText, plays: 2, seconds: 20 }] }));
+
+    show('7. Impossible counts (9999 plays)',
+      processProofOfPlayBatch_({ batchId: ids[5], locationId: 'xenia', key: xeniaKey,
+        entries: [Object.assign({ plays: 9999, seconds: 50 }, budds)] }));
+
+    const doc = proofGetDoc_('proofOfPlayHourly', 'xenia_CT-000001_AD-000009_' + hourKey);
+    if (doc) {
+      Logger.log('Budds hourly total: plays=' + doc.fields.plays.integerValue +
+        ', seconds=' + doc.fields.seconds.integerValue + ' (expected 8 and 80)');
+    } else {
+      Logger.log('Budds hourly record was not found.');
+    }
+
+  } finally {
+    ids.forEach(function(id) { deleteTestDocument_('proofOfPlayBatches', id); });
+    deleteTestDocument_('proofOfPlayHourly', 'xenia_CT-000001_AD-000009_' + hourKey);
+    Logger.log('Temporary test records deleted.');
+  }
+}
+

@@ -1,0 +1,547 @@
+/**
+ * S&K Venture Signs - Multi-Location Billboard Playlist Exporter
+ */
+
+// CONFIGURATION SETTINGS
+const GITHUB_USERNAME = 'skventuresigns-design'; 
+const REPO_NAME = 'skventuresigns'; 
+const FILE_PATH = 'playlist-test.json';
+const GITHUB_TOKEN = PropertiesService.getScriptProperties().getProperty('GITHUB_TOKEN'); // Keep your verified ghp_ token here
+const BRANCH = 'main';
+
+function onOpen() {
+  const ui = SpreadsheetApp.getUi();
+  ui.createMenu('Billboard Sync')
+    .addItem('Publish All Locations to GitHub', 'publishAllLocationsToGitHub')
+    .addSeparator()
+    .addItem('Check Images', 'checkAllAdvertiserImages')
+    .addSeparator()
+    .addItem('Approve / Revoke Advertiser', 'toggleAdvertiserApproval')
+    .addItem('Refresh Contract Statuses', 'refreshAllContractStatuses')
+    .addSeparator()
+    .addItem('Save Playlists to Firestore', 'publishPlaylistsToFirestore')
+    .addToUi();
+}
+
+function publishAllLocationsToGitHub() {
+  const ss = SpreadsheetApp.getActiveSpreadsheet();
+  const lock = LockService.getScriptLock();
+
+  if (!lock.tryLock(30000)) {
+    ss.toast(
+      'Another publish is already running. Please try again shortly.',
+      'Publish Busy',
+      8
+    );
+    return;
+  }
+
+  try {
+    const management = ss.getSheetByName('Location Management');
+
+    if (!management) {
+      throw new Error('Location Management tab not found.');
+    }
+
+    const managementData = management.getDataRange().getValues();
+    const managementHeaders = managementData[0].map(h =>
+      String(h).trim().toLowerCase()
+    );
+
+    const idIdx = managementHeaders.indexOf('location id');
+    const enabledIdx = managementHeaders.indexOf('playlist enabled');
+    const reportingIdx = managementHeaders.indexOf('reporting enabled');
+    const tabIdx = managementHeaders.indexOf('sheet tab name');
+    const playerIdx = managementHeaders.indexOf('player id');
+
+    if (
+      idIdx === -1 ||
+      enabledIdx === -1 ||
+      reportingIdx === -1 ||
+      tabIdx === -1
+    ) {
+      throw new Error(
+        'Location Management needs Location ID, Playlist Enabled, Reporting Enabled, and Sheet Tab Name headings.'
+      );
+    }
+
+    const enabledLocations = managementData.slice(1).filter(row =>
+      ['yes', 'true', '1'].includes(
+        String(row[enabledIdx] || '').trim().toLowerCase()
+      )
+    );
+
+    if (enabledLocations.length === 0) {
+      throw new Error('No locations are enabled for publishing.');
+    }
+
+    const fullPayload = {};
+    const locationSettings = {};
+    const usedIds = new Set();
+    let totalAdsFound = 0;
+
+    function formatPlaylistDate(value) {
+      if (!value) return '';
+
+      if (value instanceof Date && !isNaN(value.getTime())) {
+        return Utilities.formatDate(
+          value,
+          Session.getScriptTimeZone(),
+          'yyyy-MM-dd'
+        );
+      }
+
+      return String(value).trim();
+    }
+
+    enabledLocations.forEach(location => {
+      const locationId = String(location[idIdx] || '')
+        .trim()
+        .toLowerCase();
+
+      const tabName = String(location[tabIdx] || '').trim();
+      const reportingEnabled = ['yes', 'true', '1'].includes(
+        String(location[reportingIdx] || '').trim().toLowerCase()
+      );
+
+      if (!locationId || !tabName) {
+        throw new Error('An enabled location is missing its ID or Sheet Tab Name.');
+      }
+
+      if (usedIds.has(locationId)) {
+        throw new Error('Duplicate Location ID: ' + locationId);
+      }
+
+      usedIds.add(locationId);
+
+     locationSettings[locationId] = {
+  reportingEnabled: reportingEnabled,
+  playerId: playerIdx !== -1
+    ? String(location[playerIdx] || '').trim()
+    : ''
+};
+
+      const sheet = ss.getSheetByName(tabName);
+
+      if (!sheet) {
+        throw new Error(
+          'Enabled location "' + locationId +
+          '" refers to missing tab "' + tabName + '".'
+        );
+      }
+
+      const data = sheet.getDataRange().getValues();
+
+      if (data.length === 0) {
+        throw new Error('Location tab "' + tabName + '" is empty.');
+      }
+
+      const headers = data[0].map(h =>
+        String(h).trim().toLowerCase()
+      );
+
+      const positionIdx = headers.indexOf('position');
+      const nameIdx = headers.indexOf('name');
+      const urlIdx = headers.indexOf('url');
+      const statusIdx = headers.indexOf('status');
+      const activeDateIdx = headers.indexOf('active date');
+      const expDateIdx = headers.indexOf('expiration date');
+      const adIdIdx = headers.indexOf('ad id');
+      const contractIdIdx = headers.indexOf('contract id');
+
+      if (
+        positionIdx === -1 ||
+        nameIdx === -1 ||
+        urlIdx === -1 ||
+        statusIdx === -1 ||
+        activeDateIdx === -1 ||
+        expDateIdx === -1
+      ) {
+        throw new Error(
+          'Location tab "' + tabName +
+          '" is missing one or more required column headings.'
+        );
+      }
+
+      const locationAds = [];
+
+      for (let i = 1; i < data.length; i++) {
+        const row = data[i];
+
+        const position = Number(row[positionIdx]);
+        const adName = String(row[nameIdx] || '').trim();
+        const imageUrl = String(row[urlIdx] || '').trim();
+        const status = String(row[statusIdx] || '')
+          .trim()
+          .toLowerCase();
+
+        const activeDate = formatPlaylistDate(row[activeDateIdx]);
+        const expirationDate = formatPlaylistDate(row[expDateIdx]);
+
+        if (
+          !Number.isInteger(position) ||
+          position < 1 ||
+          position > 20 ||
+          !adName ||
+          !imageUrl ||
+          !['active', 'true', 'yes', '1'].includes(status)
+        ) {
+          continue;
+        }
+
+        const playlistAd = {
+  position: position,
+  advertiser: adName,
+  imageUrl: imageUrl,
+  activeDate: activeDate,
+  expirationDate: expirationDate
+};
+
+if (adIdIdx !== -1) {
+  playlistAd.adId = String(row[adIdIdx] || '').trim();
+}
+
+if (contractIdIdx !== -1) {
+  playlistAd.contractId = String(row[contractIdIdx] || '').trim();
+}
+
+locationAds.push(playlistAd);
+      }
+
+      fullPayload[locationId] = locationAds;
+      totalAdsFound += locationAds.length;
+    });
+
+    const outputData = {
+      lastUpdated: new Date().toISOString(),
+      locationSettings: locationSettings,
+      locations: fullPayload
+    };
+
+    const jsonString = JSON.stringify(outputData, null, 2);
+    const success = pushToGitHub(jsonString);
+
+    if (!success) {
+      throw new Error('GitHub upload failed. Check the execution log.');
+    }
+
+    ss.toast(
+      'Published ' + totalAdsFound +
+      ' ads across ' + enabledLocations.length + ' enabled locations.',
+      'Sync Successful',
+      6
+    );
+
+  } catch (error) {
+    Logger.log('Publishing stopped: ' + error.message);
+
+    ss.toast(
+      'Publishing stopped: ' + error.message,
+      'Sync Failed',
+      10
+    );
+
+  } finally {
+    lock.releaseLock();
+  }
+}
+
+function pushToGitHub(content) {
+  const url = `https://api.github.com/repos/${GITHUB_USERNAME}/${REPO_NAME}/contents/${FILE_PATH}`;
+  
+  let sha = '';
+  try {
+    const getResponse = UrlFetchApp.fetch(url, {
+      method: 'get',
+      headers: {
+        'Authorization': `Bearer ${GITHUB_TOKEN}`,
+        'Accept': 'application/vnd.github.v3+json',
+        'User-Agent': 'Google-Apps-Script'
+      },
+      muteHttpExceptions: true
+    });
+    if (getResponse.getResponseCode() === 200) {
+      const fileData = JSON.parse(getResponse.getContentText());
+      sha = fileData.sha;
+    }
+  } catch (err) {
+    Logger.log('Error fetching SHA: ' + err);
+  }
+
+  const putPayload = {
+    message: `Billboard sync update [${new Date().toLocaleString()}]`,
+    content: Utilities.base64Encode(content, Utilities.Charset.UTF_8),
+    branch: BRANCH
+  };
+
+  if (sha !== '') {
+    putPayload.sha = sha;
+  }
+
+  const putResponse = UrlFetchApp.fetch(url, {
+    method: 'put',
+    headers: {
+      'Authorization': `Bearer ${GITHUB_TOKEN}`,
+      'Accept': 'application/vnd.github.v3+json',
+      'Content-Type': 'application/json',
+      'User-Agent': 'Google-Apps-Script'
+    },
+    payload: JSON.stringify(putPayload),
+    muteHttpExceptions: true
+  });
+
+  const code = putResponse.getResponseCode();
+
+    Logger.log('GitHub upload status: ' + code);
+    Logger.log('GitHub response: ' + putResponse.getContentText());
+
+    return code === 200 || code === 201;
+}
+
+function debugGitHubConnection() {
+  const url = `https://api.github.com/repos/${GITHUB_USERNAME}/${REPO_NAME}/contents/${FILE_PATH}`;
+  const response = UrlFetchApp.fetch(url, {
+    method: 'get',
+    headers: {
+      'Authorization': `Bearer ${GITHUB_TOKEN}`,
+      'Accept': 'application/vnd.github.v3+json',
+      'User-Agent': 'Google-Apps-Script'
+    },
+    muteHttpExceptions: true
+  });
+  
+  Logger.log('Status Code: ' + response.getResponseCode());
+  Logger.log('Response Body: ' + response.getContentText());
+}
+
+
+/**
+ * Checks advertiser image URLs on all visible location tabs.
+ * This function DOES NOT publish anything to GitHub.
+ */
+function checkAllAdvertiserImages() {
+  const ss = SpreadsheetApp.getActiveSpreadsheet();
+  const sheets = ss.getSheets();
+
+  let checked = 0;
+  let skipped = 0;
+
+  sheets.forEach(sheet => {
+    if (sheet.isSheetHidden()) return;
+
+    const sheetName = sheet.getName().trim().toLowerCase();
+    if (['settings', 'template', 'logs', 'config'].includes(sheetName)) return;
+
+    const lastRow = sheet.getLastRow();
+    if (lastRow < 2) return;
+
+    const headers = sheet.getRange(1, 1, 1, sheet.getLastColumn())
+      .getValues()[0]
+      .map(h => String(h).trim().toLowerCase());
+
+    const urlIdx = headers.findIndex(h => h === 'url');
+    const checkIdx = headers.findIndex(h => h === 'image check');
+
+    if (urlIdx === -1 || checkIdx === -1) {
+      Logger.log('Skipped tab "' + sheet.getName() +
+        '": URL or Image Check column not found.');
+      skipped++;
+      return;
+    }
+
+    const rowCount = lastRow - 1;
+    const urls = sheet.getRange(2, urlIdx + 1, rowCount, 1).getValues();
+
+    const results = urls.map(row => {
+      const url = String(row[0] || '').trim();
+
+      if (!url) return [''];
+
+      return [checkAdvertiserImageUrl(url)];
+    });
+
+    sheet.getRange(2, checkIdx + 1, rowCount, 1).setValues(results);
+    checked += urls.filter(row => String(row[0] || '').trim() !== '').length;
+  });
+
+  ss.toast(
+    'Image check finished. URLs checked: ' + checked +
+    '. Tabs skipped: ' + skipped + '.',
+    'Image Check Complete',
+    8
+  );
+}
+
+function checkAdvertiserImageUrl(url) {
+  try {
+    url = String(url || '').trim();
+
+    if (!url) return '';
+
+    // Convert website-relative paths into complete URLs.
+    if (url.startsWith('./')) {
+      url = 'https://skventuresigns.com/' + url.substring(2);
+    } else if (url.startsWith('/')) {
+      url = 'https://skventuresigns.com' + url;
+    }
+
+    // Skip files that are clearly not images.
+    if (/\.(html?|pdf)(\?|#|$)/i.test(url)) {
+      return 'NOT AN IMAGE';
+    }
+
+    const response = UrlFetchApp.fetch(url, {
+      method: 'get',
+      followRedirects: true,
+      muteHttpExceptions: true
+    });
+
+    const code = response.getResponseCode();
+
+    if (code === 404 || code === 410) {
+      return 'IMAGE NOT FOUND';
+    }
+
+    if (code < 200 || code >= 300) {
+      return 'CHECK FAILED';
+    }
+
+    const headers = response.getAllHeaders();
+    const contentTypeKey = Object.keys(headers).find(
+      key => key.toLowerCase() === 'content-type'
+    );
+
+    const contentType = contentTypeKey
+      ? String(headers[contentTypeKey]).toLowerCase()
+      : '';
+
+    return contentType.startsWith('image/')
+      ? 'IMAGE OK'
+      : 'NOT AN IMAGE';
+
+  } catch (error) {
+    Logger.log('Image check failed for ' + url + ': ' + error);
+    return 'CHECK FAILED';
+  }
+}
+
+// ======================================================
+// AUTOMATIC TEST PLAYLIST PUBLISHING
+// ======================================================
+
+// NEW: Install the automatic edit trigger.
+// Run this function ONE TIME manually from Apps Script.
+function installAutoPublishTrigger() {
+  const ss = SpreadsheetApp.getActiveSpreadsheet();
+
+  // Remove duplicate edit triggers for this handler.
+  ScriptApp.getProjectTriggers().forEach(trigger => {
+    if (trigger.getHandlerFunction() === 'handleSpreadsheetEdit') {
+      ScriptApp.deleteTrigger(trigger);
+    }
+  });
+
+  // Create one authorized spreadsheet edit trigger.
+  ScriptApp.newTrigger('handleSpreadsheetEdit')
+    .forSpreadsheet(ss)
+    .onEdit()
+    .create();
+
+  ss.toast(
+    'Automatic playlist publishing trigger installed.',
+    'Setup Complete',
+    8
+  );
+}
+
+
+// NEW: Check whether an edit affects the playlist.
+function handleSpreadsheetEdit(e) {
+  if (!e || !e.range) return;
+
+  const sheet = e.range.getSheet();
+  const sheetName = sheet.getName().trim().toLowerCase();
+
+  const managementTab = 'location management';
+
+  const managementFields = [
+    'location id',
+    'playlist enabled',
+    'reporting enabled',
+    'sheet tab name'
+  ];
+
+  const adFields = [
+    'position',
+    'name',
+    'url',
+    'status',
+    'active date',
+    'expiration date',
+    'ad id',
+    'contract id'
+  ];
+
+  const headers = sheet
+    .getRange(1, 1, 1, sheet.getLastColumn())
+    .getValues()[0]
+    .map(h => String(h).trim().toLowerCase());
+
+  const relevantFields = sheetName === managementTab
+    ? managementFields
+    : adFields;
+
+  const relevantColumns = headers
+    .map((header, index) =>
+      relevantFields.includes(header) ? index + 1 : 0
+    )
+    .filter(column => column > 0);
+
+  if (relevantColumns.length === 0) return;
+
+  // Check whether the edited range overlaps a relevant column.
+  const firstColumn = e.range.getColumn();
+  const lastColumn = firstColumn + e.range.getNumColumns() - 1;
+
+  const affectsPlaylist = relevantColumns.some(column =>
+    column >= firstColumn && column <= lastColumn
+  );
+
+  if (!affectsPlaylist) return;
+
+  scheduleAutomaticPublish();
+}
+
+
+// NEW: Debounce edits so several quick changes create one publish.
+function scheduleAutomaticPublish() {
+  const handlerName = 'runScheduledPublish';
+
+  // Remove any previously scheduled publish.
+  ScriptApp.getProjectTriggers().forEach(trigger => {
+    if (trigger.getHandlerFunction() === handlerName) {
+      ScriptApp.deleteTrigger(trigger);
+    }
+  });
+
+  // Schedule a fresh publish about one minute from now.
+  ScriptApp.newTrigger(handlerName)
+    .timeBased()
+    .after(60 * 1000)
+    .create();
+}
+
+
+// NEW: Run the delayed automatic publish.
+function runScheduledPublish() {
+  const handlerName = 'runScheduledPublish';
+
+  // Remove pending copies of this scheduled trigger.
+  ScriptApp.getProjectTriggers().forEach(trigger => {
+    if (trigger.getHandlerFunction() === handlerName) {
+      ScriptApp.deleteTrigger(trigger);
+    }
+  });
+
+  publishAllLocationsToGitHub();
+}

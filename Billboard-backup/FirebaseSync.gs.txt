@@ -1,0 +1,938 @@
+
+const FIREBASE_PROJECT_ID = 'sk-venture-signs-development';
+
+function testFirebaseConnection() {
+  const url =
+    `https://firestore.googleapis.com/v1/projects/${FIREBASE_PROJECT_ID}/databases/(default)/documents/locations`;
+
+  const response = UrlFetchApp.fetch(url, {
+    method: 'get',
+    headers: {
+      Authorization: 'Bearer ' + ScriptApp.getOAuthToken()
+    },
+    muteHttpExceptions: true
+  });
+
+  const status = response.getResponseCode();
+  Logger.log('Firebase response: ' + status);
+  Logger.log(response.getContentText());
+
+  if (status === 200) {
+    Logger.log('SUCCESS: Apps Script connected to Firestore.');
+  } else {
+    throw new Error(
+      'Firebase connection failed. HTTP ' + status +
+      ': ' + response.getContentText()
+    );
+  }
+}
+
+
+/**
+ * Syncs Location Management rows to Firestore.
+ *
+ * Spreadsheet columns:
+ * A Location ID
+ * B Location Name
+ * C Display Name
+ * D Time Zone
+ * E Player Type
+ * F Playlist Enabled
+ * G Reporting Enabled
+ * H Notes
+ * I Player ID
+ * J Last Sync
+ * K Sheet Tab Name
+ *
+ * This function does not publish playlists or change billboard files.
+ */
+
+function syncLocationsToFirebase() {
+  const projectId = 'sk-venture-signs-development';
+  const spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
+  const managementSheet = spreadsheet.getSheetByName('Location Management');
+
+  if (!managementSheet) {
+    throw new Error('Could not find the Location Management tab.');
+  }
+
+  const lastRow = managementSheet.getLastRow();
+
+  if (lastRow < 2) {
+    throw new Error('No location rows were found.');
+  }
+
+  const rows = managementSheet.getRange(2, 1, lastRow - 1, 11).getValues();
+  const locations = [];
+  const seenIds = new Set();
+
+  // Validate all rows before writing anything.
+  rows.forEach((row, index) => {
+    const sheetRow = index + 2;
+    const locationId = String(row[0] || '').trim().toLowerCase();
+
+    if (!locationId) return;
+
+    if (!/^[a-z0-9_-]+$/.test(locationId)) {
+      throw new Error('Invalid Location ID in row ' + sheetRow + ': ' + locationId);
+    }
+
+    if (seenIds.has(locationId)) {
+      throw new Error('Duplicate Location ID: ' + locationId);
+    }
+    seenIds.add(locationId);
+
+    const sheetTabName = String(row[10] || '').trim();
+
+    if (!sheetTabName || !spreadsheet.getSheetByName(sheetTabName)) {
+      throw new Error(
+        'Missing or invalid Sheet Tab Name in row ' + sheetRow +
+        ': ' + sheetTabName
+      );
+    }
+
+    locations.push({
+      rowNumber: sheetRow,
+      locationId: locationId,
+      locationName: String(row[1] || '').trim(),
+      displayName: String(row[2] || '').trim(),
+      timeZone: String(row[3] || '').trim(),
+      playerType: String(row[4] || '').trim(),
+      playlistEnabled: parseSheetBoolean_(row[5], 'Playlist Enabled', sheetRow),
+      reportingEnabled: parseSheetBoolean_(row[6], 'Reporting Enabled', sheetRow),
+      notes: String(row[7] || '').trim(),
+      playerId: String(row[8] || '').trim(),
+      sheetTabName: sheetTabName
+    });
+  });
+
+  if (locations.length === 0) {
+    throw new Error('No valid locations were found to sync.');
+  }
+
+  const token = ScriptApp.getOAuthToken();
+  const syncedAt = new Date();
+  const syncedRows = [];
+
+  locations.forEach(location => {
+    const fields = {
+      locationId: { stringValue: location.locationId },
+      locationName: { stringValue: location.locationName },
+      displayName: { stringValue: location.displayName },
+      timeZone: { stringValue: location.timeZone },
+      playerType: { stringValue: location.playerType },
+      playlistEnabled: { booleanValue: location.playlistEnabled },
+      reportingEnabled: { booleanValue: location.reportingEnabled },
+      notes: { stringValue: location.notes },
+      playerId: { stringValue: location.playerId },
+      sheetTabName: { stringValue: location.sheetTabName },
+      lastSyncedAt: { timestampValue: syncedAt.toISOString() }
+    };
+
+    const fieldPaths = Object.keys(fields)
+      .map(name => 'updateMask.fieldPaths=' + encodeURIComponent(name))
+      .join('&');
+
+    const url =
+      'https://firestore.googleapis.com/v1/projects/' +
+      projectId +
+      '/databases/(default)/documents/locations/' +
+      encodeURIComponent(location.locationId) +
+      '?' + fieldPaths;
+
+    const response = UrlFetchApp.fetch(url, {
+      method: 'patch',
+      contentType: 'application/json',
+      headers: {
+        Authorization: 'Bearer ' + token
+      },
+      payload: JSON.stringify({ fields: fields }),
+      muteHttpExceptions: true
+    });
+
+    const status = response.getResponseCode();
+
+    if (status !== 200) {
+      throw new Error(
+        'Firestore sync failed for ' + location.locationId +
+        '. HTTP ' + status + ': ' + response.getContentText()
+      );
+    }
+
+    syncedRows.push(location.rowNumber);
+    Logger.log('Synced location: ' + location.locationId);
+  });
+
+  // Update Last Sync (column J) only for successfully synced rows.
+  syncedRows.forEach(rowNumber => {
+    managementSheet.getRange(rowNumber, 10).setValue(syncedAt);
+  });
+
+  Logger.log('SUCCESS: Synced ' + syncedRows.length + ' locations to Firestore.');
+}
+
+
+function parseSheetBoolean_(value, columnName, rowNumber) {
+  if (value === true) return true;
+  if (value === false) return false;
+
+  const normalized = String(value || '').trim().toLowerCase();
+
+  if (['yes', 'true', 'on', '1'].includes(normalized)) return true;
+  if (['no', 'false', 'off', '0'].includes(normalized)) return false;
+
+  throw new Error(
+    'Unexpected value for ' + columnName +
+    ' in row ' + rowNumber + ': ' + value
+  );
+}
+
+
+/**
+ * Reserves the next permanent Ad ID.
+ * Uses a script lock to prevent duplicate IDs from simultaneous runs.
+ *
+ * The counter stores the NEXT available number.
+ * Example: nextNumber = 1 produces AD-000001.
+ */
+function reserveNextAdId_() {
+  const lock = LockService.getScriptLock();
+  lock.waitLock(30000);
+
+  try {
+    const counterUrl =
+      'https://firestore.googleapis.com/v1/projects/' +
+      FIREBASE_PROJECT_ID +
+      '/databases/(default)/documents/system/adIdCounter';
+
+    const token = ScriptApp.getOAuthToken();
+
+    // Read the current counter.
+    const readResponse = UrlFetchApp.fetch(counterUrl, {
+      method: 'get',
+      headers: {
+        Authorization: 'Bearer ' + token
+      },
+      muteHttpExceptions: true
+    });
+
+    const readStatus = readResponse.getResponseCode();
+    let nextNumber = 1;
+
+    if (readStatus === 200) {
+      const document = JSON.parse(readResponse.getContentText());
+      const storedValue =
+        document.fields &&
+        document.fields.nextNumber &&
+        document.fields.nextNumber.integerValue;
+
+      nextNumber = Number(storedValue);
+
+      if (!Number.isSafeInteger(nextNumber) || nextNumber < 1) {
+        throw new Error('The Firestore Ad ID counter contains an invalid value.');
+      }
+    } else if (readStatus !== 404) {
+      throw new Error(
+        'Could not read Ad ID counter. HTTP ' +
+        readStatus + ': ' + readResponse.getContentText()
+      );
+    }
+
+    // Save the following number before returning this one.
+    const updateResponse = UrlFetchApp.fetch(
+      counterUrl + '?updateMask.fieldPaths=nextNumber',
+      {
+        method: 'patch',
+        contentType: 'application/json',
+        headers: {
+          Authorization: 'Bearer ' + token
+        },
+        payload: JSON.stringify({
+          fields: {
+            nextNumber: {
+              integerValue: String(nextNumber + 1)
+            }
+          }
+        }),
+        muteHttpExceptions: true
+      }
+    );
+
+    if (updateResponse.getResponseCode() !== 200) {
+      throw new Error(
+        'Could not update Ad ID counter. HTTP ' +
+        updateResponse.getResponseCode() + ': ' +
+        updateResponse.getContentText()
+      );
+    }
+
+    return 'AD-' + String(nextNumber).padStart(6, '0');
+
+  } finally {
+    lock.releaseLock();
+  }
+}
+
+
+
+
+/**
+ * Creates a permanent advertisement record in Firestore.
+ * Called by runWorkbookBatchApply when a new image needs an Ad ID.
+ */
+function createAdRecord_(advertiserName, imageFilename, assetUrl) {
+  advertiserName = String(advertiserName || '').trim();
+  imageFilename = String(imageFilename || '').trim();
+  assetUrl = String(assetUrl || '').trim();
+
+  if (!advertiserName) {
+    throw new Error('Advertiser name is required.');
+  }
+
+  if (!imageFilename) {
+    throw new Error('Image filename is required.');
+  }
+
+  // Reserve a permanent ID.
+  const adId = reserveNextAdId_();
+
+  const url =
+    'https://firestore.googleapis.com/v1/projects/' +
+    FIREBASE_PROJECT_ID +
+    '/databases/(default)/documents/ads/' +
+    adId;
+
+  const fields = {
+    adId: { stringValue: adId },
+    advertiserName: { stringValue: advertiserName },
+    imageFilename: { stringValue: imageFilename },
+    assetUrl: { stringValue: assetUrl },
+    active: { booleanValue: false },
+    createdAt: { timestampValue: new Date().toISOString() }
+  };
+
+  const response = UrlFetchApp.fetch(url, {
+    method: 'patch',
+    contentType: 'application/json',
+    headers: {
+      Authorization: 'Bearer ' + ScriptApp.getOAuthToken()
+    },
+    payload: JSON.stringify({ fields: fields }),
+    muteHttpExceptions: true
+  });
+
+  if (response.getResponseCode() !== 200) {
+    throw new Error(
+      'Ad ID ' + adId + ' was reserved, but the ad record could not be created. ' +
+      'The ID will not be reused. HTTP ' +
+      response.getResponseCode() + ': ' + response.getContentText()
+    );
+  }
+
+  Logger.log('Created advertisement record: ' + adId);
+  return adId;
+}
+
+
+
+
+/**
+ * Extracts the filename from an image URL or relative path.
+ * Ignores folders, query strings, and URL fragments.
+ */
+function getImageFilename_(assetUrl) {
+  let value = String(assetUrl || '').trim();
+
+  if (!value) {
+    throw new Error('Image URL is blank.');
+  }
+
+  // Remove query string and fragment.
+  value = value.split('?')[0].split('#')[0];
+
+  // Keep only the filename, not the folder path.
+  const parts = value.split('/');
+  let filename = parts[parts.length - 1].trim();
+
+  try {
+    filename = decodeURIComponent(filename);
+  } catch (error) {
+    throw new Error('Could not decode image filename: ' + filename);
+  }
+
+  if (!filename) {
+    throw new Error('Could not extract a filename from: ' + assetUrl);
+  }
+
+  return filename;
+}
+
+
+/**
+ * Finds existing ad records with the exact same image filename.
+ * Advertiser spelling is intentionally not used as a matching requirement.
+ *
+ * Returns:
+ *   NO_MATCH
+ *   ONE_MATCH
+ *   MULTIPLE_MATCHES
+ */
+function findAdsByFilename_(assetUrl) {
+  const filename = getImageFilename_(assetUrl);
+
+  const url =
+    'https://firestore.googleapis.com/v1/projects/' +
+    FIREBASE_PROJECT_ID +
+    '/databases/(default)/documents:runQuery';
+
+  const requestBody = {
+    structuredQuery: {
+      from: [{ collectionId: 'ads' }],
+      where: {
+        fieldFilter: {
+          field: { fieldPath: 'imageFilename' },
+          op: 'EQUAL',
+          value: { stringValue: filename }
+        }
+      }
+    }
+  };
+
+  const response = UrlFetchApp.fetch(url, {
+    method: 'post',
+    contentType: 'application/json',
+    headers: {
+      Authorization: 'Bearer ' + ScriptApp.getOAuthToken()
+    },
+    payload: JSON.stringify(requestBody),
+    muteHttpExceptions: true
+  });
+
+  if (response.getResponseCode() !== 200) {
+    throw new Error(
+      'Filename lookup failed. HTTP ' +
+      response.getResponseCode() + ': ' +
+      response.getContentText()
+    );
+  }
+
+  const results = JSON.parse(response.getContentText());
+
+  const matches = results
+    .filter(item => item.document)
+    .map(item => {
+      const fields = item.document.fields || {};
+
+      return {
+        adId: fields.adId ? fields.adId.stringValue : '',
+        advertiserName: fields.advertiserName
+          ? fields.advertiserName.stringValue : '',
+        imageFilename: fields.imageFilename
+          ? fields.imageFilename.stringValue : '',
+        createdAt: fields.createdAt
+          ? fields.createdAt.timestampValue : ''
+      };
+    });
+
+  let matchStatus = 'NO_MATCH';
+
+  if (matches.length === 1) {
+    matchStatus = 'ONE_MATCH';
+  } else if (matches.length > 1) {
+    matchStatus = 'MULTIPLE_MATCHES';
+  }
+
+  return {
+    filename: filename,
+    matchStatus: matchStatus,
+    matches: matches
+  };
+}
+
+
+/**
+ * Reviews a proposed advertisement against existing Firestore records.
+ * This function NEVER creates an Ad ID or changes an existing record.
+ */
+function reviewAdIdentity_(advertiserName, assetUrl) {
+  advertiserName = String(advertiserName || '').trim();
+
+  if (!advertiserName) {
+    throw new Error('Advertiser name is required for review.');
+  }
+
+  const lookup = findAdsByFilename_(assetUrl);
+
+  if (lookup.matchStatus === 'NO_MATCH') {
+    return {
+      reviewStatus: 'NEW IMAGE — REVIEW',
+      filename: lookup.filename,
+      suggestedAdId: '',
+      message: 'No existing ad uses this filename. Your approval is required.'
+    };
+  }
+
+  if (lookup.matchStatus === 'MULTIPLE_MATCHES') {
+    return {
+      reviewStatus: 'MULTIPLE MATCHES — REVIEW',
+      filename: lookup.filename,
+      suggestedAdId: '',
+      message: 'Multiple ads use this filename. Choose the correct Ad ID.',
+      matches: lookup.matches
+    };
+  }
+
+  const match = lookup.matches[0];
+
+  const sameAdvertiser =
+    match.advertiserName.trim().toLowerCase() ===
+    advertiserName.toLowerCase();
+
+  if (sameAdvertiser) {
+    return {
+      reviewStatus: 'MATCH FOUND',
+      filename: lookup.filename,
+      suggestedAdId: match.adId,
+      message: 'One filename and advertiser match was found.',
+      matches: [match]
+    };
+  }
+
+  return {
+    reviewStatus: 'MATCH FOUND — VERIFY NAME',
+    filename: lookup.filename,
+    suggestedAdId: match.adId,
+    message: 'The filename matches an existing ad. The advertiser name differs, so verify the name before continuing. Keep the existing Ad ID if this is the same campaign.',
+    advertiserNameDiffers: true,
+    matches: [match]
+  };
+}
+
+
+
+/**
+ * Retrieves an ad document by its permanent Ad ID.
+ * Returns null if it does not exist.
+ */
+function getAdRecordById_(adId) {
+  adId = String(adId || '').trim();
+
+  if (!/^AD-\d+$/.test(adId)) {
+    throw new Error('Invalid Ad ID format: ' + adId);
+  }
+
+  const url =
+    'https://firestore.googleapis.com/v1/projects/' +
+    FIREBASE_PROJECT_ID +
+    '/databases/(default)/documents/ads/' +
+    encodeURIComponent(adId);
+
+  const response = UrlFetchApp.fetch(url, {
+    method: 'get',
+    headers: {
+      Authorization: 'Bearer ' + ScriptApp.getOAuthToken()
+    },
+    muteHttpExceptions: true
+  });
+
+  if (response.getResponseCode() === 404) {
+    return null;
+  }
+
+  if (response.getResponseCode() !== 200) {
+    throw new Error(
+      'Could not retrieve ad ' + adId + '. HTTP ' +
+      response.getResponseCode() + ': ' +
+      response.getContentText()
+    );
+  }
+
+  return JSON.parse(response.getContentText());
+}
+
+/**
+ * Retrieves a contract document by its permanent Contract ID.
+ * Returns null if it does not exist.
+ */
+function getContractRecordById_(contractId) {
+  contractId = String(contractId || '').trim();
+
+  if (!/^CT-\d{6}$/.test(contractId)) {
+    throw new Error('Invalid Contract ID format: ' + contractId);
+  }
+
+  const url =
+    'https://firestore.googleapis.com/v1/projects/' +
+    FIREBASE_PROJECT_ID +
+    '/databases/(default)/documents/contracts/' +
+    encodeURIComponent(contractId);
+
+  const response = UrlFetchApp.fetch(url, {
+    method: 'get',
+    headers: {
+      Authorization: 'Bearer ' + ScriptApp.getOAuthToken()
+    },
+    muteHttpExceptions: true
+  });
+
+  if (response.getResponseCode() === 404) {
+    return null;
+  }
+
+  if (response.getResponseCode() !== 200) {
+    throw new Error(
+      'Could not retrieve contract ' + contractId + '. HTTP ' +
+      response.getResponseCode() + ': ' +
+      response.getContentText()
+    );
+  }
+
+  return JSON.parse(response.getContentText());
+}
+
+/**
+ * Deletes a Firestore document.
+ * Used only for temporary test cleanup.
+ */
+function deleteTestDocument_(collectionName, documentId) {
+  const url =
+    'https://firestore.googleapis.com/v1/projects/' +
+    FIREBASE_PROJECT_ID +
+    '/databases/(default)/documents/' +
+    collectionName + '/' +
+    encodeURIComponent(documentId);
+
+  const response = UrlFetchApp.fetch(url, {
+    method: 'delete',
+    headers: {
+      Authorization: 'Bearer ' + ScriptApp.getOAuthToken()
+    },
+    muteHttpExceptions: true
+  });
+
+  if (response.getResponseCode() !== 200 &&
+      response.getResponseCode() !== 404) {
+    throw new Error(
+      'Could not delete temporary ' + collectionName +
+      ' record ' + documentId + '. HTTP ' +
+      response.getResponseCode() + ': ' +
+      response.getContentText()
+    );
+  }
+}
+
+function testAdIdCounter() {
+  throw new Error('DISABLED: This test consumes permanent Ad IDs.');
+}
+
+function testCreateAdRecord() {
+  throw new Error('DISABLED: This test consumes permanent Ad IDs.');
+}
+
+function testFilenameMatching() {
+  throw new Error('DISABLED: This test consumes permanent Ad IDs.');
+}
+
+function testAdIdentityReview() {
+  throw new Error('DISABLED: This test consumes permanent Ad IDs.');
+}
+
+/**
+ * SAFE TEST:
+ * Tests ad identity matching using a temporary test document.
+ * Does not reserve or consume a permanent Ad ID.
+ */
+function testAdIdentityReviewSafe() {
+  const testDocumentId =
+    'TEST-IDENTITY-' + Utilities.getUuid();
+
+  const testFilename =
+    'temporary-identity-test-' + Utilities.getUuid() + '.png';
+
+  const testAdId = testDocumentId;
+
+  const url =
+    'https://firestore.googleapis.com/v1/projects/' +
+    FIREBASE_PROJECT_ID +
+    '/databases/(default)/documents/ads/' +
+    testDocumentId;
+
+  const fields = {
+    adId: { stringValue: testAdId },
+    advertiserName: { stringValue: 'Test Advertiser' },
+    imageFilename: { stringValue: testFilename },
+    assetUrl: { stringValue: './images/' + testFilename },
+    active: { booleanValue: false },
+    createdAt: { timestampValue: new Date().toISOString() }
+  };
+
+  let testRecordCreated = false;
+
+  try {
+    const createResponse = UrlFetchApp.fetch(url, {
+      method: 'patch',
+      contentType: 'application/json',
+      headers: {
+        Authorization: 'Bearer ' + ScriptApp.getOAuthToken()
+      },
+      payload: JSON.stringify({ fields: fields }),
+      muteHttpExceptions: true
+    });
+
+    if (createResponse.getResponseCode() !== 200) {
+      throw new Error(
+        'Could not create temporary test record. HTTP ' +
+        createResponse.getResponseCode() + ': ' +
+        createResponse.getContentText()
+      );
+    }
+
+    testRecordCreated = true;
+
+    // Test 1: Same advertiser name should find the existing Ad ID.
+    const sameNameResult = reviewAdIdentity_(
+      'Test Advertiser',
+      './images/' + testFilename
+    );
+
+    if (
+      sameNameResult.reviewStatus !== 'MATCH FOUND' ||
+      sameNameResult.suggestedAdId !== testAdId
+    ) {
+      throw new Error(
+        'Same-name test failed: ' +
+        JSON.stringify(sameNameResult)
+      );
+    }
+
+    // Test 2: Different advertiser name should retain the existing ID
+    // but flag the name for verification.
+    const differentNameResult = reviewAdIdentity_(
+      'Test Advertiser Spelling Change',
+      './images/' + testFilename
+    );
+
+    if (
+      differentNameResult.reviewStatus !== 'MATCH FOUND — VERIFY NAME' ||
+      differentNameResult.suggestedAdId !== testAdId ||
+      differentNameResult.advertiserNameDiffers !== true
+    ) {
+      throw new Error(
+        'Different-name test failed: ' +
+        JSON.stringify(differentNameResult)
+      );
+    }
+
+    Logger.log('PASS: Same advertiser name found the existing test ID.');
+    Logger.log('PASS: Different advertiser name retained the existing test ID and flagged the name.');
+    Logger.log('PASS: No permanent Ad ID was reserved.');
+
+  } finally {
+    if (testRecordCreated) {
+      deleteTestDocument_('ads', testDocumentId);
+      Logger.log('Temporary identity test record deleted.');
+    }
+  }
+}
+
+/**
+ * SAFE TEST:
+ * Tests new-image and duplicate-filename review scenarios.
+ * Uses temporary Firestore document IDs only.
+ */
+function testAdIdentityReviewScenariosSafe() {
+  const testSuffix = Utilities.getUuid();
+
+  const newFilename =
+    'temporary-new-image-' + testSuffix + '.png';
+
+  const duplicateFilename =
+    'temporary-duplicate-image-' + testSuffix + '.png';
+
+  const testDocumentIds = [
+    'TEST-NEW-IMAGE-' + testSuffix,
+    'TEST-DUPLICATE-A-' + testSuffix,
+    'TEST-DUPLICATE-B-' + testSuffix
+  ];
+
+  const baseUrl =
+    'https://firestore.googleapis.com/v1/projects/' +
+    FIREBASE_PROJECT_ID +
+    '/databases/(default)/documents/ads/';
+
+  const createdDocumentIds = [];
+
+  function createTemporaryAd_(documentId, filename) {
+    const fields = {
+      adId: { stringValue: documentId },
+      advertiserName: { stringValue: 'Temporary Test Advertiser' },
+      imageFilename: { stringValue: filename },
+      assetUrl: { stringValue: './images/' + filename },
+      active: { booleanValue: false },
+      createdAt: { timestampValue: new Date().toISOString() }
+    };
+
+    const response = UrlFetchApp.fetch(
+      baseUrl + documentId,
+      {
+        method: 'patch',
+        contentType: 'application/json',
+        headers: {
+          Authorization: 'Bearer ' + ScriptApp.getOAuthToken()
+        },
+        payload: JSON.stringify({ fields: fields }),
+        muteHttpExceptions: true
+      }
+    );
+
+    if (response.getResponseCode() !== 200) {
+      throw new Error(
+        'Temporary test record creation failed. HTTP ' +
+        response.getResponseCode() + ': ' +
+        response.getContentText()
+      );
+    }
+
+    createdDocumentIds.push(documentId);
+  }
+
+  try {
+    // Test 1: No existing record for this filename.
+    const newImageResult = reviewAdIdentity_(
+      'Temporary Test Advertiser',
+      './images/' + newFilename
+    );
+
+    if (newImageResult.reviewStatus !== 'NEW IMAGE — REVIEW') {
+      throw new Error(
+        'New-image test failed: ' +
+        JSON.stringify(newImageResult)
+      );
+    }
+
+    Logger.log('PASS: A filename with no matching record is flagged as NEW IMAGE — REVIEW.');
+
+    // Create two temporary records using the same filename.
+    createTemporaryAd_(testDocumentIds[1], duplicateFilename);
+    createTemporaryAd_(testDocumentIds[2], duplicateFilename);
+
+    // Test 2: Multiple records use the same filename.
+    const duplicateResult = reviewAdIdentity_(
+      'Temporary Test Advertiser',
+      './images/' + duplicateFilename
+    );
+
+    if (
+      duplicateResult.reviewStatus !== 'MULTIPLE MATCHES — REVIEW' ||
+      !duplicateResult.matches ||
+      duplicateResult.matches.length !== 2
+    ) {
+      throw new Error(
+        'Duplicate-filename test failed: ' +
+        JSON.stringify(duplicateResult)
+      );
+    }
+
+    Logger.log('PASS: Two records with the same filename are flagged as MULTIPLE MATCHES — REVIEW.');
+    Logger.log('PASS: No permanent Ad ID was reserved.');
+
+  } finally {
+    // Delete every temporary record that was successfully created.
+    createdDocumentIds.forEach(function(documentId) {
+      deleteTestDocument_('ads', documentId);
+    });
+
+    Logger.log('Temporary identity scenario test records deleted.');
+  }
+}
+
+
+
+
+/**
+ * Reserves the next permanent Contract ID.
+ * Uses a script lock to prevent duplicate IDs.
+ *
+ * Uses a separate Firestore counter from Ad IDs.
+ * Example: nextNumber = 1 produces CT-000001.
+ */
+function reserveNextContractId_() {
+  const lock = LockService.getScriptLock();
+  lock.waitLock(30000);
+
+  try {
+    const counterUrl =
+      'https://firestore.googleapis.com/v1/projects/' +
+      FIREBASE_PROJECT_ID +
+      '/databases/(default)/documents/system/contractIdCounter';
+
+    const token = ScriptApp.getOAuthToken();
+
+    // Read the current Contract ID counter.
+    const readResponse = UrlFetchApp.fetch(counterUrl, {
+      method: 'get',
+      headers: {
+        Authorization: 'Bearer ' + token
+      },
+      muteHttpExceptions: true
+    });
+
+    const readStatus = readResponse.getResponseCode();
+    let nextNumber = 1;
+
+    if (readStatus === 200) {
+      const document = JSON.parse(readResponse.getContentText());
+      const storedValue =
+        document.fields &&
+        document.fields.nextNumber &&
+        document.fields.nextNumber.integerValue;
+
+      nextNumber = Number(storedValue);
+
+      if (!Number.isSafeInteger(nextNumber) || nextNumber < 1) {
+        throw new Error(
+          'The Firestore Contract ID counter contains an invalid value.'
+        );
+      }
+    } else if (readStatus !== 404) {
+      throw new Error(
+        'Could not read Contract ID counter. HTTP ' +
+        readStatus + ': ' + readResponse.getContentText()
+      );
+    }
+
+    // Save the following number before returning this one.
+    const updateResponse = UrlFetchApp.fetch(
+      counterUrl + '?updateMask.fieldPaths=nextNumber',
+      {
+        method: 'patch',
+        contentType: 'application/json',
+        headers: {
+          Authorization: 'Bearer ' + token
+        },
+        payload: JSON.stringify({
+          fields: {
+            nextNumber: {
+              integerValue: String(nextNumber + 1)
+            }
+          }
+        }),
+        muteHttpExceptions: true
+      }
+    );
+
+    if (updateResponse.getResponseCode() !== 200) {
+      throw new Error(
+        'Could not update Contract ID counter. HTTP ' +
+        updateResponse.getResponseCode() + ': ' +
+        updateResponse.getContentText()
+      );
+    }
+
+    return 'CT-' + String(nextNumber).padStart(6, '0');
+
+  } finally {
+    lock.releaseLock();
+  }
+}
+

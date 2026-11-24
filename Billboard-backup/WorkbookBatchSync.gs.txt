@@ -1,0 +1,578 @@
+/**
+ * S&K Venture Signs — Workbook-wide Ad/Contract ID batch
+ * Requires FirebaseSync.gs in the same Apps Script project.
+ *
+ * SAFE WORKFLOW:
+ * 1) runWorkbookBatchPreview() — reads workbook + Firestore only.
+ * 2) runWorkbookBatchApply() — shows a confirmation dialog, then writes IDs.
+ *
+ * Scans positions 1–20 (sheet rows 2–21) in every Playlist Enabled location.
+ * Does not publish playlists, change ad active flags, or touch player files.
+ */
+
+function runWorkbookBatchPreview() {
+  const plan = buildWorkbookBatchPlan_();
+  const lines = [
+    'WORKBOOK BATCH PREVIEW — NO CHANGES MADE',
+    'Enabled locations scanned: ' + plan.locationsScanned,
+    'Rows reviewed: ' + plan.rowsReviewed,
+    'New Ad records needed: ' + plan.newAds.length,
+    'Existing Ad IDs to fill/reuse: ' + plan.adAssignments.length,
+    'New Contracts needed: ' + plan.newContracts.length,
+    'Existing Contract IDs to fill/reuse: ' + plan.contractAssignments.length,
+    'Rows needing review: ' + plan.issues.length,
+    'Note: blank Ad Type no longer blocks safe Ad ID matching/creation; contracts are created only for Paid Advertiser rows.',
+    '', 'DETAILS:'
+  ];
+  const detailLines = [];
+  plan.newAds.forEach(x => detailLines.push('NEW IMAGE AD  ' + x.tab + ' row ' + x.row + ': ' + x.name + ' / ' + x.filename));
+  plan.adAssignments.forEach(x => detailLines.push('ASSIGN AD ID  ' + x.tab + ' row ' + x.row + ': ' + (x.adId || '[new ID after creation]') + ' (' + x.reason + ')'));
+  plan.newContracts.forEach(x => detailLines.push('NEW CONTRACT  ' + x.tab + ' row ' + x.row + ': ' + x.name));
+  plan.contractAssignments.forEach(x => detailLines.push('ASSIGN CONTRACT  ' + x.tab + ' row ' + x.row + ': ' + (x.contractId || '[new contract after creation]')));
+  plan.issues.forEach(x => detailLines.push('REVIEW  ' + x.tab + ' row ' + x.row + ': ' + x.message));
+  lines.push('', 'DETAILS (first 300 only):', ...detailLines.slice(0, 300));
+  if (detailLines.length > 300) lines.push('... ' + (detailLines.length - 300) + ' additional detail lines omitted.');
+  Logger.log(lines.join('\n'));
+  SpreadsheetApp.getUi().alert('Preview complete', lines.join('\n').slice(0, 5000), SpreadsheetApp.getUi().ButtonSet.OK);
+}
+
+function runWorkbookBatchApply() {
+  const plan = buildWorkbookBatchPlan_();
+  const summary = [
+    'Enabled locations scanned: ' + plan.locationsScanned,
+    'New Ad records: ' + plan.newAds.length,
+    'Ad IDs to write: ' + plan.adAssignments.length,
+    'New Contracts: ' + plan.newContracts.length,
+    'Contract IDs to write: ' + plan.contractAssignments.length,
+    'Rows skipped for review: ' + plan.issues.length,
+    '',
+    'This will create permanent IDs in development Firestore and write IDs to this workbook.',
+    'It will NOT publish playlists or change live signs.'
+  ].join('\n');
+  const answer = SpreadsheetApp.getUi().alert('Confirm workbook batch', summary + '\n\nContinue?', SpreadsheetApp.getUi().ButtonSet.YES_NO);
+  if (answer !== SpreadsheetApp.getUi().Button.YES) return;
+
+  const ss = SpreadsheetApp.getActiveSpreadsheet();
+  // Ensure the ID/contract columns exist on tabs copied before these fields were added.
+  plan.tabsToPrepare.forEach(tab => {
+    const sh = ss.getSheetByName(tab);
+    const expected = ['Ad ID', 'Contract ID', 'Contract Status', 'Ad Type'];
+    expected.forEach((label, i) => {
+      const cell = sh.getRange(1, 11 + i);
+      if (!String(cell.getValue() || '').trim()) cell.setValue(label);
+    });
+  });
+  const result = { adsCreated: 0, adCellsWritten: 0, contractsCreated: 0, contractCellsWritten: 0, issues: plan.issues.length };
+
+  // Create new Ad records first. IDs are only written after Firestore confirms creation.
+  const createdAdByFilename = {};
+  plan.newAds.forEach(item => {
+    const id = createAdRecord_(item.name, item.filename, item.assetUrl);
+    item.adId = id;
+    createdAdByFilename[item.filename.toLowerCase()] = id;
+    result.adsCreated++;
+  });
+  
+
+  // Apply all planned Ad ID assignments.
+  plan.adAssignments.forEach(item => {
+    const id = item.adId || item.newAdRef.adId;
+    if (!id) throw new Error('Missing Ad ID after creation for ' + item.tab + ' row ' + item.row);
+    ss.getSheetByName(item.tab).getRange(item.row, 11).setValue(id);
+    result.adCellsWritten++;
+  });
+
+  // Create contracts only for rows explicitly classified Paid Advertiser.
+  plan.newContracts.forEach(item => {
+    const id = reserveNextContractId_();
+       const fields = {
+      contractId: { stringValue: id },
+      advertiserName: { stringValue: item.name },
+      playbackAuthorized: { booleanValue: false },
+      createdAt: { timestampValue: new Date().toISOString() }
+    };
+    workbookBatchWriteFirestoreDocument_('contracts', id, fields);
+    item.contractId = id;
+    result.contractsCreated++;
+  });
+
+  plan.contractAssignments.forEach(item => {
+    const id = item.contractId || item.newContractRef.contractId;
+    if (!id) throw new Error('Missing Contract ID after creation for ' + item.tab + ' row ' + item.row);
+    ss.getSheetByName(item.tab).getRange(item.row, 12).setValue(id);
+    result.contractCellsWritten++;
+    ss.getSheetByName(item.tab).getRange(item.row, 13).setValue(item.status || 'NOT AUTHORIZED');
+  });
+
+  const done = [
+    'Batch completed.',
+    'Ad records created: ' + result.adsCreated,
+    'Ad ID cells written: ' + result.adCellsWritten,
+    'Contracts created: ' + result.contractsCreated,
+    'Contract ID cells written: ' + result.contractCellsWritten,
+    'Rows needing review: ' + result.issues,
+    '', 'No playlists were published and no player files were changed.'
+  ].join('\n');
+  Logger.log(done);
+  SpreadsheetApp.getUi().alert('Workbook batch finished', done, SpreadsheetApp.getUi().ButtonSet.OK);
+}
+
+function buildWorkbookBatchPlan_() {
+  const ss = SpreadsheetApp.getActiveSpreadsheet();
+  const lm = ss.getSheetByName('Location Management');
+  if (!lm) throw new Error('Missing Location Management tab.');
+  const last = lm.getLastRow();
+  const locRows = lm.getRange(2, 1, Math.max(0, last - 1), 11).getValues();
+  const plan = { locationsScanned: 0, rowsReviewed: 0, tabsToPrepare: [], newAds: [], adAssignments: [], newContracts: [], contractAssignments: [], issues: [] };
+  const contractDocs = workbookBatchListFirestore_('contracts');
+   const contractsByAdvertiser = {};
+  const contractIsApproved = {};
+  contractDocs.forEach(d => {
+    const f = d.fields || {};
+    const id = workbookBatchDocId_(d.name);
+    const advertiserKey = workbookBatchString_(f.advertiserName).trim().toLowerCase();
+    contractIsApproved[id] = !!(f.playbackAuthorized && f.playbackAuthorized.booleanValue === true);
+    if (advertiserKey) (contractsByAdvertiser[advertiserKey] = contractsByAdvertiser[advertiserKey] || []).push(id);
+  });
+  const newAdByFilename = {};
+  const newContractByAdvertiser = {};
+
+  locRows.forEach((lr, i) => {
+    const lmRow = i + 2;
+    const locationId = String(lr[0] || '').trim().toLowerCase();
+    if (!locationId) return;
+    let enabled;
+    try { enabled = parseSheetBoolean_(lr[5], 'Playlist Enabled', lmRow); }
+    catch (e) { plan.issues.push({tab:'Location Management', row:lmRow, message:e.message}); return; }
+    if (!enabled) return;
+    const tab = String(lr[10] || '').trim();
+    const locationName = String(lr[1] || tab).trim();
+    const sh = ss.getSheetByName(tab);
+    if (!sh) { plan.issues.push({tab:'Location Management', row:lmRow, message:'Missing tab ' + tab}); return; }
+    plan.locationsScanned++;
+    plan.tabsToPrepare.push(tab);
+
+    const bottomRow = workbookBatchBottomRow_(sh);
+    if (bottomRow < 3) {
+      plan.issues.push({tab, row:1, message:'Could not find the "Bottom Row" marker in column B (or there are no ad rows above it); this tab was skipped.'});
+      return;
+    }
+    const values = sh.getRange(2, 1, bottomRow - 2, 14).getValues();
+
+    values.forEach((r, idx) => {
+      const row = idx + 2;
+      const position = Number(r[0]);
+      const name = String(r[1] || '').trim();
+      const status = String(r[3] || '').trim();
+      const assetUrl = String(r[4] || '').trim();
+      const existingAdId = String(r[10] || '').trim();
+      const existingContractId = String(r[11] || '').trim();
+      const adType = String(r[13] || '').trim();
+      if (!name && !assetUrl) return;
+      plan.rowsReviewed++;
+      if (!Number.isInteger(position) || position < 1 || position > 20) {
+        plan.issues.push({tab, row, message:'Position must be a whole number from 1 to 20.'}); return;
+      }
+      if (!name || !assetUrl) { plan.issues.push({tab, row, message:'Missing advertiser/name or URL.'}); return; }
+      if (/^(\.\/preview\.html|preview\.html)$/i.test(assetUrl)) return; // intentional default slot artwork/widget
+      // Ad Type is required only to decide contract/proof-of-play handling.
+      // A blank Ad Type must not block safe Ad ID identity work.
+      if (adType && !['Paid Advertiser','S&K House Ad','Filler','Blip'].includes(adType)) { plan.issues.push({tab, row, message:'Unrecognized Ad Type: ' + adType}); return; }
+      // Blip is reserved for a later integration phase; skip it entirely now.
+      if (adType === 'Blip') {
+        if (existingAdId || existingContractId) plan.issues.push({tab, row, message:'Blip row skipped; existing IDs preserved for later integration.'});
+        return;
+      }
+      if (adType === 'Filler') {
+        if (existingContractId) plan.issues.push({tab, row, message:'Filler row has a Contract ID; preserved for manual review.'});
+        return;
+      }
+      if (/^(https?:\/\/|data:)/i.test(assetUrl)) { plan.issues.push({tab, row, message:'External/data URL needs review; expected a managed relative asset path.'}); return; }
+      // Video assets are not image identities in the current ads schema.
+      // Do not create imageFilename records for video files.
+      if (/\.(mp4|mov|m4v|webm|avi|mkv)(?:[?#].*)?$/i.test(assetUrl)) {
+        plan.issues.push({tab, row, message:'Video asset detected; skipped by image Ad ID batch. Video identity/placement handling is a separate player task.'});
+        return;
+      }
+      let filename;
+      try { filename = getImageFilename_(assetUrl); }
+      catch (e) { plan.issues.push({tab, row, message:e.message}); return; }
+
+      let adId = existingAdId;
+      if (adId) {
+        let doc;
+        try { doc = getAdRecordById_(adId); }
+        catch (e) { plan.issues.push({tab, row, message:'Could not verify ' + adId + ': ' + e.message}); return; }
+        if (!doc) { plan.issues.push({tab, row, message:'Ad ID ' + adId + ' is not found in Firestore.'}); return; }
+        const f = doc.fields || {};
+        const storedFile = workbookBatchString_(f.imageFilename);
+        if (storedFile.toLowerCase() !== filename.toLowerCase()) {
+          plan.issues.push({tab, row, message:'Existing Ad ID ' + adId + ' filename differs from sheet URL.'}); return;
+        }
+        const storedName = workbookBatchString_(f.advertiserName).trim();
+        if (storedName && storedName.toLowerCase() !== name.toLowerCase()) {
+          plan.issues.push({tab, row, message:'Existing Ad ID ' + adId + ' has advertiser name "' + storedName + '", but this row says "' + name + '". Verify before continuing.'}); return;
+        }
+      } else {
+        const review = reviewAdIdentity_(name, assetUrl);
+        if (review.reviewStatus === 'MATCH FOUND') {
+          adId = review.suggestedAdId;
+        } else if (review.reviewStatus === 'NEW IMAGE — REVIEW') {
+          const key = filename.toLowerCase();
+          if (!newAdByFilename[key]) {
+            const newItem = {tab, row, name, filename, assetUrl, adId:''};
+            newAdByFilename[key] = newItem;
+            plan.newAds.push(newItem);
+          }
+          const newItem = newAdByFilename[key];
+          if (String(newItem.name).trim().toLowerCase() !== name.toLowerCase()) {
+            plan.issues.push({tab, row, message:'This image filename is also used in this workbook under a different advertiser name (' + newItem.name + '). Verify whether this is the same campaign before assigning an Ad ID.'});
+            return;
+          }
+          plan.adAssignments.push({tab, row, adId:'', newAdRef:newItem, reason:'same new image filename and advertiser'});
+          adId = '__PENDING__';
+        } else {
+          plan.issues.push({tab, row, message:review.message + (review.suggestedAdId ? ' Suggested existing ID: ' + review.suggestedAdId : '')}); return;
+        }
+        if (adId && adId !== '__PENDING__') plan.adAssignments.push({tab, row, adId, reason:'existing image filename match'});
+      }
+
+           if (adType === 'Paid Advertiser') {
+        const advertiserKey = name.toLowerCase();
+        if (existingContractId) {
+          let c;
+          try { c = getContractRecordById_(existingContractId); }
+          catch (e) { plan.issues.push({tab, row, message:'Could not verify ' + existingContractId + ': ' + e.message}); return; }
+          if (!c) { plan.issues.push({tab, row, message:'Contract ID ' + existingContractId + ' not found in Firestore.'}); return; }
+          const storedAdvertiser = workbookBatchString_((c.fields || {}).advertiserName).trim();
+          if (storedAdvertiser.toLowerCase() !== advertiserKey) {
+            plan.issues.push({tab, row, message:'Contract ' + existingContractId + ' belongs to "' + storedAdvertiser + '", but this row says "' + name + '". Review required.'}); return;
+          }
+        } else {
+          const matches = contractsByAdvertiser[advertiserKey] || [];
+          if (matches.length > 1) { plan.issues.push({tab, row, message:'Multiple contracts exist for this advertiser; choose one manually.'}); return; }
+          if (matches.length === 1) {
+            plan.contractAssignments.push({tab, row, contractId:matches[0], status:(contractIsApproved[matches[0]] ? 'AUTHORIZED' : 'NOT AUTHORIZED'), reason:'existing contract for this advertiser'});
+          } else {
+            let contract = newContractByAdvertiser[advertiserKey];
+            if (!contract) {
+              contract = {tab, row, name, contractId:''};
+              newContractByAdvertiser[advertiserKey] = contract;
+              plan.newContracts.push(contract);
+            }
+            plan.contractAssignments.push({tab, row, contractId:'', newContractRef:contract, status:'NOT AUTHORIZED', reason:'new contract for this advertiser'});
+          }
+        }
+      } else if (existingContractId && adType !== 'Paid Advertiser') {
+        plan.issues.push({tab, row, message:'A Contract ID exists but Ad Type is not Paid Advertiser; preserving it for review.'});
+      } else if (adType && !['S&K House Ad','Filler','Blip'].includes(adType)) {
+        plan.issues.push({tab, row, message:'Unrecognized Ad Type: ' + adType});
+      }
+      // Blank Ad Type is intentionally allowed for Ad ID work; no contract is inferred.
+    });
+  });
+  return plan;
+}
+
+function workbookBatchWriteFirestoreDocument_(collection, id, fields) {
+  const url = 'https://firestore.googleapis.com/v1/projects/' + FIREBASE_PROJECT_ID + '/databases/(default)/documents/' + collection + '/' + encodeURIComponent(id);
+  const response = UrlFetchApp.fetch(url, {method:'patch', contentType:'application/json', headers:{Authorization:'Bearer ' + ScriptApp.getOAuthToken()}, payload:JSON.stringify({fields}), muteHttpExceptions:true});
+  if (response.getResponseCode() !== 200) throw new Error('Firestore write failed for ' + collection + '/' + id + ': HTTP ' + response.getResponseCode() + ' ' + response.getContentText());
+}
+
+function workbookBatchListFirestore_(collection) {
+  const url = 'https://firestore.googleapis.com/v1/projects/' + FIREBASE_PROJECT_ID + '/databases/(default)/documents/' + collection + '?pageSize=1000';
+  const response = UrlFetchApp.fetch(url, {method:'get', headers:{Authorization:'Bearer ' + ScriptApp.getOAuthToken()}, muteHttpExceptions:true});
+  if (response.getResponseCode() !== 200) throw new Error('Could not list ' + collection + ': HTTP ' + response.getResponseCode() + ' ' + response.getContentText());
+  const data = JSON.parse(response.getContentText());
+  if (data.nextPageToken) throw new Error('The ' + collection + ' collection exceeds 1,000 records. Batch stopped safely; pagination is needed.');
+  return data.documents || [];
+}
+function workbookBatchString_(v) { return v && v.stringValue !== undefined ? String(v.stringValue) : ''; }
+function workbookBatchDocId_(name) { return String(name || '').split('/').pop(); }
+
+
+/**
+ * Approve or revoke the advertiser (contract) on the selected row.
+ * Click any cell in a row that has a Contract ID, then run this from the menu.
+ */
+function toggleAdvertiserApproval() {
+  const ui = SpreadsheetApp.getUi();
+  const sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+  const range = sheet.getActiveRange();
+
+  if (!range || range.getRow() < 2 ||
+      String(sheet.getRange(1, 12).getValue()).trim().toLowerCase() !== 'contract id') {
+    ui.alert('Click a cell in an advertiser row on a location tab first.');
+    return;
+  }
+
+  const row = range.getRow();
+  const contractId = String(sheet.getRange(row, 12).getValue() || '').trim();
+
+  if (!contractId) {
+    ui.alert('This row has no Contract ID.\n\nOnly Paid Advertiser rows have one.');
+    return;
+  }
+
+  let contract;
+  try {
+    contract = getContractRecordById_(contractId);
+  } catch (e) {
+    ui.alert('Could not read ' + contractId + ': ' + e.message);
+    return;
+  }
+
+  if (!contract) {
+    ui.alert(contractId + ' was not found in Firestore.');
+    return;
+  }
+
+  const fields = contract.fields || {};
+  const advertiser = workbookBatchString_(fields.advertiserName);
+  const approved = !!(fields.playbackAuthorized && fields.playbackAuthorized.booleanValue === true);
+  const newValue = !approved;
+
+  const answer = ui.alert(
+    newValue ? 'Approve this advertiser?' : 'Revoke approval for this advertiser?',
+    'Advertiser: ' + advertiser +
+    '\nContract: ' + contractId +
+    '\nCurrent status: ' + (approved ? 'AUTHORIZED' : 'NOT AUTHORIZED') +
+    '\n\n' + (newValue
+      ? 'Plays for this advertiser will be recorded as proof of play at every location.'
+      : 'Plays for this advertiser will no longer be recorded.') +
+    '\n\nContinue?',
+    ui.ButtonSet.YES_NO
+  );
+
+  if (answer !== ui.Button.YES) return;
+
+  const url =
+    'https://firestore.googleapis.com/v1/projects/' + FIREBASE_PROJECT_ID +
+    '/databases/(default)/documents/contracts/' + encodeURIComponent(contractId) +
+    '?updateMask.fieldPaths=playbackAuthorized';
+
+  const response = UrlFetchApp.fetch(url, {
+    method: 'patch',
+    contentType: 'application/json',
+    headers: { Authorization: 'Bearer ' + ScriptApp.getOAuthToken() },
+    payload: JSON.stringify({ fields: { playbackAuthorized: { booleanValue: newValue } } }),
+    muteHttpExceptions: true
+  });
+
+  if (response.getResponseCode() !== 200) {
+    ui.alert('Approval was NOT changed.\nHTTP ' + response.getResponseCode() + '\n' + response.getContentText());
+    return;
+  }
+
+  refreshAllContractStatuses_();
+  ui.alert(advertiser + ' is now ' + (newValue ? 'AUTHORIZED' : 'NOT AUTHORIZED') + '.');
+}
+
+
+/** Menu item: refreshes the Contract Status column (M) on every location tab. */
+function refreshAllContractStatuses() {
+  const count = refreshAllContractStatuses_();
+  SpreadsheetApp.getUi().alert('Contract statuses refreshed on ' + count + ' tabs.');
+}
+
+
+function refreshAllContractStatuses_() {
+  const ss = SpreadsheetApp.getActiveSpreadsheet();
+  const lm = ss.getSheetByName('Location Management');
+  if (!lm) throw new Error('Missing Location Management tab.');
+
+  const last = lm.getLastRow();
+  const locRows = lm.getRange(2, 1, Math.max(0, last - 1), 11).getValues();
+
+  const approvedById = {};
+  workbookBatchListFirestore_('contracts').forEach(d => {
+    const f = d.fields || {};
+    approvedById[workbookBatchDocId_(d.name)] =
+      !!(f.playbackAuthorized && f.playbackAuthorized.booleanValue === true);
+  });
+
+  let tabsUpdated = 0;
+
+  locRows.forEach(lr => {
+    const tab = String(lr[10] || '').trim();
+    const sh = tab ? ss.getSheetByName(tab) : null;
+    if (!sh) return;
+    if (String(sh.getRange(1, 12).getValue()).trim().toLowerCase() !== 'contract id') return;
+
+       const bottomRow = workbookBatchBottomRow_(sh);
+    if (bottomRow < 3) return;
+    const ids = sh.getRange(2, 12, bottomRow - 2, 1).getValues(); 
+
+    const statuses = ids.map(([v]) => {
+      const id = String(v || '').trim();
+      if (!id) return ['NO CONTRACT'];
+      if (!(id in approvedById)) return ['NOT FOUND'];
+      return [approvedById[id] ? 'AUTHORIZED' : 'NOT AUTHORIZED'];
+    });
+
+    sh.getRange(2, 13, statuses.length, 1).setValues(statuses);
+    tabsUpdated++;
+  });
+
+  return tabsUpdated;
+}
+
+/**
+ * Finds the "Bottom Row" marker in column B of a location tab.
+ * Returns its sheet row number, or 0 if it is not found.
+ */
+function workbookBatchBottomRow_(sh) {
+  const last = sh.getLastRow();
+  if (last < 2) return 0;
+  const names = sh.getRange(2, 2, last - 1, 1).getValues();
+  for (let i = 0; i < names.length; i++) {
+    if (String(names[i][0] || '').trim().toLowerCase() === 'bottom row') return i + 2;
+  }
+  return 0;
+}
+
+/**
+ * Saves each enabled location's playlist to Firestore (collection "playlists").
+ * TEST ONLY: does not touch GitHub, playlist-test.json, or any kiosk.
+ * Uses the same row rules as publishAllLocationsToGitHub, reading down to the "Bottom Row" marker.
+ */
+function publishPlaylistsToFirestore() {
+  const ss = SpreadsheetApp.getActiveSpreadsheet();
+  const lock = LockService.getScriptLock();
+
+  if (!lock.tryLock(30000)) {
+    ss.toast('Another publish is already running. Please try again shortly.', 'Publish Busy', 8);
+    return;
+  }
+
+  try {
+    const playlists = buildFirestorePlaylists_();
+
+    playlists.forEach(p => {
+      workbookBatchWriteFirestoreDocument_('playlists', p.locationId, p.fields);
+    });
+
+    const adTotal = playlists.reduce((sum, p) => sum + p.adCount, 0);
+    ss.toast('Saved ' + adTotal + ' ads across ' + playlists.length + ' locations to Firestore.', 'Playlists Saved', 8);
+    Logger.log('Saved playlists: ' + playlists.map(p => p.locationId + '=' + p.adCount).join(', '));
+  } catch (error) {
+    Logger.log('Playlist save stopped: ' + error.message);
+    ss.toast('Stopped: ' + error.message, 'Playlist Save Failed', 10);
+  } finally {
+    lock.releaseLock();
+  }
+}
+
+
+function buildFirestorePlaylists_() {
+  const ss = SpreadsheetApp.getActiveSpreadsheet();
+  const management = ss.getSheetByName('Location Management');
+  if (!management) throw new Error('Location Management tab not found.');
+
+  const data = management.getDataRange().getValues();
+  const headers = data[0].map(h => String(h).trim().toLowerCase());
+  const idIdx = headers.indexOf('location id');
+  const enabledIdx = headers.indexOf('playlist enabled');
+  const reportingIdx = headers.indexOf('reporting enabled');
+  const tabIdx = headers.indexOf('sheet tab name');
+  const playerIdx = headers.indexOf('player id');
+
+  if (idIdx === -1 || enabledIdx === -1 || reportingIdx === -1 || tabIdx === -1) {
+    throw new Error('Location Management needs Location ID, Playlist Enabled, Reporting Enabled, and Sheet Tab Name headings.');
+  }
+
+  const yes = ['yes', 'true', '1'];
+  const results = [];
+  const usedIds = new Set();
+
+  data.slice(1).forEach(row => {
+    if (!yes.includes(String(row[enabledIdx] || '').trim().toLowerCase())) return;
+
+    const locationId = String(row[idIdx] || '').trim().toLowerCase();
+    const tabName = String(row[tabIdx] || '').trim();
+
+    if (!locationId || !tabName) throw new Error('An enabled location is missing its ID or Sheet Tab Name.');
+    if (!/^[a-z0-9_-]+$/.test(locationId)) throw new Error('Invalid Location ID: ' + locationId);
+    if (usedIds.has(locationId)) throw new Error('Duplicate Location ID: ' + locationId);
+    usedIds.add(locationId);
+
+    const sheet = ss.getSheetByName(tabName);
+    if (!sheet) throw new Error('Enabled location "' + locationId + '" refers to missing tab "' + tabName + '".');
+
+    const bottomRow = workbookBatchBottomRow_(sheet);
+    if (bottomRow < 3) {
+      throw new Error('Tab "' + tabName + '": could not find the "Bottom Row" marker (or there are no ad rows above it).');
+    }
+
+    const rows = sheet.getRange(1, 1, bottomRow - 1, sheet.getLastColumn()).getValues();
+    const h = rows[0].map(x => String(x).trim().toLowerCase());
+    const col = {
+      position: h.indexOf('position'),
+      name: h.indexOf('name'),
+      url: h.indexOf('url'),
+      status: h.indexOf('status'),
+      active: h.indexOf('active date'),
+      expires: h.indexOf('expiration date'),
+      adId: h.indexOf('ad id'),
+      contractId: h.indexOf('contract id')
+    };
+
+    if (col.position === -1 || col.name === -1 || col.url === -1 ||
+        col.status === -1 || col.active === -1 || col.expires === -1) {
+      throw new Error('Tab "' + tabName + '" is missing one or more required column headings.');
+    }
+
+    const ads = [];
+
+    rows.slice(1).forEach(r => {
+      const position = Number(r[col.position]);
+      const name = String(r[col.name] || '').trim();
+      const imageUrl = String(r[col.url] || '').trim();
+      const status = String(r[col.status] || '').trim().toLowerCase();
+
+      if (!Number.isInteger(position) || position < 1 || position > 20 ||
+          !name || !imageUrl ||
+          !['active', 'true', 'yes', '1'].includes(status)) {
+        return;
+      }
+
+      ads.push({
+        mapValue: {
+          fields: {
+            position: { integerValue: String(position) },
+            advertiser: { stringValue: name },
+            imageUrl: { stringValue: imageUrl },
+            activeDate: { stringValue: playlistDateString_(r[col.active]) },
+            expirationDate: { stringValue: playlistDateString_(r[col.expires]) },
+            adId: { stringValue: col.adId === -1 ? '' : String(r[col.adId] || '').trim() },
+            contractId: { stringValue: col.contractId === -1 ? '' : String(r[col.contractId] || '').trim() }
+          }
+        }
+      });
+    });
+
+    results.push({
+      locationId: locationId,
+      adCount: ads.length,
+      fields: {
+        locationId: { stringValue: locationId },
+        updatedAt: { timestampValue: new Date().toISOString() },
+        reportingEnabled: { booleanValue: yes.includes(String(row[reportingIdx] || '').trim().toLowerCase()) },
+        ads: { arrayValue: { values: ads } }
+      }
+    });
+  });
+
+  if (results.length === 0) throw new Error('No locations are enabled for publishing.');
+  return results;
+}
+
+
+function playlistDateString_(value) {
+  if (!value) return '';
+  if (value instanceof Date && !isNaN(value.getTime())) {
+    return Utilities.formatDate(value, Session.getScriptTimeZone(), 'yyyy-MM-dd');
+  }
+  return String(value).trim();
+}
