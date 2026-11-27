@@ -128,37 +128,6 @@ self.addEventListener('fetch', (event) => {
         return;
     }
 
-    // Save the TEST playlist as an additional offline backup.
-    if (path.endsWith('/playlist-test.json')) {
-        event.respondWith((async () => {
-            const cache = await caches.open(APP_CACHE);
-            const playlistKey = new URL(
-                '/playlist-test.json',
-                self.location.origin
-            ).href;
-
-            try {
-                const response = await fetchWithTimeout(request, 6000);
-
-                if (response.ok) {
-                    await cache.put(playlistKey, response.clone());
-                }
-
-                return response;
-            } catch (error) {
-                const savedPlaylist = await cache.match(playlistKey);
-
-                if (savedPlaylist) return savedPlaylist;
-
-                return new Response(
-                    'No saved test playlist is available.',
-                    { status: 503 }
-                );
-            }
-        })());
-
-        return;
-    }
 
     // Online: use the newest image and refresh its cache.
     // Offline or timed out: use the last cached image.
