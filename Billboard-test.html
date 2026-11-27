@@ -586,9 +586,9 @@ async function registerBillboardMediaCache(queue) {
 
 // ===== PROOF OF PLAY (hourly counts) =====
 // Stays inactive until POP_ENDPOINT is filled in and the page is opened with &popkey=...
-const POP_ENDPOINT = 'https://script.google.com/macros/s/AKfycbw2gPAgfE_wUVOO0kC9R2OJpECSl6Xg_Rqs9nMpx42OSyS7pmmh-dMzuXv0Qk1RhWg-/exec';
+const POP_ENDPOINT = https://script.google.com/macros/s/AKfycbwXbD_yPLWa4cMG8rMDpb8NMf6ifvh20Se3ADgRHqxfwbwAP5PIAM9zaL4u0eLVZbbn/exec
 const POP_KEY = urlParams.get('popkey') || '';
-const POP_STORE_KEY = `skPopPending_${activeTown}`;
+const POP_STORE_KEY = `skPopPendingProd_${activeTown}`; // <-- CHANGED
 const POP_BATCH_SIZE = 300;
 let popSending = false;
 
@@ -711,7 +711,7 @@ function startProofOfPlaySender() {
 
 async function fetchFirestorePlaylist(town) {
     const url =
-        'https://firestore.googleapis.com/v1/projects/sk-venture-signs-development/databases/(default)/documents/playlists/' +
+        'https://firestore.googleapis.com/v1/projects/sk-ventures-digital-billboard/databases/(default)/documents/playlists/' + 
         encodeURIComponent(town) + '?t=' + Date.now();
 
     const res = await fetch(url, { cache: 'no-store' });
@@ -750,7 +750,7 @@ async function fetchFirestorePlaylist(town) {
 async function loadPlaylist(isBackgroundUpdate = false) {
        try {
         // NEW: Keep a separate last-known-good playlist for each location.
-        const playlistCacheKey = `skBillboardPlaylist_fs_${activeTown}`;
+        const playlistCacheKey = `skBillboardPlaylistProd_${activeTown}`; // <-- CHANGED
         let data;
         let loadedFromCache = false;
 
@@ -1104,7 +1104,7 @@ function startBillboardConnectionMonitor() {
             // This is a normal fetch request, not a page navigation.
             // The service worker will let it reach the actual website.
             const response = await fetch(
-                './Billboard-test.html?connectionCheck=' + Date.now(),
+                 window.location.pathname + '?connectionCheck=' + Date.now(), // <-- CHANGED
                 {
                     method: 'GET',
                     cache: 'no-store'
