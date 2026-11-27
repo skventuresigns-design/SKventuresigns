@@ -98,15 +98,12 @@ self.addEventListener('fetch', (event) => {
     const path = url.pathname.toLowerCase();
 
     // Offline startup for the TEST billboard page.
-    if (request.mode === 'navigate' &&
-        path.endsWith('/billboard-test.html')) {
+       if (request.mode === 'navigate' &&
+        /\/billboard(-test)?\.html$/.test(path)) { // <-- CHANGED
 
         event.respondWith((async () => {
             const cache = await caches.open(APP_CACHE);
-            const pageKey = new URL(
-                '/Billboard-test.html',
-                self.location.origin
-            ).href;
+                        const pageKey = url.origin + url.pathname; // <-- CHANGED
 
             try {
                 const response = await fetchWithTimeout(request, 6000);
